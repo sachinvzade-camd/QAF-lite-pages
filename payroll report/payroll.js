@@ -24,11 +24,11 @@ var openmenuindex;
 var isDeduction = false
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = SITapiURL
+var apURL = funFirstapiURL
 var failArrayList=[]
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=sitHostURL
+var maHostName=funFirstHostURL
 var deleteemployeeID;
 // var originalData;
 // var tableValue;
@@ -500,7 +500,7 @@ function openAddForm() {
 function getEmployee() {
     employeeListAll = []
     let objectName = "Employees";
-    let list = 'FirstName,LastName,IsOffboarded'
+    let list = 'FirstName,LastName,IsOffboarded,EmployeeID'
     let fieldList = list.split(",")
     let pageSize = "20000";
     let pageNumber = "1";
@@ -523,6 +523,8 @@ function getEmployee() {
 }
 function nextForm() {
     let employeeFullName = ""
+    let employeeRecordID = ""
+    let employeeID = ""
     let employeeElement = document.getElementById("employee");
     let employeevalue = employeeElement.value;
     if (employeevalue || employeeid) {
@@ -540,6 +542,8 @@ function nextForm() {
             let employee = employeeListAll.filter(emp => emp.RecordID === employeevalue);
             if (employee && employee.length > 0) {
                 employeeFullName = employee[0].RecordID + ";#" + employee[0].FirstName + " " + employee[0].LastName;
+                employeeRecordID = employee[0].RecordID
+                employeeID = employee[0].EmployeeID
                 document.getElementById('empnamecomponet').innerHTML=employee[0].FirstName + " " + employee[0].LastName;
             }
         }
@@ -547,12 +551,15 @@ function nextForm() {
             let employee = employeeListAll.filter(emp => emp.RecordID === employeeid);
             if (employee && employee.length > 0) {
                 employeeFullName = employee[0].RecordID + ";#" + employee[0].FirstName + " " + employee[0].LastName;
+                employeeRecordID= employee[0].RecordID
+                employeeID = employee[0].EmployeeID
                 document.getElementById('empnamecomponet').innerHTML=employee[0].FirstName + " " + employee[0].LastName;
             }
         }
 
         let statutary = {
-            Employee: employeeFullName,
+            Employee: employee = JSON.stringify([{ UserType: 1, RecordID: employeeRecordID }]),
+            EmployeeID:employeeID,
             PF: pfvalue ? true : false,
             EPS: EPSvalue ? true : false,
             ESI: ESIvalue ? true : false,
@@ -1267,7 +1274,6 @@ function onFileChangeFile(){
 
 function onFileChange(multiplefiles)
 {
-    debugger
     let pageDisabledElement=document.getElementById('pageDisabled');
     if(pageDisabledElement){
         pageDisabledElement.classList.add('page-disabled')
@@ -1310,7 +1316,6 @@ function onFileChange(multiplefiles)
 }
 
 function formatExecelData(excelRows) {
-    debugger
     let fileupload = document.getElementById("upload");
     if(fileupload){
         fileupload.value = "";

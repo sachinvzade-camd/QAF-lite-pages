@@ -12,7 +12,7 @@ var UpdateLastDate;
 var guidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g;
 var funfirstAttachment = "https://funfirst.quickappflow.com"
 var SITAttachment = "https://qaffirst.quickappflow.com"
-var attachmentAPIURL = SITAttachment
+var attachmentAPIURL = funfirstAttachment
 // expense form variable
 var employeeList=[]
 var departmentList=[]
@@ -71,7 +71,7 @@ var gridExpenseColumns = [
  qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
         todayMonth.innerHTML = currentMonth;
-        // window.localStorage.setItem('ma',"funfirst.quickappflow.com")
+        window.localStorage.setItem('ma',"funfirst.quickappflow.com")
         displayGrid()
         getAllListEmployee()
         clearInterval(qafServiceLoaded);
@@ -404,6 +404,8 @@ function getExpenseLedger() {
         if (Array.isArray(expense_ledgers) && expense_ledgers.length > 0) {
             expenseLedgerList = expense_ledgers;
             tempExpenseLedgerList = expense_ledgers;
+            tempExpenseLedgerList=tempExpenseLedgerList.filter(ledger=>ledger.Project)
+            
         }
     });
 }
@@ -531,7 +533,7 @@ function onChangeProject(){
     let projectElemet = document.getElementById("Project")
     if(projectElemet){
         projectID=projectElemet.value
-        expenseLedgerList=tempExpenseLedgerList.filter(a=>(a.Project?a.Project.split(';#')[0]:"") === projectID)
+        expenseLedgerList=tempExpenseLedgerList.filter(ledger=>ledger.Project.split(';#')[0] === projectID)
         expenseLedgerOnDropdown()
     }
 
