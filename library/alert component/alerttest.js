@@ -9,7 +9,8 @@ document.addEventListener('alertclose', (event) => {
 function openAlert() {
     let qafAlertObject={
         IsShow:true,
-        Message:"Krunal Kumbhare"
+        Message:"Krunal Kumbhare",
+        Type:'ok'
     }
     const qafAlertComponent = document.querySelector('qaf-alert');
     qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));

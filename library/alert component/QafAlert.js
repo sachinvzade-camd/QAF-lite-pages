@@ -1,4 +1,4 @@
-var eventName;
+var eventNameqaf;
 var qafAlertObject;
 class QafAlert extends HTMLElement {
   static observedAttributes = ["qaf-alert-show", 'qaf-event', 'qaf-message'];
@@ -99,11 +99,15 @@ class QafAlert extends HTMLElement {
             <div class="qaf-modal qaf-show-modal">
             <div class="qaf-modal-content">
                 <h1 class="qaf-alert-qaf-alert-heading">${qafAlertObject.Message}</h1>
-                <div class="qaf-alert-button-container">
-                    <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">Yes</button>
-                    <button class="qaf-alert-button-cancel btn  qaf-alert-btn" onclick="oncloseModal('no')">No</button>
-                </div>
-    
+                ${
+                  qafAlertObject.Type&&qafAlertObject.Type.toLowerCase()==='ok'?`  <div class="qaf-alert-button-container">
+                  <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">OK</button>
+              </div>`:`  <div class="qaf-alert-button-container">
+                  <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">Yes</button>
+                  <button class="qaf-alert-button-cancel btn  qaf-alert-btn" onclick="oncloseModal('no')">No</button>
+              </div>`
+
+                }
             </div>
         </div>
             `;
@@ -113,7 +117,7 @@ class QafAlert extends HTMLElement {
       }
 
     } else if (name === 'qaf-event') {
-      eventName = newValue
+      eventNameqaf = newValue
     }
   }
 }
@@ -121,7 +125,7 @@ function oncloseModal(actionType) {
   const myComponent = document.querySelector('qaf-alert');
   qafAlertObject.IsShow = false
   myComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
-  var event = new CustomEvent(eventName, { detail: actionType })
+  var event = new CustomEvent(eventNameqaf, { detail: actionType })
   window.parent.document.dispatchEvent(event)
 }
 customElements.define("qaf-alert", QafAlert);

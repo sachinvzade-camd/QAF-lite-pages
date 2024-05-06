@@ -1,6 +1,6 @@
-var eventName, qafAlertObject; class QafAlert extends HTMLElement {
-    static observedAttributes = ["qaf-alert-show", "qaf-event", "qaf-message"]; constructor() { super() } connectedCallback() { } disconnectedCallback() { } adoptedCallback() { } attributeChangedCallback(t, a, e) {
-        "qaf-alert-show" === t ? "object" == typeof (qafAlertObject = JSON.parse(e)) && (qafAlertObject.IsShow ? this.innerHTML = `
+var eventNameqaf, qafAlertObject; class QafAlert extends HTMLElement {
+  static observedAttributes = ["qaf-alert-show", "qaf-event", "qaf-message"]; constructor() { super() } connectedCallback() { } disconnectedCallback() { } adoptedCallback() { } attributeChangedCallback(t, a, e) {
+    "qaf-alert-show" === t ? "object" == typeof (qafAlertObject = JSON.parse(e)) && (qafAlertObject.IsShow ? this.innerHTML = `
             <style>
             .trigger{
               text-align: center;
@@ -83,16 +83,17 @@ var eventName, qafAlertObject; class QafAlert extends HTMLElement {
             <div class="qaf-modal qaf-show-modal">
             <div class="qaf-modal-content">
                 <h1 class="qaf-alert-qaf-alert-heading">${qafAlertObject.Message}</h1>
-                <div class="qaf-alert-button-container">
-                    <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">Yes</button>
-                    <button class="qaf-alert-button-cancel btn  qaf-alert-btn" onclick="oncloseModal('no')">No</button>
-                </div>
-    
+                ${qafAlertObject.Type && "ok" === qafAlertObject.Type.toLowerCase() ? `  <div class="qaf-alert-button-container">
+                  <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">OK</button>
+              </div>`: `  <div class="qaf-alert-button-container">
+                  <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">Yes</button>
+                  <button class="qaf-alert-button-cancel btn  qaf-alert-btn" onclick="oncloseModal('no')">No</button>
+              </div>`}
             </div>
         </div>
-            `: this.innerHTML = "") : "qaf-event" === t && (eventName = e)
-    }
-} function oncloseModal(t) { let a = document.querySelector("qaf-alert"); qafAlertObject.IsShow = !1, a.setAttribute("qaf-alert-show", JSON.stringify(qafAlertObject)); var e = new CustomEvent(eventName, { detail: t }); window.parent.document.dispatchEvent(e) } customElements.define("qaf-alert", QafAlert);
+            `: this.innerHTML = "") : "qaf-event" === t && (eventNameqaf = e)
+  }
+} function oncloseModal(t) { let a = document.querySelector("qaf-alert"); qafAlertObject.IsShow = !1, a.setAttribute("qaf-alert-show", JSON.stringify(qafAlertObject)); var e = new CustomEvent(eventNameqaf, { detail: t }); window.parent.document.dispatchEvent(e) } customElements.define("qaf-alert", QafAlert);
 
 class QafLoader extends HTMLElement {
   static observedAttributes = ["qaf-loader-show"]; constructor() { super() } connectedCallback() {
