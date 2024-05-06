@@ -1,0 +1,71 @@
+<div class="container-fluid">
+<div class="page row">
+    <div class="page-nav">
+        <div class="expense-app-links"><qaf-repeater list="expenseNavLinks" data-bind-item="app"
+                data-bind-style="qaf-grid" class="expense-app-links-dt">
+                <style>
+                    .expense-app-links-dt {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-between
+                    }
+
+                    .expense-app-links-dt a.dashboard-App {
+                        text-decoration: none
+                    }
+
+                    a.dashboard-App {
+                        text-decoration: none;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        color: white;
+                        font-size: 14px
+                    }
+
+                    a.dashboard-App .fa {
+                        font-size: 28px
+                    }
+                </style>
+                <div><a class="dashboard-App" href="${app.link}"
+                        style="text-decoration:none;display:flex;flex-direction:column;align-items:center;color:white;font-size:14px;margin-bottom:15px;text-align:center;width:85px"><i
+                            class="${app.icon}" aria-hidden="true" style="font-size:18px"></i><span
+                            class="text-center app-icon-text">${app.name}</span></a></div>
+                <link rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+            </qaf-repeater></div>
+    </div>
+    <div class="page-content col-md-11 col-md-offset-1">
+        <div class="expense-grid">
+            <div class="expense-top">
+                <h2>Expense Claims</h2>
+                <div class="expense-action">
+                    <div class="expense-nav"><button class="qaf-btn-primary nav-btns" type="button"
+                            onclick="prevMonth()"><i class="fa fa-chevron-left"></i></button>
+                        <div class="expense-current-month"></div><button class="qaf-btn-primary nav-btns" type="button"
+                            onclick="nextMonth()"><i class="fa fa-chevron-right"></i></button>
+                    </div><button class="qaf-btn-primary" type="button" onclick="addExpense()"><i
+                            class="fa fa-plus"></i> Expense</button>
+                </div>
+            </div>
+            <div class="expense-data-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns" action="true"></qaf-grid>
+            </div>
+        </div>
+        <div class="expense-grid">
+            <div class="expense-top">
+                <h2 style="margin-top: 50px;">My Team Request</h2>
+                <div class="expense-action">
+                    <div class="expense-nav"><button class="qaf-btn-primary nav-btns" type="button"
+                            onclick="prevMonthReport()"><i class="fa fa-chevron-left"></i></button>
+                        <div class="expense-current-month-report"></div><button class="qaf-btn-primary nav-btns"
+                            type="button" onclick="nextMonthReport()"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="expense-data-grid"><qaf-grid id="expgridReport" columns="gridExpenseColumnsReport"
+                    action="true"></qaf-grid></div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="jobdetails.css">
+</head>
+
+<body>
+    <div class="job-details-container">
+
+    </div>
+    <div id="popupContainer" class="popup-container">
+        <div class="popup-content">
+            <h3 class="job-apply-title">Apply for this position</h3>
+            <div class="job-apply-form">
+                <div class="job-field">
+                    <label class="apply-label">Full Name</label>
+                    <span class="required">*</span>
+                    <input type="text" class="apply-input" placeholder="Full Name" id="FullName" name="FullName">
+                </div>
+                <div class="job-field">
+                    <label class="apply-label">Email</label>
+                    <span class="required">*</span>
+                    <input type="email" class="apply-input" placeholder="Email" id="Email" name="Email">
+                </div>
+
+                <div class="job-field">
+                    <label class="apply-label">Cover Letter</label>
+                    <textarea class="apply-input" placeholder="Cover Letter" id="CoverLetter"
+                        name="CoverLetter"></textarea>
+                </div>
+
+                <div class="job-field">
+                    <label class="apply-label">Upload CV/Resume</label>
+                    <span class="required">*</span>
+                    <input type="file" name="UploadResume" id="UploadResume" onchange="onFileChange(this)">
+                    <div class="filedisplay">
+                    <span id="filename"></span>
+                    <span id="deleteicon"><i class="fa fa-trash-o" aria-hidden="true" onclick="deleteFile()"></i></span>
+                </div>
+                </div>
+
+                <div class="job-field">
+                    <input type="submit" name="job_apply_btn" id="job_apply_btn" class="job-primary-button"
+                        value="Apply Now" onclick="saveAppplyForm()">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src=""></script>
+    <script src=""></script>
+</body>
+
+</html>
+
+<!-- 
+
+<div class="title-div">
+    <p class="job-Title">Placement Executive</p>
+</div>
+<div class="job-details-area">
+    <div class="job-details-area-container">
+
+        <div class="content-row">
+            <div class="left-cell">
+            </div>
+            <div class="right-cell">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!-- Overview -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">Overview</h5>
+    </div>
+    <div class="right-cell text">
+        <p>1 Placement Executive has the responsibility of developing client relationship with the industry
+            / Franchisee. Tie-ups with Franchisee. Adding new franchisee in to Data base.<br>
+            2 Generate relevant requirements from Industries / Franchisee’s for final placements of
+            candidates. Build professional relationships with HR Managers and other decision makers in the
+            candidate hiring process.<br>
+            3 Generate relevant requirements from Industries / Franchisee’s for final placements of
+            candidates. Build professional relationships with HR Managers and other decision makers in the
+            candidate hiring process.<br>
+            Placement Executive has the responsibility to Conduct Pre-Placement Session for candidates for
+            increasing job readiness. Provide guidance in resume writing, soft skills and interview
+            preparation tips to candidates.<br>
+            4 To create awareness about industries expectations, motivate candidates on various aspects such
+            as attending interviews, accept the offers and to join etc.<br>
+            5 Arrange Interviews for candidates after receiving requirements from Center Manager.<br>
+            6 Provide Joining information to candidates and taking confirmations from them, same to be
+            convey to center Manager.<br>
+            7 Monitor placed candidates as per schedule.<br>
+            8 Keep record of post placement tracking which includes candidates working status, collecting
+            monthly salary slips and bank statement<br>
+            Preparing necessary reports and upload details on customer portal.</p>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- Vacancies -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">No. of Vacancies</h5>
+    </div>
+    <div class="right-cell text">
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- Skills -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">Specific Skills</h5>
+    </div>
+    <div class="right-cell">
+        <div class="custom-list text">
+            Basic knowledge of MS word, MS Power Point and MS excel. </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- Responsible -->
+<!-- Additional -->
+<!-- Job Nature -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">Job Nature</h5>
+    </div>
+    <div class="right-cell text">
+        Full Time </div>
+    <div class="clear"></div>
+</div>
+
+<!-- Educational -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">Educational Requirements</h5>
+    </div>
+    <div class="right-cell text">
+        <p>Graduate</p>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- Experience -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">Experience Requirements</h5>
+    </div>
+    <div class="right-cell text">
+        2-4 years </div>
+    <div class="clear"></div>
+</div>
+<!-- Location -->
+<div class="content-row">
+    <div class="left-cell">
+        <h5 class="label">Job Location</h5>
+    </div>
+    <div class="right-cell text">
+        Rudrapur </div>
+    <div class="clear"></div>
+</div>
+<!-- Salary -->
+<!-- Other Benefits -->
+<!-- Job Level -->
+<div class="content-row">
+    <div class="left-cell padding-bottom-50">
+        <h5 class="label">Job Level</h5>
+    </div>
+    <div class="right-cell text">
+        Sr. Position, Trainer </div>
+    <div class="clear"></div>
+</div>
+</div>
+</div>
+<div class="job-details-footer">
+    <h3 class="apply-heading">How to Apply</h3>
+    <span class="apply-heading-border">&nbsp;</span>
+    <p class="apply-to-email">
+        Interested candidates can send their resumes to info@gslfoundation.org mentioning "Job Title" in the subject
+        line. </p>
+    <a href="apply.html" class="apply-link apply-button">Apply Now</a>
+</div> -->

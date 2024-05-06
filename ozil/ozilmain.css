@@ -1,0 +1,163 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.page {
+    --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+    --qaf-grid-button-border-radius: 4px;
+  }
+  .qaf-lite-menu-main{
+background:var(--TopBarBackGroundColor) !important;
+  }
+      .qaf-btn-primary {
+          margin-left: 8px;
+          background-color: var(--qaf-grid-button-bg-color, #313CBF);
+          border: none;
+          color: var(--qaf-grid-button-color, #fff);
+          padding: var(--qaf-grid-button-color, 8px 13px 8px 13px);
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: var(--qaf-grid-button-font-size, 12px);
+          border-radius: var(--qaf-grid-button-border-radius, 24px);
+        }
+        .qaf-grid__row-item{
+            width: 96px;
+            word-break: break-all;
+        }
+        .qaf-grid{
+            font-family: "Poppins";
+        }
+        .qaf-grid__header-item{
+            width: 96px;
+        }
+        .page {
+          display: flex;
+          flex-direction: row;
+          padding-top: 0px;
+        }
+    
+        .page-nav .expense-app-links {
+          position: fixed;
+          height: 100%;
+          padding: 8px 16px;
+          background-color: #000;
+          color: white;
+          display: none;
+        }
+    
+        .page-content {
+          padding-top: 0px;
+        }
+    
+        .expense-grid .qaf-btn-primary.nav-btns{
+          font-size: 14px;
+          border-radius: 4px;
+          padding-bottom: 4px;
+          padding-left: 6px;
+          padding-right: 8px;
+        }
+    
+        .expense-top, .expense-action, .expense-nav {
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
+        }
+    
+        .expense-action {
+          margin-left: auto;
+        }
+    
+        .expense-current-month,.expense-current-month-report {
+          margin-left: 10px;
+          font-size: 16px;
+          font-weight: 600;
+          min-width: 100px;
+          text-align: center;
+        }
+  
+        .expense-app-links-dt {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        }
+  
+        .expense-app-links-dt a.dashboard-App {
+          text-decoration: none;
+        }
+        .expense-data-grid{
+            margin-top: -10px;
+        }
+        #vendor{
+            margin-top: 15px;
+        }
+      
+body{
+    overflow-x: hidden;
+}
+    .menu-list {
+      width: 100px;
+    }
+    .qaf-lite-menu-display-details {
+      position: absolute;
+      left: 100px;
+      width: calc(100% - 100px);
+    }
+  
+    .qaf-lite-menu-main {
+      z-index: 1;
+      width: 102px;
+        position: fixed;
+        height: 100vh;
+        inline-size: max-content;
+        padding-bottom: 50px;
+        overflow: scroll;
+        background: black;
+      }
+      .menu-list:nth-child(1) {
+        margin-top: 18px;
+      }
+      .qaf-lite-menu-icon .menu-text {
+        font-size: 12px;
+        margin-bottom: 30px;
+        margin-right: 3px;
+        width: 86%;
+        margin-left: 4px;
+      }
+      .qaf-lite-menu-icon{
+        cursor: pointer;
+      }
+      .qaf-lite-menu-icon .menu-icon {
+        width: 94%;
+      }
+      .text-center{
+        text-align: center;
+      }
+      .qaf-lite-menu-icon .menu-icon {
+          color: white;
+          padding-bottom: 5px;
+        }
+    
+        .qaf-lite-menu-icon  .fa {
+          font-size: 18px;
+        }
+        .qaf-menu-text {
+            font-size: 12px;
+            margin-bottom: 24px;
+            margin-right: 3px;
+            width: 86%;
+            margin-left: 4px;
+            color: white;
+          }
+    
+.qaf-lite-menu-display {
+    position: relative;
+    width: 91%;
+    left: 125px;
+    padding: 10px 10px 0 0px;
+    height: calc(100vh - 70px);
+  }
+  #menu-details{
+    height: 100%;
+  }

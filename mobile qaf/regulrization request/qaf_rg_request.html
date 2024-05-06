@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Tabs</title>
+    <link rel="stylesheet" href="qaf_rg_request.css">
+</head>
+
+<body>
+    <div class="menubutton"  onclick="toggleMenu()"><i class="fa fa-bars" aria-hidden="true"></i></div>
+    <div id="menu" class="menulist">
+        <ul>
+            <li>
+                <a  class="sidebar-menu-style" onclick="changePage('/pages/qafehelpdesk')">
+                    <i class="fa fa-ticket"></i>
+                    <span class="sidebar-text">Pending Ticket</span>
+                  </a>
+            </li>
+            <li>
+                  <a  class="sidebar-menu-style" onclick="changePage('/pages/qafmyticket')">
+                    <i class="fa fa-user"></i>
+                    <span class="sidebar-text">My Ticket</span>
+                  </a>
+            </li>
+            <li>
+                  <a  class="sidebar-menu-style" onclick="changePage('/pages/services')">
+                    <i class="fa fa-cog"></i>
+                    <span class="sidebar-text">Services</span>
+                  </a>
+            </li>
+        </ul>
+    </div>
+    <div class="main-container">
+        <div class="requester-body">
+            <div class="tab-box">
+                <button class="tab-btn actbtn isActive" id="actbtn" onclick="showContent('activity',1, this)"
+                    data-tab="activity">Detail</button>
+                <button class="tab-btn" onclick="showContent('empdetails',2, this)" data-tab="empdetails">Requester</button>
+
+                </hr>
+                <div id="line" class="line">
+                </div>
+            </div>
+            <div id="activity" class="tab-content active cardActivity">
+            </div>
+
+            <div id="empdetails" class="tab-content">
+            </div>
+
+        </div>
+    </div>
+
+        <script src=""></script>
+        <script src=""></script>
+        <script src="qaf_rg_request.js">
+        </script>
+</body>
+
+</html>

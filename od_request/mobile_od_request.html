@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Tabs</title>
+    <link rel="stylesheet" href="mobile_od_request.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="od-request-body">
+            <div class="tab-box">
+                <button class="tab-btn actbtn isActive" id="actbtn" onclick="showContent('activity',1, this)"
+                    data-tab="activity">Detail</button>
+                <button class="tab-btn" onclick="showContent('notes',2, this)" data-tab="notes">Requester</button>
+
+                </hr>
+                <div id="line" class="line">
+                </div>
+            </div>
+            <div id="activity" class="tab-content active cardActivity">
+                <div class="accordion-body">
+                    <div class="info bodyContent">
+                        <h6>Ticket ID</h6>
+                        <p>OD-95</p>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Request For</h6>
+                        <p> Megha</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6><em>Request Details</em></h6>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Brief Of The Request</h6>
+                        <p> OD Status Check</p>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Request Date</h6>
+                        <p>13/03/2024</p>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Due Date</h6>
+                        <p>24/04/2024</p>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Reason</h6>
+                        <p>Due To Software Failure</p>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Priority</h6>
+                        <p>Medium</p>
+                    </div>
+                    <div class="info bodyContent">
+                        <h6>Duration</h6>
+                        <p>Half Day</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>status</h6>
+                        <p>Half Day</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Opened On<h6>
+                                <p>13/03/2024 8:02 PM</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Opened By</h6>
+                        <p>Kewalram Sonule</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Pending With</h6>
+                        <p>Vishwas Patil</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Comment</h6>
+                        <div class="job-field">
+                            <textarea class="apply-input"  id="CoverLetter" name="CoverLetter"
+                                autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="action-button">
+                        <div>
+                            <button  class="btn-primary button" >Cancel
+                            </button>
+                        </div>
+                        <div>
+                            <button  class="btn-primary button" >Update
+                            </button>
+                        </div>
+                        <div>
+                            <button class=" btn-primary button"  >
+                                More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notes" class="tab-content">
+                <div class="accordion-body">
+                    <div class="info bodyContent format">
+                        <h6>Employee ID</h6>
+                        <p>QP-27</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>First Name</h6>
+                        <p> Megha</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Last Name</h6>
+                        <p> jain</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Contact Number </h6>
+                        <p>9845657426</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Designation</h6>
+                        <p>Senior Manager</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Department</h6>
+                        <p>Finance</p>
+                    </div>
+                    <div class="info bodyContent format">
+                        <h6>Office Extension</h6>
+                        <p>No</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+      
+
+        <script src=""></script>
+        <script src=""></script>
+        <script src="mobile_od_request.js">
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<div class="page row">
+    <div class="page-nav">
+        <div class="expense-app-links"><qaf-repeater data-bind-item="app" data-bind-style="qaf-grid"
+                class="expense-app-links-dt">
+                <style>
+                    .expense-app-links-dt {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-between
+                    }
+
+                    .expense-top {
+                        transform: translate(0, 15px);
+                    }
+
+                    .expense-app-links-dt a.dashboard-App {
+                        text-decoration: none
+                    }
+
+                    a.dashboard-App {
+                        text-decoration: none;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        color: white;
+                        font-size: 14px
+                    }
+
+                    .filter {
+                        width: 170px;
+                        margin-right: 10px;
+                    }
+
+                    a.dashboard-App .fa {
+                        font-size: 28px
+                    }
+                </style>
+                <div><a class="dashboard-App" href="${app.link}"
+                        style="text-decoration:none;display:flex;flex-direction:column;align-items:center;color:white;font-size:14px;margin-bottom:15px;text-align:center;width:85px"><i
+                            class="${app.icon}" aria-hidden="true" style="font-size:18px"></i><span
+                            class="text-center app-icon-text">${app.name}</span></a></div>
+                <link rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+            </qaf-repeater></div>
+    </div>
+    <div class="page-content col-md-12 ">
+        <div class="expense-grid">
+            <div class="expense-top">
+                <h3>Recruiter Status Report</h3>
+                <div class="expense-action"> 
+                    <select id="currentstatus" class="filter"> </select>
+                    <select id="recruiter" class="filter"> </select> 
+                    <select id="jobpost" class="filter"> </select> 
+                    <input type="date" id="startTime" name="startTime"class="filter">
+                    <input type="date" id="endTime" name="endTime" class="filter"> 
+                    <button id="search" onclick="searchReport()">Search</button> </div>
+            </div>
+            <div class="expense-data-grid" id="no-grid">
+                <p class='no-record'>No Record Found</p>
+            </div>
+            <div class="expense-data-grid" id="main-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns"
+                    action="true"></qaf-grid> </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Document</title></head><body> <div class="page row"> <div class="page-nav"> <div class="expense-app-links"><qaf-repeater data-bind-item="app" data-bind-style="qaf-grid" class="expense-app-links-dt"> <style> .expense-app-links-dt { display: flex; flex-direction: column; align-items: center; justify-content: space-between } .expense-top { transform: translate(0, 15px); } .expense-app-links-dt a.dashboard-App { text-decoration: none } a.dashboard-App { text-decoration: none; display: flex; flex-direction: column; align-items: center; color: white; font-size: 14px } .filter { width: 170px; margin-right: 10px; } a.dashboard-App .fa { font-size: 28px } </style> <div><a class="dashboard-App" href="${app.link}" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;color:white;font-size:14px;margin-bottom:15px;text-align:center;width:85px"><i class="${app.icon}" aria-hidden="true" style="font-size:18px"></i><span class="text-center app-icon-text">${app.name}</span></a></div> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /> </qaf-repeater></div> </div> <div class="page-content col-md-12 "> <div class="expense-grid"> <div class="expense-top"> <h3>Recruiter Status Report</h3> <div class="expense-action"> <select id="recruiter" class="filter"> </select> <select id="jobpost" class="filter"> </select> <input type="date" id="startTime" name="startTime" class="filter"><input type="date" id="endTime" name="endTime" class="filter"> <button id="search" onclick="searchReport()">Search</button> </div> </div> <div class="expense-data-grid" id="no-grid"> <p class='no-record'>No Record Found</p> </div> <div class="expense-data-grid" id="main-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns" action="true"></qaf-grid> </div> </div> </div> </div></body></html>

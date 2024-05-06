@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  font-family: "poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+header {
+  background-color: #ffffff;
+  color: #565656;
+  padding: 10px 10px 0px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 20px;
+  padding-left: 10px;
+
+}
+
+.search-bar-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  height: 30px;
+  display:none;
+}
+
+input.search-bar {
+  margin: 0 20px;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 40%;
+  border: 1px solid gray;
+  color: gray;
+  display: block;
+  padding: 9px 4px 9px 40px;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E")
+    no-repeat 13px center;
+}
+.header-button {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  background-color: #ff7a59;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 5px;
+}
+.addjob{
+  margin-right: 10px;
+}
+
+.fa-solid {
+  padding: 0px 2px 0px 2px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.gridview{
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 0px 20px 20px 20px;
+  box-sizing: border-box;
+  margin-left: 20px;
+}
+
+.card {
+  flex: 0 0 410px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 5px 15px 15px 15px;
+  box-shadow: 1px 2px 5px;
+  background-color: #fff;
+  height: 225px;
+  width: 33%;
+}
+
+.card-text {
+  font-weight: 600;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  color: #5f5fee;
+
+  margin-bottom: 0;
+}
+.card_body {
+  font-size: 11px;
+  word-break: break-all;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #5f5fee;
+}
+a{
+  color: #5f5fee;
+}
+a:hover{
+  color: #5f5fee;
+}
+
+p {
+  line-height: 24px;
+  margin: 0;
+}
+
+.listview,
+.gridview {
+  padding: 6px 0px;
+}
+
+em {
+  font-weight: 500;
+  font-style: normal;
+}
+header i {
+  margin: 0 10px; /* Add some spacing between icons */
+  color: #fff; /* Set the color of the icons */
+  cursor: pointer;
+  transition: color 0.3s ease; /* Add a smooth color transition on hover */
+
+  /* Add more styling as needed */
+}
+
+.link-buttons{
+  margin-top: 0px;
+}
+.btn-link {
+  margin-right: 5px;
+  padding-left: 0px;
+}
+.editjob {
+  color: #009ce7;
+}
+.viewjob {
+  color: #5f5fee;
+}
+
+.viewjob:hover {
+  text-decoration: underline;
+  color: #5f5fee;
+}
+.editjob:hover {
+  color: #009ce7;
+}
+.skilloverflow{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-button,
+  .search-bar-container,
+  .search-bar {
+    width: 100%;
+  }
+  .header-button {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+  }
+  .title {
+    margin-left: 20px;
+    padding-bottom: 20px;
+  }
+  .row {
+    width: auto;
+  }
+
+  .button {
+    margin-right: 10px;
+  }
+}

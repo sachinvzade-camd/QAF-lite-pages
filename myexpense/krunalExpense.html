@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div class="expense-container-fluid">
+    <div class="page row">
+        <div class="page-nav">
+            <div class="expense-app-links"><qaf-repeater data-bind-item="app" data-bind-style="qaf-grid"
+                    class="expense-app-links-dt">
+                    <style>
+                        .expense-app-links-dt {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: space-between
+                        }
+
+                        .expense-top {
+                            transform: translate(0, 15px);
+                        }
+
+                        .expense-app-links-dt a.dashboard-App {
+                            text-decoration: none
+                        }
+
+                        a.dashboard-App {
+                            text-decoration: none;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            color: white;
+                            font-size: 14px
+                        }
+
+                        a.dashboard-App .fa {
+                            font-size: 28px
+                        }
+                    </style>
+                    <div><a class="dashboard-App" href="${app.link}"
+                            style="text-decoration:none;display:flex;flex-direction:column;align-items:center;color:white;font-size:14px;margin-bottom:15px;text-align:center;width:85px"><i
+                                class="${app.icon}" aria-hidden="true" style="font-size:18px"></i><span
+                                class="text-center app-icon-text">${app.name}</span></a></div>
+                    <link rel="stylesheet"
+                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+                </qaf-repeater></div>
+        </div>
+        <div class="page-content col-md-12">
+            <div class="expense-grid">
+                <div class="expense-top">
+                    <div class="common-page-title">My Expense</div>
+                    <div class="right-conatiner">
+                        <div id="headerBtn" class="date-nevigator">
+                            <div class="preveous"> <button id="tableButton" class="button qaf-btn-primary qaf-expense-btn"
+                                    onclick="leftNavigator()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="currentDate" id="today" style="color: black;"> </div>
+                            <div class="next"> <button class="button qaf-btn-primary qaf-expense-btn"
+                                    onclick="rightNavigator()"> <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <div class="expense-action"> <button class="qaf-btn-primary" type="button" onclick="AddForm()"> <i
+                            class="fa fa-plus"></i>&nbsp;Expense</button> </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="expense-data-grid" id="no-grid" style="display: none;"> <p class='no-record'>No Record Found</p> </div>  <div class="expense-data-grid" id="main-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns" action="true"></qaf-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form" id="expense-from">
+    <div id="pageDisabled"></div>
+   
+    <div class="main-container">
+        <div class="qaf-loader-div">
+            <span class="qaf-loader" id="isloading"  style="display: none;"></span>
+        </div>
+        <div class="button-container">
+            <div class="header-buttons">
+                <div class="button"> <button class="btn btn-primary" onclick="SaveRecord()"> Save </button> </div>
+                <div class="button"> <button class="btn btn-primary" onclick="CloseForm('close')"> Cancel </button> </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="header-title table-heading">
+                <div class="common-page-title">Basic Info</div>
+            </div>
+            <div class="container">
+                <div class="qaf-form-group"> <label for="requestFor" class="Customer fs-label">Request For</label> <span
+                        class="required">*</span> <select class="fs-input fs-select" id="requestfor" name="requestfor"
+                        onchange="onChangeRequestFor()"></select> </div>
+                <div class="qaf-form-group"> <label for="requestTitle" class="Customer fs-label">Brief about Request</label><span class="required">*</span> <input type="text" class="fs-input"
+                        id="requesttitle" name="requesttitle" autocomplete="off" required> </div>
+                        <div class="qaf-form-group"> <label for="division" class="Customer fs-label">Division</label> <span
+                            class="required">*</span> <select class="fs-input fs-select" id="division" name="division" onchange="onChangeDivision()"
+                           ></select> </div>
+                           <div class="qaf-form-group" id="FGSPLBalancegroup"> <label for="FGSPLBalance" class="Customer fs-label">FGSPL Ledger Balance</label>
+                            <input type="number" class="fs-input" id="FGSPLBalance" name="FGSPLBalance" autocomplete="off"
+                                 readonly placeholder=""> </div>
+
+                                 <div class="qaf-form-group"id="GSLFBalancegroup"> <label for="GSLFBalance" class="Customer fs-label">GSLF Ledger Balance</label>
+                                    <input type="number" class="fs-input" id="GSLFBalance" name="GSLFBalance" autocomplete="off"
+                                         readonly placeholder=""> </div>
+
+                                         <div class="qaf-form-group"> <label for="reportingManager" class="Customer fs-label">Reporting Manager</label> <span
+                                            class="required">*</span> <select class="fs-input fs-select" id="reportingManager" name="reportingManager"
+                                            ></select> </div>
+
+
+                <div class="qaf-form-group"> <label for="department" class="Customer fs-label">Department</label> <input
+                        type="text" class="fs-input" id="department" name="department" autocomplete="off" readonly>
+                </div>
+                <div class="qaf-form-group"> <label for="Project" class="fs-label">Project<span
+                    class="required">*</span></label> <select
+                        class="fs-input fs-select" id="Project" name="Project" onchange="onChangeProject()"></select>
+                </div>
+                <div class="qaf-form-group"> <label for="expenseDetails" class="fs-label expense-detail-heading">Expense
+                        Details</label>
+                    <div class="tablecontainer" id="tablecontainer"> </div>
+                </div>
+                <div class="qaf-form-group"> <label for="totalAmount" class="Customer fs-label">Total Claimed  Amount</label>
+                    <input type="number" class="fs-input" id="totalAmount" name="totalAmount" autocomplete="off"
+                        required readonly placeholder="0.00"> </div>
+                <div class="qaf-form-group fs-textarea-control"> <label for="Description"
+                        class="fs-label">Description</label> <textarea class="fs-input" id="Description"
+                        name="Description" rows="6" autocomplete="off"></textarea> </div>
+
+                        <div class="qaf-form-group"> <label for="CourierCompany" class="Customer fs-label">Courier Company</label> <input type="text" class="fs-input"
+                            id="CourierCompany" name="CourierCompany" autocomplete="off" required> </div>
+                            <div class="qaf-form-group"> <label for="CourierDate" class="Customer fs-label">Courier Date</label> <input type="date" class="fs-input"
+                                id="CourierDate" name="CourierDate" autocomplete="off" > </div>
+
+                                <div class="qaf-form-group"> <label for="CourierReceipt" class="Customer fs-label">Courier Receipt
+                                </label> 
+                                <div class="Courier-file-main">
+                                    <label for="CourierReceipt" class="custom-file-upload-curior">Upload
+                                    </label> 
+                                <input type="file" class="fs-input"
+                                    id="CourierReceipt" name="CourierReceipt" autocomplete="off" onchange="onFileChangeReceipt(this)"> 
+
+                                    <div class='attachment-display' id='CourierReceipt-display' >
+                                        <div class='inner-attachment-display '>
+                                            <div class='attach-bill' id='CourierReceipt-name'></div>
+                                            <div onclick="deleteAttachmentReceipt()"><i class="fa fa-trash" aria-hidden="true"></i></div>
+                                            </div>
+                                        </div>
+                                </div>
+                                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

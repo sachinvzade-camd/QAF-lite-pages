@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+  }
+  
+  .container {
+    display: flex;
+  }
+  
+  .menu {
+    position: fixed;
+    top: 0;
+    left: -350px; /* Initially hidden */
+    width: 115px;
+    height: 100%;
+    background: #333;
+    color: #fff;
+    padding: 20px;
+    transition: right 0.3s ease-in-out;
+  }
+  
+  .menu ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .menu ul li {
+    margin-bottom: 10px;
+  }
+  
+  .menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  

@@ -1,0 +1,381 @@
+/* single line control */
+.single-line-main{
+    padding: 100px;
+}
+.single-line-control-label{
+    color: purple;
+}
+.single-line-astric-color{
+    color: palevioletred;
+}
+.single-line-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.single-line-form-control.mat-form-field input{
+    height: 48px;
+}
+.single-line-form-control:focus{
+    border-color: yellow;
+}
+.single-line-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* multiline line control */
+.multi-line-main{
+    padding: 100px;
+}
+.multi-line-text-control-label{
+    color: brown;
+}
+.multi-line-text-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.multi-line-text-form-control.mat-form-field input{
+    height: 48px;
+}
+.multi-line-text-form-control:focus{
+    border-color: yellow;
+}
+.multi-line-text-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* number line control */
+.number-control-main{
+    padding: 100px;
+}
+.number-control-label{
+    color: purple;
+}
+.number-astric-color{
+    color: palevioletred;
+}
+.number-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.number-form-control.mat-form-field input{
+    height: 48px;
+}
+.number-form-control:focus{
+    border-color: yellow;
+}
+.number-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* decimal line control */
+.decimal-control-main{
+    padding: 100px;
+}
+.decimal-control-label{
+    color: purple;
+}
+.decimal-astric-color{
+    color: palevioletred;
+}
+.decimal-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.decimal-form-control.mat-form-field input{
+    height: 48px;
+}
+.decimal-form-control:focus{
+    border-color: yellow;
+}
+.decimal-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* date control */
+.date-field-main{
+    padding: 100px;
+}
+.date-field-control-label{
+    color: purple;
+}
+.date-field-astric-color{
+    color: palevioletred;
+}
+.date-field-clear-button{
+    color: aqua;
+}
+.date-field-form-control ,.date-field-form-control.mat-form-field mat-select{
+    height: 50px;
+    border-color: crimson;
+}
+.date-field-form-control.mat-form-field input{
+    height: 48px;
+}
+.date-field-form-control:focus{
+    border-color: yellow;
+}
+.date-field-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+.date-field-form-control.mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon{
+margin-bottom: 28px;
+}
+.date-field-form-control.form-control.mat-form-field mat-select .mat-select-trigger .mat-select-value{
+    padding-top: 20px;
+}
+.date-field-form-control.form-control.mat-form-field mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow::before{
+    top: 15px;
+}
+/* email control */
+.email-control-main{
+    padding: 100px;
+}
+.email-control-label{
+    color: purple;
+}
+.email-astric-color{
+    color: palevioletred;
+}
+.email-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.email-form-control.mat-form-field input{
+    height: 48px;
+}
+.email-form-control:focus{
+    border-color: yellow;
+}
+.email-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* checkbox control */
+.checkbox-astric-color{
+    color: rgb(239, 9, 208);
+}
+/* lookup control */
+.lookup-control-main{
+    padding: 100px;
+}
+.lookup-control-label{
+    color: purple;
+}
+.lookup-astric-color{
+    color: palevioletred;
+}
+.lookup-form-control{
+    height: 50px!important;
+    border-color: crimson;
+}
+.lookup-form-control.mat-form-field input{
+    height: 48px;
+}
+.lookup-form-control:focus{
+    border-color: yellow;
+}
+.lookup-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* multiselect control */
+.multi-select-control-main{
+    padding: 100px;
+}
+.multi-select-control-label{
+    color: purple;
+}
+.multi-select-astric-color{
+    color: palevioletred;
+}
+.multi-select-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.multi-select-form-control.mat-form-field input{
+    height: 48px;
+}
+.multi-select-form-control:focus{
+    border-color: yellow;
+}
+.multi-select-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+.multi-select-form-control.form-control.mat-form-field mat-select .mat-select-trigger .mat-select-value{
+    padding-top: 20px;
+}
+.multi-select-form-control.form-control.mat-form-field mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow::before{
+    top: 16px;
+}
+/* select control */
+.select-control-main{
+    padding: 100px;
+}
+.select-control-label{
+    color: purple;
+}
+.select-astric-color{
+    color: palevioletred;
+}
+.select-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.select-form-control.mat-form-field input{
+    height: 48px;
+}
+.select-form-control:focus{
+    border-color: yellow;
+}
+.select-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+.select-form-control.form-control.mat-form-field mat-select .mat-select-trigger .mat-select-value{
+    padding-top: 20px;
+}
+.select-form-control.form-control.mat-form-field mat-select .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow::before{
+    top: 16px;
+}
+/* radio control */
+
+.radio-control-label{
+    color: purple;
+}
+.radio-astric-color{
+    color: palevioletred;
+}
+/* attachment control */
+.attachment-control-main{
+    padding: 100px;
+}
+.attachment-control-label{
+    color: purple;
+}
+.attachment-astric-color{
+    color: palevioletred;
+}
+/* autounique line control */
+.autounique-control-main{
+    padding: 100px;
+}
+.autounique-control-label{
+    color: purple;
+}
+.autounique-astric-color{
+    color: palevioletred;
+}
+.autounique-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.autounique-form-control.mat-form-field input{
+    height: 48px;
+}
+.autounique-form-control:focus{
+    border-color: yellow;
+}
+.autounique-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* calculate control */
+.calculate-control-main{
+    padding: 100px;
+}
+.calculate-control-label{
+    color: purple;
+}
+.calculate-astric-color{
+    color: palevioletred;
+}
+.calculate-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.calculate-form-control.mat-form-field input{
+    height: 48px;
+}
+.calculate-form-control:focus{
+    border-color: yellow;
+}
+.calculate-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* hyperlink control */
+.hyperlink-control-main{
+    padding: 100px;
+}
+.hyperlink-control-label{
+    color: purple;
+}
+.hyperlink-astric-color{
+    color: palevioletred;
+}
+.hyperlink-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.hyperlink-form-control.mat-form-field input{
+    height: 48px;
+}
+.hyperlink-form-control:focus{
+    border-color: yellow;
+}
+.hyperlink-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+.hyperlink-form-control.mat-form-field-appearance-legacy .mat-form-field-label{
+    padding-top: 12px;
+}
+/* userorgroup control */
+.userorgroup-control-main{
+    padding: 100px;
+}
+.userorgroup-control-label{
+    color: purple;
+}
+.userorgroup-astric-color{
+    color: palevioletred;
+}
+.userorgroup-form-control{
+    height: 50px!important;
+    border-color: crimson;
+}
+.userorgroup-form-control.mat-form-field input{
+    height: 48px;
+}
+.userorgroup-form-control:focus{
+    border-color: yellow;
+}
+.userorgroup-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}
+/* table control */
+.table-control-main{
+    padding: 100px;
+}
+.table-control-label{
+    color: purple;
+}
+.table-astric-color{
+    color: palevioletred;
+}
+.table-header{
+    color: palevioletred;
+}
+/* location control */
+.location-control-main{
+    padding: 100px;
+}
+.location-control-label{
+    color: purple;
+}
+.location-astric-color{
+    color: palevioletred;
+}
+.location-form-control{
+    height: 50px;
+    border-color: crimson;
+}
+.location-form-control.mat-form-field input{
+    height: 48px;
+}
+.location-form-control:focus{
+    border-color: yellow;
+}
+.location-form-control.mat-form-field.mat-focused{
+    border-color: yellow;
+}

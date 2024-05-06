@@ -1,0 +1,385 @@
+/* task Activity CSS */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.main-container {
+  margin-top: 20px;
+  display: flex;
+}
+.od-request-body {
+  margin-right: 25px;
+  padding-right: 0px;
+}
+
+.tab-box {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  overflow: hidden;
+  z-index: 1;
+  border-bottom: 2px solid rgb(235, 234, 234);
+}
+
+.tab-btn {
+  border: none;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  color:rgb(137 137 137);
+  display: flex;
+  padding: 10px 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+  padding: 0px 20px 20px 20px;
+  /* border: 1px solid #ddd; */
+}
+
+.tab-content.active {
+  display: block;
+}
+/* for QAF Lite */
+.line {
+  position: absolute;
+  top: 119px;
+  height: 2px;
+  background-color: #5f96d8;
+  transition: all 0.3s ease-in-out;
+}
+
+.nodata {
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 0px 15px;
+  box-shadow: 1px 2px 5px;
+  border-radius: 4px;
+}
+
+.cardActivity {
+  padding: 20px;
+}
+.moving-left {
+  animation: moving-left 0.5s;
+}
+
+.moving-right {
+  animation: moving-right 0.5s;
+}
+
+@keyframes moving-left {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moving-right {
+  from {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.inner-sub-title {
+  font-weight: 600;
+}
+.od-request-body {
+  height: 580px;
+  width: 100%;
+}
+
+/* Section 2 CSS */
+
+.section2 {
+  width: 35%;
+  margin-bottom: 15px;
+  padding: 0px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 5px;
+  margin: 0px 5px;
+}
+
+.accordion-body {
+  max-height: 507px;
+  overflow-y: auto;
+  padding-left: 0px;
+  border: none;
+}
+.accordion-body::-webkit-scrollbar {
+  width: 5px;
+}
+.tab-content {
+  max-height: 580px;
+  overflow-y: auto;
+  z-index: -1;
+}
+.tab-content::-webkit-scrollbar {
+  width: 5px;
+}
+.text-left {
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+.text {
+  font-weight: 600;
+}
+h5 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.accordion-item {
+  border: none;
+}
+.accordion-button {
+  font-size: 16px;
+  height: 30px;
+  padding-left: 0px;
+  font-weight: 600;
+  border: none;
+}
+
+.info {
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
+.format {
+  border-bottom: 1px solid rgb(226, 224, 224);
+}
+
+.format p{
+  color: rgb(137 137 137);
+  font-weight: 300;
+}
+em{
+  font-style: normal;
+  color: #333;
+  font-weight: 600
+  ;
+}
+h6 {
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+.accordion-body p {
+  font-size: 13px;
+  margin-bottom: 0px;
+  font-weight: 400;
+}
+
+.accordionTitle {
+  padding: 10px 0px 10px 24px;
+}
+.accordion {
+  height: 550px;
+  text-decoration: none;
+  border: none;
+  padding: 10px 0px 0px 24px;
+}
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+.action-button {
+  display: flex;
+}
+
+
+  .button {
+    color: #ffffff;
+    background-color: #ff7a59;
+    padding: 4px 12px;
+    margin-right: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 20px 5px;
+    border: none;
+  }
+textarea{
+    width: 100%;
+    border: none;
+    outline: none;
+    height: 40px;
+}
+/*  */
+
+/* 
+
+.card-body {
+    display: flex;
+    width: 100%;
+    padding: 15px;
+    font-size: 13px;
+    color: #333;
+    overflow-x: hidden;
+  }
+  .actionBtn {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    display: none;
+  }
+  
+  .btnAction{
+    color: #ccc;
+    border: 1px solid #ccc;
+  }
+  .btnAction:hover{
+    color: #ccc;
+    border: 1px solid #ccc;
+  }
+  .btnAction,
+  .add {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    overflow-x: hidden;
+    padding: 0px 4px;
+    margin-right: 4px;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    border-radius: 50Px;
+  }
+  .addBtn {
+    display: flex;
+    justify-content: end;
+    padding: 10px;
+    padding-right: 0px;
+  }
+  .add {
+    margin-right: 0px;
+  }
+  
+  .mbt {
+    margin-bottom: 10px;
+  }
+  
+  .document {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  
+  .card:hover .actionBtn {
+    display: flex;
+  }
+  
+  .card:hover .btnAction {
+    border-radius: 50px;
+  }
+  .inner-title {
+    font-weight: 600;
+  }
+
+
+  em{
+    font-weight: 600;
+    font-style: normal;
+  }
+  .isActive{
+    font-weight: 600;
+  }
+  .form {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 0px 0px;
+  }
+  input {
+    width: 100%;
+    border-radius: 4px;
+    height: 38px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    padding: 3px 20px;
+    font-size: 12px;
+    outline: none;
+  }
+  
+  input:focus{
+      color: rgb(63, 81, 181);
+      background-color: #f1f1f1;
+      border: 1px solid #73abeb;
+  }
+  .spam-button {
+    width: 18px; 
+    height: 18px;
+    border: 1px solid #ccc;
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer; 
+    margin-right: 5px;
+    color: #ccc;
+  }
+  .spam-button:hover{
+    border: 1px solid #ccc;
+  
+  }
+  
+  .complete{
+    background-color: #35ba67;
+    border: 1px solid #35ba67;
+  }
+  
+  .complete i,.spam-button i{
+    color: #ccc;
+  }
+  
+  
+  .data{
+    display: flex;
+    font-size: 12px;
+    font-family: "Poppins",sans-serif;
+  }
+  .msg{
+    height: 45px;
+    width: 100%;
+  }
+  .Attachement{
+    height: 45px;
+    display: flex;
+  }
+  .Attachement_details{
+    justify-content: center;
+    margin-bottom: 0px;
+    padding-top: 10px;
+   padding-left: 10px;
+  }
+  .document_delete{
+    height: 20px;
+  
+  } */

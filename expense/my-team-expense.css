@@ -1,0 +1,120 @@
+.page {
+  --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+  --qaf-grid-button-border-radius: 4px;
+}
+.qaf-btn-primary {
+  margin-left: 8px;
+  background-color: var(--qaf-grid-button-bg-color, #313cbf);
+  border: none;
+  color: var(--qaf-grid-button-color, #fff);
+  padding: var(--qaf-grid-button-color, 8px 13px 8px 13px);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--qaf-grid-button-font-size, 12px);
+  border-radius: var(--qaf-grid-button-border-radius, 24px);
+}
+
+.expense-container-fluid {
+  padding: 0px 30px 30px 30px;
+}
+.pg-content{
+  padding-top: 0px !important;
+}
+.page-content{
+  padding: 0;
+}
+
+.page {
+  display: flex;
+  flex-direction: row;
+}
+
+.page-nav .expense-app-links {
+  position: fixed;
+  height: 100%;
+  padding: 8px 16px;
+  background-color: #000;
+  color: white;
+  display: none;
+}
+
+#breadcrum {
+  margin-left: 3.5%;
+}
+
+.col-md-offset-1 {
+  margin-left: 4%;
+}
+
+.expense-grid .qaf-btn-primary.nav-btns {
+  font-size: 14px;
+  border-radius: 4px;
+  padding-bottom: 4px;
+  padding-left: 6px;
+  padding-right: 8px;
+}
+
+.expense-top,
+.expense-action,
+.expense-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.expense-action {
+  margin-left: auto;
+}
+
+.expense-current-month,
+.expense-current-month-report {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 100px;
+  text-align: center;
+}
+
+.expense-app-links-dt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.expense-app-links-dt a.dashboard-App {
+  text-decoration: none;
+}
+a.dashboard-App {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+}
+
+a.dashboard-App .fa {
+  font-size: 28px;
+}
+.common-page-title {
+    font-size: 18px;
+    font-family: inherit;
+    line-height: 1.1;
+    color: inherit;
+    padding: 0;
+    margin-bottom: 0;
+    padding-bottom: 5px;
+}
+.no-record{
+  margin-top: 22px;
+font-size: 16px;
+text-align: center;
+background: #efebeb73;
+padding: 5px;
+}
+#no-grid{
+  box-shadow: 1px 2px 5px;
+  margin-bottom: 40px;
+}

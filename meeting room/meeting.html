@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="meeting.css">
+</head>
+
+<body>
+    <div class="data">
+        <header>
+            <div class="header-container">
+                <div id="headerBtn" class="header-button"> 
+                    <div class="fs-preveous">
+                        <button id="tableButton" class="listview fs-qaf-button fsbtn btn-primary" onclick="previousDate()">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="currentDate" id="today" style="color: black;"></div>
+                    <div class="next">
+                        <button id="cardButton" class="gridview fs-qaf-button fsbtn btn-primary" onclick="nextDate()">
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="input">
+                        <select class="fs-input fs-select" id="meetingName" name="meetingName" required></select>
+                    </div>
+                    <div class="add">
+                        <button class="addplus fs-qaf-button fsbtn btn-primary" onclick="submitScheduleForm()"> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+      <div class="tablecontainer">
+        <table>
+            <tr>
+              <th>Hour</th>
+              <th>Event</th>
+            </tr>
+   
+          </table>
+      </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/14097a442a.js" crossorigin="anonymous"></script>
+    <script src="/ng4qafLiteComponents.bundle.js"></script>
+    <script src="meeting.js"></script>
+</body>
+
+</html>

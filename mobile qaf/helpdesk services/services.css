@@ -1,0 +1,114 @@
+/* Apply a reset to remove default padding and margin */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  font-family: "poppins", sans-serif;
+}
+
+/* Common styles */
+.common-page-title {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding: 10px 20px;
+  margin: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.services-container {
+  border: 0px solid #000;
+  margin: 5px auto;
+  padding: 10px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.services-item {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 47%;
+  margin: 5px;
+  border-radius: 12px;
+  height: 60px;
+  cursor: pointer;
+}
+
+.ticket-icon {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.ticket-icon i {
+  font-size: 24px;
+  color: rgb(201, 97, 108);
+}
+
+.ticket-icon-Name {
+  margin: 0px;
+  width: 100%;
+}
+
+.ticket-icon-Name p {
+  color:  rgb(201, 97, 108);;
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0px;
+}
+
+
+.menulist {
+  position: fixed;
+  top: 60px;
+  left: -350px; /* Initially hidden */
+  width: 170px;
+  height: 100%;
+  background: var(--TopBarBackGroundColor);
+  color: var(--SubmenuAppIconsTextColor);
+  padding: 20px 20px 20px 12px;
+  transition: right 0.3s ease-in-out;
+}
+.sidebar-text{
+  color: var(--SubmenuAppIconsTextColor);
+
+}
+.menulist ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.menulist li{
+ font-size: 20px;
+ margin-bottom: 10px;
+}
+.menulist span{
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.sidebar-menu-style{
+  font-size: 15px;
+}
+.sidebar-menu-style .fa{
+  width: 10px;
+ }
+.menubutton{
+  font-size: 24px;
+  color: white;
+  position: fixed;
+  top: 15px;
+  left: 8px;
+  z-index: 1058;
+}
+@media (max-width:480px) {
+  #toggle_btn,.notf-header-icon, .dropdown-menu li:not(:nth-last-child(5),:nth-last-child(1)) {
+    display: none;
+  }
+ 
+}

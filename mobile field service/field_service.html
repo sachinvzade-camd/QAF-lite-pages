@@ -1,0 +1,46 @@
+<div class="data">
+    <header>
+        <div class="search-bar-container">
+            <div id="headerBtn" class="header-button">
+                <div class="preveous"> <button id="tableButton" class="listview button btn-primary"
+                        onclick="previousDate()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button> </div>
+                <div class="currentDate" id="today" style="color: black;"> </div>
+                <div class="next"> <button id="cardButton" class="gridview button btn-primary" onclick="nextDate()"> <i
+                            class="fa fa-chevron-right" aria-hidden="true"></i></button> </div>
+                <div class="add"> <button class="addplus button btn-primary" onclick=" openTabMenu()"> <i
+                            class="fa fa-plus" aria-hidden="true"></i> </button> </div>
+            </div>
+        </div>
+    </header>
+    <div class="card-container" id="cardBox"> </div>
+</div>
+<div id="popupContainer" class="popup-container"> <!-- Popup content -->
+    <div class="popup-content">
+        <div class="form-group"> <label for="customerName">Customer Name</label>
+            <input type="text" id="CustomerName" name="customerName" autocomplete="off">
+        </div>
+        <div class="form-group"> <label for="category">Category</label>
+            <select id="Category" name="category"> </select>
+        </div>
+        <div class="form-group"> <label for="problemType">Type Of Problem</label>
+            <select id="ProblemType" name="problemType"></select>
+        </div>
+        <div class="form-group"> <label for="area">Area</label>
+            <input type="text" id="Area" name="area" autocomplete="off">
+        </div>
+        <div class="form-group"> <label for="resolution">Resolution</label>
+            <textarea id="Resolution" name="resolution" rows="2" autocomplete="off"></textarea>
+        </div>
+        <div class="form-group"> <label for="lessonLearnt">lesson Learnt</label>
+            <textarea id="lessionLearn" name="lessonLearnt" rows="2" autocomplete="off"></textarea>
+        </div>
+        <div class="form-group"> <label for="lessonLearnt">Lesson Learnt</label>
+            <input type="datetime-local" id="VisitDate" name="VisitDate" autocomplete="off"></input>
+        </div>
+        <div class="action-buttons">
+            <button type="button " class="btn submit" onclick="submitScheduleForm()">Submit</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </div>
+
+    </div>
+</div>

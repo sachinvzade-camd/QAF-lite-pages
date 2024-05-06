@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+   <div class="sales-summary">
+    <input list="browsers" name="browser" id="browser">
+    <datalist id="browsers">
+      <option value="Edge">
+      <option value="Firefox">
+      <option value="Chrome">
+      <option value="Opera">
+      <option value="Safari">
+    </datalist>
+        <div>Sales Summary</div>
+        <div><input type="date" id="startTime" name="startTime"><input type="date" id="endTime" name="endTime">
+            <button id="submit">submit</button>
+        </div>
+   </div> 
+
+   <script>
+    function orderByMultipleFields(data, fields) {
+  return data.sort((a, b) => {
+    for (const { field, order } of fields) {
+      const aValue = a[field];
+      const bValue = b[field];
+
+      // Compare based on the specified order
+      const comparison = order === 'asc' ? aValue - bValue : bValue - aValue;
+
+      // If the values are different, return the comparison result
+      if (comparison !== 0) {
+        return comparison;
+      }
+    }
+
+    // If all fields are equal, return 0 (no change in order)
+    return 0;
+  });
+}
+
+const data = [
+  { name: 'John', age: 25, score: 90 },
+  { name: 'Alice', age: 22, score: 95 },
+  { name: 'Bob', age: 30, score: 85 },
+];
+
+// Example: Sort by age in ascending order, then by score in descending order
+const sortedData = orderByMultipleFields(data, [
+  { field: 'name', order: 'asc' },
+  { field: 'age', order: 'asc' },
+]);
+
+console.log(sortedData);
+
+   </script>
+</body>
+</html>

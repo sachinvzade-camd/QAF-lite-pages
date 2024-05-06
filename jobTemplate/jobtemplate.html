@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="openForm()">Click</button>
+    <div id="popupContainer" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <div class="responsive-form">
+                <div class="form-group"> <label class="edit-detail-label" for="template">Template Name</label>
+                    <input type="text" class="edit-detail-input" id="template" name="template" autocomplete="off">
+                </div>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Role</label>
+                    <select id="role"> </select>
+                </div>
+    
+                <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                        onclick="nextFormFirst()">Next</button> <button type="button" class="cancel"
+                        onclick="closeForm('popupContainer')">Close</button> </div>
+            </div>
+        </div>
+    </div>
+    <div id="jobpostcommon" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <div>
+                <p>Details For the jobs</p>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Select Field</label>
+                    <select id="remainJobPost"> </select>
+                </div>
+                <button onclick="onaddJobPost()">Add Job Post</button>
+            </div>
+            <div class="responsive-form">
+                <div id="jobfield"></div>
+                <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                        onclick="nextFormSecond()">Next</button> <button type="button" class="cancel"
+                        onclick="closeFormSecond()">Previous</button> </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="skilldetails" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <p>Skill Fields</p>
+            <div class="responsive-form">
+                <div id="skillid"></div>
+                <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                        onclick="nextFormFourth()">Next</button> <button type="button" class="cancel"
+                        onclick="closeFormFourth()">Previous</button> </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="careerportalcommon" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <div>
+                <p>career Fields</p>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Select Field</label>
+                    <select id="remainCareerField"> </select>
+                </div>
+                <button onclick="onaddCareerFields()">Add Field</button>
+            </div>
+            <div class="responsive-form">
+                <div id="careerfieldID"></div>
+                <p>Skills Fields</p>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Select Field</label>
+                    <select id="remainskillCareerField"> </select>
+                </div>
+                <button onclick="onaddCareerSkillFields()">Add Details skill</button>
+            </div>
+            <div id="skillcareerfieldID"></div>
+            <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                    onclick="nextFormCareer()">Next</button> <button type="button" class="cancel"
+                    onclick="closeFormCareer()">Previous</button> </div>
+        </div>
+    </div>
+    
+    <div id="candidatecommon" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <div>
+                <p>Common Candidate Fields</p>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Select Field</label>
+                    <select id="remainCommonField"> </select>
+                </div>
+                <button onclick="onaddCandidateFields()">Add Field</button>
+            </div>
+            <div class="responsive-form">
+                <div id="candidatefield"></div>
+    
+                <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                        onclick="nextFormthird()">Next</button> <button type="button" class="cancel"
+                        onclick="closeFormCandiate()">Previous</button> </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="trackercommon" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <div>
+                <p>Tracker Fields</p>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Select Field</label>
+                    <select id="remainTrackerField"> </select>
+                </div>
+                <button onclick="onaddTrackerFields()">Add Field</button>
+            </div>
+            <div class="responsive-form">
+                <div id="trackerfieldID"></div>
+    
+                <p>Skills Fields</p>
+                <div class="form-group"> <label class="edit-detail-label" for="template">Select Field</label>
+                    <select id="remainskillTrackerField"> </select>
+                </div>
+                <button onclick="onaddTrackerSkillFields()">Add Details skill</button>
+                <div id="trackercareerfieldID"></div>
+
+                <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                        onclick="SaveAll()">Save</button> <button type="button" class="cancel"
+                        onclick="closeFormTracker()">Previous</button> </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

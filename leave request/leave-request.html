@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave request</title>
+</head>
+<body>
+<!-- <div>
+    <div class="hrz-n-r-action form-row">
+        <button class="btn btn-primary ng-star-inserted" type="submit" onclick="saveAppplyForm()"id="apply_leave">Save</button>
+        <button class="btn btn-primary" type="button" onclick="clearForm()"> Close</button>
+      </div>
+    <div class="job-apply-form">
+        <div class="job-field">
+            <label class="apply-label">Title</label>
+            <input type="text" class="apply-input" placeholder="" id="Title" name="Title">
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Leave Type</label>
+            <select id="leaveType" class="filter" onchange="handleChangeleaveType()">
+            </select>
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Leave Balance</label>
+            <input type="number" class="apply-input" placeholder="" id="leaveBalance" name="leaveBalance" disabled>
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Start Date</label>
+            <input type="date" id="startTime" name="startTime" class="filter">
+        </div>
+
+        <div class="job-field">
+            <label class="apply-label">End Date</label>
+            <input type="date"
+            id="endTime" name="endTime" class="filter">
+        </div>
+
+        <div class="job-field">
+            <label class="apply-label">Half Day</label>
+            <input class="es-input" type="checkbox" id="halfday"
+            name="Half" value="" onchange="handleChangehalfday()">
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Total Days</label>
+            <input type="text" class="apply-input" placeholder="" id="numberofdays" name="numberofdays" >
+        </div>
+      <div class="job-field">
+    <label class="apply-label">Note</label>
+    <textarea class="apply-input" placeholder="Note" id="Note"
+        name="Note"></textarea>
+</div>
+
+    </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- <div class="job-apply-form">
+        <div class="job-field">
+            <label class="apply-label">Title</label>
+            <input type="text" class="apply-input" placeholder="" id="Title" name="Title">
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Leave Type</label>
+            <select id="leaveType" class="filter" onchange="handleChangeleaveType()">
+            </select>
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Leave Balance</label>
+            <input type="number" class="apply-input" placeholder="" id="leaveBalance" name="leaveBalance" disabled>
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Start Date</label>
+            <input type="date" id="startTime" name="startTime" class="filter">
+        </div>
+
+        <div class="job-field">
+            <label class="apply-label">End Date</label>
+            <input type="date"
+            id="endTime" name="endTime" class="filter">
+        </div>
+
+        <div class="job-field">
+            <label class="apply-label">Half Day</label>
+            <input class="es-input" type="checkbox" id="halfday"
+            name="Half" value="" onchange="handleChangehalfday()">
+        </div>
+        <div class="job-field">
+            <label class="apply-label">Total Days</label>
+            <input type="text" class="apply-input" placeholder="" id="numberofdays" name="numberofdays" >
+        </div>
+      <div class="job-field">
+    <label class="apply-label">Note</label>
+    <textarea class="apply-input" placeholder="Note" id="Note"
+        name="Note"></textarea>
+</div>
+
+    </div> -->
+
+
+<div class="hrz-dynamic-frm-per">
+    <div class="hrz-n-r-action form-row">
+        <button class="btn btn-primary ng-star-inserted" type="submit" onclick="saveAppplyForm()"
+            id="apply_leave">Save</button>
+        <button class="btn btn-primary" type="button" onclick="clearForm()"> Close</button>
+    </div>
+    <div class="hrz-n-r-container-per custom-hrz-n-r-container-per">
+        <p class="section-title">Leave Request Details
+        </p>
+        <div class="form-section">
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <label class="control-label-planner-filed">Brief about the request<span class="required">*</span></label>
+                        <input type="text" class="apply-input form-control hide-underline" placeholder="" id="Title"
+                            name="Title">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <label class="control-label-planner-filed"> Leave Type<span class="required">*</span></label>
+                        <div class="select-wrapper">
+                        <select id="leaveType" class="apply-input form-control hide-underline" onchange="handleChangeleaveType()">
+                        </select>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <label class="control-label-planner-filed">Leave Balance</label>
+                        <input type="number" class="apply-input form-control hide-underline" placeholder="" id="leaveBalance" name="leaveBalance" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <label class="control-label-planner-filed">Start Date<span class="required">*</span></label>
+                        <input type="date" id="startTime" placeholder="" name="startTime" class="apply-input form-control hide-underline">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <label class="control-label-planner-filed">End Date<span class="required">*</span></label>
+                        <input type="date"
+                        id="endTime" name="endTime"placeholder=""  class="apply-input form-control hide-underline" >
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <div class="qaf-checkbox">
+                        <input class="es-input" type="checkbox" id="halfday"
+                        name="Half" value="" onchange="handleChangehalfday()">
+                        <label class="control-label-planner-filed checkbox-label">Half Day</label>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 spacing-in-rows">
+                    <div class=" padding-field">
+                        <label class="control-label-planner-filed">Total Days</label>
+                        <input type="text" class="apply-input form-control hide-underline" placeholder="" id="numberofdays" name="numberofdays" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row custom-textarea">
+                <div class="col-md-12 spacing-in-rows">
+                  <div class="padding-field">
+                    <label class="control-label-planner-filed">Note</label>
+                    <textarea class="apply-input form-control" placeholder="Note" id="Note"
+        name="Note"cols="40" rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+/* task Activity CSS */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.main-container {
+  margin-top: 20px;
+  display: flex;
+}
+.container {
+  margin-right: 25px;
+  padding-right: 0px;
+}
+
+.tab-box {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  overflow: hidden;
+  z-index: 1;
+  border-bottom: 2px solid rgb(235, 234, 234);
+}
+
+.tab-btn {
+  border: none;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  color:#5f96d8;
+  display: flex;
+  padding: 10px 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+  padding: 0px 20px 20px 20px;
+  /* border: 1px solid #ddd; */
+}
+
+.tab-content.active {
+  display: block;
+}
+/* for QAF Lite */
+.line {
+  position: absolute;
+  top: 100px;
+  z-index: -1;
+  height: 2px;
+  background-color: #5f96d8;
+  transition: all 0.3s ease-in-out;
+}
+
+.nodata {
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 0px 15px;
+  box-shadow: 1px 2px 5px;
+  border-radius: 4px;
+}
+
+.cardActivity {
+  padding: 20px;
+}
+.moving-left {
+  animation: moving-left 0.5s;
+}
+
+.moving-right {
+  animation: moving-right 0.5s;
+}
+
+@keyframes moving-left {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moving-right {
+  from {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.inner-sub-title {
+  font-weight: 600;
+}
+.container {
+  height: 580px;
+  width: 100%;
+}
+
+/* Section 2 CSS */
+
+.section2 {
+  width: 35%;
+  margin-bottom: 15px;
+  padding: 0px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 5px;
+  margin: 0px 5px;
+}
+
+.accordion-body {
+  max-height: 507px;
+  overflow-y: auto;
+  padding-left: 0px;
+  border: none;
+}
+.accordion-body::-webkit-scrollbar {
+  width: 5px;
+}
+.tab-content {
+  max-height: 580px;
+  overflow-y: auto;
+  z-index: -1;
+}
+.tab-content::-webkit-scrollbar {
+  width: 5px;
+}
+.text-left {
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+.text {
+  font-weight: 600;
+}
+h5 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.accordion-item {
+  border: none;
+}
+.accordion-button {
+  font-size: 16px;
+  height: 30px;
+  padding-left: 0px;
+  font-weight: 600;
+  border: none;
+}
+
+.info {
+  padding-bottom: 6px;
+  padding-top: 6px;
+  border-bottom: 1px solid rgb(226, 224, 224);
+}
+h6 {
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+.accordion-body p {
+  font-size: 13px;
+  margin-bottom: 0px;
+  font-weight: 400;
+}
+
+.accordionTitle {
+  padding: 10px 0px 10px 24px;
+}
+.accordion {
+  height: 550px;
+  text-decoration: none;
+  border: none;
+  padding: 10px 0px 0px 24px;
+}
+hr {
+  margin: 0;
+  padding: 0;
+}
+
+.action-button {
+  display: flex;
+}
+
+
+  .button {
+    color: #ffffff;
+    background-color: #ff7a59;
+    padding: 4px 12px;
+    margin-right: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 20px 5px;
+    border: none;
+  }
+textarea{
+    width: 100%;
+    border: none;
+    outline: none;
+    height: 40px;
+}
+.menulist {
+  position: fixed;
+  top: 60px;
+  left: -350px; /* Initially hidden */
+  width: 170px;
+  height: 100%;
+  background: var(--TopBarBackGroundColor);
+  color: var(--SubmenuAppIconsTextColor);
+  padding: 20px 20px 20px 12px;
+  transition: right 0.3s ease-in-out;
+}
+.sidebar-text{
+  color: var(--SubmenuAppIconsTextColor);
+
+}
+.menulist ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.menulist li{
+ font-size: 20px;
+ margin-bottom: 10px;
+}
+.menulist span{
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.sidebar-menu-style{
+  font-size: 15px;
+}
+.sidebar-menu-style .fa{
+  width: 10px;
+ }
+.menubutton{
+  font-size: 24px;
+  color: white;
+  position: fixed;
+  top: 15px;
+  left: 8px;
+  z-index: 1058;
+}
+@media (max-width:480px) {
+  #toggle_btn,.notf-header-icon, .dropdown-menu li:not(:nth-last-child(5),:nth-last-child(1)) {
+    display: none;
+  }
+ 
+}

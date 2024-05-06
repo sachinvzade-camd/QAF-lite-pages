@@ -1,0 +1,177 @@
+
+.pg-content {
+  padding-top: 0px !important;
+}
+.page-details {
+  margin: 0px 20px 20px 20px;
+  padding-top: 10px;
+}
+.common-page-title {
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding: 0;
+}
+
+.tablecontainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+}
+.add-btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  margin-right: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.qaf-table {
+  font-size: 13px;
+  width: 100%;
+  margin: 2px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  overflow: hidden;
+  font-weight: 400;
+}
+.qaf-tr,
+.qaf-td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  vertical-align: middle;
+}
+
+.qaf-th {
+  height: 60px;
+  padding: 12px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 70px;
+}
+.qaf-td {
+  height: 40px;
+  padding: 0px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 135px;
+}
+
+.qaf-th {
+  background-color: rgb(242, 242, 242);
+  color: rgb(0, 0, 0);
+  font-weight: 400;
+}
+.table-container {
+  overflow: scroll;
+  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 20px;
+}
+
+.qaf-tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tablecontainer {
+  overflow-x: auto; /* Add this line */
+  max-width: 100%; /* Add this line to limit the width */
+  max-height: 78vh;
+}
+
+@media screen and (max-width: 600px) {
+  .qaf-th,
+  .qaf-td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+.sorted-button {
+  padding: 0px 5px;
+  display: none;
+}
+.qaf-th:hover .sorted-button {
+  display: inline;
+  cursor: pointer;
+}
+
+/* Form Styling */
+
+/* Search BAr */
+.header-title {
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.left-conatiner {
+  width: 30%;
+}
+
+.right-conatiner {
+  height: inherit;
+  width: 70%;
+  display: flex;
+  justify-content: end;
+}
+.qaf-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 25%;
+  margin: 10px 5px;
+  color: gray;
+}
+
+.search-input {
+  text-align: start;
+  width: 100%;
+  padding: 6px;
+  padding-left: 30px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 30px;
+  outline: none;
+}
+
+.qafsearch-icon,
+.cancel-icon {
+  color: gray;
+  position: absolute;
+  cursor: pointer;
+}
+.qaf-search-bar .fa-search {
+  padding-top: 15px;
+  padding-left: 10px;
+  color: gray;
+  margin-left: 1px;
+  margin-top: -13px;
+}
+.qaf-search-bar #cancelSearch {
+  display: none;
+  color: gray;
+}
+
+.cancel-icon {
+  right: 10px;
+}
+
+.no-record {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}

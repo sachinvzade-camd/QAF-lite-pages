@@ -1,0 +1,71 @@
+/* Apply a reset to remove default padding and margin */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  font-family: "poppins", sans-serif;
+}
+
+/* Common styles */
+.app-container {
+  border: 0px solid #000;
+  margin: 5px auto;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.app-item {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 29%;
+  margin: 5px;
+  /* padding: 15px 5px; */
+  border: none;
+  border-radius: 12px;
+  /* box-shadow: 0px 4px 32px 0px rgba(210, 210, 210, 0.43); */
+  height: 70px;
+  cursor: pointer;
+}
+
+.app-icon {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.app-icon i {
+  font-size: 36px;
+  color: rgb(51, 71, 91);
+  margin-bottom: 7px;
+}
+
+.app-icon-Name {
+  margin: 0px;
+  width: 100%;
+}
+
+.app-icon-Name p {
+  margin: 0px;
+}
+
+.common-page-title {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding: 10px 20px;
+  margin: 5px;
+  border-bottom: 1px solid gray;
+  margin-top: 30px;
+}
+@media (max-width:480px) {
+  #toggle_btn,.notf-header-icon, .dropdown-menu li:not(:nth-last-child(5),:nth-last-child(1)) {
+    display: none;
+  }
+ 
+}

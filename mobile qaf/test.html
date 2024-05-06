@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Left Side Menu</title>
+  <link rel="stylesheet" href="test.css">
+</head>
+<body>
+  <div class="container">
+    
+    <div id="menu" class="menu">
+        <button class="close-btn" onclick="toggleMenu()">Close Menu</button>
+      <ul>
+        <li><a href="#" onclick="changePage('home')">Home</a></li>
+        <li><a href="#" onclick="changePage('about')">About</a></li>
+        <li><a href="#" onclick="changePage('services')">Services</a></li>
+        <li><a href="#" onclick="changePage('contact')">Contact</a></li>
+      </ul>
+    </div>
+    <div id="content" class="content">
+      <h1>Welcome to the Home Page</h1>
+      <p>This is the content of the home page.</p>
+    </div>
+  </div>
+  <script src="test.js"></script>
+</body>
+</html>

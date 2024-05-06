@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="combinedmeeting.css">
+</head>
+<div class="data">
+    <header>
+        <div class="header-container">
+            <div id="headerBtn" class="header-button">
+                <div class="fs-preveous">
+                    <button id="tableButton" class="listview fs-qaf-button fsbtn btn-primary" onclick="previousDate()">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="currentDate" id="today" style="color: black;">
+                </div>
+                <div class="next">
+                    <button id="cardButton" class="gridview fs-qaf-button fsbtn btn-primary" onclick="nextDate()">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="input">
+                    <select class="fs-input fs-select select-first" id="meetingName" name="meetingName" required></select>
+                </div>
+                <div class="add">
+                    <button class="addplus fs-qaf-button btn btn-primary" onclick="AddForm()" id="addform">
+                        Add </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="tablecontainer">
+        <table class="qaf-table" id="table">
+            <div class="loader-container" id="loaderContainer" style="display:none;">
+                <div class="loaderk"></div>
+            </div>
+    </div>
+</div>
+<div class="form" id="expense-from">
+    <div class="main-container">
+        <div class="button-container">
+            <div class="header-buttons">
+                <div class="button"> <button class="btn btn-primary" onclick="SaveRecord()"> Save </button> </div>
+                <div class="button"> <button class="btn btn-primary" onclick="CloseForm()"> Cancel </button> </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="container">
+                <div class="qaf-form-group">
+                    <label for="requestFor" class="Customer fs-label">Request For</label>
+                    <span class="required">*</span>
+                    <select class="fs-input fs-select" id="requestfor" name="requestfor"></select>
+                </div>
+                <div class="qaf-form-group">
+                    <label for="requestTitle" class="Customer fs-label">Brief about the request</label>
+                    <span class="required">*</span>
+                    <input type="text" class="fs-input" id="requesttitle" name="requesttitle" autocomplete="off"
+                        required>
+                </div>
+                <div class="qaf-form-group">
+                    <label for="meetingroom" class="fs-label">Meeting Room</label>
+                    <span class="required">*</span>
+                    <select class="fs-input fs-select" id="meetingroom" name="meetingroom"></select>
+                </div>
+                <div class="qaf-form-group column">
+                    <div class="date-container">
+                        <label for="fromDate" class="Customer fs-label"> From Time</label>
+                        <span class="required">*</span>
+                        <input type="date" class="fs-input" id="fromDate" name="fromDate" autocomplete="off" required>
+                    </div>
+                    <div class="time-container">
+                        <label for="ToDate" class="Customer fs-label"></label>
+                        <input type="time" class="fs-input input-time" id="fromtime" name="fromtime" autocomplete="off">
+                    </div>
+                    <div class="btn-container">
+                        <button class="clear-date-btn" onclick="clearDateTimefield('FromDate')">Clear</button>
+                    </div>
+                </div>
+
+                <div class="qaf-form-group column">
+                    <div class="date-container">
+                        <label for="ToDate" class="Customer fs-label">To Time</label>
+                        <input type="date" class="fs-input" id="ToDate" name="ToDate" autocomplete="off" required>
+                    </div>
+                    <div class="time-container">
+                        <label for="ToTime" class="Customer fs-label"></label>
+                        <input type="time" class="fs-input input-time" id="ToTime" name="ToTime" autocomplete="off">
+                    </div>
+                    <div class="btn-container">
+                        <button class="clear-date-btn"  onclick="clearDateTimefield('ToDate')">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://kit.fontawesome.com/14097a442a.js" crossorigin="anonymous"></script>
+<script src="/ng4qafLiteComponents.bundle.js"></script>
+
+<script src="combinedmeeting.js"></script>
+</body>
+
+</html>

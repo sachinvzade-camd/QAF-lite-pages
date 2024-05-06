@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="tracker.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="page row">
+      <div class="page-content col-md-12 ">
+        <div class="tracker-main">
+          <div id="jobdisplay"></div>
+          <div class="tracker-header">
+            <div class="table-title"> Tracker </div>
+            <div class="dropdown" id="action-button"> <button onclick="myFunction()"
+                class="dropbtn qaf-btn-primary">Action</button>
+              <div id="myDropdown" class="dropdown-content"> </div>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table id="table"> </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="interviewDetailsPopup" id="interviewDetailsPopup">
+    <div class="formPopup" id="popupForm">
+      <div class="formContainer">
+        <p>Do you want to perform the action: Schedule Interview?</p>
+        <div class="form-actions">
+          <div class="field-height">
+            <div class="control-label-planner-filed"> Interview Mode </div>
+            <div class="control"> <select id="interviewMode" class="filter" onchange="changeInterviewMode()">
+                <option value='F2F'>F2F</option>
+                <option value='Online Interview'>Online Interview</option>
+              </select> </div>
+          </div>
+          <div id="meetingUrldiv">
+            <div class="field-height">
+              <div class="k control-label-planner-filed"> Meeting URL </div>
+              <div class="control"> <input type="text" id="meetingurl" placeholder="Meeting Url" name="meetingurl"> </div>
+            </div>
+          </div>
+          <div class="field-height">
+            <div class="control-label-planner-filed"> Interviewer </div>
+            <div class="control"> <select id="interviewer" class="filter"> </select> </div>
+          </div>
+          <div class="field-height">
+            <div class="control-label-planner-filed"> Interview Date </div>
+            <div class="control"> <input type="datetime-local" id="interviewDate" name="interviewDate" class="filter">
+            </div>
+          </div>
+        </div> <button class="btn submit" onclick="submitScheduleForm()">Submit</button> <button type="button"
+          class="btn cancel" onclick="closeForm()">Close</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

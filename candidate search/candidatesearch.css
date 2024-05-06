@@ -1,0 +1,298 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  font-family: "poppins", sans-serif;
+  background-color: #ffffff;
+}
+
+header {
+  background-color: #ffffff;
+  color: #565656;
+  padding: 10px 10px 0px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 20px;
+  padding-left: 10px;
+}
+.title p {
+  margin: 0px 0px 0px 40px;
+}
+
+.search-bar-container {
+  flex: 1;
+  justify-content: center;
+  height: 30px;
+
+}
+
+input.search-bar {
+  margin: 0 20px;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 40%;
+  border: 1px solid gray;
+  color: gray;
+  display: block;
+  padding: 9px 4px 9px 40px;
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E")
+    no-repeat 13px center;
+}
+.header-button {
+  margin-right: 35px;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  padding: 6px 5px 6px 0px;
+  background-color: #ff7a59;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10px;
+  margin-right: 10px;
+}
+.fa-solid {
+  padding: 0px 2px 0px 2px;
+  margin-right: 0px;
+}
+
+.card-container {
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20;
+  
+}
+
+.card {
+  width: 45%;
+  height: inherit;
+  margin: 5px 10px 10px 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 1px 2px 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-text {
+  font-weight: 600;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  color: #5f5fee;
+
+  margin-bottom: 0;
+}
+.card_body {
+  font-size: 11px;
+  word-break: break-all;
+}
+.profile-details {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 45%;
+  font-size: 11px;
+  margin: 0px 0px 10px 0px;
+}
+.job {
+  padding-top: 10px;
+  height: 45%;
+}
+.main {
+  padding: 20px;
+}
+hr {
+  margin: 0;
+  padding: 0;
+  border: 1.5px solid rgb(221, 218, 218);
+}
+.link-buttons {
+  margin-right: 20px;
+  height: auto;
+  display: flex;
+  justify-content: right;
+}
+.envelop {
+  margin: 2px 0px 5px 0px;
+  color: rgb(51, 71, 91);
+}
+.envelop:hover {
+  color: #009ce7;
+}
+
+.whatsapp {
+  margin: 2px 0px 5px 15px;
+  color: rgb(37, 211, 102);
+}
+.profile-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 18px;
+  background-color: #ff7a59;/* Optional: Add a background color for the circular image */
+/* 
+
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 18px;
+  border-radius: 80%;
+  overflow: hidden;
+  margin-right: 10px;
+  background-color: #ff7a59; */
+}
+
+.name {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+}
+.name p {
+  margin: 0px;
+}
+.experiance {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  cursor: pointer;
+}
+.contact {
+  width: 100%;
+  font-size: 11px;
+  color: gray;
+  display: flex;
+  flex-direction: row;
+}
+
+.number {
+  width: 40%;
+}
+
+.row1 {
+  width: 15%;
+  height: auto;
+}
+.row2 {
+  margin-left: 15px;
+  width: 80%;
+}
+.row3{
+  width: 5%;
+  display: flex;
+  justify-content: end;
+}
+
+.shortlist-button {
+  font-size: 12px;
+  background-color: #ff7a59;
+  color: #fff;
+  padding: 6px 12px ;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 30px;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #5f5fee;
+}
+
+.job p {
+  color: #676262;
+  font-family: Poppins, sans-serif;
+  line-height: 17px;
+  font-size: 12px;
+  padding-left: 10px;
+}
+
+.listview,
+.gridview {
+  padding: 6px 0px;
+}
+
+em {
+  font-weight: 600;
+  font-style: normal;
+  width: 123px;
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #333;
+}
+header i {
+  margin: 0 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-link {
+  margin-right: 5px;
+  padding-left: 0px;
+}
+.editjob {
+  margin: 2px 5px 5px 15px;
+  padding-top: 0px;
+  color: #009ce7;
+}
+.viewjob {
+  color: #5f5fee;
+}
+
+.viewjob:hover {
+  text-decoration: underline;
+  color: #5f5fee;
+}
+.editjob:hover {
+  color: #009ce7;
+}
+
+/* @media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-button,
+  .search-bar-container,
+  .search-bar {
+    width: 100%;
+  }
+  .header-button {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+  }
+  .title {
+    margin-left: 20px;
+    padding-bottom: 20px;
+  }
+  .row {
+    width: auto;
+  }
+
+  .button {
+    margin-right: 10px;
+  }
+} */

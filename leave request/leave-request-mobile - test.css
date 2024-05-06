@@ -1,0 +1,82 @@
+.ui-datepicker-trigger{
+  width: 29px;
+    height: 20px;
+    transform: translate(0px, 7px);
+    position: absolute;
+    right: 16px;
+}
+#my_date_picker{
+  width: 100%;
+}
+
+
+.job-apply-form{
+    margin-top: 150px;
+}
+.page {
+  --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+  --qaf-grid-button-border-radius: 4px;
+}
+.qaf-btn-primary {
+  background-color: var(--qaf-grid-button-bg-color, #313CBF);
+  color: var(--qaf-grid-button-color, #fff);
+}
+.pg-content{
+    padding-top: 0!important;
+    min-height: 0;
+  max-height: 100%;
+}
+
+.hrz-dynamic-frm-per{
+  height: 100vh;
+  overflow: scroll;
+}
+.ql-attendence-cancel{
+  margin-bottom: 30px;
+}
+.required {
+  display: inline;
+  color: #cc0000;
+  padding-left: 5px;
+}
+.ql-attendence-btn .btn{
+  width: 100%;
+  padding: 10px 0;
+    margin-top: 10px;
+}
+.ql-attendence-btn{
+  padding: 0 13px;
+}
+#startTime,#endTime{
+  width: 22px;
+}
+.date-control{
+  display: flex;
+}
+/*  */
+.section-title {
+    font-family: Poppins;
+   font-size: 14px;
+   padding: 11px 0 11px 10px;
+   background: #989aa2;
+   margin-bottom: 0;
+   margin-top: 0;
+  }
+  .form-control{
+    width: 100%;
+  }
+  .spacing-in-rows{
+    margin-bottom: 10px;
+  }
+
+    .form-section {
+        padding: 8px 13px;
+        border-radius: 4px;
+      }
+      .qaf-checkbox{
+        display: flex;
+        
+      }
+      .checkbox-label{
+        margin-left: 10px;
+      }

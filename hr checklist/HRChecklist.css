@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+
+html, body {
+    width: 100%;
+    font-family: "poppins", sans-serif;
+    background-color:rgba(0, 0, 0, 0);
+    margin: 0;
+    padding: 0;
+}header {
+    background-color: #ffffff;
+    color: #565656;
+    padding: 10px 10px 0px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header i {
+    margin: 0 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .title {
+    font-size: 13px;
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    padding-left: 10px;
+  }
+  .title p {
+    margin-left: 18px;
+  }
+  .header-button {
+    display: flex;
+    justify-content: center;
+    margin-right: 8px;
+  }
+  
+  .button {
+    padding: 6px 5px 6px 0px;
+    background-color: #ff7a59;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+  
+    margin-left: 5px;
+  }
+  .addjob {
+    margin-right: 20px;
+  }
+  .fa-solid {
+    padding: 0px 2px 0px 2px;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+  
+  
+.tablecontainer{
+    display: flex;
+    justify-content:center;
+    width: 100%;
+}
+
+table {
+    font-size: 13px;
+    width: 95%;
+    margin: 2px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 1px 5px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+th, td {
+    width:50%;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: rgb(242, 242, 242);
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+
+}
+
+tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+@media screen and (max-width: 600px) {
+    th, td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

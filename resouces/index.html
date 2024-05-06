@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="CSS/ozilvendor.css" />
+    <link rel="icon" type="image/x-icon" href="image/img_1.png" />
+
+    <title>Quick App Flow</title>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="page row">
+        <div class="page-nav">
+          <div class="expense-app-links">
+            <qaf-repeater
+              data-bind-item="app"
+              data-bind-style="qaf-grid"
+              class="expense-app-links-dt"
+            >
+              <style>
+                .expense-app-links-dt {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: space-between;
+                }
+
+                .expense-top {
+                  transform: translate(0, 15px);
+                }
+
+                .expense-app-links-dt a.dashboard-App {
+                  text-decoration: none;
+                }
+
+                a.dashboard-App {
+                  text-decoration: none;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  color: white;
+                  font-size: 14px;
+                }
+
+                a.dashboard-App .fa {
+                  font-size: 28px;
+                }
+              </style>
+
+              <div>
+                <a
+                  class="dashboard-App"
+                  href="${app.link}"
+                  style="
+                    text-decoration: none;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    color: white;
+                    font-size: 14px;
+                    margin-bottom: 15px;
+                    text-align: center;
+                    width: 85px;
+                  "
+                  ><i
+                    class="${app.icon}"
+                    aria-hidden="true"
+                    style="font-size: 18px"
+                  ></i>
+
+                  <span class="text-center app-icon-text">${app.name} </span></a
+                >
+              </div>
+
+              <link
+                rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+              />
+            </qaf-repeater>
+          </div>
+        </div>
+
+        <div class="page-content col-md-12 col-md-offset-1">
+          <div class="expense-grid">
+            <div class="expense-top">
+              <h3>Resources</h3>
+
+              <div class="expense-action">
+                <button
+                  class="qaf-btn-primary"
+                  type="button"
+                  onclick="addResource()"
+                >
+                  <i class="fa fa-plus"></i>&nbsp;Resources
+                </button>
+              </div>
+            </div>
+
+            <div class="expense-data-grid">
+              <qaf-grid
+                id="expgrid"
+                columns="gridExpenseColumns"
+                action="true"
+              ></qaf-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="JS/ozilvendor.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/14097a442a.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+
