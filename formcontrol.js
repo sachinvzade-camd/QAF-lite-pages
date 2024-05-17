@@ -1,6 +1,6 @@
 function externalFormValidationRule(){
     return new Promise((resolve) => {
-        debugger
+        
            let a=document.getElementById('SelectDate')
     if(a.value){
         let dateFormate =getByKey("TimeZone");
@@ -37,7 +37,7 @@ function getByKey(key) {
     }
   }
 function onQafInit(){
-    debugger
+    
     console.log(window.hiddenFieldsForm);
     window.hiddenFieldsForm=["Lookup"]
     console.log(window.hiddenFieldsForm);

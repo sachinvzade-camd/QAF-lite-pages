@@ -421,12 +421,12 @@ function save(object, repositoryName) {
 }
 document.addEventListener('EditPayrollSummary', (event) => {
     let employeeID=event.detail
-    debugger
+    
     openFormCtCstructreForm(employeeID)
   });
 
 function openFormCtCstructreForm(id) {
-    debugger
+    
     isDeduction = false
     addCssforscroll()
     let employee = EmployeesList.filter(a => a.EmployeeID === id)
@@ -1019,7 +1019,7 @@ function onFileChangeFile(){
 
 function onFileChange(multiplefiles)
 {
-    debugger
+    
     let pageDisabledElement=document.getElementById('pageDisabled');
     if(pageDisabledElement){
         pageDisabledElement.classList.add('page-disabled')
@@ -1062,7 +1062,7 @@ function onFileChange(multiplefiles)
 }
 
 function formatExecelData(excelRows) {
-    debugger
+    
     let fileupload = document.getElementById("upload");
     if(fileupload){
         fileupload.value = "";

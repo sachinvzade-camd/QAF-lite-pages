@@ -1,9 +1,9 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = funFirstapiURL
+var apURL = SITapiURL
 var sitHostURL='demtis.quickappflow.com'
 var funFirstHostURL='inskferda.azurewebsites.net'
-var hostName=funFirstHostURL
+var hostName=sitHostURL
 var todayMonth = document.getElementById("today");
 var date = new Date();
 var day = date.getDate();
@@ -777,17 +777,16 @@ removeBlur()
 }
 function formatAttendence(time){
     if(time){
-
       if(time.includes('day')){
         let timeArray=[];
         let halfday=time.split(")")[0]
         timeArray=time.split(")")[1].split(".");
-        let timestring= halfday+') '+timeArray[0]+" h "+(timeArray[1]?timeArray[1]:'00')+" m"
+        let timestring= halfday+') '+timeArray[0]+" h "+(timeArray[1]?(timeArray[1].length===1?timeArray[1]+'0':timeArray[1]):'00')+" m"
         return timestring
       }else{
         let timeArray=[];
         timeArray=time.split(".");
-        let timestring= timeArray[0]+" h "+(timeArray[1]?timeArray[1]:'00')+" m"
+        let timestring= timeArray[0]+" h "+(timeArray[1]?(timeArray[1].length===1?timeArray[1]+'0':timeArray[1]):'00')+" m"
         return timestring
       }
     }
@@ -799,7 +798,17 @@ function getStatusColor(status) {
   if (status) {
     if (status.toLowerCase() === "Absent".toLowerCase()) {
       statusclass = "absent-color"
-    }else{
+    }
+   else if (status.toLowerCase() === "On Leave".toLowerCase()) {
+      statusclass = "leave-color"
+    }
+   else if (status.toLowerCase() === "WO".toLowerCase()) {
+      statusclass = "wo-color"
+    }
+   else if (status.toLowerCase() === "Holiday".toLowerCase()) {
+      statusclass = "wo-color"
+    }
+    else{
       statusclass = "present-color"
     }
   }

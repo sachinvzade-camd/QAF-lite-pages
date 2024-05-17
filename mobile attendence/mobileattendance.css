@@ -303,6 +303,7 @@ header i {
 .present-color{
   background: Green;
 }
+
 .absent-color{
   background: red;
 }
@@ -311,6 +312,9 @@ header i {
 }
 .leave-color{
   background: blue;
+}
+.wo-color{
+  background: #328b136b;
 }
 .noRecordFound{
   margin-top: 18px;

@@ -59,7 +59,7 @@ function getSalaryDetails() {
     EmployeesList = []
     EmployeesSalriesList = []
     TableData = []
-    debugger
+    
     document.getElementById('table').innerHTML = ""
     addMenu()
     let user = getCurrentUser();
@@ -1267,7 +1267,7 @@ function onFileChangeFile(){
 
 function onFileChange(multiplefiles)
 {
-    debugger
+    
     let pageDisabledElement=document.getElementById('pageDisabled');
     if(pageDisabledElement){
         pageDisabledElement.classList.add('page-disabled')
@@ -1310,7 +1310,7 @@ function onFileChange(multiplefiles)
 }
 
 function formatExecelData(excelRows) {
-    debugger
+    
     let fileupload = document.getElementById("upload");
     if(fileupload){
         fileupload.value = "";

@@ -1,4 +1,3 @@
-var isQafLoaderDefine;
 try {
   class QafLoader extends HTMLElement {
     static observedAttributes = ["qaf-loader-show"];
@@ -54,13 +53,12 @@ try {
     attributeChangedCallback(name, oldValue, newValue) {
     }
   }
-  isQafLoaderDefine = true;
-} catch (error) {
-  isQafLoaderDefine = false;
-}
-
-
+  
 var qafLoaderelementExists = document.querySelector("qaf-loader");
-if (typeof (qafLoaderelementExists) === 'undefined' && qafLoaderelementExists === null) {
+if (typeof (qafLoaderelementExists) === 'undefined' || qafLoaderelementExists === null) {
   customElements.define("qaf-loader", QafLoader);
 }
+} catch (error) {
+ 
+}
+

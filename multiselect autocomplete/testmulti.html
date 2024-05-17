@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Filter Multi Select Plugin</title>
+    <style>
+      .notification {color: red; font-size: 85%;}
+    </style>
+    <link rel="stylesheet" href="multi.css">
+     <!-- Load Bootstrap -->
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <form class="container" method="GET" id="form">
+      <div class="row">
+        <h4 class="col-12">Default Dropdown</h4>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-10" id="notifications">&nbsp;</div>
+      </div>
+      <div class="form-group row">
+        <label class="col-2 col-form-label" for="animals">Animals</label>
+        <div class="col-10">
+          <select  name="animals" id="animals" class="filter-multi-select">
+            <option value="bear">Bear</option>
+            <option value="ant">Ant</option>
+            <option value="salamander">Salamander</option>
+            <option value="owl">Owl</option>
+            <option value="frog">Frog</option>
+            <option value="shark">Shark</option>
+            
+            <option value="bear1">Bear1</option>
+            <option value="ant1">Ant1</option>
+            <option value="salamander1">Salamander1</option>
+            <option value="owl1">Owl1</option>
+            <option value="frog1">Frog1</option>
+            <option value="shark1">Shark1</option>
+
+
+            <option value="bear2">Bear2</option>
+            <option value="ant2">Ant2</option>
+            <option value="salamander2">Salamander2</option>
+            <option value="owl2">Owl1</option>
+            <option value="frog2">Frog2</option>
+            <option value="shark2">Shark2</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="abcd()">select</button>
+    <script src="../jquery/jquery.js"></script>
+    <script src="multiselect.min.js"></script>
+    <script src="testmulti.js"></script>
+
+  </body>
+
+</html>
