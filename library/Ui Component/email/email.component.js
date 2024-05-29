@@ -1,4 +1,4 @@
-try {
+if (!customElements.get('email-compoonent')) {
 class EmailComponent extends HTMLElement {
   constructor() {
     super();
@@ -15,8 +15,8 @@ class EmailComponent extends HTMLElement {
     }
   }
   render() {
-    const elementID = this.getAttribute('element-id') ;
-    const elementname = this.getAttribute('element-label') ;
+    const elementID = this.getAttribute('element-id');
+    const elementname = this.getAttribute('element-label');
     this.innerHTML = `
     <style>
     .qaf-label {
@@ -48,9 +48,5 @@ class EmailComponent extends HTMLElement {
     `;
   }
 }
-var qafLoaderelementExists = document.querySelector("email-compoonent");
-if (typeof (qafLoaderelementExists) === 'undefined' || qafLoaderelementExists === null) {
-  customElements.define("email-compoonent", EmailComponent);
-}
-} catch (error) {
+customElements.define("email-compoonent", EmailComponent);
 }

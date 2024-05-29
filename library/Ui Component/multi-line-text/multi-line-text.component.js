@@ -1,4 +1,4 @@
-try {
+if (!customElements.get('multi-line-text')) {
 class MultiLineTextComponent extends HTMLElement {
   constructor() {
     super();
@@ -15,8 +15,8 @@ class MultiLineTextComponent extends HTMLElement {
     }
   }
   render() {
-    const elementID = this.getAttribute('element-id') ;
-    const elementname = this.getAttribute('element-label') ;
+    const elementID = this.getAttribute('element-id');
+    const elementname = this.getAttribute('element-label');
 
     this.innerHTML = `
     <style>
@@ -51,9 +51,5 @@ class MultiLineTextComponent extends HTMLElement {
     `;
   }
 }
-var qafLoaderelementExists = document.querySelector("multi-line-text");
-if (typeof (qafLoaderelementExists) === 'undefined' || qafLoaderelementExists === null) {
-  customElements.define("multi-line-text", MultiLineTextComponent);
-}
-} catch (error) {
+customElements.define("multi-line-text", MultiLineTextComponent);
 }

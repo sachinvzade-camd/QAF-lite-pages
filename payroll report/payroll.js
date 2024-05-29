@@ -24,11 +24,11 @@ var openmenuindex;
 var isDeduction = false
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = funFirstapiURL
+var apURL = SITapiURL
 var failArrayList=[]
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=funFirstHostURL
+var maHostName=sitHostURL
 var deleteemployeeID;
 // var originalData;
 // var tableValue;
@@ -100,6 +100,7 @@ qafServiceLoaded = setInterval(() => {
         }
         getSalaryDetails()
         getEmployee()
+        getEmployeeListTemp()
         clearInterval(qafServiceLoaded);
     }
   }, 10);
@@ -494,7 +495,21 @@ function openAddForm() {
     document.getElementById('employee-main').style.display = 'block';
     getEmployee()
 }
-
+function getEmployeeListTemp() {
+    tempEmpList = []
+    let objectName = "Employees";
+    let list = 'FirstName,LastName,IsOffboarded,EmployeeID'
+    let fieldList = list.split(",")
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let whereClause = ``;
+    let orderBy = "true"
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((employees) => {
+        if (Array.isArray(employees) && employees.length > 0) {
+            tempEmpList = employees
+        }
+    });
+}
 
 
 function getEmployee() {
@@ -539,7 +554,7 @@ function nextForm() {
         let LWFvalue = LWFelement.checked;
         let PTvalue = PTelement.checked;
         if (employeevalue) {
-            let employee = employeeListAll.filter(emp => emp.RecordID === employeevalue);
+            let employee = tempEmpList.filter(emp => emp.RecordID === employeevalue);
             if (employee && employee.length > 0) {
                 employeeFullName = employee[0].RecordID + ";#" + employee[0].FirstName + " " + employee[0].LastName;
                 employeeRecordID = employee[0].RecordID
@@ -548,7 +563,7 @@ function nextForm() {
             }
         }
         if (employeeid) {
-            let employee = employeeListAll.filter(emp => emp.RecordID === employeeid);
+            let employee = tempEmpList.filter(emp => emp.RecordID === employeeid);
             if (employee && employee.length > 0) {
                 employeeFullName = employee[0].RecordID + ";#" + employee[0].FirstName + " " + employee[0].LastName;
                 employeeRecordID= employee[0].RecordID

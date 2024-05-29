@@ -1,6 +1,6 @@
 var eventNameqaf;
 var qafAlertObject;
-try {
+if (!customElements.get('qaf-alert')) {
   class QafAlert extends HTMLElement {
     static observedAttributes = ["qaf-alert-show", 'qaf-event', 'qaf-message'];
     constructor() {
@@ -122,18 +122,14 @@ try {
     }
     
   }
-  var qafAlertelementExists = document.querySelector("qaf-alert");
-if (typeof (qafAlertelementExists) === 'undefined' || qafAlertelementExists === null) {
   customElements.define("qaf-alert", QafAlert);
-}
-} catch (error) {
 }
 function oncloseModal(actionType) {
   const myComponent = document.querySelector('qaf-alert');
-  qafAlertObject.IsShow = false
+  if(qafAlertObject.IsShow){
+    qafAlertObject.IsShow = false
+  }
   myComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
   var event = new CustomEvent(eventNameqaf, { detail: actionType })
   window.parent.document.dispatchEvent(event)
 }
-
-

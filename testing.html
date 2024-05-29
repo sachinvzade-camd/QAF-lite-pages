@@ -3,38 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SelectPure Example</title>
-    <!-- Include SelectPure library -->
-    <script src="https://cdn.jsdelivr.net/npm/select-pure@1.1.1/select-pure.min.js"></script>
+    <title>SPA Example</title>
+    <style>
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>SelectPure Example</h2>
-    <label for="multi-select">Choose options:</label>
-    <select id="multi-select" multiple>
-        <!-- Options will be populated dynamically by SelectPure -->
-    </select>
+    <nav>
+        <a href="#" onclick="navigate('/home')">Home</a>
+        <a href="#" onclick="navigate('/about')">About</a>
+        <a href="#" onclick="navigate('/contact')">Contact</a>
+    </nav>
+    <div id="content"></div>
 
-    <script>
-        // Initialize SelectPure on the multi-select element
-        const multiSelect = new SelectPure("#multi-select", {
-            options: [], // Options will be populated dynamically
-            multiple: true, // Enable multiple selection
-            autocomplete: true, // Enable autocomplete
-            onChange: value => {
-                console.log(value); // Handle selected values
-            }
-        });
-
-        // Example data (you can fetch options dynamically from a source)
-        const options = [
-            { label: "Option 1", value: "option1" },
-            { label: "Option 2", value: "option2" },
-            { label: "Option 3", value: "option3" },
-            // Add more options as needed
-        ];
-
-        // Populate options dynamically
-        multiSelect.setOptions(options);
-    </script>
+    <script src="testing.js"></script>
 </body>
 </html>

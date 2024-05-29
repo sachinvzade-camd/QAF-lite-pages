@@ -4,6 +4,9 @@
   min-height: 0;
   max-height: 100%;
 }
+#isloading{
+  margin-top: 100px;
+}
 .date-container {
   background-color: #ffffff;
   color: #565656;

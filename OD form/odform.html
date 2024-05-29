@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="odform.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="page">
+        <div class="hrz-dynamic-frm-per">
+            <div class="hrz-n-r-container-per custom-hrz-n-r-container-per">
+                <!-- <div> <p class="section-title">Employee LeadisplayStartTimeve Balance Details </p> </div> -->
+                <div class="form-section">
+                    <div class="spacing-in-rows">
+                        <div class=" padding-field">
+                            <label class="control-label-planner-filed"> Brief about the
+                                request<span class="required">*</span>
+                            </label>
+                            <input type="text" class="apply-input form-control hide-underline" placeholder="" id="RequestTitle"
+                                name="RequestTitle" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="spacing-in-rows">
+                        <div class=" padding-field">
+                            <label class="control-label-planner-filed">Request Date<span class="required">*</span>
+                            </label>
+                            <div class="date-control">
+                                <input type="text" id="displayStartTime" disabled
+                                    class="apply-input form-control hide-underline" autocomplete="off">
+                                <input type="date" id="startTime" name="startTime">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spacing-in-rows">
+                        <div class="padding-field">
+                            <label class="control-label-planner-filed">Reason</label>
+                            <textarea class="apply-input form-control" placeholder="" id="Reason" name="Reason"
+                                cols="40" rows="5" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+
+                    <div class=" spacing-in-rows">
+                        <div class=" padding-field">
+                            <label class="control-label-planner-filed">Duration<span
+                                    class="required">*</span>
+                                </label>
+                            <select id="Duration" class="apply-input form-control hide-underline">
+                            </select>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="ql-attendence-btn">
+                <button class="btn qaf-btn-primary ng-star-inserted" type="submit" onclick="SaveRecord()"
+                    id="apply_leave">Save</button>
+            </div>
+            <div class="ql-attendence-btn ql-attendence-cancel">
+                <button class="btn qaf-btn-primary" type="button" onclick="clearFormField()"> Close</button>
+            </div>
+        </div>
+    </div>
+    <script src="/ng4qafLiteComponents.bundle.js"></script>
+    <script src="momenttimezone-data.js"></script>
+    <script src="momenttimezone.js"></script>
+    <script src="jquerry.js"></script>
+    <script src="moment.js"></script>
+    <script src="odform.js"></script>
+
+</body>
+
+</html>

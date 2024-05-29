@@ -8,7 +8,7 @@ $(function () {
     $('#animals').on("optiondeselected", function(e) {
         
     });
-  
+    $('#animals').filterMultiSelect();
+
   });
 
- 

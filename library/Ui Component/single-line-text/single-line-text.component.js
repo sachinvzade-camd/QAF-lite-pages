@@ -1,4 +1,4 @@
-try {
+if (!customElements.get('single-line-text')) {
 class SingleLineTextComponent extends HTMLElement {
   constructor() {
     super();
@@ -48,10 +48,5 @@ class SingleLineTextComponent extends HTMLElement {
     `;
   }
 }
-var qafLoaderelementExists = document.querySelector("single-line-text");
-debugger
-if (typeof (qafLoaderelementExists) === 'undefined' || qafLoaderelementExists === null) {
-  customElements.define("single-line-text", SingleLineTextComponent);
-}
-} catch (error) {
+customElements.define("single-line-text", SingleLineTextComponent);
 }

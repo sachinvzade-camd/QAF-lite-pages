@@ -178,7 +178,6 @@ margin-top: 30px;
 }
 .salary-component-content{
   max-width: 1200px;
-
 }
 .header-title-count{
   display: flex;
@@ -254,7 +253,7 @@ transition: background-color 0.3s;
 }
 .action-btn {
 background-color: #fff;
-color: #ff7a59;
+color: var(--TopBarBackGroundColor);
 border: none;
 border-radius: 5px;
 cursor: pointer;

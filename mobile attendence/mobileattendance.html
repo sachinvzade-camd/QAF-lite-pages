@@ -10,38 +10,32 @@
 </head>
 
 <body>
-  <div class="data" id="disabled">
+  <qaf-loader id="isloading" style="display: none;"></qaf-loader>
+  <div class="data" id="disabled" >
+    <div id="attendance-container" style="display: none;">
     <div class="checkIn-container">
-
       <div class="time-hour">
-        <h3 ><div id="displayTime"></div><div>hrs</div>
+        <h3>
+          <div id="displayTime"></div>
+          <div>hrs</div>
         </h3>
       </div>
-      <div class="chekin-button" id="attendancebutton">
-      </div>
-
+      <div class="chekin-button" id="attendancebutton"> </div>
     </div>
     <div class="date-container">
       <div class="date-nevigator-container">
         <div id="headerBtn" class="date-nevigator">
-          <div class="preveous">
-            <button id="tableButton" class="qaf-button" onclick="leftNavigator()"><i class="fa fa-chevron-left"
-                aria-hidden="true"></i></button>
-          </div>
-          <div class="currentDate" id="today" style="color: black;">
-          </div>
-          <div class="next">
-            <button class="qaf-button " onclick="rightNavigator()"> <i class="fa fa-chevron-right"
-                aria-hidden="true"></i></button>
-          </div>
+          <div class="preveous"> <button id="tableButton" class="qaf-button" onclick="leftNavigator()"><i
+                class="fa fa-chevron-left" aria-hidden="true"></i></button> </div>
+          <div class="currentDate" id="today" style="color: black;"> </div>
+          <div class="next"> <button class="qaf-button " onclick="rightNavigator()"> <i class="fa fa-chevron-right"
+                aria-hidden="true"></i></button> </div>
         </div>
       </div>
-
     </div>
-    <div class="card-container" id="cardBox">
-    </div>
+    <div class="card-container" id="cardBox"> </div>
   </div>
-
+</div>
 
   <script src="https://kit.fontawesome.com/14097a442a.js" crossorigin="anonymous"></script>
   <script src=""></script>

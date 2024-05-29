@@ -9,92 +9,69 @@
 
 
 
-    <div class="page">
+<div class="page">
     <div class="hrz-dynamic-frm-per">
         <div class="hrz-n-r-container-per custom-hrz-n-r-container-per">
-            <!-- <div>
-                <p class="section-title">Employee Leave Balance Details
-                </p>
-            </div> -->
+            <!-- <div> <p class="section-title">Employee Leave Balance Details </p> </div> -->
             <div class="form-section">
                 <div class="spacing-in-rows">
-                    <div class=" padding-field">
-                        <label class="control-label-planner-filed"> Brief about the request<span class="required">*</span></label>
-                        <input type="text" class="apply-input form-control hide-underline" placeholder="" id="Title"
-                            name="Title">
+                    <div class=" padding-field"> <label class="control-label-planner-filed"> Brief about the
+                            request<span class="required">*</span></label> <input type="text"
+                            class="apply-input form-control hide-underline" placeholder="" id="Title" name="Title">
                     </div>
                 </div>
                 <div class=" spacing-in-rows">
-                    <div class=" padding-field">
-                        <label class="control-label-planner-filed"> Leave Type<span class="required">*</span></label>
-                        <select id="leaveType" class="apply-input form-control hide-underline"
-                            onchange="handleChangeleaveType()">
-                        </select>
-                    </div>
+                    <div class=" padding-field"> <label class="control-label-planner-filed"> Leave Type<span
+                                class="required">*</span></label> <select id="leaveType"
+                            class="apply-input form-control hide-underline" onchange="handleChangeleaveType()">
+                        </select> </div>
                 </div>
                 <div class=" spacing-in-rows">
-                    <div class=" padding-field">
-                        <label class="control-label-planner-filed">Leave Balance</label>
-                        <input type="number" class="apply-input form-control hide-underline" placeholder=""
-                            id="leaveBalance" name="leaveBalance" disabled>
-                    </div>
+                    <div class=" padding-field"> <label class="control-label-planner-filed">Leave Balance</label> <input
+                            type="number" class="apply-input form-control hide-underline" placeholder=""
+                            id="leaveBalance" name="leaveBalance" disabled> </div>
                 </div>
-    
                 <div class="spacing-in-rows">
-                    <div class=" padding-field">
-                        <label class="control-label-planner-filed">Start Date<span class="required">*</span></label>
-                        <div class="date-control">
-                            <input type="text" id="displayStartTime" disabled class="apply-input form-control hide-underline">
-                             <input type="date" id="startTime" name="startTime"  >
+                    <div class=" padding-field"> <label class="control-label-planner-filed">Start Date<span
+                                class="required">*</span></label>
+                        <div class="date-control"> <input type="text" id="displayStartTime" disabled
+                                class="apply-input form-control hide-underline"> <input type="date" id="startTime"
+                                name="startTime"> </div>
                     </div>
+                </div>
+                <div class=" spacing-in-rows">
+                    <div class=" padding-field"> <label class="control-label-planner-filed">End Date<span
+                                class="required">*</span></label>
+                        <div class="date-control"> <input type="text" id="displayEndTime" disabled
+                                class="apply-input form-control hide-underline"> <input type="date" id="endTime"
+                                name="endTime"> </div>
                     </div>
                 </div>
                 <div class=" spacing-in-rows">
                     <div class=" padding-field">
-                        <label class="control-label-planner-filed">End Date<span class="required">*</span></label>
-                        <div class="date-control">
-                            <input type="text" id="displayEndTime" disabled class="apply-input form-control hide-underline">
-                             <input type="date" id="endTime" name="endTime"  >
-                    </div>
-                        
+                        <div class="qaf-checkbox"> <input class="es-input" type="checkbox" id="halfday" name="Half"
+                                value="" onchange="handleChangehalfday()"> <label
+                                class="control-label-planner-filed checkbox-label">Half Day</label> </div>
                     </div>
                 </div>
                 <div class=" spacing-in-rows">
-                    <div class=" padding-field">
-                        <div class="qaf-checkbox">
-                            <input class="es-input" type="checkbox" id="halfday" name="Half" value=""
-                                onchange="handleChangehalfday()">
-                            <label class="control-label-planner-filed checkbox-label">Half Day</label>
-                        </div>
-                    </div>
+                    <div class=" padding-field"> <label class="control-label-planner-filed">Total Days</label> <input
+                            type="text" class="apply-input form-control hide-underline" placeholder="" id="numberofdays"
+                            name="numberofdays" disabled> </div>
                 </div>
-                <div class=" spacing-in-rows">
-                    <div class=" padding-field">
-                        <label class="control-label-planner-filed">Total Days</label>
-                        <input type="text" class="apply-input form-control hide-underline" placeholder="" id="numberofdays"
-                            name="numberofdays" disabled>
-                    </div>
-                </div>
-    
                 <div class="spacing-in-rows">
-                    <div class="padding-field">
-                        <label class="control-label-planner-filed">Note</label>
-                        <textarea class="apply-input form-control" placeholder="Note" id="Note" name="Note" cols="40"
-                            rows="5"></textarea>
-                    </div>
+                    <div class="padding-field"> <label class="control-label-planner-filed">Note</label> <textarea
+                            class="apply-input form-control" placeholder="" id="Note" name="Note" cols="40"
+                            rows="5"></textarea> </div>
                 </div>
             </div>
         </div>
-        <div class="ql-attendence-btn">
-            <button class="btn  qaf-btn-primary ng-star-inserted" type="submit" onclick="saveAppplyForm()"
-                id="apply_leave">Save</button>
-    
-        </div>
-        <div class="ql-attendence-btn ql-attendence-cancel">
-            <button class="btn qaf-btn-primary" type="button" onclick="clearForm()"> Close</button>
-        </div>
+        <div class="ql-attendence-btn"> <button class="btn qaf-btn-primary ng-star-inserted" type="submit"
+                onclick="saveAppplyForm()" id="apply_leave">Save</button> </div>
+        <div class="ql-attendence-btn ql-attendence-cancel"> <button class="btn qaf-btn-primary" type="button"
+                onclick="clearForm()"> Close</button> </div>
     </div>
-    </div>
+</div>
 
 
 

@@ -1,9 +1,9 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = SITapiURL
+var apURL = funFirstapiURL
 var sitHostURL='demtis.quickappflow.com'
 var funFirstHostURL='inskferda.azurewebsites.net'
-var hostName=sitHostURL
+var hostName=funFirstHostURL
 var todayMonth = document.getElementById("today");
 var date = new Date();
 var day = date.getDate();
@@ -42,7 +42,11 @@ var webURL_Value;
  qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
     window.QafService.SetEnvUrl(apURL)
- 
+    let loaderElement=document.getElementById('isloading');
+    if(loaderElement){
+      loaderElement.style.display='block'
+    }
+
       let breadcum = document.getElementById("breadcrum");
       if (breadcum) {
         document.getElementById("breadcrum").style.display = "none";
@@ -716,6 +720,15 @@ function getAllAttendence() {
   })
     .then(response => response.json())
     .then(attendanceList => {
+      let loaderElement=document.getElementById('isloading');
+      if(loaderElement){
+        loaderElement.style.display='none'
+      }
+      let attendancecontainerElement=document.getElementById('attendance-container');
+      if(attendancecontainerElement){
+        attendancecontainerElement.style.display='block'
+      }
+
 removeBlur()
       let attendanceCard = ""
       if (Array.isArray(attendanceList) && attendanceList.length > 0) {

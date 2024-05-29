@@ -1,51 +1,4 @@
-
-try {
-  class e extends HTMLElement {
-    static observedAttributes = ["qaf-loader-show"]; constructor() { super() } connectedCallback() {
-      this.innerHTML = `
-              <style>
-              .qaf-loader {
-                  width: 48px;
-                  height: 48px;
-                  border: 5px solid #FFF;
-                  border-bottom-color: #FF3D00;
-                  border-radius: 50%;
-                  display: inline-block;
-                  box-sizing: border-box;
-                  animation: rotation 1s linear infinite;
-                  }
-                
-                  @keyframes rotation {
-                  0% {
-                      transform: rotate(0deg);
-                  }
-                  100% {
-                      transform: rotate(360deg);
-                  }
-                  } 
-                  .qaf-loader-container{
-                    text-align: center;
-                    display: flex;
-                    justify-content: center;
-                    position: absolute;
-                    left: 0;
-                    width: 100%;
-                    top: 0;
-                  }
-                  .qaf-loader-main{
-                    position: relative;
-                  }
-              </style>
-              <div class='qaf-loader-main'>
-              <div class="qaf-loader-container">
-              <span class="qaf-loader"></span>
-          </div>
-          </div>
-              `} disconnectedCallback() { } adoptedCallback() { } attributeChangedCallback(e, a, t) { }
-  } isQafLoaderDefine = !0
-} catch (a) { isQafLoaderDefine = !1 } var isQafLoaderDefine, qafLoaderelementExists = document.querySelector("qaf-loader"); void 0 === qafLoaderelementExists && null === qafLoaderelementExists && customElements.define("qaf-loader", QafLoader);
-
-try{class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf-event","qaf-message"];constructor(){super()}connectedCallback(){}disconnectedCallback(){}adoptedCallback(){}attributeChangedCallback(t,e,n){"qaf-alert-show"===t?(o=JSON.parse(n),"object"==typeof o&&(o.IsShow?this.innerHTML=`
+var eventNameqaf,qafAlertObject;if(!customElements.get("qaf-alert")){class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf-event","qaf-message"];constructor(){super()}connectedCallback(){}disconnectedCallback(){}adoptedCallback(){}attributeChangedCallback(t,a,e){"qaf-alert-show"===t?"object"==typeof(qafAlertObject=JSON.parse(e))&&(qafAlertObject.IsShow?this.innerHTML=`
               <style>
               .trigger{
                 text-align: center;
@@ -127,8 +80,8 @@ try{class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf
               </style>
               <div class="qaf-modal qaf-show-modal">
               <div class="qaf-modal-content">
-                  <h1 class="qaf-alert-qaf-alert-heading">${o.Message}</h1>
-                  ${o.Type&&"ok"===o.Type.toLowerCase()?`  <div class="qaf-alert-button-container">
+                  <h1 class="qaf-alert-qaf-alert-heading">${qafAlertObject.Message}</h1>
+                  ${qafAlertObject.Type&&"ok"===qafAlertObject.Type.toLowerCase()?`  <div class="qaf-alert-button-container">
                     <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">OK</button>
                 </div>`:`  <div class="qaf-alert-button-container">
                     <button class="qaf-alert-button-submit btn btn-primary qaf-alert-btn" onclick="oncloseModal('yes')">Yes</button>
@@ -136,9 +89,58 @@ try{class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf
                 </div>`}
               </div>
           </div>
-              `:this.innerHTML="")):"qaf-event"===t&&(a=n)}}var a,o,e=document.querySelector("qaf-alert");null==e&&customElements.define("qaf-alert",t)}catch(n){}function oncloseModal(t){let e=document.querySelector("qaf-alert");o.IsShow=!1,e.setAttribute("qaf-alert-show",JSON.stringify(o));var n=new CustomEvent(a,{detail:t});window.parent.document.dispatchEvent(n)}
+              `:this.innerHTML=""):"qaf-event"===t&&(eventNameqaf=e)}}customElements.define("qaf-alert",t)}function oncloseModal(t){let a=document.querySelector("qaf-alert");qafAlertObject.IsShow&&(qafAlertObject.IsShow=!1),a.setAttribute("qaf-alert-show",JSON.stringify(qafAlertObject));var e=new CustomEvent(eventNameqaf,{detail:t});window.parent.document.dispatchEvent(e)}
 
-              try{class e extends HTMLElement{constructor(){super()}static get observedAttributes(){return["element-id"]}connectedCallback(){this.render()}attributeChangedCallback(e,t,l){"element-id"===e&&this.render()}render(){let e=this.getAttribute("element-id"),t=this.getAttribute("element-label");this.innerHTML=`
+if (!customElements.get("qaf-loader")) {
+    class a extends HTMLElement {
+        static observedAttributes = ["qaf-loader-show"]; constructor() { super() } connectedCallback() {
+            this.innerHTML = `
+              <style>
+              .qaf-loader {
+                  width: 48px;
+                  height: 48px;
+                  border: 5px solid #FFF;
+                  border-bottom-color: #FF3D00;
+                  border-radius: 50%;
+                  display: inline-block;
+                  box-sizing: border-box;
+                  animation: rotation 1s linear infinite;
+                  }
+                
+                  @keyframes rotation {
+                  0% {
+                      transform: rotate(0deg);
+                  }
+                  100% {
+                      transform: rotate(360deg);
+                  }
+                  } 
+                  .qaf-loader-container{
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    position: absolute;
+                    left: 0;
+                    width: 100%;
+                    top: 0;
+                  }
+                  .qaf-loader-main{
+                    position: relative;
+                  }
+              </style>
+              <div class='qaf-loader-main'>
+              <div class="qaf-loader-container">
+              <span class="qaf-loader"></span>
+          </div>
+          </div>
+              `} disconnectedCallback() { } adoptedCallback() { } attributeChangedCallback(a, e, t) { }
+    } customElements.define("qaf-loader", a)
+}
+
+if (!customElements.get("qaf-single-line-text")) {
+    class e extends HTMLElement {
+        constructor() { super() } static get observedAttributes() { return ["element-id"] } connectedCallback() { this.render() } attributeChangedCallback(e, t, i) { "element-id" === e && this.render() } render() {
+            let e = this.getAttribute("element-id"), t = this.getAttribute("element-label"); this.innerHTML = `
     <style>
     .qaf-label {
         display: inline-block;
@@ -166,9 +168,14 @@ try{class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf
     <label for="${e}" class="qaf-label">${t}</label>
     <input type="text" id="${e}"class="qaf-input">
 </div>
-    `}}var t=document.querySelector("single-line-text");null==t&&customElements.define("single-line-text",e)}catch(l){}
+    `}
+    } customElements.define("qaf-single-line-text", e)
+}
 
-    try{class e extends HTMLElement{constructor(){super()}static get observedAttributes(){return["element-id"]}connectedCallback(){this.render()}attributeChangedCallback(e,t,l){"element-id"===e&&this.render()}render(){let e=this.getAttribute("element-id"),t=this.getAttribute("element-label");this.innerHTML=`
+if (!customElements.get("qaf-multi-line-text")) {
+    class e extends HTMLElement {
+        constructor() { super() } static get observedAttributes() { return ["element-id"] } connectedCallback() { this.render() } attributeChangedCallback(e, t, i) { "element-id" === e && this.render() } render() {
+            let e = this.getAttribute("element-id"), t = this.getAttribute("element-label"); this.innerHTML = `
     <style>
     .qaf-label {
         display: inline-block;
@@ -198,9 +205,14 @@ try{class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf
     <textarea  id="${e}" class="qaf-input" cols="40" rows="3"></textarea>
 </div>
 
-    `}}var t=document.querySelector("multi-line-text");null==t&&customElements.define("multi-line-text",e)}catch(l){}
+    `}
+    } customElements.define("qaf-multi-line-text", e)
+}
 
-    try{class e extends HTMLElement{constructor(){super()}static get observedAttributes(){return["element-id"]}connectedCallback(){this.render()}attributeChangedCallback(e,t,l){"element-id"===e&&this.render()}render(){let e=this.getAttribute("element-id"),t=this.getAttribute("element-label");this.innerHTML=`
+if (!customElements.get("qaf-email-compoonent")) {
+    class e extends HTMLElement {
+        constructor() { super() } static get observedAttributes() { return ["element-id"] } connectedCallback() { this.render() } attributeChangedCallback(e, t, i) { "element-id" === e && this.render() } render() {
+            let e = this.getAttribute("element-id"), t = this.getAttribute("element-label"); this.innerHTML = `
     <style>
     .qaf-label {
         display: inline-block;
@@ -228,4 +240,6 @@ try{class t extends HTMLElement{static observedAttributes=["qaf-alert-show","qaf
     <label for="${e}" class="qaf-label">${t}</label>
     <input type="text" id="${e}"class="qaf-input">
 </div>
-    `}}var t=document.querySelector("email-compoonent");null==t&&customElements.define("email-compoonent",e)}catch(l){}
+    `}
+    } customElements.define("qaf-email-compoonent", e)
+}

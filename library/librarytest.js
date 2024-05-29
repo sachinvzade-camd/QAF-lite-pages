@@ -1,11 +1,4 @@
 function createForm() {
-    let form=document.getElementById('form')
-    form.innerHTML=`
-    <single-line-text element-id="SingleLine" element-label="Single Line"></single-line-text>
-    <multi-line-text element-id="Multiline" element-label="Multiline"></multi-line-text>
-    <email-compoonent element-id="Email" element-label="Email"></email-compoonent>
-    <button type="button" onclick="submitForm()" class="qaf-btn-primary submit-btn">submit</button>
-    `
 }
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
@@ -24,7 +17,7 @@ function submitForm(){
             saveObject[id]=value
         }
     })
-debugger
+
     let isvalid=checkValidation(saveObject)
     if(isvalid){
         saveForm(saveObject);
@@ -32,7 +25,7 @@ debugger
 }
 
     function checkValidation(saveObject){
-debugger
+
         if(!saveObject.Email){
             openAlert("Please enter your email")
             return false
@@ -93,6 +86,7 @@ function saveForm(submitFormObject) {
         intermidiateRecord.RecordID = null;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.CreateItem(intermidiateRecord).then(response => {
+            openAlert("Record has been saved")
             resolve({
                 response
             })

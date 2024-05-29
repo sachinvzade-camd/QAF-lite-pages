@@ -17,7 +17,7 @@ class MyElement extends HTMLElement {
   
     // Called when an observed attribute changes
     attributeChangedCallback(name, oldValue, newValue) {
-        debugger
+        
       if (name === 'data-text') {
         this.render();
       }

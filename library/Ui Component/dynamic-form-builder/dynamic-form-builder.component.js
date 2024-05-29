@@ -16,9 +16,9 @@ try {
           buildControl(fields)
       }
       attributeChangedCallback(name, oldValue, newValue) {
-        debugger
+        
         if (name === 'field') {
-          debugger
+          
          let  objectDefine = JSON.parse(newValue)
          objectDefination=objectDefine
           if (typeof (objectDefine) === 'object') {

@@ -13,10 +13,10 @@ var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
 var Employee;
 var alertmessage = ""
-var apiURL = funFirstapiURL
+var apiURL = SITapiURL
 var fieldInternallist = []
 var user
-
+var MyleavesList = [];
 document.getElementById("startTime").addEventListener("change", function () {
   startTime = new Date(this.value);
   let displayStartTimeElement = document.getElementById('displayStartTime');
@@ -47,6 +47,7 @@ qafServiceLoaded = setInterval(() => {
     window.document.addEventListener('getlsvalue', getLocalstoreageDetails)
     setTimeout(() => {
       user = getCurrentUser();
+      getMyLeaveRequest()
       getLeaveType();
       getObject();
       getEmployee()
@@ -54,6 +55,24 @@ qafServiceLoaded = setInterval(() => {
     clearInterval(qafServiceLoaded);
   }
 }, 10);
+
+
+function getMyLeaveRequest() {
+  MyleavesList = []
+  let objectName = "Leave_Request";
+  let list = 'RecordID,Title,StartDate,EndDate,LeaveStatus';
+  let fieldList = list.split(",");
+  let pageSize = "20000";
+  let pageNumber = "1";
+  let orderBy = "true";
+  let whereClause = `CreatedByGUID='${user.EmployeeGUID}'`;
+  window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((leaves) => {
+    if (Array.isArray(leaves) && leaves.length > 0) {
+      MyleavesList = leaves;
+    }
+  });
+}
+
 
 function getObject() {
   window.QafService.GetObjectById('Employee_Leave_Balance').then((responses) => {
@@ -149,7 +168,6 @@ function handleChangeleaveType() {
 }
 
 function saveAppplyForm() {
-  
   alertmessage = ""
   let leaveButton = document.getElementById('apply_leave');
   if (leaveButton) {
@@ -214,16 +232,8 @@ function saveAppplyForm() {
             }
           }
           else {
-            // alertmessage = "You are not eligible for privilege leave"
-            // isSaveSubmit = false
-            isSaveSubmit = true
-            if (leaveBalance) {
-              let currentLeaveBalance = leaveBalance[value.MappingwithLeaveBalance]
-              if (parseFloat(numberofdaysValue) > currentLeaveBalance) {
-                alertmessage = "Leave taken is more than leave balance"
-                isSaveSubmit = false
-              }
-            }
+            alertmessage = "You are eligible for privilege leave 6 months after joining date"
+            isSaveSubmit = false
           }
         }
         else {
@@ -275,33 +285,102 @@ function saveAppplyForm() {
       if (leaveButton) {
         leaveButton.disabled = false
       }
-      alert('Brief about the request is required')
+      openAlert('Brief about the request is required')
     }
     else if (!leaveTypeValue) {
       if (leaveButton) {
         leaveButton.disabled = false
       }
-      alert('Leave Type is required')
+      openAlert('Leave Type is required')
 
     }
     else if (!startTime) {
       if (leaveButton) {
         leaveButton.disabled = false
       }
-      alert('Start Date is required')
+      openAlert('Start Date is required')
 
     }
     else if (!endTime) {
       if (leaveButton) {
         leaveButton.disabled = false
       }
-      alert('End Date is required')
-    } else {
-      save(object, 'Leave_Request')
+      openAlert('End Date is required')
+    }
+    else {
+
+      if (MyleavesList && MyleavesList.length > 0) {
+        let isLeaveAlreadyPresent = false;
+        let MessageAlert;
+        let MyLeave = [];
+
+        MyleavesList.forEach(leave => {
+          let InputLeaveStartDate = new Date(extractDateIndianFormat(startTime));
+          let InputLeaveEndDate = new Date(extractDateIndianFormat(endTime));
+          let LeaveStartDate = new Date(extractDateIndianFormat(leave.StartDate));
+          let LeaveEndDate = new Date(extractDateIndianFormat(leave.EndDate));
+          let condition1 = (InputLeaveStartDate >= LeaveStartDate && InputLeaveStartDate <= LeaveEndDate);
+          let condition2 = (InputLeaveEndDate >= LeaveStartDate && InputLeaveEndDate <= LeaveEndDate);
+          if (condition1 || condition2) {
+            MessageAlert = "Leave request has already been raised for the selected date";
+            MyLeave.push(leave);
+          } else {
+            isLeaveAlreadyPresent = true;
+          }
+        });
+        if (MyLeave.length > 0) {
+          let leaveObject = [];
+          MyLeave.forEach(val => {
+            let LeaveStatus = val.LeaveStatus;
+            if (LeaveStatus.toLowerCase() === "Cancel Closed".toLowerCase()) {
+              isLeaveAlreadyPresent = true;
+            }
+            else {
+              isLeaveAlreadyPresent = false;
+              leaveObject.push(val)
+            }
+          })
+          if (leaveObject.length > 0) {
+            openAlert(MessageAlert)
+            if (leaveButton) {
+              leaveButton.disabled = false
+            }
+          }
+          else {
+            let saveButton = document.getElementById("apply_leave")
+            if (saveButton) {
+              saveButton.disabled = true;
+            }
+            save(object, 'Leave_Request')
+          }
+        }
+        else {
+          if (isLeaveAlreadyPresent) {
+            let saveButton = document.getElementById("apply_leave")
+            if (saveButton) {
+              saveButton.disabled = true;
+            }
+            save(object, 'Leave_Request')
+          }
+          else {
+            openAlert(MessageAlert)
+            if (leaveButton) {
+              leaveButton.disabled = false
+            }
+          }
+        }
+      }
+      else {
+        let saveButton = document.getElementById("apply_leave")
+        if (saveButton) {
+          saveButton.disabled = true;
+        }
+        save(object, 'Leave_Request')
+      }
     }
   }
   else {
-    alert(alertmessage)
+    openAlert(alertmessage)
     if (leaveButton) {
       leaveButton.disabled = false
     }
@@ -337,6 +416,15 @@ function save(object, repositoryName) {
   )
 
 }
+
+function extractDateIndianFormat(inputDate) {
+  const date = new Date(inputDate);
+  const day = date.getDate();
+  const month = date.toLocaleString('en-IN', { month: 'long' });
+  const year = date.getFullYear();
+  return `${year}-${month}-${day}`;
+}
+
 function getByKey(key) {
   let cacheValue = this.localStorage.getItem(key);
   if (cacheValue && (cacheValue != "undefined")) {
@@ -362,7 +450,7 @@ function calculateDifference() {
     }
   }
   else {
-    alert('Please select proper date range')
+    openAlert('Please select proper date range')
   }
 
 }
@@ -372,7 +460,13 @@ function handleChangehalfday() {
     calculateDifference()
   }
 }
+
+
 function clearForm() {
+  let saveButton = document.getElementById("apply_leave")
+  if (saveButton) {
+    saveButton.disabled = false;
+  }
   let Title = document.getElementById('Title');
   let leaveType = document.getElementById('leaveType');
   let startDate = document.getElementById("startTime")
@@ -380,18 +474,21 @@ function clearForm() {
   let halfdayelement = document.getElementById("halfday");
   let Note = document.getElementById('Note');
   let numberofdays = document.getElementById('numberofdays');
+  let displayStartTime = document.getElementById('displayStartTime');
+  let displayEndTime = document.getElementById('displayEndTime');
+  let leaveBalance = document.getElementById('leaveBalance');
 
   if (Title) {
-    Title.value = ""
+    Title.value = "";
   }
   if (leaveType) {
-    leaveType.value = ""
+    leaveType.value = "";
   }
   if (Note) {
-    Note.value = ""
+    Note.value = "";
   }
   if (numberofdays) {
-    numberofdays.value = ""
+    numberofdays.value = "";
   }
   if (startDate) {
     startDate.value = "";
@@ -400,6 +497,15 @@ function clearForm() {
   if (endDate) {
     endDate.value = "";
     endTime = ""
+  }
+  if (displayStartTime) {
+    displayStartTime.value = "";
+  }
+  if (displayEndTime) {
+    displayEndTime.value = "";
+  }
+  if (leaveBalance) {
+    leaveBalance.value = "";
   }
   if (halfdayelement) {
     halfdayelement.checked = false
@@ -476,7 +582,6 @@ function storeDateWithTimeZone(dateString, timeZone = "", isTimeSelected = false
 }
 
 function getEmployee() {
-
   Employee = []
   let objectName = "Employees";
   let list = 'RecordID,FirstName,LastName,JoiningDate';
@@ -492,6 +597,7 @@ function getEmployee() {
     }
   });
 }
+
 function formatDate(dateString) {
   // Create a Date object from the provided dateString
   let dateObject = new Date(dateString);
@@ -508,4 +614,20 @@ function formatDate(dateString) {
   let formattedDateString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 
   return formattedDateString;
+}
+
+
+function openAlert(message) {
+  isApicall = false
+  let qafAlertObject = {
+    IsShow: true,
+    Message: message,
+    Type: 'ok'
+  }
+  const body = document.body;
+  let alertElement = document.createElement('qaf-alert')
+  body.appendChild(alertElement);
+  const qafAlertComponent = document.querySelector('qaf-alert');
+  qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
+  qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
