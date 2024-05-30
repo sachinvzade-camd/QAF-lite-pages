@@ -195,7 +195,7 @@ a.dashboard-App .fa {
 .qaf-form-group span.required {
   display: inline;
   vertical-align: bottom;
-  color: #cc0000;
+  color: red;
 }
 
 .fs-input {
@@ -289,9 +289,10 @@ a.dashboard-App .fa {
   max-width: 100%; /* Add this line to limit the width */
   max-height: 78vh;
 }
-.date-input {
+.date-input-expense {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 .row-add {
   color: rgb(0, 156, 231);
@@ -518,3 +519,27 @@ input[type=file] {
   #CourierReceipt-name{
     margin-left: 10px;
   }
+
+  .date-input-courier {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+  }
+  .clearDate-btn{
+    color:rgb(6 176 244);
+  cursor: pointer;
+  }
+
+  .labelarea{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  input[type="date"]:required:invalid::-webkit-datetime-edit {
+    color: transparent;
+  }
+  input[type="date"]:focus::-webkit-datetime-edit {
+    color: black !important;
+  }
+  

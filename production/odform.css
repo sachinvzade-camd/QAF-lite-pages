@@ -1,0 +1,140 @@
+.job-apply-form {
+  margin-top: 150px;
+}
+.page {
+  --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+  --qaf-grid-button-border-radius: 4px;
+}
+.qaf-btn-primary {
+  background-color: var(--qaf-grid-button-bg-color, #313cbf);
+  color: var(--qaf-grid-button-color, #fff);
+}
+.pg-content {
+  padding-top: 0 !important;
+  min-height: 0;
+  max-height: 100%;
+}
+.hrz-dynamic-frm-per {
+  height: 90vh;
+  overflow: scroll;
+}
+
+#startTime,
+#endTime {
+  width: 22px;
+}
+.date-control {
+  display: flex;
+}
+.required {
+  display: inline;
+  color: red;
+  padding-left: 5px;
+}
+.ql-attendence-btn .btn {
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+.ql-attendence-btn {
+  padding: 0 13px;
+}
+.ql-attendence-cancel {
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+}
+
+.form-control {
+  width: 100%;
+}
+.spacing-in-rows {
+  margin-bottom: 10px;
+}
+
+.form-section {
+  padding: 8px 0px 0px 0px;
+  border-radius: 4px;
+}
+.qaf-checkbox {
+  display: flex;
+}
+.checkbox-label {
+  margin-left: 10px;
+}
+
+.hrz-dynamic-frm-per .custom-hrz-n-r-container-per {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn {
+  margin-left: 10px;
+  padding: 12px 24px;
+  border-radius: 5px;
+}
+
+.page-blur {
+  opacity: 0.7;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* OOTB Styling */
+
+.right-btn {
+  margin-right: 8px;
+}
+.control-label-planner-filed {
+  font-size: 16px;
+  transition: font-size 0.3s ease;
+  color: Gray;
+  padding: 0px 8px;
+}
+
+.input-field {
+  background-color: white;
+  padding: 2px 4px;
+  padding-left: 4px !important;
+}
+.apply-input {
+  padding: 0px 8px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  padding-bottom: 10px;
+}
+input:disabled {
+  cursor: default;
+  background-color: white;
+}
+
+input[type="date" i] {
+  color: white;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(1);
+  color: white;
+}
+
+.date-field {
+  background-color: var(--ButtonBackGroundColor);
+  border: 1px solid var(--ButtonBackGroundColor);
+  outline: none;
+}
+
+.first-row{
+  padding-top: 5px;
+}
+
+.textarea-input{
+  padding-left: 5px;
+}

@@ -71,7 +71,7 @@ var gridExpenseColumns = [
  qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
         todayMonth.innerHTML = currentMonth;
-        window.localStorage.setItem('ma',"funfirst.quickappflow.com")
+        // window.localStorage.setItem('ma',"funfirst.quickappflow.com")
         displayGrid()
         getAllListEmployee()
         clearInterval(qafServiceLoaded);
@@ -404,8 +404,6 @@ function getExpenseLedger() {
         if (Array.isArray(expense_ledgers) && expense_ledgers.length > 0) {
             expenseLedgerList = expense_ledgers;
             tempExpenseLedgerList = expense_ledgers;
-            tempExpenseLedgerList=tempExpenseLedgerList.filter(ledger=>ledger.Project)
-            
         }
     });
 }
@@ -479,7 +477,7 @@ function setEmployeeinDropdown() {
     }
     if(!expenseRecordID){
         user = getCurrentUser()
-        requestForElement.value=user.value.EmployeeGUID
+        requestForElement.value=user.EmployeeGUID
     }
 }
 function setReportingManagerinDropdown() {
@@ -533,7 +531,7 @@ function onChangeProject(){
     let projectElemet = document.getElementById("Project")
     if(projectElemet){
         projectID=projectElemet.value
-        expenseLedgerList=tempExpenseLedgerList.filter(ledger=>ledger.Project.split(';#')[0] === projectID)
+        expenseLedgerList=tempExpenseLedgerList.filter(a=>(a.Project?a.Project.split(';#')[0]:"") === projectID)
         expenseLedgerOnDropdown()
     }
 
@@ -675,7 +673,7 @@ function loadExpernseperticularTable() {
             <select class="fs-input tableinput ledgerName" id="expense_ledger_name-${index}" name="expense_ledger_name" onchange="onChangeExpenseLedeger('${index}')"></select>
         </td>
         <td class="qaf-td">
-            <div class="date-input">
+            <div class="date-input-expense">
                 <input class="fs-input tableinput" type="date" name="expense_date" placeholder="" id='expenseDate-${index}' onchange="onChangeExpenseDate('${index}')" required>
                 <button type="button" class="row-add cross-button" onclick="cleardateValue('${index}')">
                     <i class="fa fa-times" aria-hidden="true"></i>
@@ -1638,9 +1636,18 @@ function deleteAttachmentReceipt(){
 function openAlert(message) {
     let qafAlertObject={
         IsShow:true,
-        Message:message
+        Message:message,
+        Type: 'ok'
     }
     const qafAlertComponent = document.querySelector('qaf-alert');
     qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
     qafAlertComponent.setAttribute('qaf-event', 'alertclose');
+}
+
+function clearCourierDate() {
+    let startTime = document.getElementById('CourierDate');
+    if(startTime){
+        startTime.value = "";
+    }
+
 }

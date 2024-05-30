@@ -1,0 +1,47 @@
+<div class="page-container">
+    <header>
+        <div class="header-container">
+            <div class="left-container">
+                <div class="common-page-title">Leave Balance</div>
+            </div>
+            <div class="right-container">
+                <div>
+                    <select id="leaveTypeBalance"  onchange="getAuditLog()">
+                    </select>
+                </div>
+
+                <div class="nevigator">
+                    <div class="fs-preveous"> <button class="btn btn-primary" onclick="prevMonth()"> <i
+                                class="fa fa-chevron-left" aria-hidden="true"></i> </button> </div>
+                    <div class="currentDate" id="nevigatorDate"> </div>
+                    <div class="next"> <button class="btn btn-primary" onclick="nextMonth()"> <i
+                                class="fa fa-chevron-right" aria-hidden="true"></i> </button> </div>
+                </div>
+
+                <div class="button"> <button type="button" id="ExportButton" class=" btn btn-primary"
+                        onclick="ExportReport()"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> </button> </div>
+            </div>
+        </div>
+    </header>
+    <div id="pageDisabled">
+        <div class="tablecontainer" id="intervieandhired-table"> </div>
+    </div>
+    <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"> </span> </div>
+</div>
+<div class="form" id="popupForm">
+    <div class="main-container">
+        <div class="button-container">
+            <div class="header-buttons">
+                <div class="button"> <button class="btn btn-primary" onclick="CloseForm()"> Cancel </button> </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="header-title table-heading">
+                <div class="common-page-title" id="tableTitle"></div>
+            </div>
+            <div class="container">
+                <div class="tablecontainer" id="popupTable"> </div>
+            </div>
+        </div>
+    </div>
+</div>

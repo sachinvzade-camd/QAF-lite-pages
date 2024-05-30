@@ -1,5 +1,6 @@
 
 var Employee = [];
+var applicationRoleList = [];
 var LocationList = [];
 var departmentList = [];
 var applist = [];
@@ -12,46 +13,11 @@ var apURL = SITapiURL;
 var employeeListForResetPassword = [];
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-
-        getDepartment()
+        getEmployee()
+        getApplicationRole()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
-
-
-function getDepartment() {
-    departmentList = []
-    let objectName = "Department";
-    let list = 'Name';
-    let fieldList = list.split(",");
-    let pageSize = "20000";
-    let pageNumber = "1";
-    let orderBy = "true";
-    let whereClause = "";
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((departments) => {
-        if (Array.isArray(departments) && departments.length > 0) {
-            departmentList = departments;
-            getLocation()
-        }
-    });
-}
-
-function getLocation() {
-    LocationList = []
-    let objectName = "Location";
-    let list = 'Name';
-    let fieldList = list.split(",");
-    let pageSize = "20000";
-    let pageNumber = "1";
-    let orderBy = "true";
-    let whereClause = "";
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((locations) => {
-        if (Array.isArray(locations) && locations.length > 0) {
-            LocationList = locations;
-            getEmployee()
-        }
-    });
-}
 
 function getEmployee() {
     ShowLoader()
@@ -70,6 +36,23 @@ function getEmployee() {
         generateReport();
     });
 }
+function getApplicationRole() {
+    applicationRoleList = []
+    let objectName = "Application_Role";
+    let list = 'RecordID,RoleName,AppName';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = "";
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((roles) => {
+        if (Array.isArray(roles) && roles.length > 0) {
+            applicationRoleList = roles
+        }
+      
+    });
+}
+
 
 function generateReport() {
     TableData = Employee;
@@ -232,8 +215,7 @@ function AddForm() {
     let popUp = document.getElementById("userForm");
     if (popUp) {
         popUp.style.display = 'block';
-        setDepartmentinDropdown()
-
+        getApplist()
         addCssforscroll()
 
     }
@@ -281,31 +263,6 @@ function resetFrom() {
     }
 }
 
-function setDepartmentinDropdown() {
-    let departmentElement = document.getElementById('Department');
-    let options = `<option value=''>Select Department</option>`;
-    if (departmentElement) {
-        departmentList.forEach(dept => {
-
-            options += `<option value="${dept.RecordID}">${dept.Name}</option>`;
-        });
-        departmentElement.innerHTML = options;
-    }
-    SetOfficeloacationdropdown()
-}
-
-
-function SetOfficeloacationdropdown() {
-    let officeLocationElement = document.getElementById('officeLocation');
-    let options = `<option value=''> Select Office Location</option>`;
-    if (officeLocationElement) {
-        LocationList.forEach(loc => {
-            options += `<option value="${loc.RecordID}">${loc.Name}</option>`;
-        });
-        officeLocationElement.innerHTML = options;
-    }
-
-}
 
 function nextFormFirst() {
 
@@ -418,8 +375,16 @@ function getApplist() {
             applist = apps;
             let appoption = ''
             applist.forEach(val => {
-                appoption += ` <li><div class="es-form-group"> <input class="es-input" type="checkbox"  name="${val.AppName}" id='${val.RecordID}' value="" onclick="onAppchange('${val.RecordID}')"> <label 
-                class="es-label">${val.AppName}</label> <br> </div></li>`
+                let approle=applicationRoleList.filter(role=>(role.AppName?role.AppName.split(";#")[0]:'')===val.RecordID)
+
+                appoption += ` <li class='permission-list'><div class="es-form-group">  <label 
+                class="es-label">${val.AppName}</label> <br> </div>
+                <div class='permission-dropdown'>
+                <select class="fs-input fs-select arrow" id="permission-${val.RecordID}" name="permission">
+               ${addRole(approle)}
+                </select>
+                </div>
+                </li>`
             })
 
             document.getElementById('applistid').innerHTML = appoption
@@ -430,6 +395,16 @@ function getApplist() {
     if (isloadingElement) {
         isloadingElement.style.display = 'none'
     }
+}
+
+function addRole(approle){
+    let role=`<option value=''>Select Permision</option>`
+    if(approle&&approle.length>0){
+       approle.forEach(val=>{
+        role+= `<option value='${val.RecordID}'>${val.RoleName}</option>`
+       })
+    }
+    return role
 }
 
 function onAppchange(apprecordID) {
@@ -479,13 +454,25 @@ function getDetails(RecordID) {
     saveAppUserMapping()
     let superadminElement = document.getElementById('superadmin');
     // if (superadminElement.checked) {
-        saveUserPermission()
+       
     // }
     CloseForm();
 }
 
 
 function saveAppUserMapping() {
+    let selectedApps=[]
+
+    applist.forEach(val=>{
+        let permissionElmenet=document.getElementById(`permission-${val.RecordID}`)
+        if(permissionElmenet){
+            if(permissionElmenet.value){
+                selectedApps.push(val)
+            }
+        }
+    })
+
+
     let mapping = []
     selectedApps.forEach(app => {
 
@@ -503,26 +490,34 @@ function saveAppUserMapping() {
         mapping.push(appUserMapping)
     })
     bulkadd(mapping, 'App_User_Mapping')
+     saveUserPermission()
 }
 
 
 function saveUserPermission() {
     let mapping = []
     selectedApps.forEach(app => {
-        let superadmin = document.getElementById('superadmin')
-        let users = [];
-        users.push({
-            UserType: '1',
-            RecordID: saveUser.split(";#")[0]
-        })
-        let appUserMapping = {
-            AppName: app.RecordID + ";#" + app.AppName,
-            ProfileorTeam: JSON.stringify(users),
-            SuperAdmin: superadmin.checked
+        let roleName=applicationRoleList.filter(role=>(role.AppName?role.AppName.split(";#")[0]:'')===app.RecordID);
+
+        if(roleName&&roleName.length>0){
+            let superadmin = document.getElementById('superadmin')
+            let users = [];
+            users.push({
+                UserType: '1',
+                RecordID: saveUser.split(";#")[0]
+            })
+            let appUserMapping = {
+                AppName: app.RecordID + ";#" + app.AppName,
+                ProfileorTeam: JSON.stringify(users),
+                SuperAdmin: superadmin.checked,
+                Role:roleName[0].RecordID+";#"+roleName[0].RoleName
+            }
+            mapping.push(appUserMapping)
         }
-        mapping.push(appUserMapping)
     })
-    bulkadd(mapping, 'User_Permission')
+    if(mapping&&mapping.length>0){
+        bulkadd(mapping, 'User_Permission')
+    }
 
 }
 

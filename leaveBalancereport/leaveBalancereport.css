@@ -1,0 +1,288 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  font-family: "poppins", sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+}
+.pg-content {
+  margin-top: 30px;
+}
+
+.page-container{
+  margin: 10px;
+}
+/* header */
+header {
+  background-color: #ffffff;
+  color: #565656;
+  align-items: center;
+}
+
+.common-page-title {
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding-top: 5px;
+}
+
+header i {
+  color: #ffffff;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  padding: 3px;
+  align-items: center;
+}
+
+.right-container{
+  display: flex;
+  align-items: center;
+}
+.btn{
+  margin:0px 5px;
+}
+.nevigator {
+  display: flex;
+  justify-content: flex-end;
+  color: #ffffff;
+  margin: 0;
+  align-items: center;
+}
+
+
+
+/*Crad Styling */
+
+.fs-date-container {
+  width: 100%;
+  height: auto;
+}
+
+.currentDate {
+  display: flex;
+  align-items: center;
+  padding: 3px 5px;
+  margin: 0px 5px;
+  color: black;
+}
+
+.fs-preveous,
+.next,
+.add {
+  margin-right: 0px;
+}
+.add {
+  margin-left: 10px;
+}
+
+.qaf-cancel:hover {
+  background-color: rgb(240, 240, 240);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+/* Table Styling */
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tablecontainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+  overflow-x: auto; /* Add this line */
+  max-width: 100%; /* Add this line to limit the width */
+  max-height: 70vh;
+}
+
+.tablecontainer::-webkit-scrollbar {
+  height: 10px;
+}
+
+.qaf-table {
+  font-size: 13px;
+  width: 100%;
+  margin: 2px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  overflow: hidden;
+  font-weight: 400;
+}
+.qaf-tr,
+.qaf-td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  vertical-align: middle;
+}
+
+.qaf-th {
+  height: 60px;
+  padding: 12px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 70px;
+}
+.qaf-td {
+  height: 40px;
+  padding: 0px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 135px;
+}
+
+.qaf-th {
+  background-color: rgb(242, 242, 242);
+  color: rgb(0, 0, 0);
+  font-weight: 400;
+}
+
+.qaf-tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.no-record {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.qaf-td a{
+  color: #009ce7;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hide {
+  display: none;
+}
+/* Loader */
+.page-disabled {
+  background: #fff;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: none;
+}
+.qaf-loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff7a59;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.qaf-loader-div {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  top: 45vh;
+}
+
+
+
+/* Custom Form */
+.form {
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  display: none;
+}
+
+/* Form Styling */
+
+.common-page-title {
+  font-size: 18px;
+  font-family: inherit;
+  color: inherit;
+}
+
+.page-main {
+  background: #8c3838;
+  width: 100%;
+}
+.main-container {
+  margin-top: 60px;
+  width: 50%;
+  background: #fff;
+  float: right;
+}
+.form-container {
+  padding: 20px;
+  height: 659px;
+}
+.container {
+  width: 100%;
+  margin: 0px;
+  padding: 10px 0px;
+  border-radius: 5px;
+}
+
+.header-buttons {
+  background-color: #f3f3f3;
+  padding: 10px 5px;
+  border-bottom: 1px solid #000;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: start;
+}
+
+.form-container {
+  max-height: 655px;
+  overflow-y: auto;
+  border: none;
+}
+.form-container::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+  border-radius: 5px;
+}
+
+.form-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the scrollbar track */
+}
+
+/* Handle */
+.form-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.hide-y-scroll {
+  overflow-y: hidden !important;
+}
