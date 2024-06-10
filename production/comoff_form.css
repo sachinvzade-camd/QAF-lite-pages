@@ -22,6 +22,7 @@
 #startTime,
 #endTime {
   width: 22px;
+  margin-right: 5px;
 }
 .date-control {
   display: flex;
@@ -49,7 +50,7 @@
   width: 100%;
 }
 .spacing-in-rows {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .form-section {
@@ -68,10 +69,11 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-top: 10px;
 }
 
 .btn {
-  margin-left: 10px;
+  margin-left: 5px;
   padding: 12px 24px;
   border-radius: 5px;
 }
@@ -86,10 +88,9 @@
 
 .hrz-dynamic-frm-per .custom-hrz-n-r-container-per {
   padding-bottom: 0px !important;
-    
 }
 .right-btn {
- margin-right: 8px;
+  margin-right: 4px;
 }
 
 .control-label-planner-filed {
@@ -101,7 +102,7 @@
 
 .input-field {
   background-color: white;
-  padding: 2px 4px;
+  padding: 0px 4px;
   padding-left: 4px !important;
 }
 .apply-input {
@@ -109,7 +110,7 @@
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 input:disabled {
@@ -133,9 +134,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   outline: none;
 }
 
-.first-row{
+.first-row {
   padding-top: 5px;
 }
-.textarea-input{
+.textarea-input {
   padding-left: 5px;
+}
+
+.date-border {
+  border-bottom: 1px solid #ccc;
+}
+.date-input-form {
+  border: none;
 }

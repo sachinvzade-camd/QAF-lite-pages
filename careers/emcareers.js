@@ -1,7 +1,11 @@
+var productionURL = "https://inskferda.azurewebsites.net"
+var SITapiURL = "https://demtis.quickappflow.com"
+var apURL = productionURL
 var noRecordFoundImages;
 var sharedJDURL;
 let qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+      window.QafService.SetEnvUrl(apURL)
         getDetails()
         clearInterval(qafServiceLoaded);
     }

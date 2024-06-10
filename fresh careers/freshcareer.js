@@ -1,7 +1,6 @@
 var noRecordFoundImages;
 var sharedJDURL;
 let qafServiceLoaded = setInterval(() => {
-  
     if (window.QafService) {
         getDetails()
         clearInterval(qafServiceLoaded);
@@ -16,8 +15,6 @@ function getDetails() {
     let fieldList = list.split(",")
     let pageSize = "20000";
     let pageNumber = "1";
-    window.QafService.SetEnvUrl("https://demtis.quickappflow.com")
-    
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((data) => {
       if (Array.isArray(data) && data.length > 0) {
       noRecordFoundImages = window.location.origin+"/Attachment/downloadfile?fileUrl="+encodeURIComponent(getURLFromJson(data[0].PortalImage))

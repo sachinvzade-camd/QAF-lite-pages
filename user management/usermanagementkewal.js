@@ -9,19 +9,33 @@ var EmployeeRecordId;
 var employeeSaveObject = {}
 var saveUser = ""
 var SITapiURL = "https://demtis.quickappflow.com"
-var funFirstapiURL = "https://inskferda.azurewebsites.net"
-
-var apURL = funFirstapiURL;
+var apURL = SITapiURL;
 var employeeListForResetPassword = [];
+var localStorageApp = ""
+var localStorageAppList 
+
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        localStorage.setItem('ma',window.location.host)
+        localStorageApp = getQCValue('QAF_CONFIG')
+        let qafdashboardList = getQCValuenew('QAF_DASHBOARD_DESKTOP')
+        localStorageAppList=qafdashboardList.filter(dash=>dash.SectionID==='6')[0].ChildSection
+
         getEmployee()
         getApplicationRole()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
-
+function getQCValuenew(key) {
+    let responses = JSON.parse(window.localStorage.getItem('QAF_CONFIG'));
+    if (responses && responses.length > 0) {
+      let keyValues = responses.filter(res => res.Key === key)
+      if (keyValues && keyValues.length > 0) {
+        return JSON.parse(keyValues[0].Value)
+      }
+      return ""
+    }
+    return ""
+  }
 function getEmployee() {
     ShowLoader()
     Employee = []
@@ -52,7 +66,7 @@ function getApplicationRole() {
         if (Array.isArray(roles) && roles.length > 0) {
             applicationRoleList = roles
         }
-      
+
     });
 }
 
@@ -308,7 +322,7 @@ function getSaveObject() {
     if (lastNameElement) {
         lastname = lastNameElement.value.trim().replace(/\s+/g, ' ');
     }
-    
+
     let emailElement = document.getElementById('Email');
     let email = ""
     if (emailElement) {
@@ -372,25 +386,63 @@ function getApplist() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((apps) => {
         if (Array.isArray(apps) && apps.length > 0) {
             applist = apps;
-            let appNotDisplay=['Repository', 'Settings', 'User Management', 'Workflow', 'Home', 'CEO Dashboard', 'Customer Portal', 'Eportal', 'Pages Library', 'QAF Users','Reports Analytics','Employee Leave Balance','Payroll']
-
+            let appNotDisplay = ['Repository', 'Settings', 'User Management', 'Workflow', 'Home', 'CEO Dashboard', 'Customer Portal', 'Eportal', 'Pages Library', 'QAF Users']
             applist = applist.filter((objOne) => {
                 return !appNotDisplay.some((objTwo) => {
-                  return objOne.AppName === objTwo;
+                    return objOne.AppName === objTwo;
                 });
-              });
+            });
+
+            console.log(localStorageAppList);
+            let sectionWiseList=[]
+            let commonMainMenu=localStorageAppList.filter((v, i, a) => a.findIndex(t => t.MainMenu === v.MainMenu) === i);
+
+            commonMainMenu.forEach(main=>{
+                let object={}
+                object['MainMenuName']=main.MainMenu?main.MainMenu:'Other'
+                let subMenuApp=[]
+                let menuApplist=localStorageAppList.filter(app=>(app['MainMenu']?app['MainMenu']:'Other')===(main.MainMenu?main.MainMenu:'Other'));
+                if(menuApplist&&menuApplist.length>0){
+
+                    menuApplist.forEach(mapp=>{
+                        applist.forEach(app=>{
+                            if(app.AppName===mapp.SectionName){
+                                subMenuApp.push({
+                                    DisplayName:mapp.DisplayName,
+                                    SectionName:mapp.SectionName
+                                })
+                            }
+
+
+                        })
+
+                    })
+
+                }
+                object['SubmenuAppList']=subMenuApp
+                sectionWiseList.push(object)
+            })
+            
+console.log(sectionWiseList);
 
             let appoption = ''
-            applist.forEach(val => {
-                let approle=applicationRoleList.filter(role=>(role.AppName?role.AppName.split(";#")[0]:'')===val.RecordID)
+            console.log("applist",applist)
+            console.log("localStorageApp",localStorageApp) 
 
-                appoption += ` <li class='permission-list'><div class="es-form-group">  <label 
-                class="es-label">${val.AppName}</label> <br> </div>
-                <div class='permission-dropdown'>
-                <select class="fs-input fs-select arrow" id="permission-${val.RecordID}" name="permission">
-               ${addRole(approle)}
-                </select>
-                </div>
+
+            applist.forEach((val, index) => {
+                let approle = applicationRoleList.filter(role => (role.AppName ? role.AppName.split(";#")[0] : '') === val.RecordID)
+                const className = index % 2 === 1 ? "right-align-li" : "";
+                appoption += ` 
+                <h5><5> 
+                <li class='permission-list ${className}'>
+                    <div class="es-form-group">  
+                        <label class="es-label">${val.AppName ? getDisplayname(val.AppName) : ""}</label> 
+                        <br> 
+                    </div>
+                    <div class='permission-dropdown'>
+                         <select class="fs-input fs-select arrow" id="permission-${val.RecordID}" name="permission">${addRole(approle)}</select>
+                    </div>
                 </li>`
             })
 
@@ -404,12 +456,105 @@ function getApplist() {
     }
 }
 
-function addRole(approle){
-    let role=`<option value=''>Select Permision</option>`
-    if(approle&&approle.length>0){
-       approle.forEach(val=>{
-        role+= `<option value='${val.RecordID}'>${val.RoleName}</option>`
-       })
+function getDisplayname(AppName) {
+    let sectionName = AppName;
+    const foundItem = localStorageApp.find(item => item.SectionName === sectionName);
+    if (foundItem) {
+        return foundItem.DisplayName ? foundItem.DisplayName : sectionName
+    }
+    else {
+        return sectionName;
+    }
+
+
+}
+
+
+// function getQCValue(key) {
+//     let responses = JSON.parse(window.localStorage.getItem(key));
+//     if (responses && responses.length > 0) {
+//         const dashboard = responses.find(item => item.Key === "QAF_DASHBOARD_DESKTOP");
+//         if (dashboard) {
+//             const sections = JSON.parse(dashboard.Value);
+//             const sectionArray = [];
+
+//             sections.forEach(section => {
+//                 sectionArray.push({
+//                     SectionName: section.SectionName,
+//                     DisplayName: section.DisplayName || null
+//                 });
+
+//                 if (section.ChildSection) {
+//                     section.ChildSection.forEach(child => {
+//                         sectionArray.push({
+//                             SectionName: child.SectionName,
+//                             DisplayName: child.DisplayName || null
+//                         });
+//                     });
+//                 }
+//             });
+//             return sectionArray;
+//         } else {
+//             return ""
+//         }
+//     }
+
+// }
+
+function getQCValue(key) {
+    let responses = JSON.parse(window.localStorage.getItem(key));
+    if (responses && responses.length > 0) {
+        const dashboard = responses.find(item => item.Key === "QAF_DASHBOARD_DESKTOP");
+        if (dashboard) {
+            const ParsedData = JSON.parse(dashboard.Value);
+            let newObject = {
+                "Others": []
+              };
+              
+              ParsedData.forEach(section => {
+                if (section.MainMenu) {
+                  newObject[section.MainMenu] = newObject[section.MainMenu] || [];
+                  newObject[section.MainMenu].push({
+                    "SectionName": section.SectionName,
+                    "DisplayName": section.DisplayName || section.SectionName
+                  });
+                } else if (section.ChildSection) {
+                  section.ChildSection.forEach(child => {
+                    if (child.MainMenu) {
+                      newObject[child.MainMenu] = newObject[child.MainMenu] || [];
+                      newObject[child.MainMenu].push({
+                        "SectionName": child.SectionName,
+                        "DisplayName": child.DisplayName || child.SectionName
+                      });
+                    } else {
+                      newObject.Others.push({
+                        "SectionName": child.SectionName,
+                        "DisplayName": child.DisplayName || child.SectionName
+                      });
+                    }
+                  });
+                } else {
+                  newObject.Others.push({
+                    "SectionName": section.SectionName,
+                    "DisplayName": section.DisplayName || section.SectionName
+                  });
+                }
+              });   
+              console.log(newObject);
+              return newObject
+        } else {
+            return "";
+        }
+    }
+}
+
+
+function addRole(approle) {
+    let role = `<option value=''>Select Permision</option>`
+    if (approle && approle.length > 0) {
+        approle.forEach(val => {
+            role += `<option value='${val.RecordID}'>${val.RoleName}</option>`
+        })
     }
     return role
 }
@@ -442,7 +587,6 @@ function nextFormSecond() {
 }
 
 function saveDetails() {
-    
     let sendemailElement = document.getElementById('sendEmail');
     let blurdivElement = document.getElementById('blurdiv');
     if (blurdivElement) {
@@ -458,7 +602,7 @@ function saveDetails() {
     if (lastNameElement) {
         lastname = lastNameElement.value.trim().replace(/\s+/g, ' ');
     }
-    
+
     let emailElement = document.getElementById('Email');
     let email = ""
     if (emailElement) {
@@ -484,11 +628,11 @@ function saveDetails() {
     else if (!validateEmail(employeeSaveObject.Email)) {
         openAlert("Please enter Valid email address")
     }
-   else{
+    else {
         save(employeeSaveObject, 'Employees', getDetails)
         getEmployee();
     }
-   
+
 }
 
 function getDetails(RecordID) {
@@ -496,19 +640,18 @@ function getDetails(RecordID) {
     saveAppUserMapping()
     let superadminElement = document.getElementById('superadmin');
     // if (superadminElement.checked) {
-       
+
     // }
     CloseForm();
 }
 
 
 function saveAppUserMapping() {
-    let selectedApps=[]
-
-    applist.forEach(val=>{
-        let permissionElmenet=document.getElementById(`permission-${val.RecordID}`)
-        if(permissionElmenet){
-            if(permissionElmenet.value){
+    let selectedApps = []
+    applist.forEach(val => {
+        let permissionElmenet = document.getElementById(`permission-${val.RecordID}`)
+        if (permissionElmenet) {
+            if (permissionElmenet.value) {
                 selectedApps.push(val)
             }
         }
@@ -527,40 +670,30 @@ function saveAppUserMapping() {
             AppStore: app.AppName,
             AppName: app.RecordID + ";#" + app.AppName,
             AllowUsers: JSON.stringify(users),
-            TargetPlatform:'Web'
+            TargetPlatform: 'Web'
         }
         mapping.push(appUserMapping)
     })
     bulkadd(mapping, 'App_User_Mapping')
-     saveUserPermission()
+    saveUserPermission()
 }
 
 
 function saveUserPermission() {
-    
     let mapping = []
-    let selectedApps=[]
-    applist.forEach(val=>{
-        let permissionElmenet=document.getElementById(`permission-${val.RecordID}`)
-        if(permissionElmenet){
-            if(permissionElmenet.value){
+    let selectedApps = []
+    applist.forEach(val => {
+        let permissionElmenet = document.getElementById(`permission-${val.RecordID}`)
+        if (permissionElmenet) {
+            if (permissionElmenet.value) {
                 selectedApps.push(val)
             }
         }
     })
-    
     selectedApps.forEach(app => {
-        
-        let roleName=applicationRoleList.filter(role=>(role.AppName?role.AppName.split(";#")[0]:'')===app.RecordID);
+        let roleName = applicationRoleList.filter(role => (role.AppName ? role.AppName.split(";#")[0] : '') === app.RecordID);
 
-        if(roleName&&roleName.length>0){
-            let roleValue=""
-            let permissionElmenet=document.getElementById(`permission-${app.RecordID}`)
-            if(permissionElmenet){
-                roleID=permissionElmenet.value
-                roleValue=roleName.filter(role=>role.RecordID===roleID);
-            }
-
+        if (roleName && roleName.length > 0) {
             let superadmin = document.getElementById('superadmin')
             let users = [];
             users.push({
@@ -571,12 +704,12 @@ function saveUserPermission() {
                 AppName: app.RecordID + ";#" + app.AppName,
                 ProfileorTeam: JSON.stringify(users),
                 SuperAdmin: superadmin.checked,
-                Role:roleValue[0].RecordID+";#"+roleValue[0].RoleName
+                Role: roleName[0].RecordID + ";#" + roleName[0].RoleName
             }
             mapping.push(appUserMapping)
         }
     })
-    if(mapping&&mapping.length>0){
+    if (mapping && mapping.length > 0) {
         bulkadd(mapping, 'User_Permission')
     }
 
@@ -650,6 +783,10 @@ function getCurrentUser() {
 }
 
 function openAlert(message) {
+    let blurdivElement = document.getElementById('blurdiv');
+    if (blurdivElement) {
+        blurdivElement.classList.remove('page-blur')
+    }
     let qafAlertObject = {
         IsShow: true,
         Message: message,
@@ -724,7 +861,7 @@ function SaveRecord() {
             let alertMessage = "Minimum 8 characters and Maximum 10, at least one Capital letter, one number, and one special character";
             openAlert(alertMessage);
         } else {
-            
+
             let pageDisabledElement = document.getElementById('pageDisabled');
             if (pageDisabledElement) {
                 pageDisabledElement.classList.add('page-disabled')
@@ -764,7 +901,7 @@ function savePassword(Object) {
 
 function CloseResetForm() {
     clearResetPasswordFormField()
-    
+
     let pageDisabledElement = document.getElementById('pageDisabled');
     if (pageDisabledElement) {
         pageDisabledElement.classList.remove('page-disabled')
@@ -777,7 +914,7 @@ function CloseResetForm() {
     if (popUp) {
         popUp.style.display = 'none';
         removeCss()
-       
+
     }
 }
 
@@ -788,3 +925,4 @@ function clearResetPasswordFormField() {
     productElement.value = "";
 
 }
+

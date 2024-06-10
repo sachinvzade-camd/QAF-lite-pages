@@ -21,7 +21,6 @@ var MeetingSelect = document.getElementById("meetingName");
 
 let qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        window.localStorage.setItem('ma', "finsmart.quickappflow.com")
         let breadcum = document.getElementById("breadcrum");
         if (breadcum) {
             document.getElementById("breadcrum").style.display = "none";
@@ -215,7 +214,7 @@ function getAllMeetngRequest() {
 
 function loadMeeting() {
     let MeetingName = document.getElementById('meetingName');
-    let options = `<option value=''> Select Meeting</option>`;
+    let options = `<option value=''> Select Meeting Room</option>`;
     if (MeetingName) {
         Meeting.forEach(meeting => {
             options += `<option value="${meeting.RecordID}">${meeting.Name}</option>`;
@@ -447,7 +446,7 @@ function setEmployeeinDropdown() {
 function SetMeetingroomdropdown() {
     let meetingName = document.getElementById('meetingName');
     let MeetingRoom = document.getElementById('meetingroom');
-    let options = `<option value=''> Select Meeting</option>`;
+    let options = `<option value=''> Select Meeting Room</option>`;
     if (MeetingRoom) {
         Meeting.forEach(meeting => {
             options += `<option value="${meeting.RecordID}">${meeting.Name}</option>`;

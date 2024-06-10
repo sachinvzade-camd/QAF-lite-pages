@@ -1,7 +1,10 @@
 var TalentBankDataforExport;
-
+var sitHostURL='qaffirst.quickappflow.com'
+var funFirstHostURL='finsmart.quickappflow.com'
+var maHostName=funFirstHostURL
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
+    window.localStorage.setItem('ma',maHostName)
     loadTalentBank();
     clearInterval(qafServiceLoaded);
   }

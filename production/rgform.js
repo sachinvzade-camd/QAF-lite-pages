@@ -8,16 +8,13 @@ var EmployeeEmail_Value;
 var dateforAttendence;
 var sitHostURL = 'demtis.quickappflow.com'
 var funFirstHostURL = 'inskferda.azurewebsites.net'
-var hostName = sitHostURL
+var hostName = funFirstHostURL
 
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = SITapiURL
+var apURL = funFirstapiURL
 var webURL_Value;
-
-var sitHostURL='qaffirst.quickappflow.com'
-var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=funFirstHostURL
+var maHostName = localStorage.getItem('ma')
 
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
@@ -66,7 +63,7 @@ function getCurrentUser() {
 
 document.getElementById("startTime").addEventListener("change", function () {
   startTime = this.value ? new Date(this.value) : "";
-  if(!startTime){
+  if (!startTime) {
     document.getElementById('requestDatelabel').style.fontSize = '16px';
   }
   dateforAttendence = this.value ? new Date(this.value) : "";
@@ -80,6 +77,7 @@ document.getElementById("startTime").addEventListener("change", function () {
 
 });
 
+
 async function SaveRecord() {
   AddBlurInPage();
   user = getCurrentUser();
@@ -87,7 +85,7 @@ async function SaveRecord() {
   let displayStartTime = document.getElementById('displayStartTime').value;
   let requestType = document.getElementById('requestType').value;
   let reason = document.getElementById('Reason').value;
-  let SelectedEmployee = [{ UserType: 1, RecordID: user.EmployeeGUID }];
+  let SelectedEmployee = [{ UserType: 1, RecordID: EmployeeGUID_Value }];
 
   if (requestTitle == "") {
     openAlert('Brief about the request is required')
@@ -105,7 +103,7 @@ async function SaveRecord() {
     }
     let isvalidate = await externalFormValidationRule()
     if (isvalidate) {
-
+      isApicall = false;
       let object = {
         RequestFor: JSON.stringify(SelectedEmployee),
         SelectDate: startTime ? storeDateWithTimeZone(startTime, '', false, false) : "",
@@ -122,7 +120,6 @@ function externalFormValidationRule() {
   if (!isApicall) {
     isApicall = true
     return new Promise(async (resolve) => {
-
       selectedDate = document.getElementById('displayStartTime')
       if (selectedDate.value) {
         selectedDate = selectedDate.value
@@ -170,6 +167,7 @@ function externalFormValidationRule() {
   }
 }
 
+
 function convertDate(date) {
   const dateString = date;
   const [datePart, timePart] = dateString.split(",");
@@ -177,6 +175,7 @@ function convertDate(date) {
   const dateObject = new Date(year, month - 1, day);
   return dateObject
 }
+
 function getRegularizeRequest() {
   return new Promise((resolve) => {
     let currentDate = new Date();
@@ -189,7 +188,7 @@ function getRegularizeRequest() {
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `(SelectDate>='${TodayDate}'<AND>SelectDate<='${TodayDate}')<<NG>>(CreatedByGUID='${user.EmployeeGUID}')`;
+    let whereClause = `(SelectDate>='${TodayDate}'<AND>SelectDate<='${TodayDate}')<<NG>>(CreatedByGUID='${EmployeeGUID_Value}')`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy)
       .then((request) => {
         if (request && request.length > 0) {
@@ -266,7 +265,6 @@ function storeDateWithTimeZone(dateString, timeZone = "", isTimeSelected = false
   };
 }
 
-
 function save(object, repositoryName) {
   return new Promise((resolve) => {
     var recordFieldValueList = [];
@@ -279,7 +277,7 @@ function save(object, repositoryName) {
         FieldValue: object[key]
       });
     });
-    intermidiateRecord.CreatedByID = user.EmployeeID;
+    intermidiateRecord.CreatedByID = EmployeeID_Value;
     intermidiateRecord.CreatedDate = new Date();
     intermidiateRecord.LastModifiedBy = null;
     intermidiateRecord.ObjectID = repositoryName;
@@ -296,12 +294,12 @@ function save(object, repositoryName) {
 }
 
 function clearFormField() {
+  RemoveBlurInPage()
   let requestTitleElement = document.getElementById('RequestTitle');
   let displayStartTimeElement = document.getElementById('displayStartTime');
   let requestTypeElement = document.getElementById('requestType');
   let reasonElement = document.getElementById('Reason');
   let startTimeElement = document.getElementById("startTime")
-
   if (requestTitleElement) {
     requestTitleElement.value = "";
   }
@@ -325,6 +323,7 @@ function clearFormField() {
   let closeformevent = new CustomEvent('closeformevent')
   window.parent.document.dispatchEvent(closeformevent)
 }
+
 function openAlert(message) {
   RemoveBlurInPage()
   let saveButtonElement = document.getElementById("saveRequest")
@@ -373,6 +372,7 @@ function getLocalstoreageDetails(event) {
     EmployeeEmail_Value = Email;
   }
 }
+
 function getLocalstoreageWebUrl(event) {
   if (typeof (event.detail) === 'string') {
     webURL_Value = event.detail
@@ -393,25 +393,25 @@ function RemoveBlurInPage() {
     blurdivElement.classList.remove('page-blur')
   }
 }
-document.querySelectorAll('.apply-input').forEach(function(input) {
-  input.addEventListener('focus', function() {
-      this.previousElementSibling.style.fontSize = '14px';
+document.querySelectorAll('.apply-input').forEach(function (input) {
+  input.addEventListener('focus', function () {
+    this.previousElementSibling.style.fontSize = '14px';
   });
 
-  input.addEventListener('blur', function() {
-      if (this.value === '') {
-          this.previousElementSibling.style.fontSize = '16px';
-      }
+  input.addEventListener('blur', function () {
+    if (this.value === '') {
+      this.previousElementSibling.style.fontSize = '16px';
+    }
   });
 });
 
 
-document.getElementById('startTime').addEventListener('focus', function() {
+document.getElementById('startTime').addEventListener('focus', function () {
   document.getElementById('requestDatelabel').style.fontSize = '14px';
 });
 
-document.getElementById('startTime').addEventListener('blur', function() {
+document.getElementById('startTime').addEventListener('blur', function () {
   if (this.value === '') {
-      document.getElementById('requestDatelabel').style.fontSize = '16px';
+    document.getElementById('requestDatelabel').style.fontSize = '16px';
   }
 });

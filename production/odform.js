@@ -3,12 +3,16 @@ var myOdRequests = "";
 var isApicall = false
 var selectedDate;
 var duarationList = []
-var sitHostURL='qaffirst.quickappflow.com'
-var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=funFirstHostURL
+
+var EmployeeID_Value;
+var EmployeeGUID_Value;
+var EmployeeEmail_Value;
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
-    window.localStorage.setItem('ma',maHostName)
+    var lsvalue = new CustomEvent('setlskey', { detail: { key: "user_key" } })
+    window.parent.document.dispatchEvent(lsvalue)
+    window.document.addEventListener('getlsvalue', getLocalstoreageDetails)
+
     getObject()
     clearInterval(qafServiceLoaded);
   }
@@ -72,7 +76,7 @@ async function SaveRecord() {
   let displayStartTime = document.getElementById('displayStartTime').value;
   let duration = document.getElementById('Duration').value;
   let reason = document.getElementById('Reason').value;
-  let currentEmployee = [{ UserType: 1, RecordID: user.EmployeeGUID }];
+  let currentEmployee = [{ UserType: 1, RecordID:EmployeeGUID_Value }];
 
   if (requestTitle == "") {
     openAlert('Brief about the request is required')
@@ -100,7 +104,7 @@ async function SaveRecord() {
       }
       let object = {
         RequestFor: JSON.stringify(currentEmployee),
-        StartDate: startTime ? storeDateWithTimeZone(startTime, '', false, false) : "",
+        RequestDate: startTime ? storeDateWithTimeZone(startTime, '', false, false) : "",
         Title: requestTitle,
         Description: reason,
         Duration: durationValue,
@@ -142,12 +146,12 @@ function getODRequest() {
     let TodayDate = moment(selectedDate).format('YYYY/MM/DD');
     let user = getCurrentUser();
     let objectName = "Out_Duty_Request";
-    let list = 'StartDate';
+    let list = 'RequestDate';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `(StartDate>='${TodayDate}'<AND>StartDate<='${TodayDate}')<<NG>>(CreatedByGUID='${user.EmployeeGUID}')`
+    let whereClause = `(RequestDate>='${TodayDate}'<AND>RequestDate<='${TodayDate}')<<NG>>(CreatedByGUID='${EmployeeGUID_Value}')`
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy)
       .then((request) => {
         if (request && request.length > 0) {
@@ -238,7 +242,7 @@ function save(object, repositoryName) {
         FieldValue: object[key]
       });
     });
-    intermidiateRecord.CreatedByID = user.EmployeeID;
+    intermidiateRecord.CreatedByID = EmployeeID_Value;
     intermidiateRecord.CreatedDate = new Date();
     intermidiateRecord.LastModifiedBy = null;
     intermidiateRecord.ObjectID = repositoryName;
@@ -345,3 +349,12 @@ document.getElementById('startTime').addEventListener('blur', function() {
   }
 });
 
+
+function getLocalstoreageDetails(event) {
+  if (typeof (event.detail) === 'object') {
+    const { EmployeeGUID, EmployeeID, Email } = event.detail;
+    EmployeeID_Value = EmployeeID;
+    EmployeeGUID_Value = EmployeeGUID;
+    EmployeeEmail_Value = Email;
+  }
+}

@@ -3,14 +3,30 @@ var jobpostValue = "";
 var startTime = "";
 var endTime = "";
 var employeeList = [];
-document.getElementById("startTime").addEventListener("change", function () {
-    startTime = new Date(this.value);
-});
-document.getElementById("endTime").addEventListener("change", function () {
-    endTime = new Date(this.value);
-});
+var MyCandidateData = [];
+var qafServiceLoaded = setInterval(() => {
+    if (window.QafService) {
+        ShowLoader()
+        document.getElementById('startTime').valueAsDate = new Date();
+        document.getElementById('endTime').valueAsDate = new Date();
+        let mainGridElement = document.getElementById("main-grid");
+        let noGridElement = document.getElementById("no-grid");
+        if (mainGridElement) {
+            mainGridElement.style.display = "none";
+        }
+        if (noGridElement) {
+            noGridElement.style.display = "none";
+        }
+        startTime = new Date()
+        endTime = new Date()
+        getjobposting();
+        HideLoader();
+        clearInterval(qafServiceLoaded);
+    }
+}, 10);
 
-let expenseGrid = {
+
+var expenseGrid = {
     repository: "Job_Tracker",
     columns: [
         { field: "JobPost", displayName: "Job Post", sorting: false },
@@ -42,7 +58,7 @@ let expenseGrid = {
     filter: "",
 };
 
-const monthNames = [
+var monthNames = [
     "January",
     "February",
     "March",
@@ -57,25 +73,25 @@ const monthNames = [
     "December",
 ];
 
-let gridExpenseColumns = [
+var gridExpenseColumns = [
     { field: "JobPost", displayName: "Job Post", sequence: 1, sorting: false },
-    { field: "Candidate", displayName: "Name", sequence: 2, sorting: false},
-    {
-        field: "CreatedDate",
-        displayName: "Tracker Date",
-        sequence: 3,
-        sorting: true,
-    },
+    { field: "Candidate", displayName: "Name", sequence: 2, sorting: false },
+    { field: "CreatedDate", displayName: "Tracker Date", sequence: 3, sorting: true, },
     { field: "CurrentStatus", displayName: "Status", sequence: 4, sorting: false },
     { field: "Source", displayName: "Source", sequence: 5, sorting: false },
-    {
-        field: "ContactNumber",
-        displayName: "Contact Number",
-        sequence: 6,
-        sorting: false,
-    },
+    { field: "ContactNumber", displayName: "Contact Number", sequence: 6, sorting: false, },
     { field: "Email", displayName: "Email", sequence: 7, sorting: false },
 ];
+
+
+document.getElementById("startTime").addEventListener("change", function () {
+    startTime = new Date(this.value);
+});
+
+
+document.getElementById("endTime").addEventListener("change", function () {
+    endTime = new Date(this.value);
+});
 
 function getCurrentUserGuid() {
     let guid = "";
@@ -106,8 +122,13 @@ function endDate() {
 }
 
 function loadCandidateReport() {
+    MyCandidateData = [];
     let mainGridElement = document.getElementById("main-grid");
     let noGridElement = document.getElementById("no-grid");
+    let exportBtnElement = document.getElementById("export")
+    if (exportBtnElement) {
+        exportBtnElement.disabled = false;
+    }
     if (mainGridElement) {
         mainGridElement.style.display = "none";
     }
@@ -134,6 +155,7 @@ function loadCandidateReport() {
                 if (mainGridElement) {
                     mainGridElement.style.display = "block";
                 }
+                MyCandidateData = filteredExpense;
                 expenseGridElement.Data = filteredExpense;
             } else {
                 let mainGridElement = document.getElementById("main-grid");
@@ -142,7 +164,12 @@ function loadCandidateReport() {
                     mainGridElement.style.display = "none";
                 }
                 if (noGridElement) {
+                    let exportBtnElement = document.getElementById("export")
+                    if (exportBtnElement) {
+                        exportBtnElement.disabled = true;
+                    }
                     noGridElement.style.display = "block";
+
                 }
             }
             expenseGridElement.show = false;
@@ -162,6 +189,7 @@ function pageSizeEvent(page) {
 }
 
 function nextPageEvent(page) {
+    MyCandidateData = [];
     let userId = getCurrentUserGuid();
     let firstDay = startDate();
     let lastDay = endDate();
@@ -177,7 +205,7 @@ function nextPageEvent(page) {
     let filterGridCondition = getWhereClause();
     let expenseGridElement = document.querySelector("#expgrid");
     if (expenseGridElement) {
-        expenseGridElement.Data=[]
+        expenseGridElement.Data = []
         expenseGridElement.show = true;
         window.QafService.GetItems(
             expenseGrid.repository,
@@ -188,6 +216,7 @@ function nextPageEvent(page) {
             null,
             false
         ).then((filteredExpense) => {
+            MyCandidateData = filteredExpense;
             expenseGridElement.Data = filteredExpense;
             expenseGridElement.show = false;
         });
@@ -195,6 +224,7 @@ function nextPageEvent(page) {
 }
 
 function prevPageEvent(page) {
+    MyCandidateData = [];
     let userId = getCurrentUserGuid();
     let firstDay = startDate();
     let lastDay = endDate();
@@ -210,15 +240,16 @@ function prevPageEvent(page) {
     let filterGridCondition = getWhereClause();
     let expenseGridElement = document.querySelector("#expgrid");
     if (expenseGridElement) {
-        expenseGridElement.Data=[]
+        expenseGridElement.Data = []
         expenseGridElement.show = true;
         window.QafService.GetItems(
             expenseGrid.repository,
             expenseGrid.viewFields,
             expenseGrid.pageSize,
             page.detail.currentPage,
-            filterGridCondition,null,false
+            filterGridCondition, null, false
         ).then((filteredExpense) => {
+            MyCandidateData = filteredExpense;
             expenseGridElement.Data = filteredExpense;
             expenseGridElement.show = false;
         });
@@ -226,6 +257,7 @@ function prevPageEvent(page) {
 }
 
 function sortEvent(page) {
+
     let filterGridCondition = getWhereClause();
     let expenseGridElement = document.querySelector("#expgrid");
     if (expenseGridElement) {
@@ -246,6 +278,7 @@ function sortEvent(page) {
 }
 
 function nextMonth(e) {
+    MyCandidateData = [];
     //Get grid by id
     let expenseGridElement = document.querySelector("#expgrid");
     if (expenseGridElement) {
@@ -276,8 +309,9 @@ function nextMonth(e) {
                 expenseGrid.page,
                 filterGridCondition,
                 null,
-            false
+                false
             ).then((filteredExpense) => {
+                MyCandidateData = filteredExpense;
                 expenseGridElement.Data = filteredExpense;
                 expenseGridElement.show = false;
             });
@@ -287,6 +321,7 @@ function nextMonth(e) {
 
 function prevMonth(e) {
     //Get grid by id
+    MyCandidateData = [];
     let expenseGridElement = document.querySelector("#expgrid");
     if (expenseGridElement) {
         if (window.QafService) {
@@ -316,8 +351,9 @@ function prevMonth(e) {
                 expenseGrid.page,
                 filterGridCondition,
                 null,
-            false
+                false
             ).then((filteredExpense) => {
+                MyCandidateData = filteredExpense;
                 expenseGridElement.Data = filteredExpense;
                 expenseGridElement.show = false;
             });
@@ -467,24 +503,6 @@ function expgrid_onRowActionEvent(eventName, row) {
     }
 }
 
-let qafServiceLoaded = setInterval(() => {
-    if (window.QafService) {
-        document.getElementById('startTime').valueAsDate = new Date();
-        document.getElementById('endTime').valueAsDate = new Date();
-        let mainGridElement = document.getElementById("main-grid");
-        let noGridElement = document.getElementById("no-grid");
-        if (mainGridElement) {
-            mainGridElement.style.display = "none";
-        }
-        if (noGridElement) {
-            noGridElement.style.display = "none";
-        }
-        startTime=new Date()
-        endTime=new Date()
-        getjobposting();
-        clearInterval(qafServiceLoaded);
-    }
-}, 10);
 
 function getjobposting() {
     let objectName = "Job_Posting";
@@ -517,6 +535,7 @@ function getjobposting() {
         loadCandidateReport();
     });
 }
+
 function searchReport() {
     loadCandidateReport();
 }
@@ -543,7 +562,6 @@ function getWhereClause() {
             `(CreatedDate>='${startDate}'<AND>CreatedDate<='${endDate}')`
         );
     }
-
     if (whereclause && whereclause.length > 0) {
         if (whereclause.length === 1) {
             return whereclause[0]
@@ -554,3 +572,61 @@ function getWhereClause() {
     }
     return "";
 }
+
+function ExportReport() {
+    let data = MyCandidateData;
+    let csvData = [];
+    let csvHeader = ["Job Post", "Name", "Tracker Date", "Status", "Source", "Contact Number", "Email"].join(',');
+    csvData.push(csvHeader);
+
+    data.forEach(val => {
+        let JobPost = val["JobPost"] ? val["JobPost"].split(';#')[1] : "";
+        let Name = val["Candidate"] ? val["Candidate"].split(';#')[1] : "";
+        let TrackerDate = val["CreatedDate"] ? formatedDate(val["CreatedDate"]) : "";
+        let CurrentStatus = val["CurrentStatus"] ? val["CurrentStatus"] : "";
+        let Source = val["Source"] ? val["Source"] : "";
+        let ContactNumber = val["ContactNumber"] ? val["ContactNumber"] : "";
+        let Email = val["Email"] ? val["Email"] : "";
+
+        csvData.push([JobPost, Name, TrackerDate, CurrentStatus, Source, ContactNumber, Email].join(","));
+    });
+    let csvBody = csvData.join('\n');
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvBody);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'My Candidate Report.csv';
+    hiddenElement.click();
+}
+
+function formatedDate(Datevalue) {
+    let date = new Date(Datevalue);
+    let formatedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    if (formatedDate) {
+        return formatedDate;
+    }
+    else {
+        return ''
+    }
+}
+
+function  ShowLoader(){
+    let pageDisabledElement = document.getElementById('pageDisabled');
+    if (pageDisabledElement) {
+        pageDisabledElement.classList.add('page-disabled')
+    }
+    let isloadingElement = document.getElementById('isloading');
+    if (isloadingElement) {
+        isloadingElement.style.display = 'block'
+    }
+  }
+  
+  function HideLoader(){
+    let pageDisabledElement = document.getElementById('pageDisabled');
+    let isloadingElement = document.getElementById('isloading');
+    if (pageDisabledElement) {
+        pageDisabledElement.classList.remove('page-disabled')
+    }
+    if (isloadingElement) {
+        isloadingElement.style.display = 'none'
+    }
+  }

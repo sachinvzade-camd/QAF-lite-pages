@@ -659,7 +659,10 @@ function rightNavigator() {
 
 function monthNavigator(month) {
   addBlur()
+  
   let currentDate=new Date()
+  date.setHours(6, 30, 1);
+  date.setDate(1);
   let allowDate=new Date(JSON.parse(JSON.stringify(date)));
   if (month === 'subtract') {
     allowDate.setMonth(allowDate.getMonth() - 1);
@@ -737,7 +740,7 @@ removeBlur()
           let date = moment((new Date(attendance.Day)))
           // let date = moment(convertUTCDateToLocalDate(new Date(attendance.Day)))
           if (moment(date).isSameOrBefore(moment(), 'date')) {
-            attendanceCard += ` <div class="card">
+            attendanceCard += ` <div class="card" style="height: ${attendance.NumberOfHours?(formatAttendence(attendance.NumberOfHours).length>15?80:68):68}px;">
 <div class="main">
   <div class="attandance-date ${index%2===0 ? 'color-green':'color-yellow'}">
     <div class="attendance-timing month-container">

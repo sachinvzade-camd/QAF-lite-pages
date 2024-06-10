@@ -6,7 +6,6 @@ var selectedDate
 var hiddenFieldsFormWindow = ["RequestFor"];
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=funFirstHostURL
 function externalFormValidationRule() {
     if(!isApicall){
         isApicall=true
@@ -27,7 +26,6 @@ function externalFormValidationRule() {
 }
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        window.localStorage.setItem('ma',maHostName)
         clearInterval(qafServiceLoaded);
     }
 }, 10);
@@ -111,8 +109,8 @@ function convertDate(date) {
     return dateObject
 }
 function addCustomjs() {
-    // let jsList = ["https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_aeca73b2-1458-4180-a20b-835e450886be.js", "https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2FnewLibrary_0a09c189-4d90-427b-aafd-76eb76eb80b7.js", "https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fng4qafLiteComponents.bundle_178c4750-2177-4105-a58a-028f725dd466.js"]
-    let jsList=["https://funfirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_44ef7032-a417-43ef-b473-87c4067fc427.js"]
+    let jsList = ["https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_aeca73b2-1458-4180-a20b-835e450886be.js"]
+    // let jsList=["https://funfirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_44ef7032-a417-43ef-b473-87c4067fc427.js"]
     jsList.forEach(val => {
         loadScript(val)
     })

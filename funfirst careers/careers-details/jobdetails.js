@@ -236,7 +236,6 @@ function save(object, repositoryName) {
         attachmentRepoAndFieldName = `Temporary_Candidate;#AttachResume`;
         document.getElementById('filename').innerHTML=filename
         document.getElementById('deleteicon').style.display='block'
-
     }
   }
  function  deleteFile(){

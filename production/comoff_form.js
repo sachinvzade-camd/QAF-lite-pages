@@ -3,9 +3,17 @@ var myOdRequests = "";
 var isApicall = false
 var selectedDate;
 var duarationList = []
+var EmployeeID_Value;
+var EmployeeGUID_Value;
+var EmployeeEmail_Value;
 
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
+    var lsvalue = new CustomEvent('setlskey', { detail: { key: "user_key" } })
+    window.parent.document.dispatchEvent(lsvalue)
+    window.document.addEventListener('getlsvalue', getLocalstoreageDetails)
+
+
     getObject()
     clearInterval(qafServiceLoaded);
   }
@@ -63,6 +71,7 @@ document.getElementById("startTime").addEventListener("change", function () {
 
 });
 
+
 async function SaveRecord() {
   AddBlurInPage();
   user = getCurrentUser();
@@ -70,7 +79,7 @@ async function SaveRecord() {
   let displayStartTime = document.getElementById('displayStartTime').value;
   let duration = document.getElementById('Duration').value;
   let reason = document.getElementById('Reason').value;
-  let currentEmployee = [{ UserType: 1, RecordID: user.EmployeeGUID }];
+  let currentEmployee = [{ UserType: 1, RecordID: EmployeeGUID_Value }];
 
   if (requestTitle == "") {
     openAlert('Brief about the request is required')
@@ -154,7 +163,7 @@ function getcompOff_Records() {
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `(RequestDate>='${TodayDate}'<AND>RequestDate<='${TodayDate}')<<NG>>(CreatedByGUID='${user.EmployeeGUID}')`
+    let whereClause = `(RequestDate>='${TodayDate}'<AND>RequestDate<='${TodayDate}')<<NG>>(CreatedByGUID='${EmployeeGUID_Value}')`
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy)
       .then((request) => {
         if (request && request.length > 0) {
@@ -167,6 +176,7 @@ function getcompOff_Records() {
   });
 
 }
+
 
 function getByKey(key) {
   let cacheValue = this.localStorage.getItem(key);
@@ -244,7 +254,7 @@ function save(object, repositoryName) {
         FieldValue: object[key]
       });
     });
-    intermidiateRecord.CreatedByID = user.EmployeeID;
+    intermidiateRecord.CreatedByID = EmployeeID_Value;
     intermidiateRecord.CreatedDate = new Date();
     intermidiateRecord.LastModifiedBy = null;
     intermidiateRecord.ObjectID = repositoryName;
@@ -259,7 +269,6 @@ function save(object, repositoryName) {
   }
   )
 }
-
 
 function clearFormField() {
   RemoveBlurInPage()
@@ -326,7 +335,7 @@ function RemoveBlurInPage() {
 
 document.querySelectorAll('.apply-input').forEach(function(input) {
   input.addEventListener('focus', function() {
-      this.previousElementSibling.style.fontSize = '14px';
+      this.previousElementSibling.style.fontSize = '12px';
   });
 
   input.addEventListener('blur', function() {
@@ -338,7 +347,7 @@ document.querySelectorAll('.apply-input').forEach(function(input) {
 
 
 document.getElementById('startTime').addEventListener('focus', function() {
-  document.getElementById('requestDatelabel').style.fontSize = '14px';
+  document.getElementById('requestDatelabel').style.fontSize = '12px';
 });
 
 document.getElementById('startTime').addEventListener('blur', function() {
@@ -346,3 +355,12 @@ document.getElementById('startTime').addEventListener('blur', function() {
       document.getElementById('requestDatelabel').style.fontSize = '16px';
   }
 });
+
+function getLocalstoreageDetails(event) {
+  if (typeof (event.detail) === 'object') {
+    const { EmployeeGUID, EmployeeID, Email } = event.detail;
+    EmployeeID_Value = EmployeeID;
+    EmployeeGUID_Value = EmployeeGUID;
+    EmployeeEmail_Value = Email;
+  }
+}

@@ -9,6 +9,9 @@ var teamList = [];
 var jobpostingList = [];
 var userpermissionsList = [];
 var RecruiterData;
+var sitHostURL='qaffirst.quickappflow.com'
+var funFirstHostURL='funfirst.quickappflow.com'
+var maHostName=funFirstHostURL
 document.getElementById("startTime").addEventListener("change", function () {
     startTime = new Date(this.value);
 });
@@ -18,7 +21,7 @@ document.getElementById("endTime").addEventListener("change", function () {
 
 
 
-gridExpenseColumns = [
+var gridExpenseColumns = [
     { field: 'JobPost', displayName: 'Job Post', sequence: 1, sorting: false },
     { field: 'Candidate', displayName: 'Name', sequence: 2, sorting: false },
     { field: 'CreatedDate', displayName: 'Tracker Date', sequence: 3, sorting: true },
@@ -29,7 +32,7 @@ gridExpenseColumns = [
     { field: 'Email', displayName: 'Email', sequence: 8, sorting: true },
 ];
 
-expenseGrid = {
+var expenseGrid = {
     repository: 'Job_Tracker',
     columns: [
         { field: 'JobPost', displayName: 'Job Post', sorting: false },
@@ -479,6 +482,8 @@ function formatDate(dateString) {
 
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+        window.localStorage.setItem('ma',maHostName)
+
         let date = new Date();
         let currentMonthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
         let currentMonthLastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);

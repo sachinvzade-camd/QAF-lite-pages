@@ -22,6 +22,7 @@
 #startTime,
 #endTime {
   width: 22px;
+  margin-right: 5px;
 }
 .date-control {
   display: flex;
@@ -62,7 +63,7 @@
 .checkbox-label {
   margin-left: 10px;
 }
-.btn-container {
+.btn-container-rg{
   width: 100%;
   display: flex;
   justify-content: flex-end;
@@ -70,7 +71,7 @@
 }
 
 .btn {
-  margin: 0px 5px;
+  margin-left: 5px;
   padding: 12px 24px;
   border-radius: 5px;
 }
@@ -87,13 +88,14 @@
   padding-bottom: 0px !important;
 }
 .right-btn {
-  margin-right: 8px;
+  margin-right: 4px;
 }
 .control-label-planner-filed {
   font-size: 16px;
   transition: font-size 0.3s ease;
   color: Gray;
   padding: 0px 8px;
+  transform: translate(0, 10px) !important;
 }
 
 .input-field {
@@ -106,7 +108,7 @@
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 input:disabled {
@@ -130,13 +132,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   outline: none;
 }
 
-.first-row{
+.first-row {
   padding-top: 5px;
 }
 
-.textarea-input{
+.textarea-input {
   padding-left: 10px;
 }
-.vertical-margin{
-  margin-bottom: 0px !;
+.vertical-margin {
+  margin-bottom: 0px !important;
+}
+.date-border {
+  border-bottom: 1px solid #ccc;
+}
+.date-input-form {
+  border: none;
 }

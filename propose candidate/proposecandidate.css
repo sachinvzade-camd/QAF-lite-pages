@@ -1,0 +1,472 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+body {
+  font-family: "poppins", sans-serif;
+  background-color: #ffffff;
+}
+
+header {
+  background-color: #ffffff;
+  color: #565656;
+  padding: 10px 10px 0px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 20px;
+  padding-left: 10px;
+}
+.title p {
+  font-size: 18px;
+  font-family: "Poppins";
+  line-height: 1.1;
+  color: black;
+  padding-left: 5px;
+  margin-left: 15px;
+  
+}
+
+.search-bar-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  padding: 3px;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  margin: 20px;
+  color: gray;
+}
+
+.search-input {
+  text-align:start;
+  width: 100%;
+  padding: 6px;
+  padding-left: 30px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-icon,
+.cancel-icon {
+  color: gray;
+  position: absolute;
+  cursor: pointer;
+}
+
+.search-icon {
+  padding-top: 17px;
+ margin-left: -50px;
+}
+
+.cancel-icon {
+  right: 10px;
+}
+.header-button {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  background-color: var(--ButtonBackGroundColor);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 5px;
+}
+.addjob{
+  margin-right: 12px;
+}
+.fa-solid {
+  padding: 0px 2px 0px 2px;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.card-container {
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:flex-start;
+  margin-left: 20px;
+  
+}
+.nodata{
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 48%;
+  height: inherit;
+  margin:5px 10px 25px 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 1px 2px 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-text {
+  font-weight: 600;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  color: #5f5fee;
+
+  margin-bottom: 0;
+}
+.card_body {
+  font-size: 11px;
+  word-break: break-all;
+}
+.profile-details {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 45%;
+  font-size: 11px;
+  margin: 0px 0px 10px 0px;
+}
+.job {
+  padding-top: 10px;
+  height: 45%;
+}
+.main {
+  padding: 20px 20px 5px 20px;
+}
+hr {
+  margin: 0;
+  padding: 0;
+  border: 1.5px solid rgb(221, 218, 218);
+}
+.link-buttons {
+  margin-right: 20px;
+  height: auto;
+  display: flex;
+  justify-content: left;
+  font-size: 11px;
+  color: #009ce7;
+  padding-left: 20px;
+padding-top: 5px;
+padding-bottom: 5px;
+}
+.envelop i{
+  margin: 7px 5px 5px 0px;
+  color: rgba(128,128,128,.562);
+  cursor: pointer;
+}
+.envelop:hover {
+  color: #009ce7;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.whatsapp {
+  margin: 7px 0px 5px 15px;
+  color: rgb(37, 211, 102);
+}
+.profile-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 18px;
+  background-color: var(--ButtonBackGroundColor);/* Optional: Add a background color for the circular image */
+}
+
+.name {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+}
+.name p {
+  margin: 0px;
+}
+.experiance {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  cursor: pointer;
+}
+.contact {
+  width: 100%;
+  font-size: 11px;
+  color: gray;
+  display: flex;
+  flex-direction: row;
+}
+
+.number {
+  width: 40%;
+}
+
+.row1 {
+  width: 15%;
+  height: auto;
+}
+.row2 {
+  margin-left: 15px;
+  width: 80%;
+}
+.row3{
+  width: 5%;
+  display: flex;
+  justify-content: end;
+}
+
+.shortlist-button {
+  font-size: 12px;
+  background-color: var(--ButtonBackGroundColor);
+  color: #fff;
+  padding: 6px 12px ;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 30px;
+  margin-left: 10px;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #5f5fee;
+}
+
+.job p {
+  color: #676262;
+  font-family: Poppins, sans-serif;
+  line-height: 17px;
+  font-size: 12px;
+  padding-left: 10px;
+}
+
+.listview,
+.gridview {
+  padding: 6px 0px;
+}
+
+em {
+  font-weight: 600;
+  font-style: normal;
+  width: 123px;
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #333;
+}
+header i {
+  margin: 0 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-link {
+  margin-right: 5px;
+  padding-left: 0px;
+}
+.editjob {
+  margin: 7px 5px 0px 15px;
+  padding-top: 0px;
+  color: #009ce7;
+  font-size: 15px;
+}
+.viewjob {
+  color: #5f5fee;
+}
+
+.viewjob:hover {
+  text-decoration: underline;
+  color: #5f5fee;
+}
+.editjob:hover {
+  color: #009ce7;
+}
+
+
+/* popup */
+
+
+.formContainer {
+  max-width: 500px;
+  background-color: #fff;
+}
+.formContainer input[type=text],
+.formContainer input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 20px 0;
+  border: none;
+  background: #eee;
+}
+.formContainer input[type=text]:focus,
+.formContainer input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+.formContainer p{
+  padding-right: 47%;
+    margin-bottom: 0px
+} 
+.formContainer .btn {
+  padding: 6px 12px;
+  margin: 5px;
+  cursor: pointer;
+  margin-bottom: 0px;
+ 
+}
+.interviewDetailsPopup {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  background:#7d787859;
+  height: 100%;
+  top: 0;
+}
+.formPopup {
+  padding: 20px;
+  background-color: white;
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+}
+
+.control-label-planner-filed {
+  font-weight: 600;
+  font-size: 13px;
+  font-family: "Poppins";
+  -webkit-transform: translate(0, 5px);
+  transform: translate(0, 5px);
+  padding-right: 315px;
+  padding-top: 20px;
+}
+.control{
+  padding: 10px;
+  height: 40px;
+  transform: translate(10px,0);
+}
+.filter{
+  border-radius: 4px;
+  border-color: rgb(204, 204,204); 
+  width: 430px;
+  height: 30px;
+}
+.form-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin-bottom: 25px;
+}
+
+.field-height{
+  height: 50px;
+  margin-bottom: 15px;
+}
+#meetingurl{
+  height: 20px;
+  border: 1px solid rgb(204, 204,204); 
+  width: 430px;
+  background-color: white;
+  border-radius: 4px;
+}
+.k{
+  width: 430px;
+
+}
+.btn-container{
+  display: flex;
+  justify-content: center;
+}
+.submitrecord{
+  background-color: var(--ButtonBackGroundColor);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 5px;
+  padding: 0px 10px;
+}
+.submit{
+  background-color: var(--ButtonBackGroundColor);
+  color: #fff;
+}
+.cancel{
+  background-color: rgb(240, 240, 240);
+  color:  rgba(0,0,0,.87);;
+  text-align: center;
+  cursor: pointer; 
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 0px 10px;
+}
+
+.dropdown-toggle{
+  display: none;
+
+}
+.proper{
+  padding-right: 340px;
+
+}
+
+.buttonConatiner{
+  display: flex;
+  justify-content: end;
+}
+.pg-content{
+  padding-top: 0!important;
+}
+/* @media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-button,
+  .search-bar-container,
+  .search-bar {
+    width: 100%;
+  }
+  .header-button {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+  }
+  .title {
+    margin-left: 20px;
+    padding-bottom: 20px;
+  }
+  .row {
+    width: auto;
+  }
+
+  .button {
+    margin-right: 10px;
+  }
+} */

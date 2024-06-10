@@ -13,7 +13,7 @@ var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
 var Employee;
 var alertmessage = ""
-var apiURL = SITapiURL
+var apiURL = funFirstapiURL
 var fieldInternallist = []
 var user
 var MyleavesList = [];
@@ -159,14 +159,14 @@ function handleChangeleaveType() {
       if (leaveBalance) {
         let currentLeaveBalance = leaveBalance[value.MappingwithLeaveBalance]
         let leaveBalanceElement = document.getElementById('leaveBalance');
-        document.getElementById('leaveBalanceLabel').style.fontSize = '14px';
+        document.getElementById('leaveBalanceLabel').style.fontSize = '12px';
         if (leaveBalanceElement) {
           leaveBalanceElement.value = currentLeaveBalance
         }
       }
     } else {
       let leaveBalanceElement = document.getElementById('leaveBalance');
-      document.getElementById('leaveBalanceLabel').style.fontSize = '14px';
+      document.getElementById('leaveBalanceLabel').style.fontSize = '12px';
       if (leaveBalanceElement) {
         leaveBalanceElement.value = 0
       }
@@ -455,7 +455,7 @@ function calculateDifference() {
     }
 
     if (totaldays) {
-      document.getElementById('TotalDaysLabel').style.fontSize = '14px';
+      document.getElementById('TotalDaysLabel').style.fontSize = '12px';
       totaldays.value = diffDays;
     }
   }
@@ -661,7 +661,7 @@ function RemoveBlurInPage() {
 
 document.querySelectorAll('.apply-input').forEach(function(input) {
   input.addEventListener('focus', function() {
-      this.previousElementSibling.style.fontSize = '14px';
+      this.previousElementSibling.style.fontSize = '12px';
   });
 
   input.addEventListener('blur', function() {
@@ -673,7 +673,7 @@ document.querySelectorAll('.apply-input').forEach(function(input) {
 
 
 document.getElementById('startTime').addEventListener('focus', function() {
-  document.getElementById('startTimeLabel').style.fontSize = '14px';
+  document.getElementById('startTimeLabel').style.fontSize = '12px';
 });
 
 document.getElementById('startTime').addEventListener('blur', function() {
@@ -683,7 +683,7 @@ document.getElementById('startTime').addEventListener('blur', function() {
 });
 
 document.getElementById('endTime').addEventListener('focus', function() {
-  document.getElementById('endTimeLabel').style.fontSize = '14px';
+  document.getElementById('endTimeLabel').style.fontSize = '12px';
 });
 
 document.getElementById('endTime').addEventListener('blur', function() {

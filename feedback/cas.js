@@ -2,6 +2,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const customerID = urlParams.get('cid');
 const jobID = urlParams.get('jid');
 const round = urlParams.get('round');
+const Email = urlParams.get('Email');
+const EmployeeGUID = urlParams.get('EmployeeGUID');
+const EmployeeID = urlParams.get('EmployeeID');
 var interviewDetails;
 var jobRole;
 var jobRolewithguid;
@@ -11,7 +14,14 @@ var checklistData;
 var nonnegotiablelistData;
 var jobpostingDetails;
 var candidateDetails;
-
+var file;
+var filename;
+var attachmentRepoAndFieldName;
+var jobTracker;
+var user;
+var attachmentURL;
+var attachmentAPIURL = window.location.origin
+var downloadurl
 var nonnegotiablelistFields=[
     { internalName: 'JobPost', displayName: 'Job Post' },
 {internalName: 'Candidate', displayName: 'Candidate' },
@@ -243,11 +253,14 @@ var guidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[
 
 let qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+        user = getCurrentUser()
+        
         window.localStorage.setItem('ma',"qaffirst.quickappflow.com")
         getJobPosting()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
+
 function formatting(value) {
     let returnValue = value ? value : "";//fix change by mayur
     let updatedRetunValue = [];
@@ -401,6 +414,14 @@ function openTab(evt, id) {
             document.getElementById('section-hr').style.display='none'
         }
 
+    }
+    if (id === 'QBFeedback') {
+        //     document.getElementById("UploadResume").disabled = false;
+        // if(round!='1'){
+            document.getElementById('deleteicon').style.display='none'
+            document.getElementById("UploadResume").disabled = true;
+        // }
+        getJobTracker()
     }
 }
 
@@ -1226,3 +1247,146 @@ function trackerActionFieldsReadonly() {
     let fields = ['Candidate', 'JobPost', 'JobRole', 'Interviwer', 'InterviewRound']
     return fields.join(",")
   }
+
+  function onFileChange(event){
+    let selectedFiles = event.files;
+    let type = selectedFiles[0] && selectedFiles[0].name.substr(selectedFiles[0].name.lastIndexOf('.'), selectedFiles[0].name.length).toLowerCase();
+    if (type != ".exe") {
+      let recordId = "";
+      file = selectedFiles[0];
+      filename = file && file.name ?file.name : '';
+        attachmentRepoAndFieldName = `Job_Tracker;#QBFeedback`;
+        document.getElementById('filename').innerHTML=filename
+        document.getElementById('deleteicon').style.display='block'
+        uploadAttachment()
+    }
+  }
+
+  function   uploadAttachment() {
+    
+    const form = new FormData();
+    form.append('file', file, file && file.name);
+    form.append("file_type", attachmentRepoAndFieldName);
+    form.append("recordID", '');
+    fetch(`https://qaffirst.quickappflow.com/Attachment/uploadfile`, {
+        method: 'POST',
+        headers: {
+            'Host': 'demtis.quickappflow.com',
+            'Employeeguid':EmployeeGUID,
+            'Hrzemail': Email
+        },
+        body:form
+    })
+        .then(response => response.json())
+        .then(fileResponse => {
+            attachmentURL=fileResponse.url
+
+            let attachment=[{
+                link:fileResponse.url,
+                displayName:formateFileName(jobTracker.QBFeedback)
+            }]
+         let object = {
+            QBFeedback: JSON.stringify(attachment),
+           };
+            update(object, 'Job_Tracker')
+        })
+  }
+
+  function update(object, repositoryName) {
+    return new Promise((resolve) => {
+      var recordFieldValueList = [];
+      var intermidiateRecord = {}
+      
+      Object.keys(object).forEach((key, value) => {
+        recordFieldValueList.push({
+          FieldID: null,
+          FieldInternalName: key,
+          FieldValue: object[key]
+        });
+      });
+      intermidiateRecord.CreatedByID = EmployeeID;
+      intermidiateRecord.CreatedDate = new Date();
+      intermidiateRecord.LastModifiedBy = null;
+      intermidiateRecord.ObjectID = repositoryName;
+      intermidiateRecord.RecordID = jobTracker.RecordID;
+      intermidiateRecord.RecordFieldValues = recordFieldValueList;
+      window.QafService.UpdateItem(intermidiateRecord).then(response => {
+        let applyForm = document.getElementById("popupContainer");
+        if (applyForm) {
+            applyForm.style.display = 'none'
+        }
+        resolve({
+          response
+        })
+      });
+    }
+    )
+  
+  }
+  function deleteFile(index){
+    
+            let fetchPromise = fetch(`${attachmentAPIURL}/Attachment/deletefile?fileUrl=${attachmentURL}&recordID=${jobTracker.RecordID}`, {
+                method: 'POST',
+                headers: {
+                    'Host': 'demtis.quickappflow.com',
+                    'Employeeguid':EmployeeGUID,
+                    'Hrzemail': Email
+                },
+            })
+                .then(response => response.json())
+                .then(fileResponse => {
+                    attachmentURL=""
+                    filename=""
+                   document.getElementById('deleteicon').style.display='none'
+                   document.getElementById('filename').innerHTML=filename
+                })
+
+
+            
+      
+}
+  function getJobTracker() {
+    
+    let objectName = "Job_Tracker";
+    let list = 'Candidate,JobPost,QBFeedback'
+    let fieldList = list.split(",")
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let whereClause = `(Candidate='${customerID}')<<NG>>(JobPost='${jobID}')`;
+    let orderBy = "false"
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((details) => {
+        if (Array.isArray(details) && details.length > 0) {
+            jobTracker = details[0];
+            attachmentURL=jobTracker.QBFeedback?JSON.parse(jobTracker.QBFeedback)[0].link:''
+            filename=jobTracker.QBFeedback?JSON.parse(jobTracker.QBFeedback)[0].displayName:''
+            document.getElementById('filename').innerHTML=filename?filename:''
+            document.getElementById('filename').href=downloadResume()
+        }
+    });
+
+}
+
+function formateFileName(fileUrl) {
+    if (!fileUrl) {
+      return;
+    }
+    let fileName = fileUrl;
+    let fileExt = fileName.substr(fileName.lastIndexOf('.') + 1, fileName.length);
+    if (fileName && fileName.indexOf('/') === -1) {
+      fileName = fileName && fileName.substr(0, fileName.lastIndexOf('.'));
+      fileName = fileName && fileName.substr(0, fileName.lastIndexOf('_'));
+      fileName = fileName && fileName.substr(fileName.lastIndexOf('\\') + 1) + "." + fileExt;
+    } else {
+      fileName = fileName && fileName.substr(fileName.lastIndexOf('/') + 1, fileName.length);
+      fileName = fileName && fileName.replace(/;#/gi, '\n');
+      fileName = fileName && fileName.substr(0, fileName.lastIndexOf('_'));
+      fileName = fileName && fileName.substr(fileName.lastIndexOf('\\') + 1) + "." + fileExt;
+    }
+    return fileName;
+  }
+
+  function downloadResume(){
+    
+    console.log(window.location.origin);
+    return window.location.origin+"/Attachment/downloadfile?fileUrl="+encodeURIComponent(((attachmentURL)))
+   }

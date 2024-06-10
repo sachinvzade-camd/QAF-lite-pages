@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAS Form</title>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAS Form</title>
+  <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
   <div class="page row">
-  <h2 class="common-page-title">Skills Assessments</h2>
-  <div class="tab"> <button class="tablinks active" onclick="openTab(event, 'table')">Previous Feedback</button> <button
-      class="tablinks" onclick="openTab(event, 'form')">Share your Feedback</button> </div>
-  <div id="table" style="display: block;" class="tabcontent ">
-    <div id="casid"></div>
-    <div id="hrchecklist"></div>
-    <div id="nonnegotiable"></div>
-  </div>
-  <div id="form" class="tabcontent">
-    <div id="formID"></div>
-    <div id="section-hr">
-    <label class="section-name">HR Feedback</label>
-    <div class="section-wrapper">
-    <div id="hrchecklist-form"></div>
-    <div id="nonnegotiable-form"></div>
-  </div>
-</div>
-    <div class="button-style">
-      <div id="button-submit"></div>
+    <h2 class="common-page-title">Skills Assessments</h2>
+    <div class="tab" id='cas-tab'> <button class="tablinks active" onclick="openTab(event, 'table')">Previous
+        Feedback</button> 
+        <button class="tablinks" onclick="openTab(event, 'form')">Share your Feedback</button>
+        <button class="tablinks" onclick="openTab(event, 'QBFeedback')">Quickbook Feedback</button>
+      </div>
+    <div id="table" style="display: block;" class="tabcontent ">
+      <div id="casid"></div>
+      <div id="hrchecklist"></div>
+      <div id="nonnegotiable"></div>
+    </div>
+    <div id="form" class="tabcontent">
+      <div id="formID"></div>
+      <div id="section-hr"> <label class="section-name">HR Feedback</label>
+        <div class="section-wrapper">
+          <div id="hrchecklist-form"></div>
+          <div id="nonnegotiable-form"></div>
+        </div>
+      </div>
+      <div class="button-style">
+        <div id="button-submit"></div>
+      </div>
+    </div>
+    <div id="QBFeedback" class="tabcontent">
+      <div class="job-field">
+        <label class="apply-label">Upload Report</label>
+        <div class="attchment">
+        <input type="file" name="UploadResume" id="UploadResume" onchange="onFileChange(this)">
+        <div class="filedisplay">
+          <a class="envelop" id="filename" download></a>
+        <span id="deleteicon" style="display: none;"><i class="fa fa-trash-o" aria-hidden="true" onclick="deleteFile()"></i></span>
+      </div>
+    </div>
+    </div>
     </div>
   </div>
-</div>
- 
-  
-  
-  
-  
-  <script src="https://demoq.quickappflow.com/Attachment/downloadfile?fileUrl=Pages1%2FnewqafLiteComponents.bundle_329512c0-059d-4d3e-a863-6610508e2f91.js"></script>
-  
-  <script src="https://hrssalturkidev.azurewebsites.net/Attachment/downloadfile?fileUrl=Pages1%2Findex_cef58466-c9e7-4aba-9c6e-bcd08c7af5bc.js"></script>
-    <script src="./index.js"></script>
+
+
+
+
+
+  <script
+    src="https://demoq.quickappflow.com/Attachment/downloadfile?fileUrl=Pages1%2FnewqafLiteComponents.bundle_329512c0-059d-4d3e-a863-6610508e2f91.js"></script>
+
+  <script
+    src="https://hrssalturkidev.azurewebsites.net/Attachment/downloadfile?fileUrl=Pages1%2Findex_cef58466-c9e7-4aba-9c6e-bcd08c7af5bc.js"></script>
+  <script src="./index.js"></script>
 </body>
+
 </html>
