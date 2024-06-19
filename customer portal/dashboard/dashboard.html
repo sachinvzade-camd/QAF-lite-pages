@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css"></link>
+<body>
+   <div>
+    <div class="first-section">
+        <div class="row filter-row my-dashboard-searchbox">
+            <div class="col-sm-11 col-xs-11 col-md-5">
+                <p class="search-text">Search For Tickets Here</p>
+                <div class="form-group has-search helpdesk-search-box">
+                    <div class="input-container">
+                        <i class="fa fa-search search-icon"></i>
+                        <input type="text" class="form-control search-box-input" (keypress)="searchByName($event)"
+                            [(ngModel)]="serviceRequest" />
+                    </div>
+                    <!-- <span class="search-error" *ngIf="jobListSearch.JobTitle?.length > 250">
+                        only 255 charater allowed.
+                    </span> -->
+                </div>
+                <button type="button" class="close search-close search-close-helpdesk" aria-label="Close"
+                    (click)="removeSearch()" *ngIf="serviceRequest"><span aria-hidden="true">&times;</span></button>
+            </div>
+        </div>
+    </div>
+    <div class="details-section-ui">
+        <div class="second-section">
+            <select id="helpdeskstatus" class="filter" onchange="statusChangeevent()">
+            </select>
+            <div id="ticketlist"></div>
+            <div id="serviceticket"></div>
+        </div>
+    </div>
+   </div>
+</body>
+</html>

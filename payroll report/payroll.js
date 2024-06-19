@@ -24,11 +24,11 @@ var openmenuindex;
 var isDeduction = false
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = funFirstapiURL
+var apURL = SITapiURL
 var failArrayList=[]
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=funFirstHostURL
+var maHostName=window.location.host
 var deleteemployeeID;
 // var originalData;
 // var tableValue;

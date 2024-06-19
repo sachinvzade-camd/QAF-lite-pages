@@ -1,88 +1,41 @@
+
 var recruiterValue = "";
 var jobpostValue = "";
 var startTime = "";
 var endTime = "";
 var employeeList = [];
 var MyCandidateData = [];
-var qafServiceLoaded = setInterval(() => {
+var myVendors = [];
+var vendorRecordID;
+var isLP=true;
+qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        ShowLoader()
         document.getElementById('startTime').valueAsDate = new Date();
         document.getElementById('endTime').valueAsDate = new Date();
-        let mainGridElement = document.getElementById("main-grid");
-        let noGridElement = document.getElementById("no-grid");
-        if (mainGridElement) {
-            mainGridElement.style.display = "none";
-        }
-        if (noGridElement) {
-            noGridElement.style.display = "none";
-        }
         startTime = new Date()
         endTime = new Date()
-        getjobposting();
-        HideLoader();
+        getjobposting()
+        isUserFullControll()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
 
 
-var expenseGrid = {
-    repository: "Job_Tracker",
-    columns: [
-        { field: "JobPost", displayName: "Job Post", sorting: false },
-        { field: "Recruiter", displayName: "Recruiter", sorting: true },
-        { field: "Candidate", displayName: "Name", sorting: false },
-        { field: "CreatedDate", displayName: "Tracker Date", sorting: true },
-        { field: "CurrentStatus", displayName: "Status", sorting: false },
-        { field: "Source", displayName: "Source", sorting: false },
-        { field: "ContactNumber", displayName: "Contact Number", sorting: false },
-        { field: "Email", displayName: "Email", sorting: false },
-    ],
-    viewFields: [
-        "JobPost",
-        "Recruiter",
-        "Candidate",
-        "CurrentStatus",
-        "Source",
-        "ContactNumber",
-        "Email",
-    ],
-    page: 1,
-    pageSize: 10,
-    dateFormat: "YYYY/MM/DD",
-    currentSelectedDate: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        1
-    ),
-    filter: "",
-};
+function isUserFullControll() {
+    let User = getCurrentUser();
+    if (User && User.LP) {
+        let isLP37 = User.LP.split(',').includes("37-3");
+        let isLP11 = User.LP.split(',').includes("11");
+        if (isLP37 || isLP11) {
+            let myVendorGrid = document.getElementById('myvendorGrid');
+            if (myVendorGrid) {
+                myVendorGrid.style.display = 'block';
+                getmyVendors()
+            }
 
-var monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
-
-var gridExpenseColumns = [
-    { field: "JobPost", displayName: "Job Post", sequence: 1, sorting: false },
-    { field: "Candidate", displayName: "Name", sequence: 2, sorting: false },
-    { field: "CreatedDate", displayName: "Tracker Date", sequence: 3, sorting: true, },
-    { field: "CurrentStatus", displayName: "Status", sequence: 4, sorting: false },
-    { field: "Source", displayName: "Source", sequence: 5, sorting: false },
-    { field: "ContactNumber", displayName: "Contact Number", sequence: 6, sorting: false, },
-    { field: "Email", displayName: "Email", sequence: 7, sorting: false },
-];
-
+        }
+    }
+}
 
 document.getElementById("startTime").addEventListener("change", function () {
     startTime = new Date(this.value);
@@ -93,471 +46,36 @@ document.getElementById("endTime").addEventListener("change", function () {
     endTime = new Date(this.value);
 });
 
-function getCurrentUserGuid() {
-    let guid = "";
-    let userKey = window.localStorage.getItem("user_key");
+
+function getCurrentUser() {
+    let userDetails = '';
+    let userKey = window.localStorage.getItem('user_key');
     if (userKey) {
         let user = JSON.parse(userKey);
         if (user.value) {
-            guid = user.value.EmployeeGUID;
+            userDetails = user.value;
         }
     }
-    return guid;
-}
-
-function startDate() {
-    var currentDate = expenseGrid.currentSelectedDate;
-    var firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    return firstDay;
-}
-
-function endDate() {
-    var currentDate = expenseGrid.currentSelectedDate;
-    var lastDay = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-    );
-    return lastDay;
-}
-
-function loadCandidateReport() {
-    MyCandidateData = [];
-    let mainGridElement = document.getElementById("main-grid");
-    let noGridElement = document.getElementById("no-grid");
-    let exportBtnElement = document.getElementById("export")
-    if (exportBtnElement) {
-        exportBtnElement.disabled = false;
-    }
-    if (mainGridElement) {
-        mainGridElement.style.display = "none";
-    }
-    if (noGridElement) {
-        noGridElement.style.display = "none";
-    }
-    let userId = getCurrentUserGuid();
-    let filterGridCondition = getWhereClause();
-    let expenseGridElement = document.querySelector("#expgrid");
-    if (expenseGridElement) {
-        expenseGridElement.Data = [];
-        expenseGridElement.show = true;
-        window.QafService.GetItems(
-            expenseGrid.repository,
-            expenseGrid.viewFields,
-            expenseGrid.pageSize,
-            expenseGrid.page,
-            filterGridCondition,
-            null,
-            false
-        ).then((filteredExpense) => {
-            if (Array.isArray(filteredExpense) && filteredExpense.length > 0) {
-                let mainGridElement = document.getElementById("main-grid");
-                if (mainGridElement) {
-                    mainGridElement.style.display = "block";
-                }
-                MyCandidateData = filteredExpense;
-                expenseGridElement.Data = filteredExpense;
-            } else {
-                let mainGridElement = document.getElementById("main-grid");
-                let noGridElement = document.getElementById("no-grid");
-                if (mainGridElement) {
-                    mainGridElement.style.display = "none";
-                }
-                if (noGridElement) {
-                    let exportBtnElement = document.getElementById("export")
-                    if (exportBtnElement) {
-                        exportBtnElement.disabled = true;
-                    }
-                    noGridElement.style.display = "block";
-
-                }
-            }
-            expenseGridElement.show = false;
-        });
-
-        // Add event handlers
-        expenseGridElement.addEventListener("onNextPageEvent", nextPageEvent);
-        expenseGridElement.addEventListener("onPrevPageEvent", prevPageEvent);
-        expenseGridElement.addEventListener("onGridSortEvent", sortEvent);
-        expenseGridElement.addEventListener("onPageSizeEvent", pageSizeEvent);
-    }
-}
-
-function pageSizeEvent(page) {
-    expenseGrid.pageSize = page.detail.pageSize;
-    loadCandidateReport();
-}
-
-function nextPageEvent(page) {
-    MyCandidateData = [];
-    let userId = getCurrentUserGuid();
-    let firstDay = startDate();
-    let lastDay = endDate();
-    let startMonth = `${firstDay.getFullYear()}/${firstDay.getMonth() + 1
-        }/${firstDay.getDate()}`;
-    let endMonth = `${lastDay.getFullYear()}/${lastDay.getMonth() + 1
-        }/${lastDay.getDate()}`;
-    let filterFormat = expenseGrid.filter;
-    filterFormat = filterFormat.replace("{{CURRENTUSERID}}", userId);
-    filterFormat = filterFormat.replace("{{STARTOFMONTH}}", startMonth);
-    filterFormat = filterFormat.replace("{{ENDOFMONTH}}", endMonth);
-
-    let filterGridCondition = getWhereClause();
-    let expenseGridElement = document.querySelector("#expgrid");
-    if (expenseGridElement) {
-        expenseGridElement.Data = []
-        expenseGridElement.show = true;
-        window.QafService.GetItems(
-            expenseGrid.repository,
-            expenseGrid.viewFields,
-            expenseGrid.pageSize,
-            page.detail.currentPage,
-            filterGridCondition,
-            null,
-            false
-        ).then((filteredExpense) => {
-            MyCandidateData = filteredExpense;
-            expenseGridElement.Data = filteredExpense;
-            expenseGridElement.show = false;
-        });
-    }
-}
-
-function prevPageEvent(page) {
-    MyCandidateData = [];
-    let userId = getCurrentUserGuid();
-    let firstDay = startDate();
-    let lastDay = endDate();
-    let startMonth = `${firstDay.getFullYear()}/${firstDay.getMonth() + 1
-        }/${firstDay.getDate()}`;
-    let endMonth = `${lastDay.getFullYear()}/${lastDay.getMonth() + 1
-        }/${lastDay.getDate()}`;
-    let filterFormat = expenseGrid.filter;
-    filterFormat = filterFormat.replace("{{CURRENTUSERID}}", userId);
-    filterFormat = filterFormat.replace("{{STARTOFMONTH}}", startMonth);
-    filterFormat = filterFormat.replace("{{ENDOFMONTH}}", endMonth);
-
-    let filterGridCondition = getWhereClause();
-    let expenseGridElement = document.querySelector("#expgrid");
-    if (expenseGridElement) {
-        expenseGridElement.Data = []
-        expenseGridElement.show = true;
-        window.QafService.GetItems(
-            expenseGrid.repository,
-            expenseGrid.viewFields,
-            expenseGrid.pageSize,
-            page.detail.currentPage,
-            filterGridCondition, null, false
-        ).then((filteredExpense) => {
-            MyCandidateData = filteredExpense;
-            expenseGridElement.Data = filteredExpense;
-            expenseGridElement.show = false;
-        });
-    }
-}
-
-function sortEvent(page) {
-
-    let filterGridCondition = getWhereClause();
-    let expenseGridElement = document.querySelector("#expgrid");
-    if (expenseGridElement) {
-        expenseGridElement.show = true;
-        window.QafService.GetItems(
-            expenseGrid.repository,
-            expenseGrid.viewFields,
-            expenseGrid.pageSize,
-            1,
-            filterGridCondition,
-            page.detail.field,
-            page.detail.order
-        ).then((filteredExpense) => {
-            expenseGridElement.Data = filteredExpense;
-            expenseGridElement.show = false;
-        });
-    }
-}
-
-function nextMonth(e) {
-    MyCandidateData = [];
-    //Get grid by id
-    let expenseGridElement = document.querySelector("#expgrid");
-    if (expenseGridElement) {
-        if (window.QafService) {
-            expenseGrid.currentSelectedDate.setMonth(
-                expenseGrid.currentSelectedDate.getMonth() + 1
-            );
-            expenseGridElement.show = true;
-
-            let userId = getCurrentUserGuid();
-            let firstDay = startDate();
-            let lastDay = endDate();
-            let startMonth = `${firstDay.getFullYear()}/${firstDay.getMonth() + 1
-                }/${firstDay.getDate()}`;
-            let endMonth = `${lastDay.getFullYear()}/${lastDay.getMonth() + 1
-                }/${lastDay.getDate()}`;
-            let filterFormat = expenseGrid.filter;
-            filterFormat = filterFormat.replace("{{CURRENTUSERID}}", userId);
-            filterFormat = filterFormat.replace("{{STARTOFMONTH}}", startMonth);
-            filterFormat = filterFormat.replace("{{ENDOFMONTH}}", endMonth);
-
-            let filterGridCondition = filterFormat;
-
-            window.QafService.GetItems(
-                expenseGrid.repository,
-                expenseGrid.viewFields,
-                expenseGrid.pageSize,
-                expenseGrid.page,
-                filterGridCondition,
-                null,
-                false
-            ).then((filteredExpense) => {
-                MyCandidateData = filteredExpense;
-                expenseGridElement.Data = filteredExpense;
-                expenseGridElement.show = false;
-            });
-        }
-    }
-}
-
-function prevMonth(e) {
-    //Get grid by id
-    MyCandidateData = [];
-    let expenseGridElement = document.querySelector("#expgrid");
-    if (expenseGridElement) {
-        if (window.QafService) {
-            expenseGrid.currentSelectedDate.setMonth(
-                expenseGrid.currentSelectedDate.getMonth() - 1
-            );
-            expenseGridElement.show = true;
-
-            let userId = getCurrentUserGuid();
-            let firstDay = startDate();
-            let lastDay = endDate();
-            let startMonth = `${firstDay.getFullYear()}/${firstDay.getMonth() + 1
-                }/${firstDay.getDate()}`;
-            let endMonth = `${lastDay.getFullYear()}/${lastDay.getMonth() + 1
-                }/${lastDay.getDate()}`;
-            let filterFormat = expenseGrid.filter;
-            filterFormat = filterFormat.replace("{{CURRENTUSERID}}", userId);
-            filterFormat = filterFormat.replace("{{STARTOFMONTH}}", startMonth);
-            filterFormat = filterFormat.replace("{{ENDOFMONTH}}", endMonth);
-
-            let filterGridCondition = filterFormat;
-
-            window.QafService.GetItems(
-                expenseGrid.repository,
-                expenseGrid.viewFields,
-                expenseGrid.pageSize,
-                expenseGrid.page,
-                filterGridCondition,
-                null,
-                false
-            ).then((filteredExpense) => {
-                MyCandidateData = filteredExpense;
-                expenseGridElement.Data = filteredExpense;
-                expenseGridElement.show = false;
-            });
-        }
-    }
-}
-
-function expgrid_onItemRender(cname, cvalue, row) {
-    if (cvalue) {
-        if (cname === "JobPost") {
-            if (cvalue && cvalue.indexOf(";#") !== -1) {
-                let values = cvalue.split(";#");
-                let oddArray = [];
-                values.forEach((v, idx) => {
-                    oddArray.push(idx);
-                });
-                let odds = oddArray.filter((n) => n % 2);
-                let returnItems = [];
-                odds.forEach((d) => {
-                    returnItems.push(values[d]);
-                });
-                return `<a href=recruitment/job-details?rid=${cvalue.split(";#")[0]
-                    } target="_blank">${returnItems.join(
-                        ";"
-                    )}</a> <style>.row-menu{display:none}        .qaf-grid__row-item{
-          width: 200px;
-          word-break: break-word;
-         }.qaf-grid__header-item{
-          width: 136px!important;
-         }
-         
-         .qaf-grid__footer {
-            border-top: 1px solid rgba(0,0,0,.12);
-            background-color: #ffffff;
-        }
-        .qaf-grid{
-          border:none;
-          box-shadow: 1px 2px 5px;
-        }
-        .qaf-grid__header
-        {
-          background-color: #f2f2f2;
-          border-bottom: 1px solid rgba(0,0,0,.12);
-          font-size: 13px;
-          font-weight: 500 !important;
-          
-        }
-        .qaf-grid__row {
-            font-size: 12px;
-            font-weight: 500;
-            background-color: #fff;
-        }
-      
-      .qaf-grid__header-item {
-        font-weight: 500 !important;
-        font-size:13px;
-        
-    }
-     .qaf-grid-page-size label {
-            font-weight: 500;
-        }
-        .qaf-grid-page-size select {
-            background-color: #fff;
-            color: #333;
-        }
-        .qaf-grid__footer > button{
-          background-color: #fff;
-        }
-        .qaf-grid__footer > button > svg {
-            
-            fill: #333;
-        }
-
-        .qaf-grid__row-item>a{
-          color: #009ce7;
-          text-decoration: none;
-        }
-        
-         
-         </style>`;
-            }
-        }
-        if (cname === "Candidate") {
-            if (cvalue && cvalue.indexOf(";#") !== -1) {
-                let values = cvalue.split(";#");
-                let oddArray = [];
-                values.forEach((v, idx) => {
-                    oddArray.push(idx);
-                });
-                let odds = oddArray.filter((n) => n % 2);
-                let returnItems = [];
-                odds.forEach((d) => {
-                    returnItems.push(values[d]);
-                });
-                return returnItems.join(";");
-            }
-        }
-        if (cname === "Recruiter") {
-            let recruiterID = JSON.parse(cvalue)[0].RecordID;
-            let employee = employeeList.filter((emp) => emp.RecordID === recruiterID);
-            if (employee && employee.length > 0) {
-                return employee[0].FirstName + " " + employee[0].LastName;
-            }
-            return "";
-        }
-        if (cname === "CreatedDate") {
-            if (cvalue) {
-                let date = new Date(cvalue);
-                let formatedDate = `${date.getDate()}/${date.getMonth() + 1
-                    }/${date.getFullYear()}`;
-                return formatedDate;
-            } else {
-                return "";
-            }
-        }
-    }
-    if (cvalue) {
-        return cvalue;
-    } else {
-        return "";
-    }
-}
-
-function expgrid_onRowActionEvent(eventName, row) {
-    if (window.QafPageService) {
-        if (eventName === "VIEW") {
-            window.QafPageService.ViewItem(
-                expenseGrid.repository,
-                row.RecordID,
-                function () {
-                    loadCandidateReport();
-                }
-            );
-        } else if (eventName === "EDIT") {
-            window.QafPageService.EditItem(
-                expenseGrid.repository,
-                row.RecordID,
-                function () {
-                    loadCandidateReport();
-                }
-            );
-        } else if (eventName === "DELETE") {
-            window.QafPageService.DeleteItem(row.RecordID, function () {
-                loadCandidateReport();
-            });
-        }
-    }
-}
-
-
-function getjobposting() {
-    let objectName = "Job_Posting";
-    let list = "JobTitle";
-    let fieldList = list.split(",");
-    let pageSize = "20000";
-    let pageNumber = "1";
-    let whereClause = ``;
-    let orderBy = "true";
-    window.QafService.GetItems(
-        objectName,
-        fieldList,
-        pageSize,
-        pageNumber,
-        whereClause,
-        "",
-        orderBy
-    ).then((jobpostings) => {
-        if (Array.isArray(jobpostings) && jobpostings.length > 0) {
-            jobpostings = jobpostings.reverse();
-            let jobpostDropdown = document.getElementById("jobpost");
-            let options = `<option value=''>Select Job Post</option>`;
-            if (jobpostDropdown) {
-                jobpostings.forEach((job) => {
-                    options += `<option value=${job.RecordID}>${job.JobTitle}</option>`;
-                });
-                jobpostDropdown.innerHTML = options;
-            }
-        }
-        loadCandidateReport();
-    });
-}
-
-function searchReport() {
-    loadCandidateReport();
+    return userDetails;
 }
 
 function getWhereClause() {
     let whereclause = [];
-    let currentUser = getCurrentUserGuid();
+    let currentUser = getCurrentUser();
     let jobpost = document.getElementById("jobpost");
     if (jobpost) {
         jobpostValue = jobpost.value;
     }
     if (currentUser) {
-        whereclause.push(`(Recruiter='${currentUser}')`);
+        whereclause.push(`(Recruiter='${currentUser.EmployeeGUID}')`);
     }
     if (jobpostValue) {
         whereclause.push(`(JobPost='${jobpostValue}')`);
     }
     if (startTime && endTime) {
-        let startDate = `${startTime.getFullYear()}/${startTime.getMonth() + 1
-            }/${startTime.getDate()}`;
-        let endDate = `${endTime.getFullYear()}/${endTime.getMonth() + 1
-            }/${endTime.getDate()}`;
+
+        let startDate = moment(startTime).format('YYYY/MM/DD');
+        let endDate = moment(endTime).format('YYYY/MM/DD');
         whereclause.push(
             `(CreatedDate>='${startDate}'<AND>CreatedDate<='${endDate}')`
         );
@@ -571,6 +89,149 @@ function getWhereClause() {
         return whereclause.join("<<NG>>");
     }
     return "";
+}
+
+function getjobposting() {
+    let objectName = "Job_Posting";
+    let list = "JobTitle";
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let whereClause = ``;
+    let orderBy = "true";
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((jobpostings) => {
+        if (Array.isArray(jobpostings) && jobpostings.length > 0) {
+            jobpostings = jobpostings.reverse();
+            let jobpostDropdown = document.getElementById("jobpost");
+            let options = `<option value=''>Select Job Post</option>`;
+            if (jobpostDropdown) {
+                jobpostings.forEach((job) => {
+                    options += `<option value=${job.RecordID}>${job.JobTitle}</option>`;
+                });
+                jobpostDropdown.innerHTML = options;
+            }
+        }
+        getMyCandidate()
+    });
+}
+
+function searchReport() {
+    getMyCandidate()
+}
+
+function getMyCandidate() {
+    ShowLoader()
+    MyCandidateData = []
+    let objectName = "Job_Tracker";
+    let list = 'Candidate,JobPost,Recruiter,CurrentStatus,Email,Source,ContactNumber';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = getWhereClause();
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((vendors) => {
+        if (Array.isArray(vendors) && vendors.length > 0) {
+            MyCandidateData = vendors;
+            mycandidategenerateReport();
+        }
+        else {
+            mycandidategenerateReport();
+        }
+
+    });
+}
+
+function mycandidategenerateReport() {
+    TableData = MyCandidateData;
+    const ExportButton = document.getElementById('export');
+    let reportContainerElement = document.getElementById('mycandidate-Container')
+    reportContainerElement.innerHTML = ""
+    if (TableData && TableData.length > 0) {
+        ExportButton.classList.remove('hide');
+
+        let tableHead = `
+        <th class="qaf-th">Job Post</th>
+        <th class="qaf-th">Name</th>
+        <th class="qaf-th">Tracker Date</th>
+        <th class="qaf-th">Status</th>
+        <th class="qaf-th">Source</th>
+        <th class="qaf-th">Contact Number</th>
+        <th class="qaf-th">Email</th>
+        `;
+        let tableRow = "";
+
+        TableData.forEach(entry => {
+
+            const jobPost = entry.JobPost.split(";#")[1];
+            const candidate = entry.Candidate.split(";#")[1];
+            const trackerDate = moment(entry.CreatedDate).format('DD/MM/YYYY');
+            const currentStatus = entry.CurrentStatus;
+            const source = entry.Source;
+            const contactNumber = entry.ContactNumber;
+            const email = entry.Email;
+
+            tableRow += `
+                <tr class="qaf-tr">
+                    <td class="qaf-td"><a href=recruitment/job-details?rid=${entry.JobPost.split(";#")[0]} target="_blank">${jobPost ? jobPost : ""}</a></td>
+                    <td class="qaf-td">${candidate ? candidate : ""}</td>
+                    <td class="qaf-td">${trackerDate ? trackerDate : ""}</td>
+                    <td class="qaf-td">${currentStatus ? currentStatus : ""}</td>
+                     <td class="qaf-td">${source ? source : ""}</td>
+                    <td class="qaf-td">${contactNumber ? contactNumber : ""}</td>
+                    <td class="qaf-td">${email ? email : ""}</td>
+                    
+                </tr>
+            `;
+
+        });
+
+        let tableValue = `
+                <table class="qaf-table" id="table">
+                    <thead class="qaf-thead">
+                        <tr class="qaf-tr">
+                            ${tableHead}
+                        </tr>
+                    </thead>
+                    <tbody class="qaf-tbody">
+                        ${tableRow}
+                    </tbody>
+                </table>
+            `;
+
+        reportContainerElement.innerHTML = tableValue;
+        HideLoader();
+    }
+    else {
+        ExportButton.classList.add('hide');
+        let tableHead = `
+       <th class="qaf-th">Job Post</th>
+        <th class="qaf-th">Name</th>
+        <th class="qaf-th">Tracker Date</th>
+        <th class="qaf-th">Status</th>
+        <th class="qaf-th">Source</th>
+        <th class="qaf-th">Contact Number</th>
+        <th class="qaf-th">Email</th> `;
+        let tableBody = '';
+        let startRow = '<tr class="qaf-tr">';
+        let endRow = '</tr>';
+        let tableRow = `<td colspan="7" class="qaf-td" ><div class='no-record'>No Record Found</div></td>`;
+        let tableHTML = `
+                <table class="qaf-table" id="table">
+                    <thead class="qaf-thead">
+                        <tr class="qaf-tr">
+                            ${tableHead}
+                        </tr>
+                     </thead>
+                     <tbody class="qaf-tbody">
+                        ${startRow}
+                            ${tableRow}
+                         ${endRow}
+                    </tbody>
+                </table>
+        `;
+        reportContainerElement.innerHTML = tableHTML;
+        HideLoader();
+    }
 }
 
 function ExportReport() {
@@ -609,7 +270,7 @@ function formatedDate(Datevalue) {
     }
 }
 
-function  ShowLoader(){
+function ShowLoader() {
     let pageDisabledElement = document.getElementById('pageDisabled');
     if (pageDisabledElement) {
         pageDisabledElement.classList.add('page-disabled')
@@ -618,9 +279,9 @@ function  ShowLoader(){
     if (isloadingElement) {
         isloadingElement.style.display = 'block'
     }
-  }
-  
-  function HideLoader(){
+}
+
+function HideLoader() {
     let pageDisabledElement = document.getElementById('pageDisabled');
     let isloadingElement = document.getElementById('isloading');
     if (pageDisabledElement) {
@@ -629,4 +290,169 @@ function  ShowLoader(){
     if (isloadingElement) {
         isloadingElement.style.display = 'none'
     }
-  }
+}
+
+function getmyVendors() {
+    ShowLoader()
+    let user = getCurrentUser();
+    myVendors = []
+    let objectName = "R_Vendor";
+    let list = 'RecordID,FirstName,LastName,Email,CompanyName,MobileNumber,AssignTo';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = `AssignTo='${user.EmployeeGUID}'`;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((vendors) => {
+        if (Array.isArray(vendors) && vendors.length > 0) {
+            myVendors = vendors;
+            generateReport();
+        }
+        else {
+            generateReport();
+        }
+
+    });
+}
+
+function generateReport() {
+    TableData = myVendors.reverse();
+    // const ExportButton = document.getElementById('ExportButton');
+    let reportContainerElement = document.getElementById('myvendor-Container')
+    reportContainerElement.innerHTML = ""
+    if (TableData && TableData.length > 0) {
+        // ExportButton.classList.remove('hide');
+        let tableHead = `
+        <th class="qaf-th action-head"></th>
+        <th class="qaf-th">Vendor</th>
+        <th class="qaf-th">Email</th>
+        <th class="qaf-th">Company Name</th>
+        <th class="qaf-th">Mobile Number</th>
+        `;
+        let tableRow = "";
+
+        TableData.forEach(entry => {
+            const vendor = entry.FirstName + " " + entry.LastName;
+            const email = entry.Email;
+            const companyName = entry.CompanyName;
+            const mobileNumber = entry.MobileNumber;
+
+            tableRow += `
+                <tr class="qaf-tr">
+                    <td class="qaf-td action-cell">
+                        <button class="action-btn" onclick="toggleActionButtons(this,'${entry.RecordID}')">
+                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <td class="qaf-td">${vendor ? vendor : ""}</td>
+                    <td class="qaf-td">${email ? email : ""}</td>
+                    <td class="qaf-td">${companyName ? companyName : ""}</td>
+                    <td class="qaf-td">${mobileNumber ? mobileNumber : ""}</td>
+                </tr>
+            `;
+
+        });
+
+        let tableValue = `
+                <table class="qaf-table" id="table">
+                    <thead class="qaf-thead">
+                        <tr class="qaf-tr">
+                            ${tableHead}
+                        </tr>
+                    </thead>
+                    <tbody class="qaf-tbody">
+                        ${tableRow}
+                    </tbody>
+                </table>
+            `;
+
+        reportContainerElement.innerHTML = tableValue;
+        HideLoader();
+    }
+    else {
+        // ExportButton.classList.add('hide');
+        let tableHead = `
+        <th class="qaf-th">Vendor</th>
+        <th class="qaf-th">Email</th>
+        <th class="qaf-th">Company Name</th>
+        <th class="qaf-th">Mobile Number</th>  `;
+        let tableBody = '';
+        let startRow = '<tr class="qaf-tr">';
+        let endRow = '</tr>';
+        let tableRow = `<td colspan="4" class="qaf-td" ><div class='no-record'>No Record Found</div></td>`;
+        let tableHTML = `
+                <table class="qaf-table" id="table">
+                    <thead class="qaf-thead">
+                        <tr class="qaf-tr">
+                            ${tableHead}
+                        </tr>
+                     </thead>
+                     <tbody class="qaf-tbody">
+                        ${startRow}
+                            ${tableRow}
+                         ${endRow}
+                    </tbody>
+                </table>
+        `;
+        reportContainerElement.innerHTML = tableHTML;
+        HideLoader();
+    }
+}
+
+function toggleActionButtons(button, recordID) {
+    vendorRecordID = recordID;
+    const actionButtons = button.nextElementSibling;
+    const allActionButtons = document.querySelectorAll('.action-buttons');
+    allActionButtons.forEach(btn => {
+        if (btn !== actionButtons) {
+            btn.style.display = 'none';
+        }
+    });
+    if (actionButtons) {
+        if (actionButtons.style.display === 'block') {
+            actionButtons.style.display = 'none';
+        } else {
+            actionButtons.style.display = 'block';
+        }
+    }
+}
+
+// top: ${event.pageY - 1}px;
+window.onclick = function (event) {
+    if (!(event.target.classList.contains('fa-ellipsis-v') || event.target.classList.contains('action-btn'))) {
+        document.getElementById("menuId").innerHTML = ``
+    } else {
+        document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 478}px; left: ${event.pageX - 10}px;">
+         <button class="view-btn" onclick="ViewRecord('${vendorRecordID}')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</button>
+         <button class="edit-btn" onclick="EditRecord('${vendorRecordID}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
+         <button class="delete-btn" onclick="DeleteRecord('${vendorRecordID}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
+    </div>`
+    }
+}
+
+function ViewRecord(RecordID) {
+    if (window.QafPageService) {
+        let Repository = "R_Vendor";
+        window.QafPageService.ViewItem(Repository, RecordID, function () {
+            getmyVendors();
+        });
+    }
+
+}
+
+function EditRecord(RecordID) {
+    if (window.QafPageService) {
+        let Repository = "R_Vendor";
+        window.QafPageService.EditItem(Repository, RecordID, function () {
+            getmyVendors();
+        });
+    }
+}
+
+function DeleteRecord(RecordID) {
+    if (window.QafPageService) {
+        window.QafPageService.DeleteItem(RecordID, function () {
+            getmyVendors();
+        });
+    }
+}

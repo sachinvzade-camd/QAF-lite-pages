@@ -57,11 +57,13 @@
 }
 
 .qaf-th {
-  height: 60px;
+  height: 50px;
   padding: 12px 10px;
   text-align: left;
   word-wrap: break-word;
   min-width: 70px;
+  border-right: none;
+  vertical-align: middle;
 }
 
 .qaf-td {
@@ -70,6 +72,8 @@
   text-align: left;
   word-wrap: break-word;
   min-width: 135px;
+  border-right: none;
+  vertical-align: middle;
 }
 
 .qaf-th {
@@ -190,11 +194,13 @@
 }
 
 /* Action Btn */
-
 .action-btn {
   display: flex;
 }
 
+.action-btn i {
+  font-size: 19px;
+}
 .action-head,
 .action-cell {
   min-width: 1px;
@@ -286,10 +292,10 @@
 .popup-content {
   background: #fff;
   padding: 30px 20px 20px 20px;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 50%;
-  height: 97vh;
+  height: 95vh;
   overflow: scroll;
   position: fixed;
   left: 50%;
@@ -297,13 +303,19 @@
   transform: translate(-50%, -50%);
   margin-top: 30px;
 }
-.permission-list{
+.permission-list {
   display: flex;
   align-items: baseline;
+  width: 92%;
+  margin: 10px 0px;
+}
+
+.right-align-li {
+  justify-content: end;
 }
 .popup-content-es {
-  min-width:100%;
-  max-width:100%;
+  min-width: 99%;
+  max-width: 99%;
   margin: 0;
 }
 
@@ -340,6 +352,7 @@
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 13px;
@@ -353,35 +366,13 @@
 
 .es-buttos {
   display: flex;
-  margin-top: 15px;
-  margin-bottom: 0px;
   justify-content: flex-end;
-  padding-right: 0px;
 }
 
 .btn {
   margin-left: 5px;
 }
 
-/* .submit {
-    height: 35px;
-    margin: 0px 2px;
-    border-radius: 5px;
-    padding: 6px 12px;
-    border: none;
-    cursor: pointer;
-  } */
-
-/* .cancel {
-    margin: 0px 3px;
-    background-color: #f6f4f4;
-    color: #333;
-    border: none;
-    height: 35px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  } */
 .input-btn-group {
   display: flex;
   flex-wrap: wrap;
@@ -396,40 +387,20 @@
   /* Adjust spacing */
 }
 
-/* .buttonarea {
-    flex: 0 0 auto; 
-    margin-left: 10px;
-  } */
-
-/* .addfield-btn{
-    background-color: #ff7a59;
-    color: #fff;
-    border: none;
-    margin: 25px 0px 0px 0px;
-    height: 40px;
-    border-radius: 5px;
-    padding: 6px 16px;
-    border: none;
-    cursor: pointer;
-  } */
 .trackerfield {
   width: 50%;
 }
 
-/* .form-buttons{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    margin: 10px auto;
-  } */
 .control-btn {
   margin-top: 25px;
 }
 
 .field-content {
+  /* border: none; */
   border: 1px solid #ccc;
   padding: 10px 20px;
   border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .label-area {
@@ -456,26 +427,36 @@
 }
 
 .qaf-qaf-form-group {
+  width: 27%;
   padding-bottom: 10px;
+  margin-right: 30px;
+}
+.permission-section-group {
+  width: 100%;
 }
 
 .qaf-qaf-form-group span.required {
   display: inline;
   vertical-align: bottom;
-  color: #cc0000;
+  color: red;
 }
 
 select {
   -webkit-appearance: none;
   appearance: none;
   background-image: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
-    no-repeat scroll right 15px center;
+    no-repeat scroll right 1px center;
 }
 
 .arrow {
   background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+    no-repeat scroll right 1px center;
+  background-size: 8px;
+}
+.arrow1 {
+  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
     no-repeat scroll right 15px center;
-  background-size: 11px;
+  background-size: 10px;
 }
 
 .hide-y-scroll {
@@ -491,23 +472,20 @@ select {
   outline: none;
   font-size: 16px;
 }
-.app-breadcrumb-area{
-  z-index: 0!important;
-}
+
 .es-input {
   transform: scale(1.5);
 }
-.permission-dropdown{
-  width: 50%;
+.permission-dropdown {
+  width: 100%;
 }
 .es-form-group {
-  width: 50%;
+  width: 30%;
   margin-bottom: 0px;
 }
 
 .es-label {
   margin-bottom: 8px;
-  margin: 0px 0px 10px 10px;
   font-size: 14px;
   font-weight: 350;
   color: gray;
@@ -517,7 +495,8 @@ select {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   list-style: none;
-  padding: 10px 5px;
+  padding: 10px 0px;
+  width: 104%;
 }
 .page-blur {
   opacity: 0.7;
@@ -540,7 +519,6 @@ select {
 }
 
 /* Form Styling */
-
 .common-page-title {
   font-size: 18px;
   font-family: inherit;
@@ -591,10 +569,11 @@ select {
 }
 
 .fs-input {
+  border: none;
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0px;
   box-sizing: border-box;
   font-size: 13px;
   outline: none;
@@ -603,6 +582,11 @@ select {
 
 .fs-select {
   margin-top: 3px;
+}
+
+.button-container{
+  position: relative;
+  z-index: 1000;
 }
 
 .header-buttons {
@@ -614,18 +598,6 @@ select {
   display: flex;
   justify-content: start;
 }
-
-/* .btn-primary {
-  background-color: #ff7a59;
-  color: #fff; 
-   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  margin-left: 10px; 
-} */
-
 .form-container {
   max-height: 655px;
   overflow-y: auto;
@@ -648,11 +620,78 @@ select {
 }
 
 input[type="checkbox"] {
-  accent-color: #f66442;
+  accent-color: var(--ButtonBackGroundColor);
+  margin-bottom: 0px;
 }
 .reset-paasword-loader {
   left: 25%;
 }
-.section-heading{
+.section-heading {
   margin-top: 15px;
+}
+.column-group {
+  display: flex;
+  justify-content: start;
+}
+.qaf-column-field {
+  width: 27%;
+  margin-right: 30px;
+}
+
+.super-admin-checkbox {
+  padding: 10px 0px;
+  width: 10%;
+  width: 27%;
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  display: flex;
+  justify-content: space-between;
+}
+.card-container {
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.card {
+  width: 48%;
+  height: inherit;
+  margin: 5px 10px 25px 10px;
+  background-color: #fff;
+  transition: transform 0.3s ease-in-out;
+  padding-left: 0px;
+  max-height: 50vh;
+  overflow: auto;
+}
+.section-heading-menu {
+  height: 30px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+  font-size: 16px;
+  width: 92%;
+  margin-bottom: 10px;
+}
+
+.second-group {
+  justify-content: flex-start;
+  align-items: center;
+}
+.lable-superadmin {
+  margin-left: 10px;
+  margin-bottom: 0px;
+}
+.card::-webkit-scrollbar {
+  width: 5px; /* Set the width of the scrollbar */
+  border-radius: 2px;
+}
+
+.qaf-section-one {
+  padding: 10px 30px;
+}
+
+.remove-z-Index {
+  z-index: 0 !important;
 }

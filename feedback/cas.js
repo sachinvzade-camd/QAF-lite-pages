@@ -389,6 +389,7 @@ function createTable(objectArray) {
     body.appendChild(tbl)
 }
 function openTab(evt, id) {
+    debugger
     var i, tabcontent, tablinks;
     document.getElementById('table').style.display = "block";
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -415,6 +416,7 @@ function openTab(evt, id) {
         }
 
     }
+    debugger
     if (id === 'QBFeedback') {
         //     document.getElementById("UploadResume").disabled = false;
         // if(round!='1'){
@@ -688,18 +690,36 @@ function getJobPosting() {
         for (const li of Object.values(document.getElementsByClassName('tablinks'))) {
             li.classList.remove('displaynone')
       }
+      document.getElementById('tab1').classList.add('active')
         getCandidate();
         getCasDetails();
         getSingleCheckList()
         getSingleNonnegotiableList()
     }
      else{
+        debugger
         let casTab=document.getElementById('cas-tab')
         if(casTab){
-            casTab.innerHTML=`<p class='error-role'>Feeback not configure for ${jobRole}</p>`
+            // casTab.innerHTML=`<p class='error-role'>Feedback not configure for ${jobRole}</p>`
+            document.getElementById('tab1').style.display='none'
+            document.getElementById('tab2').style.display='none'
+            document.getElementById('tab3').classList.add('active')
         }
+        let index=0
         for (const li of Object.values(document.getElementsByClassName('tablinks'))) {
+            index+=1
+            if(index!=3){
+                document.getElementById('table').style.display = "none";
                 li.classList.add('displaynone')
+            }  else{
+                document.getElementById('QBFeedback').style.display = "block";
+
+                li.classList.remove('displaynone')
+                document.getElementById('deleteicon').style.display='none'
+                document.getElementById("UploadResume").disabled = true;
+        getJobTracker()
+
+            } 
           }
      }
         }

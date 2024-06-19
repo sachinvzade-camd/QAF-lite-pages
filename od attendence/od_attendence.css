@@ -10,7 +10,8 @@
 }
 .container {
   width: 100%;
-  margin: 0px;
+  /* margin: 18px 25px 35px 25px; */
+  margin: 0px 0px 0px 0px;
 }
 p {
   font-size: 18px;
@@ -51,7 +52,7 @@ p {
 /* for QAF Lite */
 .line {
   position: absolute;
-  top: 59px;
+  top: 95px;
   height: 2px;
   background-color: #311212;
   transition: all 0.3s ease-in-out;
@@ -206,7 +207,7 @@ p {
 .tablecontainer {
   overflow-x: auto; /* Add this line */
   max-width: 100%; /* Add this line to limit the width */
-  max-height: 72vh;
+  max-height: 68vh;
 }
 
 .tablecontainer::-webkit-scrollbar {
@@ -236,22 +237,42 @@ p {
 .header-title {
   height: 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 5px;
 }
-.left-container {
+/* .left-container {
   width: 30%;
-}
+} */
 
 .right-container {
   height: inherit;
-  width: 40%;
+  width: 100%;
   display: flex;
   justify-content: end;
 }
 .qaf-search-bar {
+  width: 60%;
+  margin: 0px;
+}
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 25%;
+  margin: 10px 5px;
+  color: gray;
+}
+
+.search-input {
+  text-align: start;
   width: 100%;
+  padding-left: 10px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 30px;
+  outline: none;
 }
 
 .apply-input {
@@ -259,6 +280,22 @@ p {
   padding: 6px;
   border-radius: 4px;
   border: 1px solid gray;
+}
+.search-icon,
+.cancel-icon {
+  color: gray;
+  position: absolute;
+  cursor: pointer;
+}
+.search-bar .search-icon {
+  padding-top: 15px;
+  padding-left: 10px;
+  color: gray;
+  margin-left: -60px;
+}
+.search-bar #cancelSearch {
+  display: none;
+  color: gray;
 }
 
 .cancel-icon {
@@ -286,353 +323,30 @@ a {
   cursor: pointer;
 }
 
-.action-btn{
-  display: flex;
-}
-
-.action-head,
-.action-cell {
-  min-width: 1px;
-}
-.action-buttons {
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 5px;
-  z-index: 1;
-  position: absolute;
-  /* top: 100%; */
-  background-color: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 85px; /* Position the action buttons below the ellipsis button */
-}
-
-.action-buttons button {
-  display: block;
-  width: 100%;
-  padding: 3px 8px;
-  border: none;
-  background-color: transparent;
-  text-align: left;
-  cursor: pointer;
-  color: #2d2c2c;
-}
-
-.action-buttons button:hover{
-  background-color:#f4f4f4f7;
-}
-
-.action-cell {
-  position: relative; /* Ensure the action buttons are positioned relative to the cell */
-}
-
 .action-btn {
-  width: 30px; /* Adjust width for vertical ellipsis button */
-  height: 30px; /* Adjust height for vertical ellipsis button */
-  padding: 0;
-}
-
-.action-btn {
-  background-color: #fff;
-  color: #ff7a59;
-  border: none;
-  padding: 5px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin: 0px 10px 0px 10px;
-}
-
-/* Shift Assignment Styling */
-.form-container {
-  padding: 0px;
-}
-.child-container {
-  width: 100%;
-  margin: 0px;
-  padding: 0px 20px;
-  border-radius: 5px;
-}
-
-.qaf-form-group {
-  margin-bottom: 10px;
-}
-
-.fs-label {
-  width: 100%;
-  display: inline-block;
-  margin-bottom: 5px;
-  font-size: 13px;
-  font-family: Poppins;
-  color: #333;
-  transform: translate(0, 5px);
-  font-weight: 600;
-}
-
-.qaf-form-group span.required {
-  display: inline;
-  vertical-align: bottom;
-  color: #cc0000;
-}
-
-.fs-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  font-size: 13px;
-  outline: none;
-  color: #333;
-}
-
-.fs-select {
-  margin-top: 3px;
-}
-
-.select-employee-tab {
-  border: 1px solid black;
-  height: 494px;
   display: flex;
-  justify-content: space-between;
-}
-.first-tab,
-.second-tab {
-  padding: 15px 0px 15px 15px;
-  
-}
-.first-tab {
-  width: 47%;
-  border-right: 1px solid #000;
-}
-.second-tab {
-  width: 53%;
-}
-.tabs,
-.Employee-list {
-  display: flex;
-  justify-content: space-between;
-}
-.clear-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 29%;
 }
 
-.search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 25%;
-  margin: 10px 5px;
-  color: gray;
-}
-
-.search-input,
-.search-input-second {
-  text-align: start;
-  width: 89%;
-  padding: 0px;
-  padding-left: 40px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  height: 35px;
-  outline: none;
-}
-
-.search-icon,
-.cancel-icon {
-  color: gray;
-  position: absolute;
-  cursor: pointer;
-}
-.qaf-search-bar .search-icon {
-  padding-top: 15px;
-  padding-left: 0px;
-  color: gray;
-}
-.qaf-search-bar #firstCancelSearch {
+.hide {
   display: none;
-  color: gray;
-}
-.qaf-search-bar #secondCancelSearch {
-  display: none;
-  color: gray;
 }
 
-.cancel-icon {
-  width: 10px;
-  right: 10px;
-  padding-top: 12px;
-  left: 39%;
-  top: 34%;
-}
-
-.cancel-icon2 {
-  color: gray;
-  position: absolute;
-  cursor: pointer;
-  width: 10px;
-  right: 10px;
-  padding-top: 4px;
-  left: 87.5%;
-  top: 35%;
-}
-
-.qaf-search-bar {
-  margin: 10px 0px;
-}
-
-.selected-search {
-  margin-top: 0px;
-  width: 100%;
-}
-.search-input-second {
-  width: 91%;
-}
-
-.policies-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 10px 0px;
-}
-.clear-All-btn {
-  border: none;
-  background-color: #fff;
-  cursor: pointer;
-}
-
-.Employee-list {
-  padding: 10px 0px;
-  justify-content: space-between;
-  height: 35px;
-  align-items: center;
-  width: 91%;
-}
-
-.second-tab-Employee{
-  width: 91%;
-}
-
-.btnAction {
-  font-family: "Poppins", sans-serif;
-  font-size: 14px;
-  overflow-x: hidden;
-  padding: 0px 4px;
-  margin-right: 4px;
-  cursor: pointer;
-  height: 25px;
-  width: 25px;
-  border-radius: 50px;
-  border: none;
-}
-.employee-name {
-  font-family: Poppins;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.list-policyholder {
-  max-height: 375px;
-  overflow-y: auto;
-  padding-left: 0px;
-  border: none;
-}
-
-.list-policyholder::-webkit-scrollbar {
-  width: 10px;
-}
-
-.nodata {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.search-icon-first{
-  left: 0%;
-}
-.search-icon-second{
-  left: 43%;
-}
-
-select{
+.search-input {
   -webkit-appearance: none;
   appearance: none;
   appearance: none;
   background-image: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
     no-repeat scroll right 15px center;
 }
-.arrow{
+.arrow {
   background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
-  no-repeat scroll right 15px center;
+    no-repeat scroll right 4px center;
   background-size: 11px;
 }
 
-/* report Styling*/
-
-.left-conatiner {
-  width: 30%;
+.child-left-content{
+  width: 55%;
 }
-
-.right-conatiner {
-  height: inherit;
-  width: 70%;
-  display: flex;
-  justify-content: end;
-}
-
-.search-bar-report {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 25%;
-  margin: 10px 5px;
-  color: gray;
-}
-
-.input-report{
-  text-align: start;
-  width: 100%;
-  padding: 6px;
-  padding-left: 30px;
-  border: 1px solid gray;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-icon-report,
-.cancel-icon-report {
-  color: gray;
-  position: absolute;
-  cursor: pointer;
-}
-.search-bar-report .fa-search {
-  padding-top: 15px;
-  padding-left: 10px;
-  color: gray;
-  margin-left: 1px;
-  margin-top: -13px;
-}
-.search-bar-report #cancelSearch-report{
-  display: none;
-  color: gray;
-}
-
-.cancel-icon-report {
-  right: 10px;
-}
-
-.no-data {
-  width: 100%;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 /* Loader */
 .page-disabled {
   background: #fff;

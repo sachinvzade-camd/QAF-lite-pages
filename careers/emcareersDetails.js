@@ -191,13 +191,13 @@ function applytemparoryCandidate(){
             fieldsValue.push({ fieldName: val, fieldValue: null })
           }
         })
-        let fieldsDoNotdiaply = ["VendorNameReference", "Source", "Rating", "Status", "InternalCandidateProfile", "CandidatePassword","CandidateID","JobPost","LinkedinLink","FacebookLink","TwitterLink","GooglePlusLink","Street1","Street2","Pincode","District","Country","CityTown","PhotoUrl","HighestQualification","Percentagein10th","Percentagein12th","PercentageinGraduation","PercentageinPostGraduation","ProfessionalCourse","CandidateDocuments","PreferredLocation","CurrentLocation"];//check
+        let fieldsDoNotdiaply = ["VendorNameReference", "Source", "Rating", "Status", "InternalCandidateProfile", "CandidatePassword","CandidateID","JobPost","LinkedinLink","FacebookLink","TwitterLink","GooglePlusLink","Street1","Street2","Pincode","District","Country","CityTown","PhotoUrl","HighestQualification","Percentagein10th","Percentagein12th","PercentageinGraduation","PercentageinPostGraduation","ProfessionalCourse","CandidateDocuments","PreferredLocation","CurrentLocation",'RevenueGeneration'];//check
        let displayFieldlist = jobTrackerRoleField.filter((objOne) => {
           return !fieldsDoNotdiaply.some((objTwo) => {
             return objOne === objTwo;
           });
         });
-        let excludeFieldFromForm=["LinkedinLink","FacebookLink","TwitterLink","GooglePlusLink","Street1","Street2","Pincode","District","Country","CityTown","PhotoUrl","HighestQualification","Percentagein10th","Percentagein12th","PercentageinGraduation","PercentageinPostGraduation","ProfessionalCourse","CandidateDocuments","PreferredLocation","CurrentLocation"]
+        let excludeFieldFromForm=["LinkedinLink","FacebookLink","TwitterLink","GooglePlusLink","Street1","Street2","Pincode","District","Country","CityTown","PhotoUrl","HighestQualification","Percentagein10th","Percentagein12th","PercentageinGraduation","PercentageinPostGraduation","ProfessionalCourse","CandidateDocuments","PreferredLocation","CurrentLocation",'RevenueGeneration']
         window.QafPageService.AddItem("Temporary_Candidate",itemAdd,displayFieldlist,fieldsValue,null,null,fieldsDoNotdiaply,excludeFieldFromForm,null,null,null,true,null,null,null,'Email')
     }
 }

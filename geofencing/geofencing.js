@@ -4,29 +4,24 @@ var currentTab = 1;
 var tabName = "activity";
 var tabLable = "My Requests";
 
-var Employee = [];
-var ShiftAllocation_List = [];
-var ShiftConfiguration_List = [];
+var Employee;
+var Geofencing_Allocation_List;
+var Geofencelist;
 var selectPolicyName;
 var SearchSelectedEmployee;
 var SelectedpolicyEmployer
 var user;
-var EmmployeeListReport;
-var ShiftList;
 var shiftRecordId;
-var IsShiftBeforeToday;
-
-var topbar = document.getElementById("header-title");
+var topbar = document.getElementById("header-title")
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        // document.getElementById("breadcrum").style.display = "none";
         const container = document.getElementsByClassName('container')[0];
         const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
         const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
         activeLine1.style.width = activeTab1.offsetWidth + 'px';
         activeLine1.style.left = activeTab1.offsetLeft + 'px';
         user = getCurrentUser();
-        loadShiftConfig()
+        loadGeofencing_Grid()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
@@ -62,22 +57,19 @@ function showContent(tabId, tabNum, clickedButton) {
 
     lineElement.style.width = button.offsetWidth + "px";
     lineElement.style.transform = "translateX(" + offsetLeft + "px)";
-debugger
+
     var contentArea = document.getElementById(tabId);
     if (contentArea) {
         contentArea.classList.toggle("active");
     }
     switch (tabId) {
         case "activity":
-            ;
-            loadShiftConfig();
+            loadGeofencing_Grid();
             break;
         case "other":
-           
-            loadShiftConfiguration_List();
+            loadGeofencelist();;
             break;
         case "report":
-           
             getEmployeeForReport();
             break;
         default:
@@ -99,11 +91,11 @@ function movingTabs(value) {
     });
 }
 
-function loadShiftConfig() {
+function loadGeofencing_Grid() {
     ShowLoader()
     ShiftConfiguration = []
-    let objectName = "Shift_Configuration";
-    let list = 'LOPDays,Name,WorkingDays,Description,ForEvery4DaysLate,StartTime,EndTime,NumberofWorkingHrsforHalfDay,NumberofWorkingHrsforFullDay,WeeklyOff,CutOffTime';
+    let objectName = "Geofencing";
+    let list = 'PolicyName,PolicyDescription,WorkAddress,Latitude,Longitude,Radius';
     let fieldList = list.split(",");
     let pageSize = "100000";
     let pageNumber = "1";
@@ -122,52 +114,36 @@ function showData() {
     generateTable(ShiftConfiguration);
 }
 
-function isDateBeforeToday(insertedDate) {
-    const currentDate = new Date();
-    let TodaysDate = moment(currentDate).format('YYYY/MM/DD');
-    let repoDate = moment(insertedDate).format('YYYY/MM/DD');
-    return moment(repoDate).isBefore(TodaysDate, 'date')
-
-}
-
 function generateTable(TableData) {
     if (TableData && TableData.length > 0) {
         let tableRow = "";
         let tableHead = `
                   <th class="qaf-th action-head"></th>
-                  <th class="qaf-th">Name</th>
-                  <th class="qaf-th">Start Time</th>
-                  <th class="qaf-th">End Time</th>
-                  <th class="qaf-th">Number of Working Hrs for Half Day</th>
-                  <th class="qaf-th">Number of Working Hrs for Full Day</th>
-                  <th class="qaf-th">LOP Days</th>
-                  <th class="qaf-th">CutOff Time</th>
-                  <th class="qaf-th">Description</th>
-                  <th class="qaf-th">For Every 4 Days Late</th>
-                  <th class="qaf-th">Working Days</th>
+                  <th class="qaf-th">Policy Name</th>
+                  <th class="qaf-th">Policy Description</th>
+                  <th class="qaf-th">Work Address</th>
+                  <th class="qaf-th">Latitude</th>
+                  <th class="qaf-th">Longitude</th>
+                  <th class="qaf-th">Radius</th>
+                 
                        `;
         TableData.forEach((entry, index) => {
-
-
-
 
             tableRow += `
                   <tr class="qaf-tr">
                   <td class="qaf-td action-cell">
-                  <button class="action-btn" onclick="toggleActionButtons(this,'${entry.RecordID}','${entry.CreatedDate}')">
+                  <button class="action-btn" onclick="toggleActionButtons(this,'${entry.RecordID}')">
                   <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                   </button>
+                  
               </td>
-                  <td class="qaf-td">${entry.Name ? entry.Name : ""}</td>
-                  <td class="qaf-td">${entry.StartTime ? entry.StartTime : ""}</td>
-                  <td class="qaf-td">${entry.EndTime ? entry.EndTime : ""}</td>
-                  <td class="qaf-td">${entry.NumberofWorkingHrsforHalfDay ? entry.NumberofWorkingHrsforHalfDay : ""}</td>
-                  <td class="qaf-td">${entry.NumberofWorkingHrsforFullDay ? entry.NumberofWorkingHrsforFullDay : ""}</td>
-                  <td class="qaf-td">${entry.LOPDays ? entry.LOPDays : ""}</td>
-                  <td class="qaf-td">${entry.CutOffTime ? entry.CutOffTime : ""}</td>
-                  <td class="qaf-td">${entry.Description ? entry.Description : ""}</td>
-                  <td class="qaf-td">${entry.ForEvery4DaysLate ? entry.ForEvery4DaysLate : ""}</td>
-                  <td class="qaf-td">${entry.WorkingDays ? entry.WorkingDays.split(';#').join(',') : ""}</td>
+                  <td class="qaf-td">${entry.PolicyName ? entry.PolicyName : ""}</td>
+                  <td class="qaf-td">${entry.PolicyDescription ? entry.PolicyDescription : ""}</td>
+                  <td class="qaf-td">${entry.WorkAddress ? entry.WorkAddress.split(';#')[1] : ""}</td>
+                  <td class="qaf-td">${entry.Latitude ? entry.Latitude : ""}</td>
+                  <td class="qaf-td">${entry.Longitude ? entry.Longitude : ""}</td>
+                  <td class="qaf-td">${entry.Radius ? entry.Radius : ""}</td>
+                
                   </tr>
                   `;
 
@@ -200,20 +176,17 @@ function filterData(searchTerm) {
         const tableContainer = document.getElementById('tablecontainer');
         tableContainer.innerHTML = '';
         let tableHead = `
-        <th class="qaf-th">Name</th>
-        <th class="qaf-th">Start Time</th>
-        <th class="qaf-th">End Time</th>
-        <th class="qaf-th">Number of Working Hrs for HalfDay</th>
-        <th class="qaf-th">Number of Working Hrs for FullDay</th>
-        <th class="qaf-th">LOP Days</th>
-        <th class="qaf-th">CutOff Time</th>
-        <th class="qaf-th">Description</th>
-        <th class="qaf-th">For Every 4Days Late</th>
-        <th class="qaf-th">Working Days</th>  `;
+            <th class="qaf-th">Policy Name</th>
+            <th class="qaf-th">Policy Description</th>
+            <th class="qaf-th">Work Address</th>
+            <th class="qaf-th">Latitude</th>
+            <th class="qaf-th">Longitude</th>
+            <th class="qaf-th">Radius</th>
+            `;
         let tableBody = '';
         let startRow = '<tr class="qaf-tr">';
         let endRow = '</tr>';
-        let tableRow = `<td colspan="10" class="qaf-td" ><div class='no-record'>No Record Found</div></td>`;
+        let tableRow = `<td colspan="6" class="qaf-td" ><div class='no-record'>No Record Found</div></td>`;
         let tableHTML = `
               <table class="qaf-table" id="table">
                   <thead class="qaf-thead">
@@ -237,49 +210,35 @@ function filterData(searchTerm) {
     }
 }
 
-
-
-
-
-
-function toggleActionButtons(button,recordID,shiftDate) {
-   shiftRecordId=recordID;
-   IsShiftBeforeToday=shiftDate
-   console.log("IsShiftBeforeToday",IsShiftBeforeToday)
-    const actionButtons = button.nextElementSibling;
-    const allActionButtons = document.querySelectorAll('.action-buttons');
-    allActionButtons.forEach(btn => {
-        if (btn !== actionButtons) {
-            btn.style.display = 'none';
-        }
-    });
-    if(actionButtons){
-        if (actionButtons.style.display === 'block') {
-            actionButtons.style.display = 'none';
-        } else {
-            actionButtons.style.display = 'block';
-        }
-    }
+function toggleActionButtons(button,recordID) {
+    
+    shiftRecordId=recordID;
+     const actionButtons = button.nextElementSibling;
+     const allActionButtons = document.querySelectorAll('.action-buttons');
+     allActionButtons.forEach(btn => {
+         if (btn !== actionButtons) {
+             btn.style.display = 'none';
+         }
+     });
+     if(actionButtons){
+         if (actionButtons.style.display === 'block') {
+             actionButtons.style.display = 'none';
+         } else {
+             actionButtons.style.display = 'block';
+         }
+     }
+  
+ }
  
-}
-
-window.onclick = function (event) {
-    let isShiftToday = isDateBeforeToday(IsShiftBeforeToday)
+ window.onclick = function (event) {
     if (!(event.target.classList.contains('fa-ellipsis-v') || event.target.classList.contains('action-btn'))) {
-        document.getElementById("menuId").innerHTML=``
+        document.getElementById("actionMenuID").innerHTML=``
     } else {
-        if(!isShiftToday){
-            document.getElementById("menuId").innerHTML=`<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY-70}px;left: ${event.pageX-110}px;">
+        document.getElementById("actionMenuID").innerHTML=`<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY-70}px;left: ${event.pageX-110}px;">
             <button class="view-btn" onclick="ViewRecord('${shiftRecordId}')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</button>
              <button class="edit-btn" onclick="EditRecord('${shiftRecordId}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
              <button class="delete-btn" onclick="DeleteRecord('${shiftRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
         </div>`
-        }
-        else{
-            document.getElementById("menuId").innerHTML=`<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY-70}px;left: ${event.pageX-110}px;">
-            <button class="view-btn" onclick="ViewRecord('${shiftRecordId}')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</button>`
-        }
-       
     }
 }
 
@@ -295,21 +254,21 @@ function getCurrentUser() {
     return userDetails;
 }
 
-function loadShiftConfiguration_List() {
-    ShowLoader();
-    ShiftConfiguration_List = []
-    let objectName = "Shift_Configuration";
-    let list = 'Name';
+function loadGeofencelist() {
+    ShowLoader()
+    Geofencelist = []
+    let objectName = "Geofencing";
+    let list = 'PolicyName';
     let fieldList = list.split(",");
     let pageSize = "100000";
     let pageNumber = "1";
     let orderBy = "true";
     let whereClause = "";
     // let whereClause="";
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((shiftconfig) => {
-        if (Array.isArray(shiftconfig) && shiftconfig.length > 0) {
-            ShiftConfiguration_List = shiftconfig;
-            selectPolicyName = shiftconfig[0]
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((geofence) => {
+        if (Array.isArray(geofence) && geofence.length > 0) {
+            Geofencelist = geofence;
+            selectPolicyName = geofence[0]
         }
 
         loadPolicy()
@@ -320,8 +279,8 @@ function loadPolicy() {
     let PolicyName = document.getElementById('selectpolicy');
     let options = `<option value=''> Select Policy</option>`;
     if (PolicyName) {
-        ShiftConfiguration_List.forEach(policy => {
-            options += `<option value="${policy.RecordID}">${policy.Name}</option>`;
+        Geofencelist.forEach(policy => {
+            options += `<option value="${policy.RecordID}">${policy.PolicyName}</option>`;
 
         });
         PolicyName.innerHTML = options;
@@ -331,6 +290,8 @@ function loadPolicy() {
 }
 
 function getEmployee() {
+    const myContent = document.querySelector(".employeeNames");
+    let html = "";
     Employee = []
     let objectName = "Employees";
     let list = 'RecordID,FirstName,LastName,IsOffboarded';
@@ -346,18 +307,19 @@ function getEmployee() {
             Employee.sort((a, b) => {
                 return a.FirstName- (b.FirstName);
             });
-            getshiftAllocation();
-            ShowReport()
+            Geofence_Allocation();
+
 
         }
     });
 
 }
 
-function getshiftAllocation() {
-    ShiftAllocation_List = []
-    let objectName = "Shift_Allocation";
-    let list = 'Employee,ShiftName';
+function Geofence_Allocation() {
+
+    Geofencing_Allocation_List = []
+    let objectName = "Geofence_Allocation";
+    let list = 'Employee,GeofencePolicy';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
@@ -365,14 +327,15 @@ function getshiftAllocation() {
     let whereClause = "";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((policy) => {
         if (Array.isArray(policy) && policy.length > 0) {
-            ShiftAllocation_List = policy;
+            Geofencing_Allocation_List = policy;
         }
         loadEmployee(Employee)
         loadSelectedEmployee();
-        HideLoader();
+        HideLoader()
     });
 
 }
+
 
 
 document.getElementById('search').addEventListener('keyup', function (event) {
@@ -407,7 +370,7 @@ document.getElementById('search-selectedEmployee').addEventListener('keyup', fun
 
 
 function cancelSearch(SearchIdName) {
-    
+
     let firstSearchBarId = "firstCancelSearch";
     let firstsearchCancle = document.getElementById('firstCancelSearch')
     let secondCancelSearch = document.getElementById('secondCancelSearch')
@@ -448,8 +411,8 @@ function filterData(searchTerm) {
 }
 
 function filterData2(searchTerm) {
-    debugger
-    const filteredData = ShiftAllocation_List.filter(item => {
+
+    const filteredData = Geofencing_Allocation_List.filter(item => {
         const firstName = item["Employee"];
         if (firstName !== null) {
             return (
@@ -464,9 +427,8 @@ function filterData2(searchTerm) {
         loadSelectedEmployee();
     }
     else {
-        let Totalemployee = document.getElementById('noofemployee');
-        Totalemployee.textContent = `(${filteredData.length})`
-
+        let Number = document.getElementById('noofemployee');
+        Number.textContent = `(${filteredData.length})`
         const myContent = document.querySelector(".selectedEmployeeNames");
         let html = "";
         html = `
@@ -513,25 +475,26 @@ function loadEmployee(Employeedata) {
 }
 
 
-document.getElementById("selectpolicy").addEventListener('change', loadNewMeeting);
-function loadNewMeeting() {
+document.getElementById("selectpolicy").addEventListener('change', Changepolicy);
+function Changepolicy() {
     loadSelectedEmployee();
 }
 
 
 function loadSelectedEmployee() {
-    let SelectedShiftRecordID = document.getElementById("selectpolicy").value
+    let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
     if (SearchSelectedEmployee && SearchSelectedEmployee.length > 0) {
-        let newSearchSelectedEmployee = SearchSelectedEmployee.filter(shift => shift.ShiftName.split(";#")[0] === SelectedShiftRecordID);
+
+        let newSearchSelectedEmployee = SearchSelectedEmployee.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
         SelectedpolicyEmployer = newSearchSelectedEmployee
     }
     else {
-        SelectedpolicyEmployer = ShiftAllocation_List.filter(shift => shift.ShiftName.split(";#")[0] === SelectedShiftRecordID);
+        SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+
     }
 
-    let Totalemployee = document.getElementById('noofemployee');
-    Totalemployee.textContent = `(${SelectedpolicyEmployer.length})`
-
+    let Number = document.getElementById('noofemployee');
+    Number.textContent = `(${SelectedpolicyEmployer.length})`
     const myContent = document.querySelector(".selectedEmployeeNames");
     let html = "";
     if (SelectedpolicyEmployer && SelectedpolicyEmployer.length > 0) {
@@ -562,7 +525,7 @@ function loadSelectedEmployee() {
 
 
 function checkEmployeeIsInShift(EmployeeID) {
-    let selectedShifts = ShiftAllocation_List.filter(shift => shift.Employee.split(";#")[0] === EmployeeID);
+    let selectedShifts = Geofencing_Allocation_List.filter(policy => policy.Employee.split(";#")[0] === EmployeeID);
     return selectedShifts;
 }
 
@@ -570,34 +533,34 @@ function AddEmployeeinList(EmployeeId) {
     let IsShiftassigntoEmployee = checkEmployeeIsInShift(EmployeeId)
 
     if (IsShiftassigntoEmployee && IsShiftassigntoEmployee.length > 0) {
-        let alertMessage = "Shift already present for this employee"
+        let alertMessage = "Geofencing already present for this employee"
         openAlert(alertMessage);
 
     }
     else {
-        let shiftName = document.getElementById('selectpolicy').value;
+        let PolicyName = document.getElementById('selectpolicy').value;
         const EmployeName = EmployeeId;
-        const ShiftNameValue = shiftName;
+        const GeofencePolicyName = PolicyName;
         let SelectedEmployee
-        let SelectedShift;
+        let SelectedPolicy;
         if (EmployeName) {
             let employee = Employee.filter(emp => emp.RecordID === EmployeName);
             if (employee && employee.length > 0) {
                 SelectedEmployee = employee[0].RecordID + ";#" + employee[0].FirstName + " " + employee[0].LastName;
             }
         }
-        if (ShiftNameValue) {
-            let getShiftName = ShiftConfiguration_List.filter(dept => dept.RecordID === ShiftNameValue);
-            if (getShiftName && getShiftName.length > 0) {
-                SelectedShift = getShiftName[0].RecordID + ";#" + getShiftName[0].Name;
+        if (GeofencePolicyName) {
+            let getPolicyName = Geofencelist.filter(dept => dept.RecordID === GeofencePolicyName);
+            if (getPolicyName && getPolicyName.length > 0) {
+                SelectedPolicy = getPolicyName[0].RecordID + ";#" + getPolicyName[0].PolicyName;
             }
         }
         let object = {
             Employee: SelectedEmployee,
-            ShiftName: SelectedShift,
+            GeofencePolicy: SelectedPolicy,
         };
-        save(object, 'Shift_Allocation');
-        let alertMessage = `Shift allocated to ${SelectedEmployee.split(";#")[1]}`
+        save(object, 'Geofence_Allocation');
+        let alertMessage = `Geofencing allocated to ${SelectedEmployee.split(";#")[1]}`
         openAlert(alertMessage);
 
     }
@@ -606,9 +569,10 @@ function AddEmployeeinList(EmployeeId) {
 
 
 function RemoveEmployeeFromList(RecordID) {
+
     if (window.QafPageService) {
         window.QafPageService.DeleteItem(RecordID, function () {
-            getshiftAllocation();
+            Geofence_Allocation();
         });
     }
 }
@@ -632,7 +596,7 @@ function save(object, repositoryName) {
         intermidiateRecord.RecordID = null;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.CreateItem(intermidiateRecord).then(response => {
-            getshiftAllocation();
+            Geofence_Allocation();
             resolve({
                 response
             })
@@ -654,18 +618,18 @@ function openAlert(message) {
 
 function AddRecord() {
     if (window.QafPageService) {
-        let Repository = 'Shift_Configuration';
+        let Repository = 'Geofencing';
         window.QafPageService.AddItem(Repository, function () {
-            loadShiftConfig();
+            loadGeofencing_Grid();
         });
     }
 }
 
 function ViewRecord(RecordID) {
     if (window.QafPageService) {
-        let Repository = 'Shift_Configuration';
+        let Repository = 'Geofencing';
         window.QafPageService.ViewItem(Repository, RecordID, function () {
-            loadShiftConfig();
+            loadGeofencing_Grid();
         });
     }
 
@@ -673,23 +637,22 @@ function ViewRecord(RecordID) {
 
 function EditRecord(RecordID) {
     if (window.QafPageService) {
-        let Repository = 'Shift_Configuration';
+        let Repository = 'Geofencing';
         window.QafPageService.EditItem(Repository, RecordID, function () {
-            loadShiftConfig();
+            loadGeofencing_Grid();
         });
     }
 }
 
-function DeleteRecord(RecordID) {
+function DeleteREcord(RecordID) {
     if (window.QafPageService) {
         window.QafPageService.DeleteItem(RecordID, function () {
-            loadShiftConfig();
+            loadGeofencing_Grid();
         });
     }
 }
 
 function removeAllEmployeeFromList() {
-
     SelectedpolicyEmployer.forEach((val, index) => {
         const user = getCurrentUser();
         fetch(`https://demtis.quickappflow.com/api/DeleteRecord?recordID=${val.RecordID}`, {
@@ -702,104 +665,90 @@ function removeAllEmployeeFromList() {
         }).then(() => {
             if (index === SelectedpolicyEmployer.length - 1) {
                 SelectedpolicyEmployer = [];
-                getshiftAllocation();
+                Geofence_Allocation();
             }
         });
     });
-
 }
 
 
+var EmployeeForReport;
+var GeoFencePolicyForReport;
+
 function getEmployeeForReport() {
-    ShowLoader();
-    EmmployeeListReport = []
+    ShowLoader()
+    EmployeeForReport = []
     let objectName = "Employees";
-    let list = 'RecordID,FirstName,LastName,IsOffboarded';
+    let list = 'RecordID,FirstName,LastName';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
     let whereClause = `IsOffboarded!='True'<OR>IsOffboarded=''`;
-    // let whereClause="";
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((emps) => {
-        if (Array.isArray(emps) && emps.length > 0) {
-            EmmployeeListReport = emps;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((empList) => {
+        if (Array.isArray(empList) && empList.length > 0) {
+            EmployeeForReport = empList;
 
         }
-        getshiftList();
+        getGeoFencePolicyForReport();
     });
 }
 
-function getshiftList() {
-    ShiftList = []
-    let objectName = "Shift_Allocation";
-    let list = 'Employee,ShiftName';
+function getGeoFencePolicyForReport() {
+    GeoFencePolicyForReport = []
+    let objectName = "Geofence_Allocation";
+    let list = 'Employee,GeofencePolicy';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
     let whereClause = "";
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((shifts) => {
-        if (Array.isArray(shifts) && shifts.length > 0) {
-            ShiftList = shifts;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((policy) => {
+        if (Array.isArray(policy) && policy.length > 0) {
+            GeoFencePolicyForReport = policy;
+
         }
-        ShowReport();
+        printData();
     });
-}
-
-
-function ShowReport() {
-    getNewEmployee();
-    TableData = sortData(EmmployeeListReport);
-    GenerateReport(TableData);
 }
 
 function getNewEmployee() {
     const result = [];
-    const UndefinedShifName = 'undefined';
-    EmmployeeListReport.forEach(emp => {
-        const matchedShift = ShiftList.find(policy => policy.Employee.split(';#')[0] === emp.RecordID);
-        if (matchedShift) {
-            const shiftName = matchedShift.ShiftName;
-            if (shiftName) {
-                let NewShiftName = shiftName.split(';#')[1];
-                if (NewShiftName.toLowerCase() === UndefinedShifName.toLowerCase()) {
-                    emp.ShiftName = '';
-                } else {
-                    emp.ShiftName = NewShiftName
-                }
-
-
-            } else {
-                emp.ShiftName = '';
-            }
+    EmployeeForReport.forEach(emp => {
+        const matchedPolicy = GeoFencePolicyForReport.find(policy => policy.Employee.split(';#')[0] === emp.RecordID);
+        if (matchedPolicy) {
+            emp.GeofencePolicy = matchedPolicy.GeofencePolicy.split(';#')[1];
         } else {
-            emp.ShiftName = '';
+            emp.GeofencePolicy = '';
         }
-        result.push(emp);
     });
-    return result;
 }
 
 
-function GenerateReport(TableData) {
+function printData() {
+    getNewEmployee();
+    TableData = sortData(EmployeeForReport);
+    generateGeofenceReport(TableData);
+}
+
+function generateGeofenceReport(TableData) {
     if (TableData && TableData.length > 0) {
         let tableHead = `
                         <th class="qaf-th">Employee Name</th>
-                        <th class="qaf-th">Shift Name</th>
+                        <th class="qaf-th">Location</th>
                          `;
         let tableRow = "";
 
         TableData.forEach(entry => {
             const employeeName = (entry.FirstName ? entry.FirstName : "") + (entry.LastName ? " " + entry.LastName : "");
-            const ShiftName = entry.ShiftName ? entry.ShiftName : "";
+            const location = entry.GeofencePolicy ? entry.GeofencePolicy : "";
 
-            // Only add the row if both employeeName and ShiftName are not empty strings
-            if (employeeName.trim() !== "" || ShiftName.trim() !== "") {
+
+            if (employeeName.trim() !== "" || location.trim() !== "") {
                 tableRow += `
                     <tr class="qaf-tr">
                         <td class="qaf-td">${employeeName}</td>
-                        <td class="qaf-td">${ShiftName}</td>
+                        <td class="qaf-td">${location}</td>
                     </tr>
                 `;
             }
@@ -817,7 +766,7 @@ function GenerateReport(TableData) {
                 </tbody>
             </table>
         `;
-        document.getElementById('ShiftReport').innerHTML = tableValue;
+        document.getElementById('geofenceReport').innerHTML = tableValue;
         HideLoader()
     } else {
         filterReport(TableData);
@@ -825,7 +774,9 @@ function GenerateReport(TableData) {
 }
 
 
-// Event listener for the Enter Kry event on the search input
+
+// Event listener for the keyup event on the search input
+
 document.getElementById('searchReport').addEventListener('keyup', function (event) {
     let searchCancle = document.getElementById('cancelSearch-report')
     if (searchCancle) {
@@ -842,14 +793,14 @@ document.getElementById('searchReport').addEventListener('keyup', function (even
 });
 
 
-function cancelSearchReport() {
+function cancelSearchRecords() {
     let searchCancle = document.getElementById('cancelSearch-report')
     if (searchCancle) {
         searchCancle.style.display = 'none'
     }
     var searchInput = document.getElementById("searchReport");
     searchInput.value = '';
-    GenerateReport(TableData);
+    generateGeofenceReport(TableData);
 
 }
 
@@ -859,43 +810,46 @@ function filterReport(searchTerm) {
     const filteredData = TableData.filter(item => {
         const firstName = item["FirstName"];
         const lastName = item["LastName"];
+
+        // Check if firstName and lastName are not null before calling toLowerCase()
         if (firstName !== null && lastName !== null) {
             return (
                 firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 lastName.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
-        return '';
+        return ''; // Return false if either firstName or lastName is null
     });
+
     if (filteredData.length === 0) {
-        const tableContainer = document.getElementById('ShiftReport');
+        const tableContainer = document.getElementById('geofenceReport');
         tableContainer.innerHTML = '';
         let tableHead = `
                         <th class="qaf-th">Employee Name</th>
-                        <th class="qaf-th">Shift Name</th>    `;
+                        <th class="qaf-th">Location</th>    `;
         let tableBody = '';
         let startRow = '<tr class="qaf-tr">';
         let endRow = '</tr>';
-        let tableRow = `<td colspan="2" class="qaf-td" ><div class='no-data'>No Record Found</div></td>`;
+        let tableRow = `<td colspan="2" class="qaf-td" ><div class='no-record'>No Record Found</div></td>`;
         let tableHTML = `
-                <table class="qaf-table" id="table">
-                    <thead class="qaf-thead">
-                        <tr class="qaf-tr">
-                            ${tableHead}
-                        </tr>
-                     </thead>
-                     <tbody class="qaf-tbody">
-                        ${startRow}
-                            ${tableRow}
-                         ${endRow}
-                    </tbody>
-                </table>
+                    <table class="qaf-table" id="table">
+                        <thead class="qaf-thead">
+                            <tr class="qaf-tr">
+                                ${tableHead}
+                            </tr>
+                        </thead>
+                        <tbody class="qaf-tbody">
+                            ${startRow}
+                                ${tableRow}
+                            ${endRow}
+                        </tbody>
+                    </table>
         `;
         tableContainer.innerHTML = tableHTML;
         HideLoader()
     }
     else {
-        GenerateReport(filteredData);
+        generateGeofenceReport(filteredData);
 
     }
 
@@ -933,26 +887,27 @@ function download_csv() {
     let csvData = [];
     data.forEach(val => {
         let employeeName = (val["FirstName"] ? val["FirstName"] : "") + " " + (val["LastName"] ? val["LastName"] : "");
-        let shiftName = val["ShiftName"] ? val["ShiftName"] : "";
-        csvData.push([employeeName, shiftName].join(","));
+        let location = val["GeofencePolicy"] ? val["GeofencePolicy"] : "";
+        csvData.push([employeeName, location].join(","));
     });
 
     let csvBody = csvData.join('\n');
-    let csvHeader = ["Employee Name", "Shift Name"].join(',') + '\n';
+
+    let csvHeader = ["Employee Name", "Location"].join(',') + '\n';
+
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvHeader + csvBody);
     hiddenElement.target = '_blank';
-    hiddenElement.download = 'Shift Allocation Report' + '.csv';
+    hiddenElement.download = 'Geofence And  Policy Report' + '.csv';
     hiddenElement.click();
 }
-
 
 function  ShowLoader(){
     let secondTab=document.getElementById('secondTab')
     if(secondTab){
         secondTab.style.display = 'none'
     }
-    let ShiftReportTableElement=document.getElementById('ShiftReport')
+    let ShiftReportTableElement=document.getElementById('geofenceReport')
     if(ShiftReportTableElement){
         ShiftReportTableElement.style.display = 'none'
     }
@@ -977,11 +932,10 @@ function  ShowLoader(){
         if(secondTab){
             secondTab.style.display = 'block'
         }
-        let ShiftReportTableElement=document.getElementById('ShiftReport')
+        let ShiftReportTableElement=document.getElementById('geofenceReport')
         if(ShiftReportTableElement){
             ShiftReportTableElement.style.display = 'flex'
         }
         isloadingElement.style.display = 'none'
     }
   }
-  

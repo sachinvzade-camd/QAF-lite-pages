@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div class="expense-action" style="margin-top: 100px;"> <button class="qaf-btn-primary" type="button" onclick="AddForm()"> <i
+            class="fa fa-plus"></i>&nbsp;Expense</button> </div>
+<div class="form popup-container" id="expense-from" style="display: none;">
+    <div id="pageDisabled"></div>
+    <div class="main-container popup-content">
+        <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"></span> </div>
+        <div class="button-container">
+            <div class="header-buttons">
+                <div class="button"> <button class="btn btn-primary" onclick="SaveRecord()"> Save </button> </div>
+                <div class="button"> <button class="btn btn-primary" onclick="CloseForm('close')"> Cancel </button>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="tab-box"> <button class="tab-btn actbtn isActive" id="actbtn"
+                    onclick="showContent('first',1, this)" data-tab="first">First</button> <button class="tab-btn"
+                    onclick="showContent('second',2, this)" data-tab="second">Second</button> <button class="tab-btn"
+                    onclick="showContent('third',3, this)" data-tab="third">Third</button> </hr>
+                <div id="line" class="line"> </div>
+            </div>
+            <div id="first" class="tab-content active cardActivity">
+                <div class="form-container">
+                    <div class="header-title table-heading">
+                        <div class="common-page-title">Customer & Billing Information</div>
+                    </div>
+                    <div class="container">
+                        <div class="qaf-form-group"> <label for="customer" class="Customer fs-label">Customer</label>
+                            <span class="required">*</span>
+                            <!-- <input type="text" class="fs-input" id="customer" name="customer" autocomplete="off" required> -->
+                            <select class="fs-input fs-select" id="customer" name="customer"></select> </div>
+                        <div class="qaf-form-group"> <label for="validfordays" class="Customer fs-label">Valid for
+                                days</label> <input type="number" class="fs-input" id="validfordays" name="validfordays"
+                                autocomplete="off" required> </div>
+                    </div>
+                    <div class="header-title table-heading">
+                        <div class="common-page-title">Quotation Information</div>
+                    </div>
+                    <div class="container">
+                        <div class="qaf-form-group"> <label for="assignedTo" class="Customer fs-label">Assigned
+                                To</label> <span class="required">*</span> <select class="fs-input fs-select"
+                                id="assignedTo" name="assignedTo"></select>
+                            <!-- <input type="text" class="fs-input" id="assignedTo" name="assignedTo" autocomplete="off" required> -->
+                        </div>
+                        <div class="qaf-form-group"> <label for="accessToMember" class="Customer fs-label">Access To
+                                Member</label> <select class="fs-input fs-select" id="accessToMember"
+                                name="accessToMember"></select> </div>
+                        <div class="qaf-form-group"> <label for="CompanyOffice" class="Customer fs-label">Company
+                                Office</label> <select class="fs-input fs-select" id="companyOffice"
+                                name="CompanyOffice"></select> </div>
+                        <div class="qaf-form-group"> <label for="quoteName" class="Customer fs-label">Quote Name</label>
+                            <span class="required">*</span> <input type="text" class="fs-input" id="quoteName"
+                                name="quoteName" autocomplete="off" required> </div>
+                        <div class="qaf-form-group date-input-courier">
+                            <div class="labelarea"> <label for="dateIssued" class="Customer fs-label">Date Issued</label>
+                                <!-- <label for="CourierDate" class="Customer fs-label clearDate-btn" onclick="clearCourierDate()">clear</label> -->
+                            </div> <input type="date" class="fs-input" id="dateIssued" name="dateIssued"
+                                autocomplete="off" required>
+                        </div>
+                        <div class="qaf-form-group"> <label for="status" class="Customer fs-label">Status</label>
+                            <select class="fs-input fs-select" id="status" name="status"></select> </div>
+                        <div class="qaf-form-group"> <label for="quotationby" class="fs-label">Quotation by</label>
+                            <select class="fs-input fs-select" id="quotationby" name="quotationby"></select> </div>
+                    </div>
+                </div>
+                <button onclick="nextFirstTabClick(this)">Next</button>
+            </div>
+            <div id="second" class="tab-content">
+                <div class="tablecontainer" id="tablecontainer"> </div>
+                <div class="header-title table-heading">
+                    <div class="common-page-title">Pricing Details</div>
+                </div>
+                <div class="container">
+                    <div class="qaf-form-group"> <label for="Subtotal" class="Customer fs-label">Subtotal</label> <input type="number" class="fs-input" id="Subtotal" name="Subtotal"
+                            autocomplete="off" > </div>
+
+                            <div class="qaf-form-group"> <label for="Discount" class="Customer fs-label">Discount</label> <input type="number" class="fs-input" id="priceDiscount" name="Discount"
+                                autocomplete="off" oninput="setValueInPriceObject()"> </div>
+                                
+                            <div class="qaf-form-group"> <label for="Tax" class="Customer fs-label">Tax</label> <input type="number" class="fs-input" id="priceTax" name="Tax"
+                                autocomplete="off" oninput="setValueInPriceObject()"> </div>
+                                <div class="qaf-form-group"> <label for="GrandTotal" class="Customer fs-label">GrandTotal</label> <input type="number" class="fs-input" id="GrandTotal" name="GrandTotal"
+                                autocomplete="off" > </div>
+
+                </div>
+                <button onclick="backtofirstTabClick(this)">previous</button>
+                <button onclick="nextSecondTabClick(this)">Next</button>
+            </div>
+            <div id="third" class="tab-content">
+                <button onclick="backtoSecondTabClick(this)">previous</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

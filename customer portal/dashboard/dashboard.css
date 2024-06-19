@@ -1,0 +1,44 @@
+.first-section{
+    height: 202px;
+    width: 100%;
+    background-image: url('https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fportal-image%20(2)_4b691242-8e34-4546-abba-8516560da1a4.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+ .my-dashboard-searchbox {
+    position: relative;
+    top: 46%;
+}
+ .search-text {
+    padding-left: 50px;
+    color: white;
+    font-family: Poppins;
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: 0.005em;
+    text-align: left;
+}
+.input-container {
+    display: -webkit-box;
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+}
+ .my-dashboard-searchbox .search-icon {
+    -webkit-transform: translate(51px, 0px);
+    transform: translate(51px, 0px);
+}
+.my-dashboard-searchbox .form-control {
+    height: 40px;
+}
+.search-box-input {
+    padding-left: 40px;
+    padding-right: 30px;
+}
+.details-section-ui {
+    padding: 0px 48px 0px 16px;
+}
+ .second-section {
+    height: 446px;
+    overflow: scroll;
+}

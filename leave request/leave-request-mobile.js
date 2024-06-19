@@ -13,15 +13,19 @@ var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
 var Employee;
 var alertmessage = ""
-var apiURL = SITapiURL
+var apiURL = funFirstapiURL
 var fieldInternallist = []
 var user
 var MyleavesList = [];
+
 document.getElementById("startTime").addEventListener("change", function () {
-  startTime = new Date(this.value);
+  startTime = this.value ? new Date(this.value) : "";
+  if (!startTime) {
+    document.getElementById('startTimeLabel').style.fontSize = '16px';
+  }
   let displayStartTimeElement = document.getElementById('displayStartTime');
   if (displayStartTimeElement) {
-    displayStartTimeElement.value = moment(startTime).format('DD-MM-YYYY')
+    displayStartTimeElement.value = startTime ? moment(startTime).format('DD-MM-YYYY') : "";
   }
   if (startTime && endTime) {
     calculateDifference()
@@ -29,10 +33,13 @@ document.getElementById("startTime").addEventListener("change", function () {
 });
 
 document.getElementById("endTime").addEventListener("change", function () {
-  endTime = new Date(this.value);
+  endTime = this.value ? new Date(this.value) : "";
+  if (!endTime) {
+    document.getElementById('endTimeLabel').style.fontSize = '16px';
+  }
   let displayStartTimeElement = document.getElementById('displayEndTime');
   if (displayStartTimeElement) {
-    displayStartTimeElement.value = moment(endTime).format('DD-MM-YYYY')
+    displayStartTimeElement.value = endTime ? moment(endTime).format('DD-MM-YYYY') : "";
   }
   if (startTime && endTime) {
     calculateDifference()
@@ -105,7 +112,6 @@ function getCurrentUser() {
   return userDetails;
 }
 function getEmployeeLeaveBalance() {
-  employeeList = []
   let currentYear = new Date().getFullYear()
   let objectName = "Employee_Leave_Balance";
   let list = fieldInternallist.join(",")
@@ -122,7 +128,6 @@ function getEmployeeLeaveBalance() {
 }
 
 function getLeaveType() {
-  employeeList = []
   let objectName = "Leave_Type";
   let list = 'Name,MappingwithLeaveBalance'
   let fieldList = list.split(",")
@@ -154,20 +159,24 @@ function handleChangeleaveType() {
       if (leaveBalance) {
         let currentLeaveBalance = leaveBalance[value.MappingwithLeaveBalance]
         let leaveBalanceElement = document.getElementById('leaveBalance');
+        document.getElementById('leaveBalanceLabel').style.fontSize = '12px';
         if (leaveBalanceElement) {
           leaveBalanceElement.value = currentLeaveBalance
         }
       }
     } else {
       let leaveBalanceElement = document.getElementById('leaveBalance');
+      document.getElementById('leaveBalanceLabel').style.fontSize = '12px';
       if (leaveBalanceElement) {
         leaveBalanceElement.value = 0
       }
     }
   }
+
 }
 
 function saveAppplyForm() {
+  AddBlurInPage()
   alertmessage = ""
   let leaveButton = document.getElementById('apply_leave');
   if (leaveButton) {
@@ -322,7 +331,6 @@ function saveAppplyForm() {
           let condition1 = (InputLeaveStartDate >= LeaveStartDate && InputLeaveStartDate <= LeaveEndDate);
           let condition2 = (InputLeaveEndDate >= LeaveStartDate && InputLeaveEndDate <= LeaveEndDate);
           if (condition1 || condition2) {
-            MessageAlert = "Leave request has already been raised for the selected date";
             MyLeave.push(leave);
           } else {
             isLeaveAlreadyPresent = true;
@@ -332,12 +340,12 @@ function saveAppplyForm() {
           let leaveObject = [];
           MyLeave.forEach(val => {
             let LeaveStatus = val.LeaveStatus;
-            if (LeaveStatus.toLowerCase() === "Cancel Closed".toLowerCase()) {
-              isLeaveAlreadyPresent = true;
+            if ((LeaveStatus.toLowerCase() === "Closed".toLowerCase()) || (LeaveStatus.toLowerCase() === "Cancellation submitted".toLowerCase())) {
+              MessageAlert = "Leave request has already been raised for the selected date";
+              leaveObject.push(val)
             }
             else {
-              isLeaveAlreadyPresent = false;
-              leaveObject.push(val)
+              isLeaveAlreadyPresent = true;
             }
           })
           if (leaveObject.length > 0) {
@@ -446,10 +454,12 @@ function calculateDifference() {
     }
 
     if (totaldays) {
+      document.getElementById('TotalDaysLabel').style.fontSize = '12px';
       totaldays.value = diffDays;
     }
   }
   else {
+    document.getElementById('TotalDaysLabel').style.fontSize = '16px';
     openAlert('Please select proper date range')
   }
 
@@ -463,6 +473,7 @@ function handleChangehalfday() {
 
 
 function clearForm() {
+  RemoveBlurInPage();
   let saveButton = document.getElementById("apply_leave")
   if (saveButton) {
     saveButton.disabled = false;
@@ -618,6 +629,7 @@ function formatDate(dateString) {
 
 
 function openAlert(message) {
+  RemoveBlurInPage()
   isApicall = false
   let qafAlertObject = {
     IsShow: true,
@@ -631,3 +643,50 @@ function openAlert(message) {
   qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
   qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
+
+function AddBlurInPage() {
+  let blurdivElement = document.getElementById('blurdiv');
+  if (blurdivElement) {
+    blurdivElement.classList.add('page-blur')
+  }
+}
+
+function RemoveBlurInPage() {
+  let blurdivElement = document.getElementById('blurdiv');
+  if (blurdivElement) {
+    blurdivElement.classList.remove('page-blur')
+  }
+}
+
+document.querySelectorAll('.apply-input').forEach(function (input) {
+  input.addEventListener('focus', function () {
+    this.previousElementSibling.style.fontSize = '12px';
+  });
+
+  input.addEventListener('blur', function () {
+    if (this.value === '') {
+      this.previousElementSibling.style.fontSize = '16px';
+    }
+  });
+});
+
+
+document.getElementById('startTime').addEventListener('focus', function () {
+  document.getElementById('startTimeLabel').style.fontSize = '12px';
+});
+
+document.getElementById('startTime').addEventListener('blur', function () {
+  if (this.value === '') {
+    document.getElementById('startTimeLabel').style.fontSize = '16px';
+  }
+});
+
+document.getElementById('endTime').addEventListener('focus', function () {
+  document.getElementById('endTimeLabel').style.fontSize = '12px';
+});
+
+document.getElementById('endTime').addEventListener('blur', function () {
+  if (this.value === '') {
+    document.getElementById('endTimeLabel').style.fontSize = '16px';
+  }
+});

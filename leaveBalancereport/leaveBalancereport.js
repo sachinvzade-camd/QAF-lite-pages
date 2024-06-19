@@ -92,7 +92,7 @@ function updateDateDisplay() {
     getLeaveRequest();
 }
 function getLeaveRequest() {
-    
+    debugger
     let selectLeaveType = ""
     let selectedElement = document.getElementById('leaveTypeBalance')
     if (selectedElement) {
@@ -125,7 +125,7 @@ function getLeaveRequest() {
 
     window.QafService.Rfdf(recordForField).then((requests) => {
         if (Array.isArray(requests) && requests.length > 0) {
-            
+
             leaveRequestList = requests
         }
         getAuditLog()
@@ -134,7 +134,7 @@ function getLeaveRequest() {
 
 
 function getAuditLog() {
-
+debugger
     let selectLeaveType = ""
     let selectedElement = document.getElementById('leaveTypeBalance')
     if (selectedElement) {
@@ -161,22 +161,22 @@ function getAuditLog() {
         Ldft: fieldList,
         Ybod: orderBy,
         Ucwr: whereClause,
-        Zps: 1000000,
-        Rmgp: 1,
+        Zps: pageSize,
+        Rmgp: pageNumber,
         Diac: "false",
     };
 
     window.QafService.Rfdf(recordForField).then((logs) => {
-        
+        debugger
         if (Array.isArray(logs) && logs.length > 0) {
-            
+
             LeaveAuditLogList = logs
             let commonemp = LeaveAuditLogList.filter((v, i, a) => a.findIndex(t => t.EmployeeName === v.EmployeeName) === i)
             commonemp.forEach(emp => {
                 let logs = LeaveAuditLogList.filter(log => log.EmployeeName === emp.EmployeeName);
                 if (logs && logs.length > 0) {
                     logs.forEach((val, index) => {
-                        
+            
                         let usageValue = 0
                         let empGuid = val.EmployeeName ? JSON.parse(val.EmployeeName)[0].RecordID : ''
                         let userLeaveRequest = leaveRequestList.filter(a => a.LeaveType.split(";#")[0] === val.LeaveType.split(";#")[0] && empGuid === a.CreatedByGUID);
@@ -226,7 +226,7 @@ function getFullNameByRecordID(emp) {
 // <td class="qaf-td">${Year}</td>
 
 function generateReport() {
-    
+    debugger
     let TableData = ""
     TableData = performanceList;
     let TableElement = document.getElementById('intervieandhired-table');

@@ -740,6 +740,10 @@ removeBlur()
           let date = moment((new Date(attendance.Day)))
           // let date = moment(convertUTCDateToLocalDate(new Date(attendance.Day)))
           if (moment(date).isSameOrBefore(moment(), 'date')) {
+            if (moment(date).isSame(moment(), 'date')) {
+              attendance.DayStatus=""
+            }
+
             attendanceCard += ` <div class="card" style="height: ${attendance.NumberOfHours?(formatAttendence(attendance.NumberOfHours).length>15?80:68):68}px;">
 <div class="main">
   <div class="attandance-date ${index%2===0 ? 'color-green':'color-yellow'}">
@@ -770,7 +774,7 @@ removeBlur()
     </div>
     <div class="attendance-timing timing-container staus-container" id="present">
       <div class="start">
-        <button class="attendance present ${getStatusColor(attendance.DayStatus)}">${attendance.DayStatus} </button>
+       ${attendance.DayStatus? `<button class="attendance present ${getStatusColor(attendance.DayStatus)}">${attendance.DayStatus} </button>`:""}
       </div>
       <div class="end numberOfHours">
         <span>${attendance.NumberOfHours ? formatAttendence(attendance.NumberOfHours) : ""}</span>

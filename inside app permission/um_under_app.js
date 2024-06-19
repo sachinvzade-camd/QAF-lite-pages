@@ -23,14 +23,12 @@ qafServiceLoaded = setInterval(() => {
 }, 10);
 
 function getPageUrl() {
-    localStorage.setItem('ma',window.location.host)
     currentAppName = JSON.parse(localStorage.getItem('APP_NAME'))
     getAppuserMapping();
 }
 
 function getAppuserMapping() {
-    mappingIDs=[]
-    ShowLoader()
+    mappingIDs = []
     Employee = []
     let objectName = "App_User_Mapping";
     let list = "RecordID,AppStore,AllowUsers,TargetPlatform";
@@ -41,9 +39,9 @@ function getAppuserMapping() {
     let whereClause = `(AppStore='${currentAppName}')<<NG>>(TargetPlatform<contains>'Web')`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((usermappings) => {
         if (Array.isArray(usermappings) && usermappings.length > 0) {
-            usermappings.forEach(val=>{
+            usermappings.forEach(val => {
                 let ids = userOrGroupFieldRecordIDList(val.AllowUsers);
-                if(ids&&ids.length>0){
+                if (ids && ids.length > 0) {
                     mappingIDs.push(...ids)
                 }
 
@@ -65,7 +63,18 @@ function getEmployee() {
     let pageNumber = "1";
     let orderBy = "true";
     let whereClause = `RecordID='${employeeID}'`;
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((emplist) => {
+    let recordForField
+
+    recordForField = {
+        Tod: objectName,
+        Ldft: list,
+        Ybod: "",
+        Ucwr: whereClause,
+        Zps: 1000000,
+        Rmgp: 1,
+        Diac: "true",
+    }
+    window.QafService.Rfdf(recordForField).then((emplist) => {
         if (Array.isArray(emplist) && emplist.length > 0) {
             Employee = emplist.reverse();
             generateReport(Employee);
@@ -190,7 +199,7 @@ window.onclick = function (event) {
     if (!(event.target.classList.contains('fa-ellipsis-v') || event.target.classList.contains('action-btn'))) {
         document.getElementById("menuId").innerHTML = ``
     } else {
-        
+
         document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 170}px;left: ${event.pageX - 120}px;">
         <button class="view-btn" onclick="ViewRecord('${EmployeeRecordId}')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</button>
          <button class="edit-btn" onclick="EditRecord('${EmployeeRecordId}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
@@ -239,6 +248,7 @@ function ShowLoader() {
 }
 
 function HideLoader() {
+    
     let pageDisabledElement = document.getElementById('pageDisabled');
     let isloadingElement = document.getElementById('isloading');
     if (pageDisabledElement) {
@@ -253,19 +263,29 @@ function addCssforscroll() {
     var element = document.querySelector("body");
     element.classList.add("hide-y-scroll");
 }
+
 function removeCss() {
     var element = document.querySelector("body");
     element.classList.remove("hide-y-scroll");
 }
 
 function AddForm() {
+    let yesBtn = document.querySelectorAll('input[name="user"]');
+    if (yesBtn && yesBtn.length > 0) {
+        yesBtn.forEach(function (e) {
+            e.checked = false;
+        })
+    }
+
+
     let popUp = document.getElementById("selectUserForm");
     if (popUp) {
         popUp.style.display = 'block';
         addCssforscroll()
     }
 }
-function addNewUser(){
+
+function addNewUser() {
     let topHeader = document.getElementById("topHeader");
     if (topHeader) {
         topHeader.classList.add('topHeader')
@@ -279,59 +299,62 @@ function addNewUser(){
     }
 }
 
-function NextUser(){
-    
-    let value=document.querySelector('input[name="user"]:checked').value;
-    if(value==='existing'){
+function NextUser() {
+    let value = document.querySelector('input[name="user"]:checked').value;
+    if (value === 'existing') {
         addExistingUser()
         hideUserForm()
-        }else{
-         hideUserForm()
+    } else {
+        hideUserForm()
         addNewUser()
     }
 }
-function addExistingUser() {
 
-    let fields = ["AppName","AllowUsers","AppStore","TargetPlatform","All"];
-    let fieldsValue= [];
-    let fieldsDoNotdiaply = ["AppName","AppStore","TargetPlatform"];
-    fields = fields.filter((objOne) => {
-      return !fieldsDoNotdiaply.some((objTwo) => {
-        return objOne === objTwo;
-      });
-    });
+function addExistingUser() {
+    let fields = ["AppName", "AllowUsers", "AppStore", "TargetPlatform", "All"];
+    let fieldsValue = [];
+
     fields.forEach(val => {
         const currentAppRecord = applist.find(app => app.AppName.toLowerCase().includes(currentAppName.toLowerCase()));
         if (val === 'AppName') {
-            fieldsValue.push({ fieldName: val, fieldValue: currentAppRecord.RecordID+";#"+currentAppRecord.AppName})
-          }
-           else if (val === 'AppStore') {
-            fieldsValue.push({ fieldName: val, fieldValue: currentAppName})
-          }
-          else if (val === 'TargetPlatform') {
-            fieldsValue.push({ fieldName: val, fieldValue: "Web"})
-          }
-          else {
+            fieldsValue.push({ fieldName: val, fieldValue: currentAppRecord.RecordID + ";#" + currentAppRecord.AppName })
+        }
+        else if (val === 'AppStore') {
+            fieldsValue.push({ fieldName: val, fieldValue: currentAppName })
+        }
+        else if (val === 'TargetPlatform') {
+            fieldsValue.push({ fieldName: val, fieldValue: "Web" })
+        }
+        else {
             fieldsValue.push({ fieldName: val, fieldValue: null })
-          }
+        }
     })
-    let employeeID=""
-    if (mappingID && mappingID.length > 0) {
-         employeeID = mappingIDs.join("'<OR>RecordID!='");
-      }
+    let fieldsDoNotdiaply = ["AppName", "AppStore", "TargetPlatform", "All"];
+    fields = fields.filter((objOne) => {
+        return !fieldsDoNotdiaply.some((objTwo) => {
+            return objOne === objTwo;
+        });
+    });
+    let employeeID = ""
+    if (mappingIDs && mappingIDs.length > 0) {
+        employeeID = mappingIDs.join("'<AND>RecordID!='");
+    }
     let fieldFilterConditions = [
         { fieldName: "AllowUsers", fieldList: "RecordID", filterCondition: `RecordID!='${employeeID}'` }
-       
-      ]
-        if (window.QafPageService) {
-            window.QafPageService.AddItem("App_User_Mapping", function () {
-                getSingleCheckList('form') 
-            },fields,fieldsValue, fieldFilterConditions, null, fieldsDoNotdiaply);
+
+    ]
+    if (window.QafPageService) {
+        window.QafPageService.AddItem("App_User_Mapping", function () {
+            getAppuserMapping();
+
+            localStorage.removeItem(currentAppName+ "User_Permission");
+            localStorage.removeItem(currentAppName + "Teams");
+        }, fields, fieldsValue, fieldFilterConditions, null, fieldsDoNotdiaply);
     }
 
 }
 
-function hideUserForm(){
+function hideUserForm() {
     let popUp = document.getElementById("selectUserForm");
     if (popUp) {
         popUp.style.display = 'none';
@@ -339,7 +362,6 @@ function hideUserForm(){
 }
 
 function getDepartment() {
-
     departmentList = []
     let objectName = "Department";
     let list = 'Name';
@@ -396,7 +418,7 @@ function getDesignation() {
 
 function getTeams() {
     teamList = []
-    
+
     const currentAppRecord = applist.find(app => app.AppName.toLowerCase().includes(currentAppName.toLowerCase()));
     let app_RecordID = currentAppRecord ? currentAppRecord.RecordID : "";
     let objectName = "Teams";
@@ -646,7 +668,7 @@ function saveDetails() {
         saveObjectsData();
 
     }
-  
+
 }
 
 function saveObjectsData() {
@@ -656,7 +678,7 @@ function saveObjectsData() {
         console.log("EmployeeResponseId", EmployeeResponseId);
         saveUserPermisson(EmployeeResponseId)
         resetForm();
-      
+
     });
 
 }
@@ -686,7 +708,7 @@ function save(object, repositoryName) {
 }
 
 function saveUserPermisson(RecordID) {
-
+    
     let userRecordID = RecordID;
     let UserName = JSON.stringify([{ UserType: 1, RecordID: userRecordID }]);
     let roleName = "";
@@ -700,6 +722,12 @@ function saveUserPermisson(RecordID) {
 
         appName = appNameList[0].RecordID + ";#" + appNameList[0].AppName;
     }
+    if (!roleName) {
+        let readonlyroleList = applicationRoleList.filter(val => val.RoleName.toLowerCase() === 'Read Only'.toLowerCase());
+        if (readonlyroleList && readonlyroleList.length > 0) {
+            roleName = readonlyroleList[0].RecordID + ";#" + readonlyroleList[0].RoleName;
+        }
+    }
 
     UserpermissonObject = {
         ProfileorTeam: UserName,
@@ -710,19 +738,22 @@ function saveUserPermisson(RecordID) {
         AppStore: appNameList[0].AppName,
         AppName: appName,
         AllowUsers: (UserName),
-        TargetPlatform:'Web'
+        TargetPlatform: 'Web'
     }
 
     save(appUserMapping, 'App_User_Mapping')
     save(UserpermissonObject, 'User_Permission')
     setTimeout(() => {
-        
+
         saveTeams(userRecordID)
-    },2000)
+      
+    }, 2000)
+debugger
+    localStorage.removeItem(currentAppName+ "User_Permission");
+    localStorage.removeItem(currentAppName + "Teams");
 }
 
 function saveTeams(userRecordID) {
-
     let updatedTeamMembers = "";
     let saveUser = userRecordID + ";#" + employeeSaveObject.FirstName + " " + employeeSaveObject.LastName;
     let selectedTeamID = document.getElementById('teams').value;
@@ -743,6 +774,8 @@ function saveTeams(userRecordID) {
             TeamMembers: updatedTeamMembers,
         }
         update(TeamsObject, 'Teams', selectedTeamID)
+
+       
     }
     getAppuserMapping();
 }
@@ -750,7 +783,6 @@ function saveTeams(userRecordID) {
 
 function update(object, repositoryName, updateRecordID) {
     return new Promise((resolve) => {
-        
         var recordFieldValueList = [];
         var intermidiateRecord = {}
         user = getCurrentUser()
@@ -769,9 +801,9 @@ function update(object, repositoryName, updateRecordID) {
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.UpdateItem(intermidiateRecord).then(response => {
             let teamsElement = document.getElementById('teams');
-    if (teamsElement) {
-        teamsElement.value = "";
-    }
+            if (teamsElement) {
+                teamsElement.value = "";
+            }
             updateRecordID = "";
             resolve({
                 response
@@ -821,7 +853,7 @@ function resetForm() {
     if (officeLocationElement) {
         officeLocationElement.value = "";
     }
-    
+
 
     document.querySelectorAll('input[name="permissionGroup"]').forEach(checkbox => {
         checkbox.checked = false;
@@ -868,16 +900,24 @@ function openAlert(message) {
     qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
     qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
+
 function userOrGroupFieldRecordIDList(id) {
     if (id) {
-      if (id && id.includes("[{")) {
-        let jsonArray = (JSON.parse(id));
-        if (jsonArray.length > 0) {
-          return jsonArray.map(a => a.RecordID)
+        if (id && id.includes("[{")) {
+            let jsonArray = (JSON.parse(id));
+            if (jsonArray.length > 0) {
+                return jsonArray.map(a => a.RecordID)
+            }
         }
-      }
-      else {
-        return id && id.includes(";#") ? id.split(";#")[0] : id;
-      }
+        else {
+            return id && id.includes(";#") ? id.split(";#")[0] : id;
+        }
     }
 }
+
+document.body.addEventListener("click", function (evt) {
+    if (!(evt.target.closest(".user-type-popup") || evt.target.closest("#ExportButton"))) {
+        hideUserForm()
+    }
+
+});

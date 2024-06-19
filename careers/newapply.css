@@ -1,0 +1,326 @@
+
+body {
+    font-family: "poppins", sans-serif;
+  }
+  .clear {
+    clear: both;
+  }
+  
+  .padding-top-50 {
+    padding-top: 50px;
+  }
+  .filedisplay {
+    display: flex;
+    width: max-content;
+    position: relative;
+    top: -18px;
+    left: 89px;
+    background: white;
+  }
+  #deleteicon {
+    margin-left: 15px;
+    cursor: pointer;
+  }
+  
+  /* Details Started */
+  
+  .job-details-container {
+    border: 0px solid #000;
+    width: 100%;
+    max-width: 1150px;
+    margin: 0px auto;
+    /* font-family: "Nunito Sans"; */
+    font-family: "poppins", sans-serif;
+  }
+  
+  .job-details-area {
+    border: 0px solid #000;
+    width: 100%;
+    display: grid;
+    grid-gap: 20px;
+    /* grid-template-columns: 70% 1fr; */
+    font-family: "poppins", sans-serif;
+  }
+  
+  .job-details-area-container {
+    border: 0px solid #eee;
+  }
+  
+  .left-cell {
+    float: left;
+    text-align: left;
+    padding-left: 2rem;
+    padding-bottom: 20px;
+  }
+  
+  .left-cell h5 {
+    font-size: 16px;
+    color: #000;
+    font-weight: 400;
+    margin: 10px 0px;
+  }
+  
+  .right-cell {
+    font-size: 16px;
+    float: right;
+    width: 60%;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    border-left: 1px solid #eee;
+  }
+  
+  .right-cell .text {
+    font-size: 16px;
+    font-weight: 400;
+  }
+  
+  .title-div {
+    background: #eee;
+    border: 0px solid #000;
+    width: 100%;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 70% 1fr;
+  }
+  
+  .title-div .job-Title {
+    border: 0px solid #000;
+    font-size: 26px;
+    line-height: 100px;
+    text-align: left;
+    margin: 0;
+    padding: 0 3rem;
+    font-weight: 600;
+  }
+  
+  .circulr-details-bottom {
+    background: #eee;
+    border: 0px solid #000;
+    width: 100%;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 70% 1fr;
+  }
+  
+  .padding-50-0 {
+    padding: 50px 0;
+  }
+  
+  .apply-now {
+    text-align: center;
+  }
+  
+  .apply-now p {
+    line-height: 60px;
+    margin: 0;
+  }
+  
+  .heading-04 {
+    font-size: 36px;
+  }
+  
+  .apply-button {
+    color: #fff;
+    border-radius: 0;
+    width: 150px;
+    line-height: 36px;
+    background: #055a92;
+    border: 1px solid #055a92;
+    font-size: 16px;
+    text-transform: capitalize;
+    height: 42px;
+    display: inline-block;
+  }
+  
+  .apply-button:hover {
+    color: #fff;
+  }
+  
+  .job-details-footer {
+    background: #eeeeee;
+    width: 100%;
+    line-height: 10px;
+    padding: 20px 0;
+    display: block;
+    text-align: center;
+    font-family: "poppins", sans-serif;
+  }
+  
+  h3.apply-heading {
+    font-size: 24px;
+    padding: 0px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  span.apply-heading-border {
+    border-bottom: 3px solid #ccc;
+    display: block;
+    line-height: 10px;
+    width: 200px;
+    margin: 0 auto;
+  }
+  
+  .job-details-footer p.apply-to-email {
+    margin: 20px 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: 20px;
+  }
+  
+  /* Popup For For Apply */
+  
+  .job-application-message {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #cc0000;
+  }
+  
+  .popup-container {
+    font-family: "Nunito Sans";
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    display: none;
+  }
+  
+  .popup-content {
+    background: #fff;
+    padding: 30px 20px 20px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    height: 85vh;
+    overflow: scroll;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 30px;
+  }
+  
+  .job-apply-title {
+    margin: 0px;
+    border: 0px;
+    font-size: 30px;
+    width: 100%;
+    padding: 10px 0 20px 10px;
+    font-weight: 500;
+    color: #222;
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  }
+  
+  .job-apply-form {
+    border: 0px solid #000;
+    width: 100%;
+    font-family: "poppins", sans-serif;
+  }
+  
+  .job-field {
+    border: 0px solid #000;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .job-field span {
+    padding: 0;
+    margin: 0;
+    display: block;
+    font-size: 12px;
+    color: #333;
+  }
+  
+  .job-field .apply-label {
+    display: inline-block;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .job-field span.required {
+    display: inline;
+    color: #cc0000;
+    padding-left: 5px;
+  }
+  
+  .apply-input {
+    color: #666;
+    padding: 1.2em;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background: #fafafa;
+    box-shadow: none;
+    box-sizing: border-box;
+    transition: all 0.2s linear;
+    min-width: 70%;
+    display: block;
+    margin-top: 8px;
+    font-size: 15px;
+    outline: none;
+  }
+  
+  .apply-input:focus {
+    background-color: #fafafa;
+    border: 1px solid #333;
+  }
+  
+  .job-field textarea {
+    min-width: 100%;
+  }
+  
+  .job-primary-button {
+    color: #fff;
+    border-radius: 0;
+    height: 51px;
+    width: 150px;
+    line-height: 36px;
+    background: #055a92;
+    border: 1px solid #055a92;
+    font-size: 16px;
+    text-transform: capitalize;
+    /* height: 42px; */
+    display: inline-block;
+  }
+  
+  .job-field span.error-message {
+    padding: 3px 0px;
+    margin: 0;
+    color: #f00;
+    font-size: 13px;
+  }
+  .hide-y-scroll {
+    overflow-y: hidden !important;
+  }
+  
+  input[type="number"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  .arrow {
+    -webkit-appearance: none;
+    appearance: none;
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+      no-repeat scroll right 15px center;
+    background-size: 11px;
+    background-color: #fafafa;
+  }
+  .select-qualification {
+    width: 50%;
+  }
+  
+  .content-row{
+    margin-bottom: 20px;
+  }
