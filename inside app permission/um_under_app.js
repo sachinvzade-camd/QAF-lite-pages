@@ -748,7 +748,7 @@ function saveUserPermisson(RecordID) {
         saveTeams(userRecordID)
       
     }, 2000)
-debugger
+
     localStorage.removeItem(currentAppName+ "User_Permission");
     localStorage.removeItem(currentAppName + "Teams");
 }

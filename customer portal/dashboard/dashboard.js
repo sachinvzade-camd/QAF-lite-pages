@@ -420,7 +420,7 @@ function getServiceAppList(getList) {
             serviceAppList = teamServiceAppList.filter(a => a.CategoryName === selectedCategory.catgoriesName)
 
         }
-        debugger
+        
         setTicketInHtml()
     }
     else {
@@ -453,7 +453,7 @@ function getServiceAppList(getList) {
                 })
             }
         })
-        debugger
+        
         let serviceticketElement = document.getElementById('serviceticket');
         if (serviceticketElement) {
             serviceticketElement.innerHTML = service

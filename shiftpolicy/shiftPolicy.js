@@ -62,7 +62,7 @@ function showContent(tabId, tabNum, clickedButton) {
 
     lineElement.style.width = button.offsetWidth + "px";
     lineElement.style.transform = "translateX(" + offsetLeft + "px)";
-debugger
+
     var contentArea = document.getElementById(tabId);
     if (contentArea) {
         contentArea.classList.toggle("active");
@@ -448,7 +448,7 @@ function filterData(searchTerm) {
 }
 
 function filterData2(searchTerm) {
-    debugger
+    
     const filteredData = ShiftAllocation_List.filter(item => {
         const firstName = item["Employee"];
         if (firstName !== null) {

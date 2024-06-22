@@ -389,7 +389,7 @@ function createTable(objectArray) {
     body.appendChild(tbl)
 }
 function openTab(evt, id) {
-    debugger
+    
     var i, tabcontent, tablinks;
     document.getElementById('table').style.display = "block";
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -416,7 +416,7 @@ function openTab(evt, id) {
         }
 
     }
-    debugger
+    
     if (id === 'QBFeedback') {
         //     document.getElementById("UploadResume").disabled = false;
         // if(round!='1'){
@@ -697,7 +697,7 @@ function getJobPosting() {
         getSingleNonnegotiableList()
     }
      else{
-        debugger
+        
         let casTab=document.getElementById('cas-tab')
         if(casTab){
             // casTab.innerHTML=`<p class='error-role'>Feedback not configure for ${jobRole}</p>`

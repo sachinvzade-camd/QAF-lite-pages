@@ -1,40 +1,51 @@
 var quotationObject = {}
 var currentTab = 1;
 var tabName = "first";
-var customersList=[]
-var statusList=[]
-var billingFrequencyList=[]
-var employeesList =[]
+var customersList = []
+var contactList = []
+var statusList = []
+var billingFrequencyList = []
+var employeesList = []
 var expenseperticularList = []
 var orderItemList = []
 var productList = []
 var companyOfficeList = []
 var orderItemsFields = []
-var companySetting ;
-var isSave=false
-var quotationRecordID=""
+var contactRecordIDS = []
+var discountTypelist = []
+var taxTypelist = []
+var companySetting;
+var isSave = false
+var quotationRecordID = ""
+var termandsettingValue = ""
+var billtoName = "";
 var orderItemObject = {
     Product: '',
-    ProductCode:'',
-    Terms:'',
-    BillingFrequency:'',
-    Quantity:'',
-    ListPrice:'',
-    Discount:'',
-    ItemTotal:'',
+    ProductCode: '',
+    Terms: '',
+    BillingFrequency: '',
+    Quantity: '',
+    ListPrice: '',
+    Discount: '',
+    ItemTotal: '',
 }
-var priceDetails={
-    Subtotal:'',
-    Discount:'',
-    Tax:'',
-    GrandTotal:'',
+var priceDetails = {
+    Subtotal: '',
+    Discount: '',
+    Tax: '',
+    GrandTotal: '',
+    DiscountType: '',
+    TaxType: '',
 }
 var quotationRecordObject;
-var quotationFields=[]
-var productFields=[]
+var quotationFields = []
+var productFields = []
 var ParentReferenceID;
 var user
+var customerID=""
+var ownerID=""
 function showContent(tabId, tabNum, id) {
+
     tabName = tabId;
     selectedTab = tabNum;
     let newTabValue = selectedTab - currentTab;
@@ -46,17 +57,17 @@ function showContent(tabId, tabNum, id) {
         button.classList.remove("isActive");
         button.style.fontWeight = "normal";
     });
-    let clickedButtonElement=document.getElementById(id)
-    if(clickedButtonElement){
+    let clickedButtonElement = document.getElementById(id)
+    if (clickedButtonElement) {
         clickedButtonElement.classList.add("isActive");
         clickedButtonElement.style.fontWeight = "600";
     }
 
-    let tabBox = document.querySelector(".tab-box");
+    let tabBox = document.querySelector(".qaf-tab-box");
     let lineElement = document.querySelector(".line");
     let button = document.querySelector('[data-tab="' + tabId + '"]');
 
-    let tabContents = document.querySelectorAll(".tab-content");
+    let tabContents = document.querySelectorAll(".qaf-tab-content");
     tabContents.forEach(function (content) {
         content.classList.remove("active");
     });
@@ -84,7 +95,7 @@ function showContent(tabId, tabNum, id) {
     }
 }
 function movingTabs(value) {
-    const cards = document.querySelectorAll(".tab-content");
+    const cards = document.querySelectorAll(".qaf-tab-content");
     cards.forEach((card, index) => {
         card.classList.remove("moving-left", "moving-right");
         if (value > 0) {
@@ -99,8 +110,8 @@ function movingTabs(value) {
 
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-         user = getCurrentUser()
-       
+        user = getCurrentUser()
+
         window.document.addEventListener('openquotationFormEvent', getDetails)
         clearInterval(qafServiceLoaded);
     }
@@ -108,15 +119,23 @@ qafServiceLoaded = setInterval(() => {
 
 
 function getDetails(event) {
-    if(typeof(event.detail)==='object'){
-        debugger
-        quotationRecordID=event.detail.RecordID
-        ParentReferenceID=event.detail.quotation?event.detail.quotation.ParentReferenceID
-        :''
-        quotationObject['ParentReferenceID']=ParentReferenceID
+    
+    if (typeof (event.detail) === 'object') {
+        
+        contactRecordIDS = event.detail.contact
+        quotationRecordID = event.detail.RecordID
+        billtoName = event.detail.quotation.BilltoName;
+        console.log("event.detail.quotation", event.detail.quotation)
+        ParentReferenceID = event.detail.quotation ? event.detail.quotation.ParentReferenceID
+            : ''
+        customerID = event.detail.quotation ? (event.detail.quotation.Customer?event.detail.quotation.Customer.split(";#")[0]:"")
+            : ''
+            ownerID=event.detail.quotation ? (event.detail.quotation.QuoteOwner?JSON.parse(event.detail.quotation.QuoteOwner)[0].RecordID:"")
+            : ''
+        quotationObject['ParentReferenceID'] = ParentReferenceID
         AddForm()
-  }
-  }
+    }
+}
 
 function getCurrentUser() {
     let userDetails = '';
@@ -130,40 +149,41 @@ function getCurrentUser() {
     return userDetails;
 }
 function AddForm() {
+    //
     document.getElementById('topHeader').style.zIndex = '1';
-    tabName="first"
-    let actbtnElement=document.getElementById('actbtn')
-    if(actbtnElement){
-    let lineElement = document.querySelector(".line");
+    tabName = "first"
+    let actbtnElement = document.getElementById('actbtn')
+    if (actbtnElement) {
+        let lineElement = document.querySelector(".line");
 
         lineElement.style.width = 88 + "px";
         lineElement.style.transform = "translateX(" + 0 + "px)";
         actbtnElement.classList.add('isActive')
     }
-    let actbtn2Element=document.getElementById('actbtn2')
-    if(actbtn2Element){
+    let actbtn2Element = document.getElementById('actbtn2')
+    if (actbtn2Element) {
         actbtn2Element.classList.remove('isActive')
     }
-    let actbtn3Element=document.getElementById('actbtn3')
-    if(actbtn3Element){
+    let actbtn3Element = document.getElementById('actbtn3')
+    if (actbtn3Element) {
         actbtn3Element.classList.remove('isActive')
     }
-    let firstElement=document.getElementById('first')
-    if(firstElement){
+    let firstElement = document.getElementById('first')
+    if (firstElement) {
         firstElement.classList.add('active')
     }
-    let secondElement=document.getElementById('second')
-    if(secondElement){
+    let secondElement = document.getElementById('second')
+    if (secondElement) {
         secondElement.classList.remove('active')
     }
-    let thirdElement=document.getElementById('third')
-    if(thirdElement){
+    let thirdElement = document.getElementById('third')
+    if (thirdElement) {
         thirdElement.classList.remove('active')
     }
     let popUp = document.getElementById("expense-from");
     if (popUp) {
         popUp.style.display = 'block';
-        const container = document.getElementsByClassName('container')[0];
+        const container = document.getElementsByClassName('qaf-container')[0];
         const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
         const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
         activeLine1.style.width = activeTab1.offsetWidth + 'px';
@@ -172,17 +192,160 @@ function AddForm() {
         if (actionsButtons) {
             actionsButtons.style.display = 'none'
         }
-        quotationRecordObject=null
+        quotationRecordObject = null
+
+
         resetquotationvalue()
-        getObjectID()
+      
         getObjectIDOrderItems()
         getObjectIDProduct()
         getCustomer()
-        getEmployees()
+        getContact()
+        getAppName()
+        // getEmployees()
         getCompanyOffices()
-      
+        getCRMsetting()
+
+
     }
 }
+
+function getCRMsetting() {
+    let objectName = "CRM_Settings";
+    let list = 'RecordID,SettingName,SettingValue';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = `SettingName='QUOTATION_TERMS'`;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((settings) => {
+        if (Array.isArray(settings) && settings.length > 0) {
+            termandsettingValue = settings[0].SettingValue
+        }
+    });
+}
+
+var appNameDetails = [];
+var mappingID = []
+function getAppName() {
+
+    appNameDetails = [];
+    let objectName = "App_Configuration";
+    let list = "RecordID,AppName,EncryptedName,Accessible,AppID";
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let AppName = "CRM";
+    // let whereClause = `AppID='${this.appID}'`;
+    let whereClause = `AppName='${AppName}'`;
+    let isAscending = "true";
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, "", orderBy).then((appDetails) => {
+        if (Array.isArray(appDetails) && appDetails.length > 0) {
+
+            appNameDetails = appDetails[0];
+            getAppMapping();
+        }
+    });
+}
+
+function getAppMapping() {
+
+    mappingID = [];
+    let objectName = "App_User_Mapping";
+    let list = "RecordID,AppName,AllowUsers";
+    let fieldList = list.split(",");
+    let orderBy = "";
+    let whereClause = `AppName='${appNameDetails.RecordID}'`;
+    let pageSize = "100000";
+    let pageNumber = "1";
+    let isAscending = "true";
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((appDetails) => {
+        if (Array.isArray(appDetails) && appDetails.length > 0) {
+            appDetails.forEach(val => {
+                mappingID.push(userOrGroupFieldRecordIDList(val.AllowUsers));
+            });
+        }
+        getTeams(mappingID);
+    });
+}
+
+function getTeams(mappingID) {
+    let EmployeeWhereClause = []
+    let objectName = "Teams";
+    let list = "RecordID,AppName,TeamMembers";
+    let fieldList = list.split(",");
+    let orderBy = "";
+    let whereClause = `AppName='${appNameDetails.RecordID}'`;
+    let pageSize = "100000";
+    let pageNumber = "1";
+    let isAscending = "true";
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((teams) => {
+        if (Array.isArray(teams) && teams.length > 0) {
+
+            let teamList = teams;
+            teamList.forEach(val => {
+                mappingID.push(userOrGroupFieldRecordIDList(val.TeamMembers));
+
+            });
+            let RecordIdsArray = mappingID.flat();
+            let EmployeeWhereClause = `RecordID='${RecordIdsArray.join("'<OR> RecordID='")}'`;
+            getEmployees(EmployeeWhereClause);
+        } else {
+            getEmployees(EmployeeWhereClause);
+        }
+    });
+}
+
+
+
+function userOrGroupFieldRecordIDList(id) {
+    if (id) {
+        if (id && id.includes("[{")) {
+            let jsonArray = (JSON.parse(id));
+            if (jsonArray.length > 0) {
+                return jsonArray.map(a => a.RecordID)
+            }
+        }
+        else {
+            return id && id.includes(";#") ? id.split(";#")[0] : id;
+        }
+    }
+}
+
+
+function getContact() {
+    if (contactRecordIDS && contactRecordIDS.length > 0) {
+        let id = contactRecordIDS.join("'<OR>RecordID='");
+        let objectName = "Contact";
+        let list = 'RecordID,FirstName,LastName,PostalCode,Country,StateProvince,StreetAddress,City,Mobile,Email';
+        let fieldList = list.split(",");
+        let pageSize = "20000";
+        let pageNumber = "1";
+        let orderBy = "true";
+        let isAscending = "true";
+        let whereClause = `RecordID='${id}'`
+        window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((contacts) => {
+            if (Array.isArray(contacts) && contacts.length > 0) {
+                contactList = contacts
+                setContactOnDropdown()
+            }
+        });
+    }
+
+}
+
+function setContactOnDropdown() {
+    let contactElement = document.getElementById('contact');
+    let options = `<option value=''> Select Contact</option>`;
+    if (contactElement) {
+        contactList.forEach(contact => {
+            options += `<option value="${contact.RecordID}">${contact.FirstName} ${contact.LastName}</option>`;
+        });
+        contactElement.innerHTML = options;
+    }
+}
+
 function getQuotation() {
     let objectName = "Quotation";
     let list = quotationFields.join(",");
@@ -194,10 +357,12 @@ function getQuotation() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((quotations) => {
         if (Array.isArray(quotations) && quotations.length > 0) {
             quotationRecordObject = quotations[0]
-            priceDetails.Discount=quotationRecordObject.Discount
-            priceDetails.Subtotal=quotationRecordObject.Subtotal
-            priceDetails.Tax=quotationRecordObject.Tax
-            priceDetails.GrandTotal=quotationRecordObject.GrandTotal
+            priceDetails.Discount = quotationRecordObject.Discount
+            priceDetails.Subtotal = quotationRecordObject.Subtotal
+            priceDetails.Tax = quotationRecordObject.Tax
+            priceDetails.GrandTotal = quotationRecordObject.GrandTotal
+            priceDetails.DiscountType = quotationRecordObject.DiscountType
+            priceDetails.TaxType = quotationRecordObject.TaxType
             setquotationValue()
         }
     });
@@ -246,7 +411,7 @@ function setofficesOnDropdown() {
 
 function getCustomer() {
     let objectName = "Customers";
-    let list = 'RecordID,Name';
+    let list = 'RecordID,Name,BillingCity,State,Country,Email';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
@@ -271,56 +436,63 @@ function setCustomerOnDropdown() {
 }
 function getObjectID() {
     fieldListObject = []
-     window.QafService.GetObjectById('Quotation').then((responses) => {
-       responses[0].Fields.forEach((ele) => {
-        quotationFields.push(ele.InternalName)
-        if (ele.InternalName === 'Status') {
-            statusList=ele.Choices.split(";#")
-        }
-       })
-     
-       setStatusOnDropdown()
-       if(quotationRecordID){
-        setTimeout(() => {
+    window.QafService.GetObjectById('Quotation').then((responses) => {
+        responses[0].Fields.forEach((ele) => {
+            quotationFields.push(ele.InternalName)
+            if (ele.InternalName === 'Status') {
+                statusList = ele.Choices.split(";#")
+            }
+            if (ele.InternalName === 'TaxType') {
+                taxTypelist = ele.Choices.split(";#")
+            }
+            if (ele.InternalName === 'DiscountType') {
+                discountTypelist = ele.Choices.split(";#")
+            }
+        })
+
+        setStatusOnDropdown()
+        setDiscountOnDropdown()
+        setTaxOnDropdown()
+        if (quotationRecordID) {
+            setTimeout(() => {
                 getQuotation()
-           }, 2000);
-       }else{
-        priceDetails={
-            Subtotal:'',
-            Discount:'',
-            Tax:'',
-            GrandTotal:'',
+            }, 1000);
+        } else {
+            priceDetails = {
+                Subtotal: '',
+                Discount: '',
+                Tax: '',
+                GrandTotal: '',
+                TaxType: "",
+                DiscountType: ""
+            }
+            orderItemList = []
+            quotationRecordObject = null
+            // resetquotationvalue()
         }
-        orderItemList=[]
-        quotationRecordObject=null
-        resetquotationvalue()
-       }
-      
-       
-     })
-   }
-   function getObjectIDOrderItems() {
+    })
+}
+function getObjectIDOrderItems() {
     orderItemsFields = []
-     window.QafService.GetObjectById('Order_Items').then((responses) => {
-       responses[0].Fields.forEach((ele) => {
-        orderItemsFields.push(ele.InternalName)
-        if (ele.InternalName === 'BillingFrequency') {
-            billingFrequencyList=ele.Choices.split(";#")
-        }
-       })
-     })
-   }
-   function getObjectIDProduct() {
-     window.QafService.GetObjectById('Product').then((responses) => {
-       responses[0].Fields.forEach((ele) => {
-        productFields.push(ele.InternalName)
-       })
-       getProduct()
+    window.QafService.GetObjectById('Order_Items').then((responses) => {
+        responses[0].Fields.forEach((ele) => {
+            orderItemsFields.push(ele.InternalName)
+            if (ele.InternalName === 'BillingFrequency') {
+                billingFrequencyList = ele.Choices.split(";#")
+            }
+        })
+    })
+}
+function getObjectIDProduct() {
+    window.QafService.GetObjectById('Product').then((responses) => {
+        responses[0].Fields.forEach((ele) => {
+            productFields.push(ele.InternalName)
+        })
+        getProduct()
+    })
+}
 
-     })
-   }
-
-   function setStatusOnDropdown() {
+function setStatusOnDropdown() {
     let statusElement = document.getElementById('status');
     let options = `<option value=''> Select Status</option>`;
     if (statusElement) {
@@ -329,35 +501,76 @@ function getObjectID() {
         });
         statusElement.innerHTML = options;
     }
-} 
+}
+function setTaxOnDropdown() {
+    let taxElement = document.getElementById('tax-select');
+    let options = `<option value=''> Select Tax Type</option>`;
+    if (taxElement) {
+        taxTypelist.forEach(type => {
+            options += `<option value="${type}">${type}</option>`;
+        });
+        taxElement.innerHTML = options;
+    }
+}
+function setDiscountOnDropdown() {
+    let discountElement = document.getElementById('discount-select');
+    let options = `<option value=''> Select Discount Type</option>`;
+    if (discountElement) {
+        discountTypelist.forEach(type => {
+            options += `<option value="${type}">${type}</option>`;
+        });
+        discountElement.innerHTML = options;
+    }
+}
 
-function getEmployees() {
+
+function getEmployees(WhereClause) {
+
     let objectName = "Employees";
-    let list = 'RecordID,FirstName,LastName';
-    let fieldList = list.split(",");
-    let pageSize = "20000";
+    let list = ["RecordID,FirstName,LastName"]
+    let fieldList = list.join(",");
+    let pageSize = "10000000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = ``;
-    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((employees) => {
+    let whereClause = WhereClause
+    let recordForField
+    recordForField = {
+        Tod: objectName,
+        Ldft: fieldList,
+        Ybod: orderBy,
+        Ucwr: whereClause,
+        Zps: pageSize,
+        Rmgp: pageNumber,
+        Diac: "false",
+    };
+    window.QafService.Rfdf(recordForField).then((employees) => {
+
         if (Array.isArray(employees) && employees.length > 0) {
+
             employeesList = employees
             setEmployeesOnDropdown()
             setEmployeesAssessToMemberOnDropdown()
             setEmployeesQuotationByOnDropdown()
         }
+        getObjectID()
     });
 }
+
 function setEmployeesOnDropdown() {
     let employeeElement = document.getElementById('assignedTo');
-    let options = `<option value=''> Select AssignedTo</option>`;
+    let options = `<option value=''> Select Owner</option>`;
     if (employeeElement) {
         employeesList.forEach(employee => {
             options += `<option value="${employee.RecordID}">${employee.FirstName} ${employee.LastName}</option>`;
         });
         employeeElement.innerHTML = options;
     }
+    
+    if (employeeElement) {
+        employeeElement.value = quotationRecordObject&&quotationRecordObject.QuoteOwner ? JSON.parse(quotationRecordObject.QuoteOwner)[0].RecordID : ownerID
+    }
 }
+
 function setEmployeesAssessToMemberOnDropdown() {
     let employeeAssessToMemeberElement = document.getElementById('accessToMember');
     let options = `<option value=''> Select Access To Member</option>`;
@@ -368,6 +581,7 @@ function setEmployeesAssessToMemberOnDropdown() {
         employeeAssessToMemeberElement.innerHTML = options;
     }
 }
+
 function setEmployeesQuotationByOnDropdown() {
     let quotationByElement = document.getElementById('quotationby');
     let options = `<option value=''> Select Quotation by</option>`;
@@ -378,35 +592,41 @@ function setEmployeesQuotationByOnDropdown() {
         quotationByElement.innerHTML = options;
     }
 }
-function SaveRecord(){
+
+function SaveRecord() {
     let popUp = document.getElementById("expense-from");
     if (popUp) {
         popUp.style.display = 'none';
     }
     document.getElementById('topHeader').style.zIndex = '1052';
-    var event = new CustomEvent('closequotationFormEvent',{detail:"save"})
+    var event = new CustomEvent('closequotationFormEvent', { detail: "save" })
     window.parent.document.dispatchEvent(event)
 }
+
 function CloseForm(value) {
-    if(isSave){
+    if (isSave) {
         SaveRecord()
-    }else{
+    } else {
+        resetquotationvalue()
         let popUp = document.getElementById("expense-from");
         if (popUp) {
             popUp.style.display = 'none';
         }
         document.getElementById('topHeader').style.zIndex = '1052';
-        var event = new CustomEvent('closequotationFormEvent',{detail:"cancel"})
+        var event = new CustomEvent('closequotationFormEvent', { detail: "cancel" })
         window.parent.document.dispatchEvent(event)
     }
-  
+
 }
+
 function getqouationValue() {
+    
     let customerElement = document.getElementById('customer')
     let validfordaysElement = document.getElementById('validfordays')
     let assignedToElement = document.getElementById('assignedTo')
     let accessToMemberElement = document.getElementById('accessToMember')
     let companyOfficeElement = document.getElementById('companyOffice')
+    let contactElement = document.getElementById('contact')
     let quoteNameElement = document.getElementById('quoteName')
     let CommentsElement = document.getElementById('Comments')
     let TermsandConditionsElement = document.getElementById('TermsandConditions')
@@ -414,42 +634,52 @@ function getqouationValue() {
     let ExpirationDateElement = document.getElementById('ExpirationDate')
     let statusElement = document.getElementById('status')
     let quotationbyElement = document.getElementById('quotationby')
-    if (customerElement) {
-        let customervalue=""
-        if(customerElement.value){
-                let customer=customersList.filter(a=>a.RecordID===customerElement.value)
-                if(customer&&customer.length>0){
-                    customervalue=customer[0].RecordID+";#"+customer[0].Name;
-                }
+    
+        let customervalue = ""
+        if (customerID) {
+            let customer = customersList.filter(a => a.RecordID === customerID)
+            if (customer && customer.length > 0) {
+                customervalue = customer[0].RecordID + ";#" + customer[0].Name;
+            }
         }
         quotationObject['Customer'] = customervalue
-    }
+
     if (validfordaysElement) {
         quotationObject['ValidForDays'] = Number(validfordaysElement.value)
     }
     if (assignedToElement) {
-        let assignedTomembervalue=""
-        if(assignedToElement.value){
-            assignedTomembervalue=JSON.stringify([{ "UserType": 1, "RecordID": assignedToElement.value }])
+        let assignedTomembervalue = ""
+        if (assignedToElement.value) {
+            assignedTomembervalue = JSON.stringify([{ "UserType": 1, "RecordID": assignedToElement.value }])
         }
         quotationObject['QuoteOwner'] = assignedTomembervalue
     }
     if (accessToMemberElement) {
-        let accessTomembervalue=""
-        if(accessToMemberElement.value){
-            accessTomembervalue=JSON.stringify([{ "UserType": 1, "RecordID": accessToMemberElement.value }])
+        let accessTomembervalue = ""
+        if (accessToMemberElement.value) {
+            accessTomembervalue = JSON.stringify([{ "UserType": 1, "RecordID": accessToMemberElement.value }])
         }
         quotationObject['AccessToMember'] = accessTomembervalue
     }
     if (companyOfficeElement) {
-        let companyOfficevalue=""
-        if(companyOfficeElement.value){
-                let office=companyOfficeList.filter(a=>a.RecordID===companyOfficeElement.value)
-                if(office&&office.length>0){
-                    companyOfficevalue=office[0].RecordID+";#"+office[0].RegisteredCompanyName
-                }
+        let companyOfficevalue = ""
+        if (companyOfficeElement.value) {
+            let office = companyOfficeList.filter(a => a.RecordID === companyOfficeElement.value)
+            if (office && office.length > 0) {
+                companyOfficevalue = office[0].RecordID + ";#" + office[0].RegisteredCompanyName
+            }
         }
         quotationObject['CompanyOffice'] = companyOfficevalue
+    }
+    if (contactElement) {
+        let contactValue = ""
+        if (contactElement.value) {
+            let contact = contactList.filter(a => a.RecordID === contactElement.value)
+            if (contact && contact.length > 0) {
+                contactValue = contact[0].RecordID + ";#" + contact[0].FirstName + " " + contact[0].LastName
+            }
+        }
+        quotationObject['Contact'] = contactValue
     }
     if (quoteNameElement) {
         quotationObject['QuoteName'] = quoteNameElement.value
@@ -465,8 +695,8 @@ function getqouationValue() {
     }
     if (quotationbyElement) {
         let quotationBYvalue
-        if(quotationbyElement.value){
-            quotationBYvalue=JSON.stringify([{ "UserType": 1, "RecordID": quotationbyElement.value }])
+        if (quotationbyElement.value) {
+            quotationBYvalue = JSON.stringify([{ "UserType": 1, "RecordID": quotationbyElement.value }])
         }
         quotationObject['QuotationBy'] = quotationBYvalue
     }
@@ -476,10 +706,10 @@ function getqouationValue() {
     if (ExpirationDateElement) {
         quotationObject['ExpirationDate'] = ExpirationDateElement.value;
     }
-    if(quotationRecordID){
-        quotationObject['ParentReferenceID']=ParentReferenceID?ParentReferenceID:quotationRecordObject.ParentReferenceID
+    if (quotationRecordID) {
+        quotationObject['ParentReferenceID'] = ParentReferenceID ? ParentReferenceID : quotationRecordObject.ParentReferenceID
         updateQuotationForm(quotationObject)
-    }else{
+    } else {
         saveQuotationForm()
     }
 
@@ -487,9 +717,11 @@ function getqouationValue() {
 
 
 function setquotationValue() {
+    
     let customerElement = document.getElementById('customer')
     let validfordaysElement = document.getElementById('validfordays')
     let assignedToElement = document.getElementById('assignedTo')
+    let contactElement = document.getElementById('contact')
     let accessToMemberElement = document.getElementById('accessToMember')
     let companyOfficeElement = document.getElementById('companyOffice')
     let quoteNameElement = document.getElementById('quoteName')
@@ -500,48 +732,55 @@ function setquotationValue() {
     let statusElement = document.getElementById('status')
     let quotationbyElement = document.getElementById('quotationby')
     if (customerElement) {
-        customerElement.value=quotationRecordObject.Customer?quotationRecordObject.Customer.split(";#")[0]:''
+        customerElement.value = quotationRecordObject.Customer ? quotationRecordObject.Customer.split(";#")[0] : ''
     }
     if (validfordaysElement) {
-        validfordaysElement.value=quotationRecordObject.ValidForDays?quotationRecordObject.ValidForDays:''
+        validfordaysElement.value = quotationRecordObject.ValidForDays ? quotationRecordObject.ValidForDays : ''
     }
-    if (assignedToElement) {
-        assignedToElement.value=quotationRecordObject.QuoteOwner?JSON.parse(quotationRecordObject.QuoteOwner)[0].RecordID:''
     
+    if (assignedToElement) {
+        assignedToElement.value = quotationRecordObject.QuoteOwner ? JSON.parse(quotationRecordObject.QuoteOwner)[0].RecordID : ownerID
+    }
+    if (contactElement) {
+        //
+        contactElement.value = quotationRecordObject.Contact ? (quotationRecordObject.Contact).split(";#")[0] : ''
+
     }
     if (accessToMemberElement) {
-        accessToMemberElement.value=quotationRecordObject.AccessToMember?JSON.parse(quotationRecordObject.AccessToMember)[0].RecordID:''
-      
+        accessToMemberElement.value = quotationRecordObject.AccessToMember ? JSON.parse(quotationRecordObject.AccessToMember)[0].RecordID : ''
+
     }
     if (companyOfficeElement) {
-        companyOfficeElement.value=quotationRecordObject.CompanyOffice?quotationRecordObject.CompanyOffice.split(";#")[0]:''
+        companyOfficeElement.value = quotationRecordObject.CompanyOffice ? quotationRecordObject.CompanyOffice.split(";#")[0] : ''
     }
     if (quoteNameElement) {
-        quoteNameElement.value=quotationRecordObject.QuoteName?(quotationRecordObject.QuoteName):''
+        quoteNameElement.value = quotationRecordObject.QuoteName ? (quotationRecordObject.QuoteName) : ''
     }
     if (TermsandConditionsElement) {
-        TermsandConditionsElement.value=quotationRecordObject.TermsandConditions?(quotationRecordObject.TermsandConditions):''
+        TermsandConditionsElement.value = quotationRecordObject.TermsandConditions ? (quotationRecordObject.TermsandConditions) : ''
     }
     if (CommentsElement) {
-        CommentsElement.value=quotationRecordObject.Comments?(quotationRecordObject.Comments):''
+        CommentsElement.value = quotationRecordObject.Comments ? (quotationRecordObject.Comments) : ''
     }
     if (statusElement) {
-        statusElement.value=quotationRecordObject.Status?(quotationRecordObject.Status):''
+        statusElement.value = quotationRecordObject.Status ? (quotationRecordObject.Status) : ''
     }
     if (quotationbyElement) {
-        quotationbyElement.value=quotationRecordObject.QuotationBy?JSON.parse(quotationRecordObject.QuotationBy)[0].RecordID:''
+        quotationbyElement.value = quotationRecordObject.QuotationBy ? JSON.parse(quotationRecordObject.QuotationBy)[0].RecordID : ''
     }
     if (dateIssuedElement) {
-        dateIssuedElement.value=quotationRecordObject.DateIssued?moment(quotationRecordObject.DateIssued).format('YYYY-MM-DD'):''
+        dateIssuedElement.value = quotationRecordObject.DateIssued ? moment(quotationRecordObject.DateIssued).format('YYYY-MM-DD') : ''
     }
     if (ExpirationDateElement) {
-        ExpirationDateElement.value=quotationRecordObject.ExpirationDate?moment(quotationRecordObject.ExpirationDate).format('YYYY-MM-DD'):''
+        ExpirationDateElement.value = quotationRecordObject.ExpirationDate ? moment(quotationRecordObject.ExpirationDate).format('YYYY-MM-DD') : ''
     }
 }
 function resetquotationvalue() {
+    
     let customerElement = document.getElementById('customer')
     let validfordaysElement = document.getElementById('validfordays')
     let assignedToElement = document.getElementById('assignedTo')
+    let contactElement = document.getElementById('contact')
     let accessToMemberElement = document.getElementById('accessToMember')
     let companyOfficeElement = document.getElementById('companyOffice')
     let quoteNameElement = document.getElementById('quoteName')
@@ -552,52 +791,56 @@ function resetquotationvalue() {
     let statusElement = document.getElementById('status')
     let quotationbyElement = document.getElementById('quotationby')
     if (customerElement) {
-        customerElement.value=''
+        customerElement.value = ''
     }
     if (validfordaysElement) {
-        validfordaysElement.value=''
+        validfordaysElement.value = ''
     }
     if (assignedToElement) {
-        assignedToElement.value=''
-    
+        assignedToElement.value = ''
+
     }
     if (accessToMemberElement) {
-        accessToMemberElement.value=''
-      
+        accessToMemberElement.value = ''
+
     }
     if (companyOfficeElement) {
-        companyOfficeElement.value=''
+        companyOfficeElement.value = ''
     }
     if (quoteNameElement) {
-        quoteNameElement.value=''
+        quoteNameElement.value = ''
     }
     if (TermsandConditionsElement) {
-        TermsandConditionsElement.value=''
+        TermsandConditionsElement.value = ''
     }
     if (CommentsElement) {
-        CommentsElement.value=''
+        CommentsElement.value = ''
     }
     if (statusElement) {
-        statusElement.value=''
+        statusElement.value = ''
+    }
+    if (contactElement) {
+        contactElement.value = ''
     }
     if (quotationbyElement) {
-        quotationbyElement.value=''
+        quotationbyElement.value = ''
     }
     if (dateIssuedElement) {
-        dateIssuedElement.value=''
+        dateIssuedElement.value = ''
     }
     if (ExpirationDateElement) {
-        ExpirationDateElement.value=''
+        ExpirationDateElement.value = ''
     }
 }
 
 function saveQuotationForm() {
+    
     return new Promise((resolve) => {
         var recordFieldValueList = [];
         var intermidiateRecord = {}
         var user = getCurrentUser()
         Object.keys(quotationObject).forEach((key, value) => {
-           recordFieldValueList.push({
+            recordFieldValueList.push({
                 FieldID: null,
                 FieldInternalName: key,
                 FieldValue: quotationObject[key]
@@ -610,22 +853,23 @@ function saveQuotationForm() {
         intermidiateRecord.RecordID = null;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.CreateItem(intermidiateRecord).then(response => {
-            quotationRecordID=response
-                getQuotation()
-            
+            quotationRecordID = response
+            getQuotation()
+
             resolve({
                 response
             })
         });
     })
 }
+
 function updateQuotationForm(quotationObjectupdate) {
     return new Promise((resolve) => {
         var recordFieldValueList = [];
         var intermidiateRecord = {}
         var user = getCurrentUser()
         Object.keys(quotationObjectupdate).forEach((key, value) => {
-           recordFieldValueList.push({
+            recordFieldValueList.push({
                 FieldID: null,
                 FieldInternalName: key,
                 FieldValue: quotationObjectupdate[key]
@@ -644,36 +888,42 @@ function updateQuotationForm(quotationObjectupdate) {
         });
     })
 }
-function nextFirstTabClick(current){
+function nextFirstTabClick(current) {
+
     let quoteNameElement = document.getElementById('quoteName')
     let assignedToElement = document.getElementById('assignedTo')
-    let quotevalue=quoteNameElement?quoteNameElement.value:''
-    let assigntovalue=assignedToElement?assignedToElement.value:''
-    if(quotevalue&&assigntovalue){
-        showContent('second',2, current)
+    let expirationDateElement = document.getElementById('ExpirationDate')
+    let quotevalue = quoteNameElement ? quoteNameElement.value : '';
+    let assigntovalue = assignedToElement ? assignedToElement.value : '';
+    let expirationDate = expirationDateElement ? expirationDateElement.value : '';
+    if (quotevalue && expirationDate && assigntovalue) {
+        showContent('second', 2, current)
         getqouationValue()
-        isSave=true
-        if(quotationRecordID){
+        isSave = true
+        if (quotationRecordID) {
             getOrderItems()
-        }else{
-             orderItemObject = {
+        } else {
+            orderItemObject = {
                 Product: '',
-                ProductCode:'',
-                Terms:'',
-                BillingFrequency:'',
-                Quantity:'',
-                ListPrice:'',
-                Discount:'',
-                ItemTotal:'',
+                ProductCode: '',
+                Terms: '',
+                BillingFrequency: '',
+                Quantity: '',
+                ListPrice: '',
+                Discount: '',
+                ItemTotal: '',
             }
             orderItemList.push(orderItemObject)
             loadChildTable()
         }
-    }else{
-        if(!quotevalue){
+    } else {
+        if (!quotevalue) {
             openAlert('Quote name is required')
-        }else if(!assigntovalue){
-            openAlert('Assigned To  is required')
+        } else if (!assigntovalue) {
+            openAlert('Owner is required')
+        }
+        else if (!expirationDate) {
+            openAlert('Expiration Date is required')
         }
     }
 }
@@ -690,16 +940,16 @@ function openAlert(message) {
     qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
     qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
-function nextSecondTabClick(current){
-    showContent('third',3, current)
+function nextSecondTabClick(current) {
+    showContent('third', 3, current)
     saveChildTable()
     updateQuotationForm(priceDetails)
     getCompanySetting()
 }
-function backtoSecondTabClick(current){
-    showContent('second',2, current)
-    orderItemList=[]
-    if(quotationRecordID){
+function backtoSecondTabClick(current) {
+    showContent('second', 2, current)
+    orderItemList = []
+    if (quotationRecordID) {
         getOrderItems()
     }
 }
@@ -708,9 +958,9 @@ function saveChildTable() {
     let records = [];
     let intermidiateRecord;
     let recordFieldValues = [];
-    orderItemList.forEach((element,index) => {
-        tableRecordID=element.RecordID
-        element.ParentID=quotationRecordID
+    orderItemList.forEach((element, index) => {
+        tableRecordID = element.RecordID
+        element.ParentID = quotationRecordID
         intermidiateRecord = {};
         recordFieldValues = [];
         Object.keys(element).forEach((key) => {
@@ -733,12 +983,12 @@ function saveChildTable() {
     });
     window.QafService.UpdateItems(records).then((response) => {
 
-    
+
     });
 }
 
 function getOrderItems() {
-    let fields=orderItemsFields;
+    let fields = orderItemsFields;
     fields.push('ParentRecordID')
     let objectName = "Order_Items";
     let fieldList = fields
@@ -748,9 +998,20 @@ function getOrderItems() {
     let whereClause = `ParentRecordID='${quotationRecordID}'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((orders) => {
         if (Array.isArray(orders) && orders.length > 0) {
-            orderItemList = orders
+            orderItemList = orders.sort((a,b)=>new Date(a.CreatedDate) -new Date(b.CreatedDate))
+            setValueInPriceObject()
             loadChildTable()
-        }else{
+        } else {
+            orderItemObject = {
+                Product: '',
+                ProductCode: '',
+                Terms: '',
+                BillingFrequency: '',
+                Quantity: '',
+                ListPrice: '',
+                Discount: '',
+                ItemTotal: '',
+            }
             orderItemList.push(orderItemObject)
             loadChildTable()
         }
@@ -799,48 +1060,138 @@ function onQuantityinput(e, index) {
         }
     })
 }
-function calculateTotal(index){
+function calculateTotal(index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
-let termElement = document.getElementById(`ItemTotal-${index}`);
+            let termElement = document.getElementById(`ItemTotal-${index}`);
 
             if (termElement) {
-                let totalAmount=(val.Quantity * val.ListPrice)
-                let total=(val.Quantity * val.ListPrice) * (val.Discount/100)
-                val.ItemTotal = totalAmount-total
-                termElement.value=val.ItemTotal 
+                let totalAmount = (val.Quantity * val.ListPrice)
+                let total = (val.Quantity * val.ListPrice) * (val.Discount / 100)
+                val.ItemTotal = totalAmount - total
+                termElement.value = val.ItemTotal
             }
-            }
-        })
-        setValueInPriceObject()
+        }
+    })
+    setValueInPriceObject()
 }
-function setValueInPriceObject(){
-     priceDetails={
-        Subtotal:'',
-        Discount:'',
-        Tax:'',
-        GrandTotal:'',
+function setValueInPriceObject() {
+    
+    priceDetails = {
+        Subtotal: '',
+        Discount: '',
+        Tax: '',
+        GrandTotal: '',
+        TaxType: "",
+        DiscountType: ""
     }
-    let subtotal=orderItemList.reduce((acc, value) => acc + value.ItemTotal, 0);
-    priceDetails.Subtotal=parseFloat(subtotal.toFixed(2))
-    let priceDiscountElement=document.getElementById('priceDiscount')
-    if(priceDiscountElement){
-        priceDetails.Discount=priceDiscountElement.value?Number(priceDiscountElement.value):''
+    //
+    // let subtotal = orderItemList.reduce((acc, value) => acc + value.ItemTotal, 0);
+    // priceDetails.Subtotal = parseFloat(subtotal.toFixed(2))
+
+    let subtotal = orderItemList.reduce((acc, value) => acc + Number(value.ItemTotal), 0);
+    priceDetails.Subtotal = parseFloat(subtotal.toFixed(2));
+    
+    
+    let priceDiscountElement = document.getElementById('priceDiscount')
+    if (priceDiscountElement) {
+        priceDetails.Discount = priceDiscountElement.value ? Number(priceDiscountElement.value) : ''
     }
-    let pricetaxElement=document.getElementById('priceTax')
-    if(pricetaxElement){
-        priceDetails.Tax=pricetaxElement.value?Number(pricetaxElement.value):''
+    let pricetaxElement = document.getElementById('priceTax')
+    if (pricetaxElement) {
+        priceDetails.Tax = pricetaxElement.value ? parseFloat(pricetaxElement.value) : ''
     }
-    priceDetails.GrandTotal=(priceDetails.Subtotal)
-    if(priceDetails.Discount){
-       let discountTotal=priceDetails.GrandTotal*(priceDetails.Discount/100)
-       priceDetails.GrandTotal=parseFloat((priceDetails.GrandTotal-discountTotal).toFixed(2))
+    priceDetails.GrandTotal = (priceDetails.Subtotal)
+
+    let discountSelectElement1 = document.getElementById('discount-select')
+    if (discountSelectElement1) {
+        let value = discountSelectElement1.value;
+        priceDetails.DiscountType = value
     }
-    if(priceDetails.Tax){
-        let discountTotal=priceDetails.GrandTotal*(priceDetails.Tax/100)
-        priceDetails.GrandTotal=parseFloat((priceDetails.GrandTotal-discountTotal).toFixed(2))
+    
+    let discountTotal = 0
+    if (priceDetails.Discount) {
+
+        let discountSelectElement = document.getElementById('discount-select')
+        if (discountSelectElement) {
+            let value = discountSelectElement.value;
+            priceDetails.DiscountType = value
+            if (value) {
+                if (value === 'Fixed') {
+                    discountTotal = (priceDetails.Discount)
+
+                } else {
+                    discountTotal = priceDetails.GrandTotal * (priceDetails.Discount / 100)
+                }
+            }
+        }
+
+        let discountCalculationElement = document.getElementById('discountCalculation');
+        if (discountCalculationElement) {
+            discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2)
+        }
+      
     }
+    else{
+        let discountCalculationElement = document.getElementById('discountCalculation');
+        if (discountCalculationElement) {
+            discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2);
+        }
+      
+    }
+    priceDetails.Discount=discountTotal
+
+    priceDetails.GrandTotal= priceDetails.GrandTotal - discountTotal
+    let taxTotal = 0
+    let taxSelectElement = document.getElementById('tax-select')
+        if (taxSelectElement) {
+            let value = taxSelectElement.value;
+            priceDetails.TaxType = value
+        }
+    if (priceDetails.Tax) {
+      
+        let taxSelectElement = document.getElementById('tax-select')
+        if (taxSelectElement) {
+            let value = taxSelectElement.value;
+            priceDetails.TaxType = value
+            if (value) {
+                if (value === 'Fixed') {
+                    taxTotal = (priceDetails.Tax)
+
+                } else {
+                    taxTotal = priceDetails.GrandTotal * (priceDetails.Tax / 100)
+                }
+            }
+        }
+
+        let taxCalculationElement = document.getElementById('taxCalculation');
+        if (taxCalculationElement) {
+            taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2)
+        }
+    }
+    else{
+        let taxCalculationElement = document.getElementById('taxCalculation');
+        if (taxCalculationElement) {
+            taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2)
+        }
+    }
+    priceDetails.GrandTotal = parseFloat(((priceDetails.GrandTotal )+taxTotal).toFixed(2))
     setValueInPricing()
+}
+function taxTypeChange() {
+    //
+    let taxTypeElement = document.getElementById('tax-select');
+    if (taxTypeElement) {
+        priceDetails.TaxType = taxTypeElement.value
+    }
+    setValueInPriceObject()
+}
+function discuontTypeChange() {
+    let discountTypeElement = document.getElementById('discount-select');
+    if (discountTypeElement) {
+        priceDetails.DiscountType = discountTypeElement.value
+    }
+    setValueInPriceObject()
 }
 function onListPriceinput(e, index) {
     orderItemList.forEach((val, i) => {
@@ -897,8 +1248,7 @@ function loadChildTable() {
         </td>
          <td class="qaf-td">
             <input type="text" class="fs-input amount tableinput" id="sku-${index}" name="ProductCode"
-                autocomplete="off" required oninput="onskuinput(this,'${index}')"
-                >
+                autocomplete="off" required oninput="onskuinput(this,'${index}')" readonly>
         </td>
          <td class="qaf-td">
             <input type="text" class="fs-input Terms tableinput" id="Terms-${index}" name="Terms"
@@ -924,20 +1274,23 @@ function loadChildTable() {
                 >
         </td>
         <td class="qaf-td">
-            <input type="number" class="fs-input Discount tableinput" id="ItemTotal-${index}" name="ItemTotal"
+            
+            <input type="number" class="fs-input Discount tableinput" id="ItemTotal-${index}" name="ItemTotal" disabled
                 autocomplete="off" required oninput="onItemTotalinput(this,'${index}')"
                 >
         </td>
-        <td class="qaf-td row-action">
-            <button type="button" class="row-add" onclick="deleteRow('${index}')">
+        <td class="qaf-td row-delete-td">
+        <div class="action-delete-row" >
+            <button type="button" class="row-add row-delete" onclick="deleteRow('${index}')">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
+            </div>
         </td>
         </tr>`
 
     })
-  
- 
+
+
     let tableStructure = `
         <table class="qaf-table">
             <thead>
@@ -950,7 +1303,7 @@ function loadChildTable() {
                     <th class="qaf-th">List Price</th>
                     <th class="qaf-th">Discount</th>
                     <th class="qaf-th">Item Total</th>
-                    <th class="qaf-th"></th>
+                    <th class="qaf-th action-button-th"></th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -958,7 +1311,7 @@ function loadChildTable() {
             </tbody>
         </table>
     `;
-    tableStructure+=`  <button type="button" class="row-add" onclick="addRowExpensePerticular()">
+    tableStructure += `  <button type="button" class="row-add" onclick="addRowExpensePerticular()">
     <i class="fa fa-plus" aria-hidden="true"> Add New</i>
 </button>`
     const tableContainer = document.getElementById('tablecontainer');
@@ -966,7 +1319,7 @@ function loadChildTable() {
     setExpernseperticularTable()
     expenseLedgerOnDropdown()
     billingFrequesyOnDropdown()
-    setValueInPricing()
+    setValueInPriceObject()
 }
 
 
@@ -974,21 +1327,33 @@ function loadChildTable() {
 function addRowExpensePerticular() {
     orderItemObject = {
         Product: '',
-        ProductCode:'',
-        Terms:'',
-        BillingFrequency:'',
-        Quantity:'',
-        ListPrice:'',
-        Discount:'',
-        ItemTotal:'',
+        ProductCode: '',
+        Terms: '',
+        BillingFrequency: '',
+        Quantity: '',
+        ListPrice: '',
+        Discount: '',
+        ItemTotal: '',
     }
     orderItemList.push(orderItemObject)
     loadChildTable()
 }
 function deleteRow(index) {
-    orderItemList.splice((parseInt(index)), 1);
-    loadChildTable()
+    let order=orderItemList[index]
+    if (window.QafPageService) {
+        if(order.RecordID){
+            orderItemList.splice((parseInt(index)), 1);
+            window.QafPageService.DeleteItem(order.RecordID, function () {
+                orderItemList=[]
+                 getOrderItems()
+            });
+        }else{
+            orderItemList.splice((parseInt(index)), 1);
+        }
+       
+    }
 }
+
 
 function billingFrequesyOnDropdown() {
     orderItemList.forEach((perticular, index) => {
@@ -1007,7 +1372,7 @@ function billingFrequesyOnDropdown() {
 function expenseLedgerOnDropdown() {
     orderItemList.forEach((perticular, index) => {
         let expenseLedgerElement = document.getElementById(`product-${index}`);
-        let options = `<option value=''> Select product</option>`; ``
+        let options = `<option value=''> Select Product</option>`; ``
         if (expenseLedgerElement) {
             productList.forEach(product => {
                 options += `<option value="${product.RecordID}">${product.ProductName}</option>`;
@@ -1028,32 +1393,32 @@ function setExpernseperticularTable() {
             expense_ledger_name.value = perticular.Product ? perticular.Product.split(";#")[0] : ''
         }
         let skuElement = document.getElementById(`sku-${index}`);
-        if(skuElement){
-            skuElement.value=perticular.ProductCode?perticular.ProductCode:''
+        if (skuElement) {
+            skuElement.value = perticular.ProductCode ? perticular.ProductCode : ''
         }
         let TermsElement = document.getElementById(`Terms-${index}`);
-        if(TermsElement){
-            TermsElement.value=perticular.Terms?perticular.Terms:''
+        if (TermsElement) {
+            TermsElement.value = perticular.Terms ? perticular.Terms : ''
         }
         let BillingFrequencyElement = document.getElementById(`BillingFrequency-${index}`);
-        if(BillingFrequencyElement){
-            BillingFrequencyElement.value=perticular.BillingFrequency?perticular.BillingFrequency:''
+        if (BillingFrequencyElement) {
+            BillingFrequencyElement.value = perticular.BillingFrequency ? perticular.BillingFrequency : ''
         }
         let UnitPriceElement = document.getElementById(`ListPrice-${index}`);
-        if(UnitPriceElement){
-            UnitPriceElement.value=perticular.ListPrice?perticular.ListPrice:''
+        if (UnitPriceElement) {
+            UnitPriceElement.value = perticular.ListPrice ? perticular.ListPrice : ''
         }
         let QuantityElement = document.getElementById(`Quantity-${index}`);
-        if(QuantityElement){
-            QuantityElement.value=perticular.Quantity?perticular.Quantity:''
+        if (QuantityElement) {
+            QuantityElement.value = perticular.Quantity ? perticular.Quantity : ''
         }
         let DiscountElement = document.getElementById(`Discount-${index}`);
-        if(DiscountElement){
-            DiscountElement.value=perticular.Discount?perticular.Discount:''
+        if (DiscountElement) {
+            DiscountElement.value = perticular.Discount ? perticular.Discount : ''
         }
-         let ItemTotalElement = document.getElementById(`ItemTotal-${index}`);
-        if(ItemTotalElement){
-            ItemTotalElement.value=perticular.Discount?perticular.ItemTotal:''
+        let ItemTotalElement = document.getElementById(`ItemTotal-${index}`);
+        if (ItemTotalElement) {
+            ItemTotalElement.value = perticular.ItemTotal ? perticular.ItemTotal : ''
         }
     })
 }
@@ -1070,55 +1435,137 @@ function onChangeExpenseLedeger(index) {
                 val.BillingFrequency = product[0].BillingFrequency
                 val.ListPrice = product[0].UnitPrice
                 val.Discount = product[0].Discount
-                    setValueInProduct(index,product[0])
-              
+                setValueInProduct(index, product[0])
+
             }
         }
     })
 }
-function setValueInProduct(index,product){
+function setValueInProduct(index, product) {
     let skuElement = document.getElementById(`sku-${index}`);
-    if(skuElement){
-        skuElement.value=product.ProductCode?product.ProductCode:''
+    if (skuElement) {
+        skuElement.value = product.ProductCode ? product.ProductCode : ''
     }
     let TermsElement = document.getElementById(`Terms-${index}`);
-    if(TermsElement){
-        TermsElement.value=product.Terms?product.Terms:''
+    if (TermsElement) {
+        TermsElement.value = product.Terms ? product.Terms : ''
     }
     let BillingFrequencyElement = document.getElementById(`BillingFrequency-${index}`);
-    if(BillingFrequencyElement){
-        BillingFrequencyElement.value=product.BillingFrequency?product.BillingFrequency:''
+    if (BillingFrequencyElement) {
+        BillingFrequencyElement.value = product.BillingFrequency ? product.BillingFrequency : ''
     }
     let UnitPriceElement = document.getElementById(`ListPrice-${index}`);
-    if(UnitPriceElement){
-        UnitPriceElement.value=product.UnitPrice?product.UnitPrice:''
+    if (UnitPriceElement) {
+        UnitPriceElement.value = product.UnitPrice ? product.UnitPrice : ''
     }
     let DiscountElement = document.getElementById(`Discount-${index}`);
-    if(DiscountElement){
-        DiscountElement.value=product.Discount?product.Discount:''
+    if (DiscountElement) {
+        DiscountElement.value = product.Discount ? product.Discount : ''
     }
 }
-function setValueInPricing(){
+function setValueInPricing() {
+    //
     
-    let SubtotalElement = document.getElementById(`Subtotal`);
-    if(SubtotalElement){
-        SubtotalElement.value=priceDetails.Subtotal?priceDetails.Subtotal:''
+    console.log("priceDetails", priceDetails)
+    let SubtotalElement = document.getElementById('Subtotal');
+    if (SubtotalElement) {
+        SubtotalElement.innerHTML = priceDetails.Subtotal ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.Subtotal).toFixed(2) : ''
     }
-    let DiscountElement = document.getElementById(`priceDiscount`);
-    if(DiscountElement){
-        DiscountElement.value=priceDetails.Discount?priceDetails.Discount:''
+    // let DiscountElement = document.getElementById('priceDiscount');
+    // if (DiscountElement) {
+    //     DiscountElement.value = priceDetails.Discount ? priceDetails.Discount : ''
+    // }
+    // let TaxElement = document.getElementById('priceTax');
+    // if (TaxElement) {
+    //     TaxElement.value = priceDetails.Tax ? priceDetails.Tax : ''
+    // }
+    let GrandTotalElement = document.getElementById('GrandTotal');
+    if (GrandTotalElement) {
+        GrandTotalElement.innerHTML = priceDetails.GrandTotal ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.GrandTotal).toFixed(2) : ''
+        priceDetails.GrandTotal= priceDetails.GrandTotal ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.GrandTotal).toFixed(2) : ''
     }
-    let TaxElement = document.getElementById(`priceTax`);
-    if(TaxElement){
-        TaxElement.value=priceDetails.Tax?priceDetails.Tax:''
+
+    let taxSelectElement = document.getElementById('tax-select');
+    if (taxSelectElement) {
+        taxSelectElement.value = priceDetails.TaxType
+        ? priceDetails.TaxType : ''
     }
-    let GrandTotalElement = document.getElementById(`GrandTotal`);
-    if(GrandTotalElement){
-        GrandTotalElement.value=priceDetails.GrandTotal?priceDetails.GrandTotal:''
+    let discountTypeElement = document.getElementById('discount-select');
+    if (discountTypeElement) {
+        discountTypeElement.value = priceDetails.DiscountType ? priceDetails.DiscountType : ''
     }
+    let discountTotal = 0
+    let taxTotal = 0
+
+    priceDetails.GrandTotal = (priceDetails.Subtotal)
+    let discountprice=0
+    let priceDiscountElement = document.getElementById('priceDiscount')
+    if (priceDiscountElement) {
+        discountprice= priceDiscountElement.value ? Number(priceDiscountElement.value) : ''
+    }
+    if (discountprice) {
+        let discountSelectElement = document.getElementById('discount-select')
+        if (discountSelectElement) {
+            let value = discountSelectElement.value;
+            if (value) {
+                if (value === 'Fixed') {
+                    discountTotal = discountprice
+
+                } else {
+                    discountTotal = priceDetails.GrandTotal * (discountprice / 100)
+                }
+            }
+        }
+
+        let discountCalculationElement = document.getElementById('discountCalculation');
+        if (discountCalculationElement) {
+            discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2);
+        }
+    }
+    else{
+        let discountCalculationElement = document.getElementById('discountCalculation');
+        if (discountCalculationElement) {
+            discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2);
+        }
+
+    }
+    
+    priceDetails.Discount=discountTotal
+
+    priceDetails.GrandTotal= priceDetails.GrandTotal - discountTotal
+    if (priceDetails.Tax) {
+        let taxSelectElement = document.getElementById('tax-select')
+        if (taxSelectElement) {
+            let value = taxSelectElement.value;
+            if (value) {
+                if (value === 'Fixed') {
+                    taxTotal = (priceDetails.Tax)
+
+                } else {
+                    taxTotal = priceDetails.GrandTotal * (priceDetails.Tax / 100)
+                }
+            }
+        }
+
+        let taxCalculationElement = document.getElementById('taxCalculation');
+        if (taxCalculationElement) {
+            taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2);
+        }
+
+    }
+    else{
+        let taxCalculationElement = document.getElementById('taxCalculation');
+        if (taxCalculationElement) {
+            taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2);
+        }
+
+    }
+    priceDetails.Tax=taxTotal
+    priceDetails.GrandTotal = parseFloat(((priceDetails.GrandTotal )+taxTotal).toFixed(2))
 }
-function backtofirstTabClick(id){
-    showContent('first',1, id)
+
+function backtofirstTabClick(id) {
+    showContent('first', 1, id)
 
 }
 
@@ -1139,70 +1586,137 @@ function getCompanySetting() {
 }
 function getURLFromJson(values) {
     if (values) {
-      if (values.includes('link')) {
-        if (IsJsonString(values)) {
-          let sampleval = JSON.parse(values)
-          return sampleval && sampleval[0].link ? sampleval[0].link : "";
-        } else {
-          return values;
+        if (values.includes('link')) {
+            if (IsJsonString(values)) {
+                let sampleval = JSON.parse(values)
+                return sampleval && sampleval[0].link ? sampleval[0].link : "";
+            } else {
+                return values;
+            }
         }
-      }
-      else {
-        return values;
-      }
+        else {
+            return values;
+        }
     }
     else {
-      return '';
+        return '';
     }
-  }
-  function IsJsonString(str) {
+}
+function IsJsonString(str) {
     try {
-      JSON.parse(str);
+        JSON.parse(str);
     } catch (e) {
-      return false;
+        return false;
     }
     return true;
-  }
-  function formatDate(date){
+}
+function formatDate(date) {
     if (date) {
         return moment(date).format("DD MMMM YYYY")
-      }
-      return " ";
-  }
-  function getValidDays(){
-    let dateOne = moment(quotationRecordObject.DateIssued);
-let dateTwo = moment(quotationRecordObject.ExpirationDate);
- 
-// Function call
-let result = dateOne.diff(dateTwo, 'days') 
-    return  Math.abs(result)
-  }
-  function setPreviewData(){
-    let orders;
+    }
+    return " ";
+}
+function getValidDays() {
+    if(quotationRecordObject.DateIssued&&quotationRecordObject.ExpirationDate){
+
+        let dateOne = moment(quotationRecordObject.DateIssued);
+        let dateTwo = moment(quotationRecordObject.ExpirationDate);
+        // Function call
+        let result = dateOne.diff(dateTwo, 'days')
+        return Math.abs(result)
+    }
+    return 0
+}
+function setPreviewData() {
+    let orders = "";
     orderItemList.forEach((value, index) => {
         orders += `
                 <tr>
                     <td class="item-width-si">${index + 1}</td>
                     <td>${value.Product ? value.Product.split(";#")[1] : ""}</td>
-                    <td class="reviwe-td">${value.Quantity}</td>
-                    <td class="reviwe-td">${value.ListPrice}</td>
-                    <td class="reviwe-td">${value.Discount}</td>
-                    <td class="reviwe-td">${value.ItemTotal}</td>
+                    <td class="reviwe-td">${value.Quantity ? value.Quantity : ""}</td>
+                    <td class="reviwe-td">${value.ListPrice ? value.ListPrice : ""}</td>
+                    <td class="reviwe-td">${value.Discount ? value.Discount : "0"}</td>
+                    <td class="reviwe-td">${value.ItemTotal ? value.ItemTotal : ""}</td>
                 </tr>
             `
     })
-    let customervalue=""
-        if(quotationRecordObject.Customer){
-          let  customer=customersList.filter(a=>a.RecordID===quotationRecordObject.Customer.split(';#')[0])
-          if(customer&&customer.length>0){
-customervalue= `<p> ${customer?customer[0].Name:""} <!----><br> ${customer?customer[0].BillingCity:""} ,${customer?customer[0].State:""} <!----><br>
-                                    ${customer?customer[0].Country:""} <!----><br>${customer?customer[0].Email:""}<!----> </p>`
-          }
-
-          
+    //
+    let customervalue = ""
+    let contactvalue = ""
+    
+    quotationRecordObject.TermsandConditions=quotationObject.TermsandConditions;
+    quotationRecordObject.DateIssued=quotationObject.DateIssued;
+    quotationRecordObject.ExpirationDate=quotationObject.ExpirationDate;
+    if (quotationRecordObject.Customer) {
+        
+        let customer = customersList.filter(a => a.RecordID === quotationRecordObject.Customer.split(';#')[0])
+        if (customer && customer.length > 0) {
+            let valueList=[];
+            let subvalue=[]
+                if(customer[0].BillingCity){
+                    subvalue.push(customer[0].BillingCity.split(";#")[1])
+                }
+                if(customer[0].State){
+                    subvalue.push(customer[0].State.split(";#")[1])
+                }
+                if(customer[0].Name){
+                    valueList.push(customer[0].Name)
+                }
+                let subvaluetext=subvalue.join(",&nbsp;")
+                if(subvaluetext){
+                    valueList.push(subvaluetext)
+                }
+                if(customer[0].Country){
+                    valueList.push(customer[0].Country.split(";#")[1])
+                }
+                if(customer[0].Email){
+                    valueList.push(customer[0].Email)
+                }
+                let customervaluestring=valueList.join('<br>')
+            customervalue = `<p> ${customervaluestring}<!----> </p>`
         }
-    let image=(window.location.origin.includes('localhost')?'https:/qaffirst.quickappflow.com':window.location.origin)+"/Attachment/downloadfile?fileUrl="+encodeURIComponent(getURLFromJson(companySetting.Logo))
-    let preview=`<div class="hrz-dynamic-frm-per">
+    }
+    if (quotationRecordObject.Contact) {
+        let contact = contactList.filter(a => a.RecordID === quotationRecordObject.Contact.split(';#')[0])
+        if (contact && contact.length > 0) {
+
+            let valueList=[];
+            let subvalue=[]
+                if(contact[0].City){
+                    subvalue.push(customer[0].City.split(";#")[1])
+                }
+                if(contact[0].StateProvince){
+                    subvalue.push(customer[0].StateProvince.split(";#")[1])
+                }
+                if(contact[0].Country){
+                    subvalue.push(customer[0].Country.split(";#")[1])
+                }
+                if(contact[0].PostalCode){
+                    subvalue.push(customer[0].PostalCode.split(";#")[1])
+                }
+                if(contact[0].FirstName){
+                    valueList.push(contact[0].FirstName + " " + contact[0].LastName)
+                }
+                if(contact[0].StreetAddress){
+                    valueList.push(contact[0].StreetAddress)
+                }
+                let subvaluetext=subvalue.join(",&nbsp;")
+                if(subvaluetext){
+                    valueList.push(subvaluetext)
+                }
+                if(contact[0].Mobile){
+                    valueList.push(contact[0].Mobile)
+                }
+                if(contact[0].Email){
+                    valueList.push(contact[0].Email)
+                }
+                let contactvaluestring=valueList.join('<br>')
+            contactvalue = `<p> ${contactvaluestring}<!----> </p>`
+        }
+    }
+    let image = (window.location.origin.includes('localhost') ? 'https:/qaffirst.quickappflow.com' : window.location.origin) + "/Attachment/downloadfile?fileUrl=" + encodeURIComponent(getURLFromJson(companySetting.Logo))
+    let preview = `<div class="hrz-dynamic-frm-per">
                     <div class="print-btn"><button
                             class="btn btn-primary m-t-5 m-b-20 no-print m-r-5">Download</button></div>
                     <loader><!----></loader><!---->
@@ -1211,28 +1725,35 @@ customervalue= `<p> ${customer?customer[0].Name:""} <!----><br> ${customer?custo
                             <div class="company-logo"><!----><img alt=""
                                     src="${image}">
                             </div><!----><!---->
-                            <div class="company-details m-t-20">
+                            <div class="company-details m-t-5">
                                 <p>${companySetting.Title} <br> ${companySetting.City} <br> ${companySetting.Country} <br> <br> </p>
                                 <p class="account-detail"><!----><br> <br> <br> <br> </p>
                             </div>
+                             <div class="quotation-to m-t-20 m-b-20">
+                             To,
+                              <div class="quotation-name ${contactvalue?'m-t-20':""}"> ${contactvalue ? contactvalue : ""}
+                            </div>
+                            <div class="quotation-name ${customervalue?'m-t-20':""}">  ${customervalue ? customervalue : ""}
+                            
+                            </div>
+                        </div>
+
                             <div class="company-details m-t-20">
                                 <p><b>Date Issued:&nbsp;</b>${formatDate(quotationRecordObject.DateIssued)}</p><!----><!---->
                                 <p class="account-detail"><b>Valid Till:&nbsp;</b>${formatDate(quotationRecordObject.ExpirationDate)} </p>
                             </div>
                         </div>
-                        <div class="quoate-id">
+                        <div class="quoate-id" style="margin: 30px 0;">
                             <p>Quotation No: ${quotationRecordObject.AutoUnique}</p>
                         </div>
-                        <div class="quotation-to m-t-20 m-b-20">
-                            <div class="quotation-name m-t-20"> To, ${customervalue?customervalue:""}
-                            </div>
-                        </div>
+                                        
                         <div class="table-order-items">
+
                             <table>
                                 <thead>
                                     <tr class="header-row">
-                                        <th>SN</th>
-                                        <th style="width: 30%;">Item</th>
+                                        <th class="product-td">SN</th>
+                                        <th class="product-td" style="width: 30%;">Item</th>
                                         <th class="reviwe-td">Quantity</th>
                                         <th class="reviwe-td">List Price</th>
                                         <th class="reviwe-td">Discount</th><!----><!----><!---->
@@ -1249,15 +1770,20 @@ customervalue= `<p> ${customer?customer[0].Name:""} <!----><br> ${customer?custo
                                 <thead></thead>
                                 <tbody>
                                     <tr>
-                                        <td class="item-width reviwe-td">Sub Total</td>
+                                        <td class="item-width reviwe-td-left">Sub Total</td>
                                         <td class="item-width reviwe-td">${priceDetails.Subtotal}</td>
                                     </tr>
                                     <tr>
-                                        <td class="item-width reviwe-td">Discount</td>
-                                        <td class="item-width reviwe-td">${priceDetails.Discount}</td>
-                                    </tr><!---->
+                                        <td class="item-width reviwe-td-left">Discount</td>
+                                        <td class="item-width reviwe-td">${priceDetails.Discount ? priceDetails.Discount.toFixed(2) : "0"}</td>
+                                    </tr>
                                     <tr>
-                                        <td class="item-width reviwe-td">Total Payable</td>
+                                        <td class="item-width reviwe-td-left">Tax</td>
+                                        <td class="item-width reviwe-td">${priceDetails.Tax ? priceDetails.Tax : "0"}</td>
+                                    </tr>
+                                    <!---->
+                                    <tr>
+                                        <td class="item-width reviwe-td-left">Total Payable</td>
                                         <td class="item-width reviwe-td">${priceDetails.GrandTotal}</td>
                                     </tr>
                                 </tbody>
@@ -1268,12 +1794,13 @@ customervalue= `<p> ${customer?customer[0].Name:""} <!----><br> ${customer?custo
                         </div>
                         <div>
                             <div>
-                                <p class=" term-condition">Terms and Conditions</p>${quotationRecordObject.TermsandConditions}
+                                <p class=" term-condition">Terms and Conditions</p> 
+                                <pre class="pre-terms">${quotationRecordObject.TermsandConditions ? quotationRecordObject.TermsandConditions : (termandsettingValue?termandsettingValue:"")}</pre>
                             </div>
                         </div>
                         <p class="signature">Signature<br>${quotationRecordObject.CreatedByName}</p>
                     </div>
                 </div>`
 
-                document.getElementById('preview').innerHTML=preview
+    document.getElementById('previewQuotation').innerHTML = preview;
 }

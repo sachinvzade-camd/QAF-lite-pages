@@ -92,7 +92,7 @@ function updateDateDisplay() {
     getLeaveRequest();
 }
 function getLeaveRequest() {
-    debugger
+    
     let selectLeaveType = ""
     let selectedElement = document.getElementById('leaveTypeBalance')
     if (selectedElement) {
@@ -134,7 +134,7 @@ function getLeaveRequest() {
 
 
 function getAuditLog() {
-debugger
+
     let selectLeaveType = ""
     let selectedElement = document.getElementById('leaveTypeBalance')
     if (selectedElement) {
@@ -167,7 +167,7 @@ debugger
     };
 
     window.QafService.Rfdf(recordForField).then((logs) => {
-        debugger
+        
         if (Array.isArray(logs) && logs.length > 0) {
 
             LeaveAuditLogList = logs
@@ -226,7 +226,7 @@ function getFullNameByRecordID(emp) {
 // <td class="qaf-td">${Year}</td>
 
 function generateReport() {
-    debugger
+    
     let TableData = ""
     TableData = performanceList;
     let TableElement = document.getElementById('intervieandhired-table');

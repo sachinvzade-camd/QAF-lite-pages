@@ -71,7 +71,7 @@
   padding: 0px 10px;
   text-align: left;
   word-wrap: break-word;
-  min-width: 135px;
+  min-width: 105px;
   border-right: none;
   vertical-align: middle;
 }
@@ -634,7 +634,7 @@ input[type="checkbox"] {
   z-index: 0!important;
 }
 .user-type-popup{
-  height: 135px;
+  height: 105px;
   min-width: 19%;
   max-width: 19%;
 }
@@ -655,4 +655,9 @@ input[type="radio"] {
 .p-5 {
   padding: 5px !important;
   height: 80.5vh;
+}
+.input-action{
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
 }
