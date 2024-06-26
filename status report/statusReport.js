@@ -259,67 +259,7 @@ function prevMonth(e) {
     }
 }
 
-// function expgrid_onItemRender(cname, cvalue, row) {
-//   if (cname === 'FirstName') {
-//     if (cvalue) {
-//       return `${cvalue}
-//                         <style>
-//                         .qaf-grid__footer {
-//                           border-top: 1px solid rgba(0,0,0,.12);
-//                           background-color: #ffffff;
-//                       }
-//                       .qaf-grid{
-//                         border:none;
-//                         box-shadow: 1px 2px 5px;
-//                       }
-//                       .qaf-grid__header
-//                       {
-//                         background-color: #f2f2f2;
-//                         border-bottom: 1px solid rgba(0,0,0,.12);
-//                         font-size: 13px;
-//                         font-weight: 500 !important;
 
-//                       }
-//                       .qaf-grid__row {
-//                           font-size: 12px;
-//                           font-weight: 500;
-//                           background-color: #fff;
-//                       }
-
-//                     .qaf-grid__header-item {
-//                       font-weight: 500 !important;
-//                       font-size:13px;
-
-//                   }
-//                    .qaf-grid-page-size label {
-//                           font-weight: 500;
-//                       }
-//                       .qaf-grid-page-size select {
-//                           background-color: #fff;
-//                           color: #333;
-//                       }
-//                       .qaf-grid__footer > button{
-//                         background-color: #fff;
-//                       }
-//                       .qaf-grid__footer > button > svg {
-
-//                           fill: #333;
-//                       }
-
-//                       .qaf-grid__row-item>a{
-//                         color: #009ce7;
-//                         text-decoration: none;
-//                       }
-
-//                     </style>`;
-//     }
-//   }
-//   if (cvalue) {
-//     return cvalue;
-//   } else {
-//     return '';
-//   }
-// }
 
 function expgrid_onItemRender(cname, cvalue, row) {
 
@@ -491,7 +431,6 @@ qafServiceLoaded = setInterval(() => {
         if (noGridElement) {
             noGridElement.style.display = "none"
         }
-        
         getAppName();
         clearInterval(qafServiceLoaded);
     }
@@ -533,7 +472,7 @@ function getApppermission() {
 function getUserpermission(permissions) {
     let roleID = ""
     if (permissions && permissions.length > 0) {
-        roleID = permissions.map(a => a.ParentRecordID).join("'<AND>Role!='")
+        roleID = permissions.map(a => a.ParentRecordID).join("'<OR>Role!='")
     }
     let objectName = "User_Permission";
     let list = 'RecordID,ProfileorTeam,AppName,Role'
@@ -548,25 +487,16 @@ function getUserpermission(permissions) {
     }
     let orderBy = "true"
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((userpermissions) => {
+        debugger
         if (Array.isArray(userpermissions) && userpermissions.length > 0) {
             userpermissionsList = userpermissions
             formatPermissionUser(userpermissions)
-        }else{
-          let mainGridElement = document.getElementById('main-grid');
-          let noGridElement = document.getElementById('no-grid');
-          if (mainGridElement) {
-              mainGridElement.style.display = 'none'
-          }
-          if (noGridElement) {
-              let exportBtnElement = document.getElementById("export")
-              if (exportBtnElement) {
-                  exportBtnElement.disabled = true;
-              }
-              noGridElement.style.display = "block"
-          }
-
         }
+else{
+    getObjectID()
+    getjobposting()
 
+}
     });
 }
 function formatPermissionUser(userpermissions) {

@@ -305,7 +305,7 @@ function getEmployee() {
         if (Array.isArray(employees) && employees.length > 0) {
             Employee = employees;
             Employee.sort((a, b) => {
-                return a.FirstName- (b.FirstName);
+                return a.FirstName.localeCompare(b.FirstName);
             });
             Geofence_Allocation();
 

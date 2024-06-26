@@ -1,80 +1,383 @@
-.job-apply-form{
-  margin-top: 150px;
-}
-.page {
---qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
---qaf-grid-button-border-radius: 4px;
-}
-.qaf-btn-primary {
-background-color: var(--qaf-grid-button-bg-color, #313CBF);
-color: var(--qaf-grid-button-color, #fff);
-}
-.pg-content{
-  padding-top: 0!important;
-  min-height: 0;
-max-height: 100%;
-}
-.hrz-dynamic-frm-per{
-height: 90vh;
-overflow: scroll;
+/* task Activity CSS */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
 }
 
-#startTime,#endTime{
-width: 22px;
+.main-container {
+  display: flex;
 }
-.date-control{
-display: flex;
+.container {
+  width: 100%;
+  margin: 0px 0px 0px 0px;
 }
-.required {
-display: inline;
-color: #cc0000;
-padding-left: 5px;
+p {
+  font-size: 18px;
 }
-.ql-attendence-btn .btn{
-width: 100%;
-padding: 10px 0;
-  margin-top: 10px;
-}
-.ql-attendence-btn{
-padding: 0 13px;
-}
-.ql-attendence-cancel{
-margin-bottom: 30px;
-padding-bottom: 10px;
-}
-/*  */
 
-.form-control{
+.tab-box {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  overflow: hidden;
+  z-index: 1;
+  border-bottom: 2px solid rgb(235, 234, 234);
+  /* margin-right: 25px; */
+}
+
+.tab-btn {
+  border: none;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(0, 0, 0);
+  display: flex;
+  padding: 10px 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+  padding: 20px 0px;
+  /* border: 1px solid #ddd; */
+}
+
+.tab-content.active {
+  display: block;
+}
+/* for QAF Lite */
+.line {
+  position: absolute;
+  top: 95px;
+  height: 2px;
+  background-color: #311212;
+  transition: all 0.3s ease-in-out;
+}
+
+.nodata {
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
   width: 100%;
 }
-.spacing-in-rows{
-  margin-bottom: 10px;
+
+.tab-content {
+  display: none;
+  animation: moving 0.5s ease;
+}
+.moving-left {
+  animation: moving-left 0.5s;
 }
 
-  .form-section {
-      padding: 8px 13px;
-      border-radius: 4px;
-    }
-    .qaf-checkbox{
-      display: flex;
-      
-    }
-    .checkbox-label{
-      margin-left: 10px;
-    }
-    .btn-container{
-      width: 100%;
-      display: flex;
-      justify-content:flex-end ;
-      align-items: center;
-    }
-    
-    .btn{
-      margin: 0px 5px;
-      padding: 12px 24px;
-      border-radius: 5px;
-    }
-    
-    .right-btn{
-      margin-right: 15px;
-    }
+.moving-right {
+  animation: moving-right 0.5s;
+}
+
+@keyframes moving-left {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moving-right {
+  from {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.inner-sub-title {
+  font-weight: 600;
+}
+
+/* TAble CSS */
+.table-data {
+  border-radius: 4px;
+  padding: 0;
+}
+/* .payroll-details {
+  margin: 0px 20px 20px 20px;
+}
+.common-page-title {
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding: 0;
+  margin-bottom: 5px;
+} */
+
+.pg-content {
+  padding-top: 0px !important;
+}
+.payroll-details {
+  margin: 60px 20px 20px 20px;
+  padding-top: 10px;
+}
+.common-page-title {
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding: 0;
+}
+
+.tablecontainer {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+}
+.add-btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  margin-right: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.qaf-table {
+  font-size: 13px;
+  width: 100%;
+  margin: 2px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  overflow: hidden;
+  font-weight: 400;
+}
+.qaf-tr,
+.qaf-td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  vertical-align: middle;
+}
+
+.qaf-th {
+  height: 60px;
+  padding: 12px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 70px;
+}
+.qaf-td {
+  height: 40px;
+  padding: 0px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 135px;
+}
+
+.qaf-th {
+  background-color: rgb(242, 242, 242);
+  color: rgb(0, 0, 0);
+  font-weight: 400;
+}
+/* .table-container {
+  overflow: scroll;
+  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 20px;
+} */
+
+.qaf-tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tablecontainer {
+  overflow-x: auto; /* Add this line */
+  max-width: 100%; /* Add this line to limit the width */
+  max-height: 68vh;
+}
+.tablecontainer::-webkit-scrollbar {
+  height: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .qaf-th,
+  .qaf-td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+.sorted-button {
+  padding: 0px 5px;
+  display: none;
+}
+.qaf-th:hover .sorted-button {
+  display: inline;
+  cursor: pointer;
+}
+
+/* Form Styling */
+
+/* Search BAr */
+.header-title {
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 5px;
+}
+/* .left-container {
+  width: 30%;
+} */
+
+.right-container {
+  height: inherit;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.qaf-search-bar {
+  width: 60%;
+  margin: 0px;
+}
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 25%;
+  margin: 10px 5px;
+  color: gray;
+}
+
+.search-input {
+  text-align: start;
+  width: 100%;
+  padding-left: 10px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 30px;
+  outline: none;
+}
+
+.apply-input {
+  margin: 0px 5px;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid gray;
+}
+.search-icon,
+.cancel-icon {
+  color: gray;
+  position: absolute;
+  cursor: pointer;
+}
+.search-bar .search-icon {
+  padding-top: 15px;
+  padding-left: 10px;
+  color: gray;
+  margin-left: -60px;
+}
+.search-bar #cancelSearch {
+  display: none;
+  color: gray;
+}
+
+.cancel-icon {
+  right: 10px;
+}
+
+.no-record {
+  width: 100vw;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.datefield {
+  display: flex;
+  margin: 0px 5px;
+}
+.add-btn {
+  background-color: rgb(222, 91, 34);
+  color: #fff;
+}
+a {
+  text-decoration: none;
+  color: #009ce7;
+  cursor: pointer;
+}
+
+.action-btn{
+  display: flex;
+}
+.hide{
+  display: none;
+}
+.search-input {
+  -webkit-appearance: none;
+  appearance: none;
+  appearance: none;
+  background-image: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+    no-repeat scroll right 15px center;
+}
+.arrow{
+  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat scroll right 4px center;
+  background-size: 11px;
+}
+
+.left-child-right-container{
+  width: 55%;
+}
+/* Loader */
+.page-disabled {
+  background: #fff;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: none;
+}
+.qaf-loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff7a59;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.qaf-loader-div {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  top: 45vh;
+}

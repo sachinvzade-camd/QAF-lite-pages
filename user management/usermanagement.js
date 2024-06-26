@@ -15,10 +15,10 @@ var localStorageAppList
 
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+debugger
         // localStorageApp = getQCValue('QAF_CONFIG')
         let qafdashboardList = getQCValuenew('QAF_DASHBOARD_DESKTOP')
         localStorageAppList = qafdashboardList.filter(dash => dash.SectionID === '6')[0].ChildSection
-
         getEmployee()
         getApplicationRole()
         clearInterval(qafServiceLoaded);

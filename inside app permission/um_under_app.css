@@ -91,7 +91,7 @@
   /* Add this line */
   max-width: 100%;
   /* Add this line to limit the width */
-  max-height: 71vh;
+  max-height: 70vh;
 }
 
 @media screen and (max-width: 600px) {
@@ -293,14 +293,14 @@
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 50%;
-  height: 68vh;
+  height: 72vh;
   /* overflow: scroll; */
   position: fixed;
   left: 50%;
-  top: 50%;
+  top: 55%;
   transform: translate(-50%, -50%);
   margin-top: 30px;
-  z-index: 9999
+  z-index: 9999;
 }
 .permission-list {
   display: flex;
@@ -311,6 +311,7 @@
   min-width: 58%;
   max-width: 99%;
   margin: 0;
+  overflow: scroll;
 }
 
 .field-list {
@@ -625,16 +626,16 @@ input[type="checkbox"] {
 .user-permission {
   display: flex;
   /* justify-content: space-between; */
-  padding-top: 20px;
+  padding-top: 10px;
 }
 .left-heading-group {
   width: 25%;
 }
-.topHeader{
-  z-index: 0!important;
+.topHeader {
+  z-index: 0 !important;
 }
-.user-type-popup{
-  height: 105px;
+.user-type-popup {
+  height: 118px;
   min-width: 19%;
   max-width: 19%;
 }
@@ -644,8 +645,8 @@ input[type="radio"] {
   transform: scale(1.5);
   cursor: pointer;
 }
-.user-type-popup label{
-  transform: translate(8px,-3px);
+.user-type-popup label {
+  transform: translate(8px, -3px);
   cursor: pointer;
 }
 /* .es-chekbox-group {
@@ -656,8 +657,16 @@ input[type="radio"] {
   padding: 5px !important;
   height: 80.5vh;
 }
-.input-action{
+.input-action {
   display: flex;
   justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
+.team-list {
+  width: 100%;
+}
+
+.responsive-form{
   margin-bottom: 10px;
 }

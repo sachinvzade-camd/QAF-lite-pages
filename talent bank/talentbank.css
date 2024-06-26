@@ -18,10 +18,10 @@
 .container-fluid {
   padding: 0px 15px 0px 10px;
 }
-.pg-content{
+.pg-content {
   padding-top: 0px !important;
 }
-.page-content{
+.page-content {
   padding: 0;
 }
 
@@ -60,7 +60,11 @@
 .expense-nav {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.expense-top h3 {
+  margin: 0px;
 }
 
 .expense-action {
@@ -110,18 +114,6 @@ a.dashboard-App .fa {
   box-shadow: 1px 2px 5px;
   margin-bottom: 40px;
 }
-/* a.dashboard-App {
-          text-decoration: none;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          color: white;
-          font-size: 14px;
-        }
-  
-        a.dashboard-App .fa {
-          font-size: 28px;
-        } */
 
 .export {
   margin-left: 5px;

@@ -344,7 +344,7 @@ function getEmployee() {
         if (Array.isArray(employees) && employees.length > 0) {
             Employee = employees;
             Employee.sort((a, b) => {
-                return a.FirstName- (b.FirstName);
+                return a.FirstName.localeCompare(b.FirstName);
             });
             getshiftAllocation();
             ShowReport()
@@ -448,7 +448,7 @@ function filterData(searchTerm) {
 }
 
 function filterData2(searchTerm) {
-    
+    debugger
     const filteredData = ShiftAllocation_List.filter(item => {
         const firstName = item["Employee"];
         if (firstName !== null) {

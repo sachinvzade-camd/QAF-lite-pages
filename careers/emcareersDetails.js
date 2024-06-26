@@ -24,7 +24,7 @@ function getJobPosting() {
     const jobID = urlParams.get('jobID');
     socialNetworkShare=encodeURIComponent(sharedJDURL+`?jobID=${jobID}`)
     let objectName = "Job_Posting";
-    let list = "JobTitle,RecordID,JobImage,PostingExpiresOn,RequiredQualification,RelevantExperience,RelevantExperience,Location,WebsiteCandidateSpecification,WebsiteJobDetails,EmployeeType,Shift,JobLevel,JobID";
+    let list = "JobTitle,RecordID,JobImage,PostingExpiresOn,RequiredQualification,RelevantExperience,RelevantExperience,Location,WebsiteCandidateSpecification,WebsiteJobDetails,EmployeeType,Shift,JobLevel,JobID,JobTemplate";
     let orderBy = "";
     // let whereClause = ``;
     let whereClause = `RecordID='${jobID}'`;
@@ -222,28 +222,29 @@ function getSharedJDURL() {
   }
 
   function getQafConfigurationField() {
-    let type =getTypeOfJobPost(formatString(jobDetails.JobLevel));
-    let objectName = "QAF_Configuration";
-    let list = "RecordID,Key,Value";
+    let objectName = "Job_Profile_Template";
+    let list = "RecordID,CareerPortalField";
     let orderBy = "";
-    let whereClause = "Key='US_TRACKER_FIELD'";
-    if (type.toLowerCase() === 'india'.toLowerCase()) {
-      whereClause = "Key='INDIA_TRACKER_FIELD'";
-    }
+    let whereClause =`RecordID='${jobDetails.JobTemplate ? jobDetails.JobTemplate.split(";#")[0] : ''}'`;
     let fieldList = list.split(",")
     let pageSize = "20000";
     let pageNumber = "1";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((response) => {
       if (Array.isArray(response) && response.length > 0) {
-        jobTrackerRoleField = response[0].Value ? response[0].Value.split(",") : '';
-        let role=formatString(jobDetails.JobLevel)
-        if(role.toLowerCase()==='BDM'.toLowerCase()||role.toLowerCase()==='Business Development Manager'.toLowerCase()||role.toLowerCase()==='Business Development Manager (International Sales)'.toLowerCase()){
-          jobTrackerRoleField.push('TeamHandlingExperience')
-          jobTrackerRoleField.push('ClientHandlingExperience')
-        }
-        jobTrackerRoleField = ShowFieldLevel(role, jobTrackerRoleField)
+        debugger
+        jobTrackerRoleField = getCareerField(response[0])
       }
     })
+  }
+ function getCareerField(templateRecord) {
+    if (templateRecord) {
+      let responses = JSON.parse(templateRecord.CareerPortalField);
+      if (responses && responses.length > 0) {
+        let fields = responses.map(a => a.InternalName)
+        return fields
+      }
+    }
+    return ""
   }
  function getTypeOfJobPost(role) {
 

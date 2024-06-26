@@ -1,0 +1,265 @@
+.pg-content {
+  padding-top: 40px !important;
+}
+.page-container {
+  margin: 30px 0px;
+  padding-top: 10px;
+  transform: translate(0px, -30px);
+}
+
+.second-grid {
+  display: none;
+  margin: 0px;
+}
+
+.header-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.left-container {
+  width: 30%;
+}
+
+.right-container {
+  height: inherit;
+  width: 70%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.common-page-title {
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 1.1;
+  color: inherit;
+  padding: 0;
+}
+
+.tablecontainer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+}
+.add-btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  margin-right: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.qaf-table {
+  font-size: 13px;
+  width: 100%;
+  margin: 2px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  overflow: hidden;
+  font-weight: 400;
+}
+.qaf-tr,
+.qaf-td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  vertical-align: middle;
+}
+
+.qaf-th {
+  height: 38.12px;
+  padding: 9px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 70px;
+  border-right: none;
+  vertical-align: middle;
+}
+.qaf-td {
+  height: 40px;
+  padding: 0px 10px;
+  text-align: left;
+  word-wrap: break-word;
+  min-width: 135px;
+  border-right: none;
+  vertical-align: middle;
+}
+
+.qaf-th {
+  background-color: rgb(242, 242, 242);
+  color: rgb(0, 0, 0);
+  font-weight: 400;
+}
+
+.qaf-tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tablecontainer {
+  overflow-x: auto;
+  max-width: 100%;
+  max-height: 78vh;
+}
+
+@media screen and (max-width: 600px) {
+  .qaf-th,
+  .qaf-td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+.sorted-button {
+  padding: 0px 5px;
+  display: none;
+}
+.qaf-th:hover .sorted-button {
+  display: inline;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+/* Form Styling */
+
+/* Search BAr */
+
+.no-record {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.qaf-td a {
+  text-decoration: none;
+  color: #009ce7;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+/* Loader */
+.page-disabled {
+  background: #fff;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: none;
+}
+.qaf-loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff7a59;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.qaf-loader-div {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  top: 45vh;
+}
+
+.filter {
+  width: 170px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  padding: 2px 6px;
+}
+
+/* Action Btn */
+.action-btn {
+  display: flex;
+}
+
+.action-btn i {
+  font-size: 19px;
+}
+.action-head,
+.action-cell {
+  min-width: 1px;
+}
+
+.action-buttons {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 5px;
+  z-index: 1;
+  position: absolute;
+  /* top: 100%; */
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 85px;
+  /* Position the action buttons below the ellipsis button */
+  left: 50px !important;
+}
+
+.action-buttons button {
+  display: block;
+  width: 100%;
+  padding: 3px 8px;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: #2d2c2c;
+}
+
+.action-buttons button:hover {
+  background-color: #f4f4f4f7;
+}
+
+.action-cell {
+  position: relative;
+  width: 0px;
+  padding: 0px !important;
+}
+
+.action-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.action-btn {
+  background-color: #fff;
+  color: #ff7a59;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 0px 10px 0px 10px;
+}

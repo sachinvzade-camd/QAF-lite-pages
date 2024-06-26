@@ -1,8 +1,6 @@
 var TalentBankDataforExport;
-var productionURL = "https://inskferda.azurewebsites.net"
-var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = productionURL
-var gridExpenseColumns = [
+
+gridExpenseColumns = [
   { field: 'JobPost', displayName: 'Job Post', sequence: 1, sorting: false },
   { field: 'Candidate', displayName: 'Candidate Name', sequence: 2, sorting: false },
   { field: 'MovedDate', displayName: 'Moved Date', sequence: 3, sorting: false },
@@ -10,7 +8,7 @@ var gridExpenseColumns = [
   { field: 'Reason', displayName: 'Reason', sequence: 5, sorting: false },
 ]
 
-var expenseGrid = {
+expenseGrid = {
   repository: 'Talent_Bank',
   columns: [
     { field: 'JobPost', displayName: 'Job Post', sorting: false },
@@ -28,17 +26,6 @@ var expenseGrid = {
   filter: "",
   monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 }
-
-// monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
-
-// gridExpenseColumns = [
-//   {field:'JobPost', displayName:'Job Post',sequence:1, sorting: false},
-//   {field:'Candidate', displayName:'Candidate Name',sequence:2, sorting: false},
-//   {field:'MovedDate', displayName:'Moved Date',sequence:3, sorting: false},
-//   {field:'Status', displayName:'Statzus',sequence:4, sorting: true},
-//   {field:'Reason', displayName:'Reason',sequence:5, sorting: false},
-
-// ];
 
 function updateMonthElement() {
   let currentDate = expenseGrid.currentSelectedDate;
@@ -95,23 +82,22 @@ function loadTalentBank() {
   let filterGridCondition = filterFormat;
   let expenseGridElement = document.querySelector('#expgrid');
   if (expenseGridElement) {
-    expenseGridElement.show = false;
+    expenseGridElement.show = true;
     window.QafService.GetItems(expenseGrid.repository, expenseGrid.viewFields, expenseGrid.pageSize, expenseGrid.page, filterGridCondition, null, false).then((filteredExpense) => {
-      expenseGridElement.show = false;
-      if (Array.isArray(filteredExpense) && filteredExpense.length > 0) { 
+      if (Array.isArray(filteredExpense) && filteredExpense.length > 0) {
         let propertiesToSplit = ["JobPost", "Candidate"];
         let talentBankData = splitIdentifiers(filteredExpense, propertiesToSplit);
         TalentBankDataforExport = talentBankData
         expenseGridElement.Data = talentBankData;
-      } 
+      }
       else {
         let exportBtnElement = document.getElementById("export")
-      if (exportBtnElement) {
-        exportBtnElement.disabled = true;
-      }
+        if (exportBtnElement) {
+          exportBtnElement.disabled = true;
+        }
 
       }
-    
+
       expenseGridElement.show = false;
       updateMonthElement();
     });
@@ -213,7 +199,6 @@ function sortEvent(page) {
 }
 
 function splitIdentifiers(arrayOfObjects, propertiesToSplit) {
-
   let updatedArray = arrayOfObjects.map(obj => ({ ...obj }));
   updatedArray = updatedArray.map(obj => {
     propertiesToSplit.forEach(property => {
@@ -238,7 +223,6 @@ function nextMonth(e) {
       expenseGrid.currentSelectedDate.setMonth(expenseGrid.currentSelectedDate.getMonth() + 1);
       expenseGridElement.show = true;
       updateMonthElement();
-
       let userId = getCurrentUserGuid();
       let firstDay = startDate();
       let lastDay = endDate();
@@ -365,9 +349,6 @@ function expgrid_onItemRender(cname, cvalue, row) {
     color: #009ce7;
     text-decoration: none;
   }
-    
-    
-    
     </style>`;
     } else {
       return '';
@@ -401,12 +382,10 @@ function expgrid_onRowActionEvent(eventName, row) {
 }
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
-    window.QafService.SetEnvUrl(apURL)
     loadTalentBank();
     clearInterval(qafServiceLoaded);
   }
 }, 10);
-
 
 function ExportReport() {
   let data = TalentBankDataforExport;
@@ -431,21 +410,6 @@ function ExportReport() {
   hiddenElement.click();
 }
 
-
-
-
-
-// function getFullNameByRecordID(RecordIDID) {
-//   const Employee_Data = employeeList;
-//   const Employee_Record = Employee_Data.find(record => record.RecordID === RecordIDID);
-//   if (Employee_Record) {
-//     const fullName = `${Employee_Record.FirstName} ${Employee_Record.LastName}`;
-//     return fullName;
-//   } else {
-//     return '';
-//   }
-// }
-
 function formatedDate(Datevalue) {
   let date = new Date(Datevalue);
   let formatedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
@@ -456,18 +420,3 @@ function formatedDate(Datevalue) {
     return ''
   }
 }
-
-// function getRecruiterName(val) {
-//   let recruiterName = "";
-//   let recruiterData = val;
-//   if (recruiterData && recruiterData !== "undefined") {
-//     recruiterData = JSON.parse(recruiterData);
-//     if (recruiterData.length > 0) {
-//       recruiterName = getFullNameByRecordID(recruiterData[0].RecordID);
-//       return recruiterName;
-//     }
-//   } else {
-//     return "";
-//   }
-
-// }

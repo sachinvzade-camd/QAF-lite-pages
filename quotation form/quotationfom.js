@@ -111,7 +111,7 @@ function movingTabs(value) {
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
         user = getCurrentUser()
-
+debugger
         window.document.addEventListener('openquotationFormEvent', getDetails)
         clearInterval(qafServiceLoaded);
     }
@@ -121,7 +121,7 @@ qafServiceLoaded = setInterval(() => {
 function getDetails(event) {
     
     if (typeof (event.detail) === 'object') {
-        
+        debugger
         contactRecordIDS = event.detail.contact
         quotationRecordID = event.detail.RecordID
         billtoName = event.detail.quotation.BilltoName;
@@ -130,7 +130,7 @@ function getDetails(event) {
             : ''
         customerID = event.detail.quotation ? (event.detail.quotation.Customer?event.detail.quotation.Customer.split(";#")[0]:"")
             : ''
-            ownerID=event.detail.quotation ? (event.detail.quotation.QuoteOwner?JSON.parse(event.detail.quotation.QuoteOwner)[0].RecordID:"")
+            ownerID=event.detail.quotation ? (event.detail.quotation.QuoteOwner?event.detail.quotation.QuoteOwner.includes(";#")?event.detail.quotation.QuoteOwner.split(";#")[0]:JSON.parse(event.detail.quotation.QuoteOwner)[0].RecordID:"")
             : ''
         quotationObject['ParentReferenceID'] = ParentReferenceID
         AddForm()
@@ -1295,15 +1295,15 @@ function loadChildTable() {
         <table class="qaf-table">
             <thead>
                  <tr class="qaf-tr">
-                    <th class="qaf-th">Product</th>
-                    <th class="qaf-th">SKU</th>
-                    <th class="qaf-th">Terms</th>
-                    <th class="qaf-th">Billing Frequency</th>
-                    <th class="qaf-th">Quantity</th>
-                    <th class="qaf-th">List Price</th>
-                    <th class="qaf-th">Discount</th>
-                    <th class="qaf-th">Item Total</th>
-                    <th class="qaf-th action-button-th"></th>
+                    <th class="qaf-th sub-table">Product</th>
+                    <th class="qaf-th sub-table">SKU</th>
+                    <th class="qaf-th sub-table">Terms</th>
+                    <th class="qaf-th sub-table">Billing Frequency</th>
+                    <th class="qaf-th sub-table">Quantity</th>
+                    <th class="qaf-th sub-table">List Price</th>
+                    <th class="qaf-th sub-table">Discount</th>
+                    <th class="qaf-th sub-table">Item Total</th>
+                    <th class="qaf-th sub-table action-button-th"></th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -1684,16 +1684,16 @@ function setPreviewData() {
             let valueList=[];
             let subvalue=[]
                 if(contact[0].City){
-                    subvalue.push(customer[0].City.split(";#")[1])
+                    subvalue.push(contact[0].City.split(";#")[1])
                 }
                 if(contact[0].StateProvince){
-                    subvalue.push(customer[0].StateProvince.split(";#")[1])
+                    subvalue.push(contact[0].StateProvince.split(";#")[1])
                 }
                 if(contact[0].Country){
-                    subvalue.push(customer[0].Country.split(";#")[1])
+                    subvalue.push(contact[0].Country.split(";#")[1])
                 }
                 if(contact[0].PostalCode){
-                    subvalue.push(customer[0].PostalCode.split(";#")[1])
+                    subvalue.push(contact[0].PostalCode.split(";#")[1])
                 }
                 if(contact[0].FirstName){
                     valueList.push(contact[0].FirstName + " " + contact[0].LastName)
@@ -1731,14 +1731,14 @@ function setPreviewData() {
                             </div>
                              <div class="quotation-to m-t-20 m-b-20">
                              To,
-                              <div class="quotation-name ${contactvalue?'m-t-20':""}"> ${contactvalue ? contactvalue : ""}
+                              <div class="quotation-name ${contactvalue?'m-t-10':""}"> ${contactvalue ? contactvalue : ""}
                             </div>
-                            <div class="quotation-name ${customervalue?'m-t-20':""}">  ${customervalue ? customervalue : ""}
+                            <div class="quotation-name ${customervalue?'m-t-10':""}">  ${customervalue ? customervalue : ""}
                             
                             </div>
                         </div>
 
-                            <div class="company-details m-t-20">
+                            <div class="company-details m-t-10">
                                 <p><b>Date Issued:&nbsp;</b>${formatDate(quotationRecordObject.DateIssued)}</p><!----><!---->
                                 <p class="account-detail"><b>Valid Till:&nbsp;</b>${formatDate(quotationRecordObject.ExpirationDate)} </p>
                             </div>
@@ -1779,7 +1779,7 @@ function setPreviewData() {
                                     </tr>
                                     <tr>
                                         <td class="item-width reviwe-td-left">Tax</td>
-                                        <td class="item-width reviwe-td">${priceDetails.Tax ? priceDetails.Tax : "0"}</td>
+                                        <td class="item-width reviwe-td">${priceDetails.Tax ? priceDetails.Tax.toFixed(2) : "0"}</td>
                                     </tr>
                                     <!---->
                                     <tr>
