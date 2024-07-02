@@ -357,7 +357,7 @@ input[type="file"] {
   width: 100%;
   bottom: 50vh;
 }
-#no-grid {
+#Qno-grid {
   box-shadow: 1px 2px 5px;
   margin-bottom: 40px;
   margin-top: 20px;
@@ -368,7 +368,7 @@ input[type="file"] {
   display: flex;
   align-items: baseline;
 }
-#CourierReceipt-name {
+#QCourierReceipt-name {
   margin-left: 10px;
 }
 

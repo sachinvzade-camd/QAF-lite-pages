@@ -28,6 +28,10 @@ function getPageUrl() {
 }
 
 function getAppuserMapping() {
+    let appstore=currentAppName
+    if(currentAppName.toLowerCase()==='Field Services'.toLowerCase()){
+        appstore='Field Sales'
+    }
     mappingIDs = []
     Employee = []
     let objectName = "App_User_Mapping";
@@ -36,7 +40,7 @@ function getAppuserMapping() {
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `(AppStore='${currentAppName}')<<NG>>(TargetPlatform<contains>'Web')`;
+    let whereClause = `(AppStore='${appstore}')<<NG>>(TargetPlatform<contains>'Web')`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((usermappings) => {
         if (Array.isArray(usermappings) && usermappings.length > 0) {
             usermappings.forEach(val => {
@@ -197,14 +201,19 @@ function toggleActionButtons(button, recordID) {
 
 window.onclick = function (event) {
     if (!(event.target.classList.contains('fa-ellipsis-v') || event.target.classList.contains('action-btn'))) {
-        document.getElementById("menuId").innerHTML = ``
+        if(document.getElementById("menuId")){
+
+            document.getElementById("menuId").innerHTML = ``
+        }
     } else {
+        if(document.getElementById("menuId")){
 
         document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 170}px;left: ${event.pageX - 120}px;">
         <button class="view-btn" onclick="ViewRecord('${EmployeeRecordId}')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</button>
          <button class="edit-btn" onclick="EditRecord('${EmployeeRecordId}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
          <button class="delete-btn" onclick="DeleteRecord('${EmployeeRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
     </div>`
+        }
     }
 }
 
@@ -736,7 +745,7 @@ function saveUserPermisson(RecordID) {
     }
     let appUserMapping = {
         AppStore: appNameList[0].AppName,
-        AppName: appName,
+        AppName: appName.toLowerCase()==='Field Services'.toLowerCase()?'Field Sales':appName,
         AllowUsers: (UserName),
         TargetPlatform: 'Web'
     }

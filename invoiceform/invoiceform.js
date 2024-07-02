@@ -16,7 +16,8 @@ var discountTypelist = []
 var taxTypelist = []
 var companySetting;
 var isSave = false
-var quotationRecordID = ""
+// var invoiceRecordID = '6c13a3d4-c52a-4fbe-bc4a-696040c28769';
+var invoiceRecordID = "";
 var termandsettingValue = ""
 var billtoName = "";
 var orderItemObject = {
@@ -33,9 +34,9 @@ var priceDetails = {
     Subtotal: '',
     Discount: '',
     Tax: '',
-    GrandTotal: '',
+    TotalAmount: '',
     DiscountType: '',
-    TaxType: '',
+    SelectTaxType: '',
 }
 var quotationRecordObject;
 var quotationFields = []
@@ -44,12 +45,12 @@ var ParentReferenceID;
 var user
 var customerID = ""
 var ownerID = ""
-function showContentQ(tabId, tabNum, id) {
+function showContent(tabId, tabNum, id) {
 
     tabName = tabId;
     selectedTab = tabNum;
     let newTabValue = selectedTab - currentTab;
-    movingTabsQ(newTabValue);
+    movingTabs(newTabValue);
     currentTab = selectedTab;
 
     let allButtons = document.querySelectorAll(".tab-btn");
@@ -94,7 +95,7 @@ function showContentQ(tabId, tabNum, id) {
             break;
     }
 }
-function movingTabsQ(value) {
+function movingTabs(value) {
     const cards = document.querySelectorAll(".qaf-tab-content");
     cards.forEach((card, index) => {
         card.classList.remove("moving-left", "moving-right");
@@ -107,37 +108,34 @@ function movingTabsQ(value) {
         }
     });
 }
-window.document.addEventListener('openquotationFormEvent', getDetailsquotationQ)
-
+window.document.addEventListener('openInvoiceFormEvent', getDetails)
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        user = getCurrentUserQ()
+        user = getCurrentUser()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
 
 
-function getDetailsquotationQ(event) {
+function getDetails(event) {
     if (typeof (event.detail) === 'object') {
         debugger
-        if(event.detail.isQuotation){
+        if(event.detail.isInvoice){
         contactRecordIDS = event.detail.contact
-        quotationRecordID = event.detail.RecordID
-        billtoName = event.detail.quotation.BilltoName;
-        console.log("event.detail.quotation", event.detail.quotation)
-        ParentReferenceID = event.detail.quotation ? event.detail.quotation.ParentReferenceID
+        invoiceRecordID = event.detail.RecordID
+        billtoName = event.detail.customerInvoice?event.detail.customerInvoice.BilltoName:"";
+        ParentReferenceID = event.detail.customerInvoice ? event.detail.customerInvoice.ParentReferenceID
             : ''
-        customerID = event.detail.quotation ? (event.detail.quotation.Customer ? event.detail.quotation.Customer.split(";#")[0] : "")
+        customerID = event.detail.customerInvoice ? (event.detail.customerInvoice.Customer ? event.detail.customerInvoice.Customer.split(";#")[0] : "")
             : ''
-        ownerID = event.detail.quotation ? (event.detail.quotation.QuoteOwner ? event.detail.quotation.QuoteOwner.includes(";#") ? event.detail.quotation.QuoteOwner.split(";#")[0] : JSON.parse(event.detail.quotation.QuoteOwner)[0].RecordID : "")
+        ownerID = event.detail.customerInvoice ? (event.detail.customerInvoice.InvoiceOwner ? event.detail.customerInvoice.InvoiceOwner.includes(";#") ? event.detail.customerInvoice.InvoiceOwner.split(";#")[0] : JSON.parse(event.detail.customerInvoice.InvoiceOwner)[0].RecordID : "")
             : ''
         quotationObject['ParentReferenceID'] = ParentReferenceID
-        AddFormQ()
-    }
-}
+        AddForm()
+    }}
 }
 
-function getCurrentUserQ() {
+function getCurrentUser() {
     let userDetails = '';
     let userKey = window.localStorage.getItem('user_key');
     if (userKey) {
@@ -148,68 +146,68 @@ function getCurrentUserQ() {
     }
     return userDetails;
 }
-function AddFormQ() {
-    //
+function AddForm() {
+    debugger
     tabName = "first"
-    let actbtnElement = document.getElementById('Qactbtn')
+    let actbtnElement = document.getElementById('actbtn')
     if (actbtnElement) {
         let lineElement = document.querySelector(".line");
-
         lineElement.style.width = 88 + "px";
         lineElement.style.transform = "translateX(" + 0 + "px)";
         actbtnElement.classList.add('isActive')
     }
-    let actbtn2Element = document.getElementById('Qactbtn2')
+    let actbtn2Element = document.getElementById('actbtn2')
     if (actbtn2Element) {
         actbtn2Element.classList.remove('isActive')
     }
-    let actbtn3Element = document.getElementById('Qactbtn3')
+    let actbtn3Element = document.getElementById('actbtn3')
     if (actbtn3Element) {
         actbtn3Element.classList.remove('isActive')
     }
-    let firstElement = document.getElementById('Qfirst')
+    let firstElement = document.getElementById('first')
     if (firstElement) {
         firstElement.classList.add('active')
     }
-    let secondElement = document.getElementById('Qsecond')
+    let secondElement = document.getElementById('second')
     if (secondElement) {
         secondElement.classList.remove('active')
     }
-    let thirdElement = document.getElementById('Qthird')
+    let thirdElement = document.getElementById('third')
     if (thirdElement) {
         thirdElement.classList.remove('active')
     }
-    let popUp = document.getElementById("Qexpense-from");
+    let popUp = document.getElementById("invoice-form");
     if (popUp) {
         popUp.style.display = 'block';
         const container = document.getElementsByClassName('qaf-container')[0];
         const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
-        const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
-        activeLine1.style.width = activeTab1.offsetWidth + 'px';
-        activeLine1.style.left = activeTab1.offsetLeft + 'px';
+        let activeLine1
+        if(activeTab1){
+             activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
+             activeLine1.style.width = activeTab1.offsetWidth + 'px';
+             activeLine1.style.left = activeTab1.offsetLeft + 'px';
+        }
+       
         let actionsButtons = document.getElementById("actionsButtons");
         if (actionsButtons) {
             actionsButtons.style.display = 'none'
         }
         quotationRecordObject = null
-
-
-        resetquotationvalueQ()
-
-        getObjectIDOrderItemsQ()
-        getObjectIDProductQ()
-        getCustomerQ()
-        getContactQ()
-        getAppNameQ()
-        // getEmployeesQ()
-        getCompanyOfficesQ()
-        getCRMsettingQ()
+        resetquotationvalue()
+        getObjectIDOrderItems()
+        getObjectIDProduct()
+        getCustomer()
+        getContact()
+        getAppName()
+        // getEmployees()
+        getCompanyOffices()
+        getCRMsetting()
 
 
     }
 }
 
-function getCRMsettingQ() {
+function getCRMsetting() {
     let objectName = "CRM_Settings";
     let list = 'RecordID,SettingName,SettingValue';
     let fieldList = list.split(",");
@@ -226,8 +224,7 @@ function getCRMsettingQ() {
 
 var appNameDetails = [];
 var mappingID = []
-function getAppNameQ() {
-
+function getAppName() {
     appNameDetails = [];
     let objectName = "App_Configuration";
     let list = "RecordID,AppName,EncryptedName,Accessible,AppID";
@@ -241,15 +238,13 @@ function getAppNameQ() {
     let isAscending = "true";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, "", orderBy).then((appDetails) => {
         if (Array.isArray(appDetails) && appDetails.length > 0) {
-
             appNameDetails = appDetails[0];
-            getAppMappingQ();
+            getAppMapping();
         }
     });
 }
 
-function getAppMappingQ() {
-
+function getAppMapping() {
     mappingID = [];
     let objectName = "App_User_Mapping";
     let list = "RecordID,AppName,AllowUsers";
@@ -262,14 +257,14 @@ function getAppMappingQ() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((appDetails) => {
         if (Array.isArray(appDetails) && appDetails.length > 0) {
             appDetails.forEach(val => {
-                mappingID.push(userOrGroupFieldRecordIDListQ(val.AllowUsers));
+                mappingID.push(userOrGroupFieldRecordIDList(val.AllowUsers));
             });
         }
-        getTeamsQ(mappingID);
+        getTeams(mappingID);
     });
 }
 
-function getTeamsQ(mappingID) {
+function getTeams(mappingID) {
     let EmployeeWhereClause = []
     let objectName = "Teams";
     let list = "RecordID,AppName,TeamMembers";
@@ -281,24 +276,23 @@ function getTeamsQ(mappingID) {
     let isAscending = "true";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((teams) => {
         if (Array.isArray(teams) && teams.length > 0) {
-
             let teamList = teams;
             teamList.forEach(val => {
-                mappingID.push(userOrGroupFieldRecordIDListQ(val.TeamMembers));
+                mappingID.push(userOrGroupFieldRecordIDList(val.TeamMembers));
 
             });
             let RecordIdsArray = mappingID.flat();
             let EmployeeWhereClause = `RecordID='${RecordIdsArray.join("'<OR> RecordID='")}'`;
-            getEmployeesQ(EmployeeWhereClause);
+            getEmployees(EmployeeWhereClause);
         } else {
-            getEmployeesQ(EmployeeWhereClause);
+            getEmployees(EmployeeWhereClause);
         }
     });
 }
 
 
 
-function userOrGroupFieldRecordIDListQ(id) {
+function userOrGroupFieldRecordIDList(id) {
     if (id) {
         if (id && id.includes("[{")) {
             let jsonArray = (JSON.parse(id));
@@ -313,7 +307,7 @@ function userOrGroupFieldRecordIDListQ(id) {
 }
 
 
-function getContactQ() {
+function getContact() {
     if (contactRecordIDS && contactRecordIDS.length > 0) {
         let id = contactRecordIDS.join("'<OR>RecordID='");
         let objectName = "Contact";
@@ -327,15 +321,15 @@ function getContactQ() {
         window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((contacts) => {
             if (Array.isArray(contacts) && contacts.length > 0) {
                 contactList = contacts
-                setContactOnDropdownQ()
+                setContactOnDropdown()
             }
         });
     }
 
 }
 
-function setContactOnDropdownQ() {
-    let contactElement = document.getElementById('Qcontact');
+function setContactOnDropdown() {
+    let contactElement = document.getElementById('contact');
     let options = `<option value=''> Select Contact</option>`;
     if (contactElement) {
         contactList.forEach(contact => {
@@ -345,30 +339,30 @@ function setContactOnDropdownQ() {
     }
 }
 
-function getQuotationQ() {
-    debugger
-    let objectName = "Quotation";
+function getQuotation() {
+    quotationRecordObject={}
+    let objectName = "Customer_Invoice";
     let list = quotationFields.join(",");
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `RecordID='${quotationRecordID}'`;
+    let whereClause = `RecordID='${invoiceRecordID}'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((quotations) => {
-        debugger
         if (Array.isArray(quotations) && quotations.length > 0) {
             quotationRecordObject = quotations[0]
             priceDetails.Discount = quotationRecordObject.Discount
             priceDetails.Subtotal = quotationRecordObject.Subtotal
             priceDetails.Tax = quotationRecordObject.Tax
-            priceDetails.GrandTotal = quotationRecordObject.GrandTotal
+            priceDetails.TotalAmount = quotationRecordObject.TotalAmount
             priceDetails.DiscountType = quotationRecordObject.DiscountType
-            priceDetails.TaxType = quotationRecordObject.TaxType
-            setquotationValueQ()
+            priceDetails.SelectTaxType = quotationRecordObject.SelectTaxType
+            setquotationValue()
         }
     });
 }
-function getProductQ() {
+
+function getProduct() {
     let objectName = "Product";
     let list = productFields.join(",");
     let fieldList = list.split(",");
@@ -383,7 +377,7 @@ function getProductQ() {
     });
 }
 
-function getCompanyOfficesQ() {
+function getCompanyOffices() {
     let objectName = "Company_Offices";
     let list = 'RecordID,RegisteredCompanyName';
     let fieldList = list.split(",");
@@ -394,12 +388,12 @@ function getCompanyOfficesQ() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((offices) => {
         if (Array.isArray(offices) && offices.length > 0) {
             companyOfficeList = offices
-            setofficesOnDropdownQ()
+            setofficesOnDropdown()
         }
     });
 }
-function setofficesOnDropdownQ() {
-    let officeElement = document.getElementById('QcompanyOffice');
+function setofficesOnDropdown() {
+    let officeElement = document.getElementById('companyOffice');
     let options = `<option value=''> Select office</option>`;
     if (officeElement) {
         companyOfficeList.forEach(customer => {
@@ -410,7 +404,7 @@ function setofficesOnDropdownQ() {
 }
 
 
-function getCustomerQ() {
+function getCustomer() {
     let objectName = "Customers";
     let list = 'RecordID,Name,BillingCity,State,Country,Email';
     let fieldList = list.split(",");
@@ -421,12 +415,14 @@ function getCustomerQ() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((customers) => {
         if (Array.isArray(customers) && customers.length > 0) {
             customersList = customers
-            setCustomerOnDropdownQ()
+            debugger
+            setCustomerOnDropdown()
         }
     });
 }
-function setCustomerOnDropdownQ() {
-    let customerElement = document.getElementById('Qcustomer');
+
+function setCustomerOnDropdown() {
+    let customerElement = document.getElementById('customer');
     let options = `<option value=''> Select Customer</option>`;
     if (customerElement) {
         customersList.forEach(customer => {
@@ -435,15 +431,17 @@ function setCustomerOnDropdownQ() {
         customerElement.innerHTML = options;
     }
 }
-function getObjectIDQ() {
+
+function getObjectID() {
+    debugger
     fieldListObject = []
-    window.QafService.GetObjectById('Quotation').then((responses) => {
+    window.QafService.GetObjectById('Customer_Invoice').then((responses) => {
         responses[0].Fields.forEach((ele) => {
             quotationFields.push(ele.InternalName)
             if (ele.InternalName === 'Status') {
                 statusList = ele.Choices.split(";#")
             }
-            if (ele.InternalName === 'TaxType') {
+            if (ele.InternalName === 'SelectTaxType') {
                 taxTypelist = ele.Choices.split(";#")
             }
             if (ele.InternalName === 'DiscountType') {
@@ -451,29 +449,30 @@ function getObjectIDQ() {
             }
         })
 
-        setStatusOnDropdownQ()
-        setDiscountOnDropdownQ()
-        setTaxOnDropdownQ()
-        if (quotationRecordID) {
+        setStatusOnDropdown()
+        setDiscountOnDropdown()
+        setTaxOnDropdown()
+        if (invoiceRecordID) {
             setTimeout(() => {
-                getQuotationQ()
+                getQuotation()
             }, 1000);
         } else {
             priceDetails = {
                 Subtotal: '',
                 Discount: '',
                 Tax: '',
-                GrandTotal: '',
-                TaxType: "",
+                TotalAmount: '',
+                SelectTaxType: "",
                 DiscountType: ""
             }
             orderItemList = []
             quotationRecordObject = null
-            // resetquotationvalueQ()
+            // resetquotationvalue()
         }
     })
 }
-function getObjectIDOrderItemsQ() {
+
+function getObjectIDOrderItems() {
     orderItemsFields = []
     window.QafService.GetObjectById('Order_Items').then((responses) => {
         responses[0].Fields.forEach((ele) => {
@@ -484,17 +483,18 @@ function getObjectIDOrderItemsQ() {
         })
     })
 }
-function getObjectIDProductQ() {
+
+function getObjectIDProduct() {
     window.QafService.GetObjectById('Product').then((responses) => {
         responses[0].Fields.forEach((ele) => {
             productFields.push(ele.InternalName)
         })
-        getProductQ()
+        getProduct()
     })
 }
 
-function setStatusOnDropdownQ() {
-    let statusElement = document.getElementById('Qstatus');
+function setStatusOnDropdown() {
+    let statusElement = document.getElementById('status');
     let options = `<option value=''> Select Status</option>`;
     if (statusElement) {
         statusList.forEach(status => {
@@ -503,8 +503,9 @@ function setStatusOnDropdownQ() {
         statusElement.innerHTML = options;
     }
 }
-function setTaxOnDropdownQ() {
-    let taxElement = document.getElementById('Qtax-select');
+
+function setTaxOnDropdown() {
+    let taxElement = document.getElementById('tax-select');
     let options = `<option value=''> Select Tax Type</option>`;
     if (taxElement) {
         taxTypelist.forEach(type => {
@@ -513,8 +514,9 @@ function setTaxOnDropdownQ() {
         taxElement.innerHTML = options;
     }
 }
-function setDiscountOnDropdownQ() {
-    let discountElement = document.getElementById('Qdiscount-select');
+
+function setDiscountOnDropdown() {
+    let discountElement = document.getElementById('discount-select');
     let options = `<option value=''> Select Discount Type</option>`;
     if (discountElement) {
         discountTypelist.forEach(type => {
@@ -524,8 +526,7 @@ function setDiscountOnDropdownQ() {
     }
 }
 
-
-function getEmployeesQ(WhereClause) {
+function getEmployees(WhereClause) {
     let objectName = "Employees";
     let list = ["RecordID,FirstName,LastName"]
     let fieldList = list.join(",");
@@ -544,20 +545,18 @@ function getEmployeesQ(WhereClause) {
         Diac: "false",
     };
     window.QafService.Rfdf(recordForField).then((employees) => {
-
         if (Array.isArray(employees) && employees.length > 0) {
-
             employeesList = employees
-            setEmployeesOnDropdownQ()
-            setEmployeesAssessToMemberOnDropdownQ()
-            setEmployeesQuotationByOnDropdownQ()
+            setEmployeesOnDropdown()
+            setEmployeesAssessToMemberOnDropdown()
+            setEmployeesQuotationByOnDropdown()
         }
-        getObjectIDQ()
+        getObjectID()
     });
 }
 
-function setEmployeesOnDropdownQ() {
-    let employeeElement = document.getElementById('QassignedTo');
+function setEmployeesOnDropdown() {
+    let employeeElement = document.getElementById('assignedTo');
     let options = `<option value=''> Select Owner</option>`;
     if (employeeElement) {
         employeesList.forEach(employee => {
@@ -567,12 +566,12 @@ function setEmployeesOnDropdownQ() {
     }
 
     if (employeeElement) {
-        employeeElement.value = quotationRecordObject && quotationRecordObject.QuoteOwner ? JSON.parse(quotationRecordObject.QuoteOwner)[0].RecordID : ownerID
+        employeeElement.value = quotationRecordObject && quotationRecordObject.InvoiceOwner ? JSON.parse(quotationRecordObject.InvoiceOwner)[0].RecordID : ownerID
     }
 }
 
-function setEmployeesAssessToMemberOnDropdownQ() {
-    let employeeAssessToMemeberElement = document.getElementById('QaccessToMember');
+function setEmployeesAssessToMemberOnDropdown() {
+    let employeeAssessToMemeberElement = document.getElementById('accessToMember');
     let options = `<option value=''> Select Access To Member</option>`;
     if (employeeAssessToMemeberElement) {
         employeesList.forEach(employee => {
@@ -582,9 +581,9 @@ function setEmployeesAssessToMemberOnDropdownQ() {
     }
 }
 
-function setEmployeesQuotationByOnDropdownQ() {
-    let quotationByElement = document.getElementById('Qquotationby');
-    let options = `<option value=''> Select Quotation by</option>`;
+function setEmployeesQuotationByOnDropdown() {
+    let quotationByElement = document.getElementById('quotationby');
+    let options = `<option value=''> Select Revenue by</option>`;
     if (quotationByElement) {
         employeesList.forEach(employee => {
             options += `<option value="${employee.RecordID}">${employee.FirstName} ${employee.LastName}</option>`;
@@ -593,46 +592,44 @@ function setEmployeesQuotationByOnDropdownQ() {
     }
 }
 
-function SaveRecordQ() {
-    let popUp = document.getElementById("Qexpense-from");
+function SaveRecord() {
+    let popUp = document.getElementById("invoice-form");
     if (popUp) {
         popUp.style.display = 'none';
     }
-    
-    var event = new CustomEvent('closequotationFormEvent', { detail: "save" })
+    var event = new CustomEvent('closeInvoiceFormEvent', { detail: "save" })
     window.parent.document.dispatchEvent(event)
 }
 
-function CloseFormQ(value) {
+function CloseForm(value) {
     if (isSave) {
-        SaveRecordQ()
+        SaveRecord()
     } else {
-        resetquotationvalueQ()
-        let popUp = document.getElementById("Qexpense-from");
+        resetquotationvalue()
+        let popUp = document.getElementById("invoice-form");
         if (popUp) {
             popUp.style.display = 'none';
         }
-        var event = new CustomEvent('closequotationFormEvent', { detail: "cancel" })
+        var event = new CustomEvent('closeInvoiceFormEvent', { detail: "cancel" })
         window.parent.document.dispatchEvent(event)
     }
 
 }
 
-function getqouationValueQ() {
-
-    let customerElement = document.getElementById('Qcustomer')
-    let validfordaysElement = document.getElementById('Qvalidfordays')
-    let assignedToElement = document.getElementById('QassignedTo')
-    let accessToMemberElement = document.getElementById('QaccessToMember')
-    let companyOfficeElement = document.getElementById('QcompanyOffice')
-    let contactElement = document.getElementById('Qcontact')
-    let quoteNameElement = document.getElementById('QquoteName')
-    let CommentsElement = document.getElementById('QComments')
-    let TermsandConditionsElement = document.getElementById('QTermsandConditions')
-    let dateIssuedElement = document.getElementById('QdateIssued')
-    let ExpirationDateElement = document.getElementById('QExpirationDate')
-    let statusElement = document.getElementById('Qstatus')
-    let quotationbyElement = document.getElementById('Qquotationby')
+function getqouationValue() {
+    let customerElement = document.getElementById('customer')
+    let validfordaysElement = document.getElementById('validfordays')
+    let assignedToElement = document.getElementById('assignedTo')
+    let accessToMemberElement = document.getElementById('accessToMember')
+    let companyOfficeElement = document.getElementById('companyOffice')
+    let contactElement = document.getElementById('contact')
+    let quoteNameElement = document.getElementById('quoteName')
+    let CommentsElement = document.getElementById('Comments')
+    let TermsandConditionsElement = document.getElementById('TermsandConditions')
+    let dateIssuedElement = document.getElementById('dateIssued')
+    let ExpirationDateElement = document.getElementById('ExpirationDate')
+    let statusElement = document.getElementById('status')
+    let quotationbyElement = document.getElementById('quotationby')
 
     let customervalue = ""
     if (customerID) {
@@ -651,7 +648,7 @@ function getqouationValueQ() {
         if (assignedToElement.value) {
             assignedTomembervalue = JSON.stringify([{ "UserType": 1, "RecordID": assignedToElement.value }])
         }
-        quotationObject['QuoteOwner'] = assignedTomembervalue
+        quotationObject['InvoiceOwner'] = assignedTomembervalue
     }
     if (accessToMemberElement) {
         let accessTomembervalue = ""
@@ -681,7 +678,7 @@ function getqouationValueQ() {
         quotationObject['Contact'] = contactValue
     }
     if (quoteNameElement) {
-        quotationObject['QuoteName'] = quoteNameElement.value
+        quotationObject['InvoiceTitle'] = quoteNameElement.value
     }
     if (CommentsElement) {
         quotationObject['Comments'] = CommentsElement.value
@@ -697,39 +694,38 @@ function getqouationValueQ() {
         if (quotationbyElement.value) {
             quotationBYvalue = JSON.stringify([{ "UserType": 1, "RecordID": quotationbyElement.value }])
         }
-        quotationObject['QuotationBy'] = quotationBYvalue
+        quotationObject['RevenueBy'] = quotationBYvalue
     }
     if (dateIssuedElement) {
         quotationObject['DateIssued'] = dateIssuedElement.value;
     }
     if (ExpirationDateElement) {
-        quotationObject['ExpirationDate'] = ExpirationDateElement.value;
+        quotationObject['DueDate'] = ExpirationDateElement.value;
     }
-    if (quotationRecordID) {
+    if (invoiceRecordID) {
         quotationObject['ParentReferenceID'] = ParentReferenceID ? ParentReferenceID : quotationRecordObject.ParentReferenceID
-        updateQuotationFormQ(quotationObject)
+        updateQuotationForm(quotationObject)
     } else {
-        saveQuotationFormQ()
+        saveQuotationForm()
     }
 
 }
 
 
-function setquotationValueQ() {
-
-    let customerElement = document.getElementById('Qcustomer')
-    let validfordaysElement = document.getElementById('Qvalidfordays')
-    let assignedToElement = document.getElementById('QassignedTo')
-    let contactElement = document.getElementById('Qcontact')
-    let accessToMemberElement = document.getElementById('QaccessToMember')
-    let companyOfficeElement = document.getElementById('QcompanyOffice')
-    let quoteNameElement = document.getElementById('QquoteName')
-    let TermsandConditionsElement = document.getElementById('QTermsandConditions')
-    let CommentsElement = document.getElementById('QComments')
-    let dateIssuedElement = document.getElementById('QdateIssued')
-    let ExpirationDateElement = document.getElementById('QExpirationDate')
-    let statusElement = document.getElementById('Qstatus')
-    let quotationbyElement = document.getElementById('Qquotationby')
+function setquotationValue() {
+    let customerElement = document.getElementById('customer')
+    let validfordaysElement = document.getElementById('validfordays')
+    let assignedToElement = document.getElementById('assignedTo')
+    let contactElement = document.getElementById('contact')
+    let accessToMemberElement = document.getElementById('accessToMember')
+    let companyOfficeElement = document.getElementById('companyOffice')
+    let quoteNameElement = document.getElementById('quoteName')
+    let TermsandConditionsElement = document.getElementById('TermsandConditions')
+    let CommentsElement = document.getElementById('Comments')
+    let dateIssuedElement = document.getElementById('dateIssued')
+    let ExpirationDateElement = document.getElementById('ExpirationDate')
+    let statusElement = document.getElementById('status')
+    let quotationbyElement = document.getElementById('quotationby')
     if (customerElement) {
         customerElement.value = quotationRecordObject.Customer ? quotationRecordObject.Customer.split(";#")[0] : ''
     }
@@ -738,7 +734,7 @@ function setquotationValueQ() {
     }
 
     if (assignedToElement) {
-        assignedToElement.value = quotationRecordObject.QuoteOwner ? JSON.parse(quotationRecordObject.QuoteOwner)[0].RecordID : ownerID
+        assignedToElement.value = quotationRecordObject.InvoiceOwner ? JSON.parse(quotationRecordObject.InvoiceOwner)[0].RecordID : ownerID
     }
     if (contactElement) {
         //
@@ -753,7 +749,7 @@ function setquotationValueQ() {
         companyOfficeElement.value = quotationRecordObject.CompanyOffice ? quotationRecordObject.CompanyOffice.split(";#")[0] : ''
     }
     if (quoteNameElement) {
-        quoteNameElement.value = quotationRecordObject.QuoteName ? (quotationRecordObject.QuoteName) : ''
+        quoteNameElement.value = quotationRecordObject.InvoiceTitle ? (quotationRecordObject.InvoiceTitle) : ''
     }
     if (TermsandConditionsElement) {
         TermsandConditionsElement.value = quotationRecordObject.TermsandConditions ? (quotationRecordObject.TermsandConditions) : ''
@@ -765,32 +761,32 @@ function setquotationValueQ() {
         statusElement.value = quotationRecordObject.Status ? (quotationRecordObject.Status) : ''
     }
     if (quotationbyElement) {
-        quotationbyElement.value = quotationRecordObject.QuotationBy ? JSON.parse(quotationRecordObject.QuotationBy)[0].RecordID : ''
+        quotationbyElement.value = quotationRecordObject.RevenueBy ? JSON.parse(quotationRecordObject.RevenueBy)[0].RecordID : ''
     }
     if (dateIssuedElement) {
         dateIssuedElement.value = quotationRecordObject.DateIssued ? moment(quotationRecordObject.DateIssued).format('YYYY-MM-DD') : ''
     }
     if (ExpirationDateElement) {
-        ExpirationDateElement.value = quotationRecordObject.ExpirationDate ? moment(quotationRecordObject.ExpirationDate).format('YYYY-MM-DD') : ''
+        ExpirationDateElement.value = quotationRecordObject.DueDate ? moment(quotationRecordObject.DueDate).format('YYYY-MM-DD') : ''
     }
 }
-function resetquotationvalueQ() {
+function resetquotationvalue() {
 
-    let customerElement = document.getElementById('Qcustomer')
-    let validfordaysElement = document.getElementById('Qvalidfordays')
-    let assignedToElement = document.getElementById('QassignedTo')
-    let contactElement = document.getElementById('Qcontact')
-    let accessToMemberElement = document.getElementById('QaccessToMember')
-    let companyOfficeElement = document.getElementById('QcompanyOffice')
-    let quoteNameElement = document.getElementById('QquoteName')
-    let TermsandConditionsElement = document.getElementById('QTermsandConditions')
-    let CommentsElement = document.getElementById('QComments')
-    let dateIssuedElement = document.getElementById('QdateIssued')
-    let ExpirationDateElement = document.getElementById('QExpirationDate')
-    let statusElement = document.getElementById('Qstatus')
-    let quotationbyElement = document.getElementById('Qquotationby')
-    let priceDiscountElement = document.getElementById('QpriceDiscount')
-    let priceTaxElement = document.getElementById('QpriceTax')    
+    let customerElement = document.getElementById('customer')
+    let validfordaysElement = document.getElementById('validfordays')
+    let assignedToElement = document.getElementById('assignedTo')
+    let contactElement = document.getElementById('contact')
+    let accessToMemberElement = document.getElementById('accessToMember')
+    let companyOfficeElement = document.getElementById('companyOffice')
+    let quoteNameElement = document.getElementById('quoteName')
+    let TermsandConditionsElement = document.getElementById('TermsandConditions')
+    let CommentsElement = document.getElementById('Comments')
+    let dateIssuedElement = document.getElementById('dateIssued')
+    let ExpirationDateElement = document.getElementById('ExpirationDate')
+    let statusElement = document.getElementById('status')
+    let quotationbyElement = document.getElementById('quotationby')
+    let priceDiscountElement = document.getElementById('priceDiscount')
+    let priceTaxElement = document.getElementById('priceTax')
 
     if (customerElement) {
         customerElement.value = ''
@@ -841,12 +837,11 @@ function resetquotationvalueQ() {
     }
 }
 
-function saveQuotationFormQ() {
-
+function saveQuotationForm() {
     return new Promise((resolve) => {
         var recordFieldValueList = [];
         var intermidiateRecord = {}
-        var user = getCurrentUserQ()
+        var user = getCurrentUser()
         Object.keys(quotationObject).forEach((key, value) => {
             recordFieldValueList.push({
                 FieldID: null,
@@ -857,12 +852,12 @@ function saveQuotationFormQ() {
         intermidiateRecord.CreatedByID = user.EmployeeID;
         intermidiateRecord.CreatedDate = new Date();
         intermidiateRecord.LastModifiedBy = null;
-        intermidiateRecord.ObjectID = "Quotation";
+        intermidiateRecord.ObjectID = "Customer_Invoice";
         intermidiateRecord.RecordID = null;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.CreateItem(intermidiateRecord).then(response => {
-            quotationRecordID = response
-            getQuotationQ()
+            invoiceRecordID = response
+            getQuotation()
 
             resolve({
                 response
@@ -871,11 +866,11 @@ function saveQuotationFormQ() {
     })
 }
 
-function updateQuotationFormQ(quotationObjectupdate) {
+function updateQuotationForm(quotationObjectupdate) {
     return new Promise((resolve) => {
         var recordFieldValueList = [];
         var intermidiateRecord = {}
-        var user = getCurrentUserQ()
+        var user = getCurrentUser()
         Object.keys(quotationObjectupdate).forEach((key, value) => {
             recordFieldValueList.push({
                 FieldID: null,
@@ -886,8 +881,8 @@ function updateQuotationFormQ(quotationObjectupdate) {
         intermidiateRecord.CreatedByID = user.EmployeeID;
         intermidiateRecord.CreatedDate = new Date();
         intermidiateRecord.LastModifiedBy = null;
-        intermidiateRecord.ObjectID = "Quotation";
-        intermidiateRecord.RecordID = quotationRecordID;
+        intermidiateRecord.ObjectID = "Customer_Invoice";
+        intermidiateRecord.RecordID = invoiceRecordID;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.UpdateItem(intermidiateRecord).then(response => {
             resolve({
@@ -896,20 +891,20 @@ function updateQuotationFormQ(quotationObjectupdate) {
         });
     })
 }
-function nextFirstTabClickQ(current) {
 
-    let quoteNameElement = document.getElementById('QquoteName')
-    let assignedToElement = document.getElementById('QassignedTo')
-    let expirationDateElement = document.getElementById('QExpirationDate')
+function nextFirstTabClick(current) {
+    let quoteNameElement = document.getElementById('quoteName')
+    let assignedToElement = document.getElementById('assignedTo')
+    let expirationDateElement = document.getElementById('ExpirationDate')
     let quotevalue = quoteNameElement ? quoteNameElement.value : '';
     let assigntovalue = assignedToElement ? assignedToElement.value : '';
     let expirationDate = expirationDateElement ? expirationDateElement.value : '';
     if (quotevalue && expirationDate && assigntovalue) {
-        showContentQ('second', 2, current)
-        getqouationValueQ()
+        showContent('second', 2, current)
+        getqouationValue()
         isSave = true
-        if (quotationRecordID) {
-            getOrderItemsQ()
+        if (invoiceRecordID) {
+            getOrderItems()
         } else {
             orderItemObject = {
                 Product: '',
@@ -926,16 +921,17 @@ function nextFirstTabClickQ(current) {
         }
     } else {
         if (!quotevalue) {
-            openAlertQ('Quote name is required')
+            openAlert('Invoice Title is required')
         } else if (!assigntovalue) {
-            openAlertQ('Owner is required')
+            openAlert('Owner is required')
         }
         else if (!expirationDate) {
-            openAlertQ('Expiration Date is required')
+            openAlert('Expiration Date is required')
         }
     }
 }
-function openAlertQ(message) {
+
+function openAlert(message) {
     let qafAlertObject = {
         IsShow: true,
         Message: message,
@@ -948,27 +944,31 @@ function openAlertQ(message) {
     qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
     qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
-function nextSecondTabClickQ(current) {
-    showContentQ('third', 3, current)
-    saveChildTableQ()
-    updateQuotationFormQ(priceDetails)
+
+function nextSecondTabClick(current) {
+    showContent('third', 3, current)
+    saveChildTable()
+    debugger
+    updateQuotationForm(priceDetails)
     getCompanySetting()
 }
-function backtoSecondTabClickQ(current) {
-    showContentQ('second', 2, current)
+
+function backtoSecondTabClick(current) {
+    showContent('second', 2, current)
     orderItemList = []
-    if (quotationRecordID) {
-        getOrderItemsQ()
+    if (invoiceRecordID) {
+        getOrderItems()
     }
 }
 
-function saveChildTableQ() {
+function saveChildTable() {
+    debugger
     let records = [];
     let intermidiateRecord;
     let recordFieldValues = [];
     orderItemList.forEach((element, index) => {
         tableRecordID = element.RecordID
-        element.ParentID = quotationRecordID
+        element.ParentID = invoiceRecordID
         intermidiateRecord = {};
         recordFieldValues = [];
         Object.keys(element).forEach((key) => {
@@ -984,18 +984,16 @@ function saveChildTableQ() {
         intermidiateRecord.LastModifiedDate = new Date();
         intermidiateRecord.ObjectID = "Order_Items";
         intermidiateRecord.RecordID = tableRecordID;
-        intermidiateRecord["ParentRecordID"] = quotationRecordID ? quotationRecordID : "";
+        intermidiateRecord["ParentRecordID"] = invoiceRecordID ? invoiceRecordID : "";
         intermidiateRecord.RecordFieldValues = recordFieldValues;
         records.push(intermidiateRecord);
 
     });
     window.QafService.UpdateItems(records).then((response) => {
-
-
     });
 }
 
-function getOrderItemsQ() {
+function getOrderItems() {
     let fields = orderItemsFields;
     fields.push('ParentRecordID')
     let objectName = "Order_Items";
@@ -1003,11 +1001,11 @@ function getOrderItemsQ() {
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `ParentRecordID='${quotationRecordID}'`;
+    let whereClause = `ParentRecordID='${invoiceRecordID}'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((orders) => {
         if (Array.isArray(orders) && orders.length > 0) {
             orderItemList = orders.sort((a, b) => new Date(a.CreatedDate) - new Date(b.CreatedDate))
-            setValueInPriceObjectQ()
+            setValueInPriceObject()
             loadChildTable()
         } else {
             orderItemObject = {
@@ -1025,7 +1023,8 @@ function getOrderItemsQ() {
         }
     });
 }
-function onChangeExpenseLedegerQ(index) {
+
+function onChangeExpenseLedeger(index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let expenseLedgerElement = document.getElementById(`product-${index}`);
@@ -1037,7 +1036,7 @@ function onChangeExpenseLedegerQ(index) {
     })
 }
 
-function onskuinputQ(e, index) {
+function onskuinput(e, index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let skuElement = document.getElementById(`sku-${index}`);
@@ -1047,7 +1046,8 @@ function onskuinputQ(e, index) {
         }
     })
 }
-function onTermsinputQ(e, index) {
+
+function onTermsinput(e, index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let termElement = document.getElementById(`Terms-${index}`);
@@ -1057,18 +1057,20 @@ function onTermsinputQ(e, index) {
         }
     })
 }
-function onQuantityinputQ(e, index) {
+
+function onQuantityinput(e, index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let termElement = document.getElementById(`Quantity-${index}`);
             if (termElement) {
                 val.Quantity = (termElement.value)
             }
-            calculateTotalQ(index)
+            calculateTotal(index)
         }
     })
 }
-function calculateTotalQ(index) {
+
+function calculateTotal(index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let termElement = document.getElementById(`ItemTotal-${index}`);
@@ -1081,16 +1083,17 @@ function calculateTotalQ(index) {
             }
         }
     })
-    setValueInPriceObjectQ()
+    setValueInPriceObject()
 }
-function setValueInPriceObjectQ() {
+
+function setValueInPriceObject() {
     debugger
     priceDetails = {
         Subtotal: '',
         Discount: '',
         Tax: '',
-        GrandTotal: '',
-        TaxType: "",
+        TotalAmount: '',
+        SelectTaxType: "",
         DiscountType: ""
     }
 
@@ -1100,17 +1103,17 @@ function setValueInPriceObjectQ() {
     let subtotal = orderItemList.reduce((acc, value) => acc + Number(value.ItemTotal), 0);
     priceDetails.Subtotal = parseFloat(subtotal.toFixed(2));
 
-    let priceDiscountElement = document.getElementById('QpriceDiscount')
+    let priceDiscountElement = document.getElementById('priceDiscount')
     if (priceDiscountElement) {
         priceDetails.Discount = priceDiscountElement.value ? Number(priceDiscountElement.value) : ''
     }
-    let pricetaxElement = document.getElementById('QpriceTax')
+    let pricetaxElement = document.getElementById('priceTax')
     if (pricetaxElement) {
         priceDetails.Tax = pricetaxElement.value ? parseFloat(pricetaxElement.value) : ''
     }
-    priceDetails.GrandTotal = (priceDetails.Subtotal)
+    priceDetails.TotalAmount = (priceDetails.Subtotal)
 
-    let discountSelectElement1 = document.getElementById('Qdiscount-select')
+    let discountSelectElement1 = document.getElementById('discount-select')
     if (discountSelectElement1) {
         let value = discountSelectElement1.value;
         priceDetails.DiscountType = value
@@ -1118,7 +1121,7 @@ function setValueInPriceObjectQ() {
 
     let discountTotal = 0
     if (priceDetails.Discount) {
-        let discountSelectElement = document.getElementById('Qdiscount-select')
+        let discountSelectElement = document.getElementById('discount-select')
         if (discountSelectElement) {
             let value = discountSelectElement.value;
             priceDetails.DiscountType = value
@@ -1127,19 +1130,19 @@ function setValueInPriceObjectQ() {
                     discountTotal = (priceDetails.Discount)
 
                 } else {
-                    discountTotal = priceDetails.GrandTotal * (priceDetails.Discount / 100)
+                    discountTotal = priceDetails.TotalAmount * (priceDetails.Discount / 100)
                 }
             }
         }
 
-        let discountCalculationElement = document.getElementById('QdiscountCalculation');
+        let discountCalculationElement = document.getElementById('discountCalculation');
         if (discountCalculationElement) {
             discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2)
         }
 
     }
     else {
-        let discountCalculationElement = document.getElementById('QdiscountCalculation');
+        let discountCalculationElement = document.getElementById('discountCalculation');
         if (discountCalculationElement) {
             discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2);
         }
@@ -1147,84 +1150,89 @@ function setValueInPriceObjectQ() {
     }
     priceDetails.Discount = discountTotal
 
-    priceDetails.GrandTotal = priceDetails.GrandTotal - discountTotal
+    priceDetails.TotalAmount = priceDetails.TotalAmount - discountTotal
     let taxTotal = 0
-    let taxSelectElement = document.getElementById('Qtax-select')
+    let taxSelectElement = document.getElementById('tax-select')
     if (taxSelectElement) {
         let value = taxSelectElement.value;
-        priceDetails.TaxType = value
+        priceDetails.SelectTaxType = value
     }
     if (priceDetails.Tax) {
 
-        let taxSelectElement = document.getElementById('Qtax-select')
+        let taxSelectElement = document.getElementById('tax-select')
         if (taxSelectElement) {
             let value = taxSelectElement.value;
-            priceDetails.TaxType = value
+            priceDetails.SelectTaxType = value
             if (value) {
                 if (value === 'Fixed') {
                     taxTotal = (priceDetails.Tax)
 
                 } else {
-                    taxTotal = priceDetails.GrandTotal * (priceDetails.Tax / 100)
+                    taxTotal = priceDetails.TotalAmount * (priceDetails.Tax / 100)
                 }
             }
         }
 
-        let taxCalculationElement = document.getElementById('QtaxCalculation');
+        let taxCalculationElement = document.getElementById('taxCalculation');
         if (taxCalculationElement) {
             taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2)
         }
     }
     else {
-        let taxCalculationElement = document.getElementById('QtaxCalculation');
+        let taxCalculationElement = document.getElementById('taxCalculation');
         if (taxCalculationElement) {
             taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2)
         }
     }
 
-    priceDetails.GrandTotal = parseFloat(((priceDetails.GrandTotal) + taxTotal).toFixed(2))
+    priceDetails.TotalAmount = parseFloat(((priceDetails.TotalAmount) + taxTotal).toFixed(2))
     setValueInPricing()
 }
-function taxTypeChangeQ() {
+
+function taxTypeChange() {
     //
-    let taxTypeElement = document.getElementById('Qtax-select');
+    let taxTypeElement = document.getElementById('tax-select');
     if (taxTypeElement) {
-        priceDetails.TaxType = taxTypeElement.value
+        priceDetails.SelectTaxType = taxTypeElement.value
     }
-    setValueInPriceObjectQ()
+    setValueInPriceObject()
 }
-function discuontTypeChangeQ() {
-    let discountTypeElement = document.getElementById('Qdiscount-select');
+
+function discuontTypeChange() {
+    let discountTypeElement = document.getElementById('discount-select');
     if (discountTypeElement) {
         priceDetails.DiscountType = discountTypeElement.value
     }
-    setValueInPriceObjectQ()
+    setValueInPriceObject()
 }
-function onListPriceinputQ(e, index) {
+
+function onListPriceinput(e, index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let termElement = document.getElementById(`ListPrice-${index}`);
             if (termElement) {
                 val.ListPrice = (termElement.value)
             }
-            calculateTotalQ(index)
+            calculateTotal(index)
 
         }
     })
 }
-function onDiscountinputQ(e, index) {
+
+function onDiscountinput(e, index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let termElement = document.getElementById(`Discount-${index}`);
             if (termElement) {
                 val.Discount = (termElement.value)
             }
-            calculateTotalQ(index)
+            calculateTotal(index)
 
         }
     })
 }
-function onChangeBillingFrequencyQ(index) {
+
+function onChangeBillingFrequency(index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let BillingFrequencyElement = document.getElementById(`BillingFrequency-${index}`);
@@ -1234,12 +1242,13 @@ function onChangeBillingFrequencyQ(index) {
         }
     })
 }
+
 function ononItemTotalinput(index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let ItemTotalElement = document.getElementById(`ItemTotal-${index}`);
             if (ItemTotalElement) {
-                val.ItemTotal = ItemTotalElement.value
+                val.TotalAmount = ItemTotalElement.value
             }
         }
     })
@@ -1251,33 +1260,33 @@ function loadChildTable() {
     orderItemList.forEach((perticular, index) => {
         perticularTable += `<tr class="qaf-tr qaf-tr-data">
         <td class="qaf-td ledger-Name-cell">
-            <select class="fs-input tableinput ledgerName" id="product-${index}" name="product" onchange="onChangeExpenseLedegerQ('${index}')"></select>
+            <select class="fs-input tableinput ledgerName" id="product-${index}" name="product" onchange="onChangeExpenseLedeger('${index}')"></select>
         </td>
          <td class="qaf-td">
             <input type="text" class="fs-input amount tableinput" id="sku-${index}" name="ProductCode"
-                autocomplete="off" required oninput="onskuinputQ(this,'${index}')" readonly>
+                autocomplete="off" required oninput="onskuinput(this,'${index}')" readonly>
         </td>
          <td class="qaf-td">
             <input type="text" class="fs-input Terms tableinput" id="Terms-${index}" name="Terms"
-                autocomplete="off" required oninput="onTermsinputQ(this,'${index}')"
+                autocomplete="off" required oninput="onTermsinput(this,'${index}')"
                 >
         </td>
    <td class="qaf-td ledger-Name-cell">
-            <select class="fs-input tableinput ledgerName" id="BillingFrequency-${index}" name="BillingFrequency" onchange="onChangeBillingFrequencyQ('${index}')"></select>
+            <select class="fs-input tableinput ledgerName" id="BillingFrequency-${index}" name="BillingFrequency" onchange="onChangeBillingFrequency('${index}')"></select>
         </td>
    <td class="qaf-td">
             <input type="number" class="fs-input Quantity tableinput" id="Quantity-${index}" name="Quantity"
-                autocomplete="off" required oninput="onQuantityinputQ(this,'${index}')"
+                autocomplete="off" required oninput="onQuantityinput(this,'${index}')"
                 >
         </td>
    <td class="qaf-td">
             <input type="number" class="fs-input ListPrice tableinput" id="ListPrice-${index}" name="ListPrice"
-                autocomplete="off" required oninput="onListPriceinputQ(this,'${index}')"
+                autocomplete="off" required oninput="onListPriceinput(this,'${index}')"
                 >
         </td>
    <td class="qaf-td">
             <input type="number" class="fs-input Discount tableinput" id="Discount-${index}" name="Discount"
-                autocomplete="off" required oninput="onDiscountinputQ(this,'${index}')"
+                autocomplete="off" required oninput="onDiscountinput(this,'${index}')"
                 >
         </td>
         <td class="qaf-td">
@@ -1321,15 +1330,13 @@ function loadChildTable() {
     tableStructure += `  <button type="button" class="row-add" onclick="addRowExpensePerticular()">
     <i class="fa fa-plus" aria-hidden="true"> Add New</i>
 </button>`
-    const tableContainer = document.getElementById('Qtablecontainer');
+    const tableContainer = document.getElementById('tablecontainer');
     tableContainer.innerHTML = tableStructure;
     setExpernseperticularTable()
     expenseLedgerOnDropdown()
     billingFrequesyOnDropdown()
-    setValueInPriceObjectQ()
+    setValueInPriceObject()
 }
-
-
 
 function addRowExpensePerticular() {
     orderItemObject = {
@@ -1345,6 +1352,7 @@ function addRowExpensePerticular() {
     orderItemList.push(orderItemObject)
     loadChildTable()
 }
+
 function deleteRow(index) {
     let order = orderItemList[index]
     if (window.QafPageService) {
@@ -1352,7 +1360,7 @@ function deleteRow(index) {
             orderItemList.splice((parseInt(index)), 1);
             window.QafPageService.DeleteItem(order.RecordID, function () {
                 orderItemList = []
-                getOrderItemsQ()
+                getOrderItems()
             });
         } else {
             orderItemList.splice((parseInt(index)), 1);
@@ -1360,7 +1368,6 @@ function deleteRow(index) {
 
     }
 }
-
 
 function billingFrequesyOnDropdown() {
     orderItemList.forEach((perticular, index) => {
@@ -1376,6 +1383,7 @@ function billingFrequesyOnDropdown() {
     })
 
 }
+
 function expenseLedgerOnDropdown() {
     orderItemList.forEach((perticular, index) => {
         let expenseLedgerElement = document.getElementById(`product-${index}`);
@@ -1430,7 +1438,7 @@ function setExpernseperticularTable() {
     })
 }
 
-function onChangeExpenseLedegerQ(index) {
+function onChangeExpenseLedeger(index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
             let expenseLedgerElement = document.getElementById(`product-${index}`);
@@ -1448,6 +1456,7 @@ function onChangeExpenseLedegerQ(index) {
         }
     })
 }
+
 function setValueInProduct(index, product) {
     let skuElement = document.getElementById(`sku-${index}`);
     if (skuElement) {
@@ -1470,47 +1479,48 @@ function setValueInProduct(index, product) {
         DiscountElement.value = product.Discount ? product.Discount : ''
     }
 }
+
 function setValueInPricing() {
-    debugger
+debugger
     console.log("priceDetails", priceDetails)
-    let SubtotalElement = document.getElementById('QSubtotal');
+    let SubtotalElement = document.getElementById('Subtotal');
     if (SubtotalElement) {
         SubtotalElement.innerHTML = priceDetails.Subtotal ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.Subtotal).toFixed(2) : ''
     }
-    // let DiscountElement = document.getElementById('QpriceDiscount');
+    // let DiscountElement = document.getElementById('priceDiscount');
     // if (DiscountElement) {
     //     DiscountElement.value = priceDetails.Discount ? priceDetails.Discount : ''
     // }
-    // let TaxElement = document.getElementById('QpriceTax');
+    // let TaxElement = document.getElementById('priceTax');
     // if (TaxElement) {
     //     TaxElement.value = priceDetails.Tax ? priceDetails.Tax : ''
     // }
-    let GrandTotalElement = document.getElementById('QGrandTotal');
+    let GrandTotalElement = document.getElementById('GrandTotal');
     if (GrandTotalElement) {
-        GrandTotalElement.innerHTML = priceDetails.GrandTotal ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.GrandTotal).toFixed(2) : ''
-        priceDetails.GrandTotal = priceDetails.GrandTotal ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.GrandTotal).toFixed(2) : ''
+        GrandTotalElement.innerHTML = priceDetails.TotalAmount ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.TotalAmount).toFixed(2) : ''
+        priceDetails.TotalAmount = priceDetails.TotalAmount ? window.localStorage.CurrencyIcon + parseFloat(priceDetails.TotalAmount).toFixed(2) : ''
     }
 
-    let taxSelectElement = document.getElementById('Qtax-select');
+    let taxSelectElement = document.getElementById('tax-select');
     if (taxSelectElement) {
-        taxSelectElement.value = priceDetails.TaxType
-            ? priceDetails.TaxType : ''
+        taxSelectElement.value = priceDetails.SelectTaxType
+            ? priceDetails.SelectTaxType : ''
     }
-    let discountTypeElement = document.getElementById('Qdiscount-select');
+    let discountTypeElement = document.getElementById('discount-select');
     if (discountTypeElement) {
         discountTypeElement.value = priceDetails.DiscountType ? priceDetails.DiscountType : ''
     }
     let discountTotal = 0
     let taxTotal = 0
 
-    priceDetails.GrandTotal = (priceDetails.Subtotal)
+    priceDetails.TotalAmount = (priceDetails.Subtotal)
     let discountprice = 0
-    let priceDiscountElement = document.getElementById('QpriceDiscount')
+    let priceDiscountElement = document.getElementById('priceDiscount')
     if (priceDiscountElement) {
         discountprice = priceDiscountElement.value ? Number(priceDiscountElement.value) : ''
     }
     if (discountprice) {
-        let discountSelectElement = document.getElementById('Qdiscount-select')
+        let discountSelectElement = document.getElementById('discount-select')
         if (discountSelectElement) {
             let value = discountSelectElement.value;
             if (value) {
@@ -1518,27 +1528,27 @@ function setValueInPricing() {
                     discountTotal = discountprice
 
                 } else {
-                    discountTotal = priceDetails.GrandTotal * (discountprice / 100)
+                    discountTotal = priceDetails.TotalAmount * (discountprice / 100)
                 }
             }
         }
 
-        let discountCalculationElement = document.getElementById('QdiscountCalculation');
+        let discountCalculationElement = document.getElementById('discountCalculation');
         if (discountCalculationElement) {
             discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2);
         }
     }
     else {
-        let discountCalculationElement = document.getElementById('QdiscountCalculation');
+        let discountCalculationElement = document.getElementById('discountCalculation');
         if (discountCalculationElement) {
             discountCalculationElement.innerHTML = parseFloat(discountTotal).toFixed(2);
         }
 
     }
     priceDetails.Discount = discountTotal
-    priceDetails.GrandTotal = priceDetails.GrandTotal - discountTotal
+    priceDetails.TotalAmount = priceDetails.TotalAmount - discountTotal
     if (priceDetails.Tax) {
-        let taxSelectElement = document.getElementById('Qtax-select')
+        let taxSelectElement = document.getElementById('tax-select')
         if (taxSelectElement) {
             let value = taxSelectElement.value;
             if (value) {
@@ -1546,19 +1556,19 @@ function setValueInPricing() {
                     taxTotal = (priceDetails.Tax)
 
                 } else {
-                    taxTotal = priceDetails.GrandTotal * (priceDetails.Tax / 100)
+                    taxTotal = priceDetails.TotalAmount * (priceDetails.Tax / 100)
                 }
             }
         }
 
-        let taxCalculationElement = document.getElementById('QtaxCalculation');
+        let taxCalculationElement = document.getElementById('taxCalculation');
         if (taxCalculationElement) {
             taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2);
         }
 
     }
     else {
-        let taxCalculationElement = document.getElementById('QtaxCalculation');
+        let taxCalculationElement = document.getElementById('taxCalculation');
         if (taxCalculationElement) {
             taxCalculationElement.innerHTML = parseFloat(taxTotal).toFixed(2);
         }
@@ -1566,53 +1576,53 @@ function setValueInPricing() {
     }
 
     priceDetails.Tax = taxTotal
-    priceDetails.GrandTotal = parseFloat(((priceDetails.GrandTotal) + taxTotal).toFixed(2))
+    priceDetails.TotalAmount = parseFloat(((priceDetails.TotalAmount) + taxTotal).toFixed(2))
 
 
     //Code MY
     if (!priceDetails.DiscountType && !priceDetails.Discount) {
-        let discountSelectElement = document.getElementById('Qdiscount-select')
+        let discountSelectElement = document.getElementById('discount-select')
         if (discountSelectElement) {
-            discountSelectElement.value = quotationRecordObject.DiscountType
+            discountSelectElement.value = quotationRecordObject.DiscountType?quotationRecordObject.DiscountType:""
         }
-        let calculatedDiscount=0
+        let calculatedDiscount = 0
         if (discountSelectElement) {
             let value = discountSelectElement.value;
             if (value) {
                 if (value === 'Fixed') {
-                    calculatedDiscount= quotationRecordObject.Discount
-                } else { 
-                    calculatedDiscount = (quotationRecordObject.Discount/(priceDetails.Subtotal))*100;
+                    calculatedDiscount = quotationRecordObject.Discount
+                } else {
+                    calculatedDiscount = (quotationRecordObject.Discount / (priceDetails.Subtotal)) * 100;
                 }
             }
         }
-        let priceDiscountElement = document.getElementById('QpriceDiscount')
+        let priceDiscountElement = document.getElementById('priceDiscount')
         if (priceDiscountElement) {
             // priceDiscountElement.value = parseFloat(calculatedDiscount).toFixed(2)
             priceDiscountElement.value = formatNumber(calculatedDiscount);
         }
     }
 
-    if (!priceDetails.TaxType && !priceDetails.Tax)  {
-        let taxSelectElementnew = document.getElementById('Qtax-select')
+    if (!priceDetails.SelectTaxType && !priceDetails.Tax) {
+        let taxSelectElementnew = document.getElementById('tax-select')
         if (taxSelectElementnew) {
-            taxSelectElementnew.value = quotationRecordObject.TaxType
+            taxSelectElementnew.value = quotationRecordObject.SelectTaxType?quotationRecordObject.SelectTaxType:"";
         }
-        let calculatedTax=0
+        let calculatedTax = 0
         if (taxSelectElement) {
             let value = taxSelectElement.value;
             if (value) {
                 if (value === 'Fixed') {
-                    calculatedTax= quotationRecordObject.Tax
+                    calculatedTax = quotationRecordObject.Tax
 
-                } else { 
+                } else {
                     //Calculate value subtotal minus dicount 
-                    let calculatedTotal=(priceDetails.Subtotal - quotationRecordObject.Discount)
-                    calculatedTax = ((quotationRecordObject.Tax/calculatedTotal))*100;
+                    let calculatedTotal = (priceDetails.Subtotal - quotationRecordObject.Discount)
+                    calculatedTax = ((quotationRecordObject.Tax / calculatedTotal)) * 100;
                 }
             }
         }
-        let priceTaxElement = document.getElementById('QpriceTax')
+        let priceTaxElement = document.getElementById('priceTax')
         if (priceTaxElement) {
             // priceTaxElement.value = parseFloat(calculatedTax).toFixed(2)
             priceTaxElement.value = formatNumber(calculatedTax);
@@ -1629,8 +1639,8 @@ function formatNumber(number) {
     }
 }
 
-function backtofirstTabClickQ(id) {
-    showContentQ('first', 1, id)
+function backtofirstTabClick(id) {
+    showContent('first', 1, id)
 
 }
 
@@ -1649,6 +1659,7 @@ function getCompanySetting() {
         }
     });
 }
+
 function getURLFromJson(values) {
     if (values) {
         if (values.includes('link')) {
@@ -1667,6 +1678,7 @@ function getURLFromJson(values) {
         return '';
     }
 }
+
 function IsJsonString(str) {
     try {
         JSON.parse(str);
@@ -1675,12 +1687,14 @@ function IsJsonString(str) {
     }
     return true;
 }
+
 function formatDate(date) {
     if (date) {
         return moment(date).format("DD MMMM YYYY")
     }
     return " ";
 }
+
 function getValidDays() {
     if (quotationRecordObject.DateIssued && quotationRecordObject.ExpirationDate) {
 
@@ -1692,6 +1706,7 @@ function getValidDays() {
     }
     return 0
 }
+
 function setPreviewData() {
     let orders = "";
     orderItemList.forEach((value, index) => {
@@ -1805,18 +1820,18 @@ function setPreviewData() {
 
                             <div class="company-details m-t-10">
                                 <p><b>Date Issued:&nbsp;</b>${formatDate(quotationRecordObject.DateIssued)}</p><!----><!---->
-                                <p class="account-detail"><b>Valid Till:&nbsp;</b>${formatDate(quotationRecordObject.ExpirationDate)} </p>
+                                <p class="account-detail"><b>Valid Till:&nbsp;</b>${formatDate(quotationRecordObject.DueDate)} </p>
                             </div>
                         </div>
                         <div class="quoate-id">
-                            <p>Quotation No: ${quotationRecordObject.AutoUnique}</p>
+                            <p>Invoice No: ${quotationRecordObject.InvoiceNo}</p>
                         </div>
                                         
                         <div class="table-order-items">
 
                             <table>
                                 <thead>
-                                    <tr class="header-row">
+                                    <tr class="header-rowView">
                                         <th class="product-td">SN</th>
                                         <th class="product-td" style="width: 30%;">Item</th>
                                         <th class="reviwe-td">Quantity</th>
@@ -1849,13 +1864,13 @@ function setPreviewData() {
                                     <!---->
                                     <tr>
                                         <td class="item-width reviwe-td-left">Total Payable</td>
-                                        <td class="item-width reviwe-td">${parseFloat(priceDetails.GrandTotal).toFixed(2)}</td>
+                                        <td class="item-width reviwe-td">${parseFloat(priceDetails.TotalAmount).toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div><!---->
                         <div class="m-t-70"><!---->
-                            <p class="m-b-20">Quotation validity:&nbsp;${getValidDays()}&nbsp;day(S) </p>
+                            <p class="m-b-20">Inovoice validity:&nbsp;${getValidDays()}&nbsp;day(S) </p>
                         </div>
                         <div>
                             <div>
@@ -1867,5 +1882,5 @@ function setPreviewData() {
                     </div>
                 </div>`
 
-    document.getElementById('QpreviewQuotation').innerHTML = preview;
+    document.getElementById('previewQuotation').innerHTML = preview;
 }

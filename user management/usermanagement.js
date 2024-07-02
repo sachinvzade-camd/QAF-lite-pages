@@ -629,7 +629,7 @@ function saveAppUserMapping() {
             RecordID: saveUser.split(";#")[0]
         })
         let appUserMapping = {
-            AppStore: app.AppName,
+            AppStore: app.appName.toLowerCase()==='Field Services'.toLowerCase()?'Field Sales':app.appName,
             AppName: app.RecordID + ";#" + app.AppName,
             AllowUsers: JSON.stringify(users),
             TargetPlatform: 'Web'
