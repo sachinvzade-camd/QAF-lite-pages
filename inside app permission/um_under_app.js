@@ -29,9 +29,6 @@ function getPageUrl() {
 
 function getAppuserMapping() {
     let appstore=currentAppName
-    if(currentAppName.toLowerCase()==='Field Services'.toLowerCase()){
-        appstore='Field Sales'
-    }
     mappingIDs = []
     Employee = []
     let objectName = "App_User_Mapping";
@@ -428,7 +425,7 @@ function getDesignation() {
 function getTeams() {
     teamList = []
 
-    const currentAppRecord = applist.find(app => app.AppName.toLowerCase().includes(currentAppName.toLowerCase()));
+    let currentAppRecord = applist.find(app => app.AppName.toLowerCase().includes(currentAppName.toLowerCase()));
     let app_RecordID = currentAppRecord ? currentAppRecord.RecordID : "";
     let objectName = "Teams";
     let list = 'TeamName,TeamMembers,AppName';
@@ -473,7 +470,8 @@ function getApplicationRole() {
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    const currentAppRecord = applist.find(app => app.AppName.toLowerCase().includes(currentAppName.toLowerCase()));
+    
+    let currentAppRecord = applist.find(app => app.AppName.toLowerCase().includes(currentAppName.toLowerCase()));
     let app_RecordID = currentAppRecord ? currentAppRecord.RecordID : "";
     appRecordID = app_RecordID
     let whereClause = `AppName='${app_RecordID}'`;
@@ -728,7 +726,6 @@ function saveUserPermisson(RecordID) {
     }
     let appNameList = applist.filter(val => val.RecordID === appRecordID);
     if (appNameList && appNameList.length > 0) {
-
         appName = appNameList[0].RecordID + ";#" + appNameList[0].AppName;
     }
     if (!roleName) {
@@ -745,7 +742,7 @@ function saveUserPermisson(RecordID) {
     }
     let appUserMapping = {
         AppStore: appNameList[0].AppName,
-        AppName: appName.toLowerCase()==='Field Services'.toLowerCase()?'Field Sales':appName,
+        AppName: appName,
         AllowUsers: (UserName),
         TargetPlatform: 'Web'
     }
@@ -757,7 +754,7 @@ function saveUserPermisson(RecordID) {
         saveTeams(userRecordID)
       
     }, 2000)
-debugger
+
     localStorage.removeItem(currentAppName+ "User_Permission");
     localStorage.removeItem(currentAppName + "Teams");
 }

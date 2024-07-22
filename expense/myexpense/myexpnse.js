@@ -40,7 +40,7 @@ var expenseGrid = {
     repository: 'Expense_claims',
     columns: [
         { field: 'Requesttitle', displayName: 'Brief about Request', sorting: false },
-        { field: 'SelectEmployee', displayName: 'Request For', sorting: false },
+        { field: 'RequestFor', displayName: 'Request For', sorting: false },
         { field: 'Project', displayName: 'Project', sorting: false },
         { field: 'Division', displayName: 'Division', sorting: false },
         { field: 'DirectManager', displayName: 'Reporting Manager', sorting: false },
@@ -48,7 +48,7 @@ var expenseGrid = {
         { field: 'Approvedamount', displayName: 'Approved Amount', sorting: false },
 
     ],
-    viewFields: ["SelectEmployee", "Requesttitle", "SelectDepartment", "Project", "ExpenseDetails", "TotalAmount", "Description", "Division", "DirectManager", "Approvedamount"],
+    viewFields: ["RequestFor", "Requesttitle", "SelectDepartment", "Project", "ExpenseDetails", "TotalAmount", "Description", "Division", "DirectManager", "Approvedamount"],
     page: 1,
     pageSize: 10,
     dateFormat: 'YYYY/MM/DD',
@@ -60,7 +60,7 @@ var monthNames = ["January", "February", "March", "April", "May", "June", "July"
 
 var gridExpenseColumns = [
     { field: 'Requesttitle', displayName: 'Brief about Request', sequence: 1, sorting: false },
-    { field: 'SelectEmployee', displayName: 'Request For', sequence: 2, sorting: false },
+    { field: 'RequestFor', displayName: 'Request For', sequence: 2, sorting: false },
     { field: 'Project', displayName: 'Project', sequence: 3, sorting: false },
     { field: 'Division', displayName: 'Division', sequence: 4, sorting: false },
     { field: 'DirectManager', displayName: 'Reporting Manager', sequence: 5, sorting: false },
@@ -170,7 +170,9 @@ function getExpenseClaimList() {
         expenseGridElement.show = true;
         window.QafService.Rfdf(recordForField).then((expenseClaim) => {
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+
                 expenseClaim.forEach(expense => {
+
                     expense.Project = formatLookupFieldValue(expense.Project)
                     expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
                     expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
@@ -179,6 +181,9 @@ function getExpenseClaimList() {
                         let emp = employeeList.find(a => a.RecordID === directManagerID)
                         if (emp && emp.RecordID) {
                             expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                        else {
+                            expense.DirectManager = ""
                         }
                     }
 
@@ -230,11 +235,45 @@ function nextPageEvent(page) {
     if (expenseGridElement) {
         expenseGridElement.show = true;
         window.QafService.Rfdf(recordForField).then((expenseClaim) => {
+            // if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+            //     console.log("TAble Data", expenseClaim)
+            //     expenseGridElement.Data = expenseClaim;
+            //     expenseGridElement.show = false;
+            //     updateMonthElement();
+            // }
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+
+                expenseClaim.forEach(expense => {
+
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                        else {
+                            expense.DirectManager = ""
+                        }
+                    }
+
+
+                })
+                expenseClaim_Data = expenseClaim
                 console.log("TAble Data", expenseClaim)
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
-                updateMonthElement();
+            } else {
+                let mainGridElement = document.getElementById('main-grid');
+                let noGridElement = document.getElementById('no-grid');
+                if (mainGridElement) {
+                    mainGridElement.style.display = 'none'
+                }
+                if (noGridElement) {
+                    noGridElement.style.display = "block"
+                }
             }
         });
     }
@@ -260,11 +299,45 @@ function prevPageEvent(page) {
     if (expenseGridElement) {
         expenseGridElement.show = true;
         window.QafService.Rfdf(recordForField).then((expenseClaim) => {
+            // if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+            //     console.log("TAble Data", expenseClaim)
+            //     expenseGridElement.Data = expenseClaim;
+            //     expenseGridElement.show = false;
+            //     updateMonthElement();
+            // }
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+
+                expenseClaim.forEach(expense => {
+
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                        else {
+                            expense.DirectManager = ""
+                        }
+                    }
+
+
+                })
+                expenseClaim_Data = expenseClaim
                 console.log("TAble Data", expenseClaim)
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
-                updateMonthElement();
+            } else {
+                let mainGridElement = document.getElementById('main-grid');
+                let noGridElement = document.getElementById('no-grid');
+                if (mainGridElement) {
+                    mainGridElement.style.display = 'none'
+                }
+                if (noGridElement) {
+                    noGridElement.style.display = "block"
+                }
             }
         });
     }
@@ -290,10 +363,44 @@ function sortEvent(page) {
     if (expenseGridElement) {
         expenseGridElement.show = true;
         window.QafService.Rfdf(recordForField).then((expenseClaim) => {
+            // if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+            //     expenseGridElement.Data = expenseClaim;
+            //     expenseGridElement.show = false;
+            //     updateMonthElement();
+            // }
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+
+                expenseClaim.forEach(expense => {
+
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                        else {
+                            expense.DirectManager = ""
+                        }
+                    }
+
+
+                })
+                expenseClaim_Data = expenseClaim
+                console.log("TAble Data", expenseClaim)
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
-                updateMonthElement();
+            } else {
+                let mainGridElement = document.getElementById('main-grid');
+                let noGridElement = document.getElementById('no-grid');
+                if (mainGridElement) {
+                    mainGridElement.style.display = 'none'
+                }
+                if (noGridElement) {
+                    noGridElement.style.display = "block"
+                }
             }
         });
     }
@@ -314,6 +421,8 @@ function getObjectIDExpenseParticular() {
                 modepaymentList = val.Choices.split(";#")
             }
         })
+
+        // getCurrentEmployeeexpense();
         getAllEmployee()
         getExpenseLedger()
 
@@ -335,6 +444,7 @@ function getFormDetails() {
     }
     getObjectIDExpenseParticular()
 }
+
 function getAllEmployee() {
     let objectName = "Employees";
     let list = 'RecordID,FirstName,LastName,Department,IsOffboarded,CurrentLedgerBalance,GSLFLedgerBalance,Division';
@@ -352,6 +462,7 @@ function getAllEmployee() {
         }
     });
 }
+
 function getDepartment() {
     departmentList = []
     let objectName = "Department";
@@ -411,7 +522,7 @@ function modePayment() {
     expenseperticularList.forEach((perticular, index) => {
 
         let paymentElemet = document.getElementById(`mode_of_payment-${index}`);
-        let options = `<option value=''>Select Mode of Payment</option>`
+        let options = `<option value=''>Select Payment Mode</option>`
         if (paymentElemet) {
             modepaymentList.forEach(choise => {
                 options += `<option value=${choise}>${choise}</option>`
@@ -424,7 +535,7 @@ function modePayment() {
 
 function getExpenseClaim() {
     let objectName = "Expense_claims";
-    let list = 'RecordID,SelectEmployee,Requesttitle,SelectDepartment,Project,TotalAmount,Description,Division,DirectManager,GSLFLedgerBalance,CurrentLedgerBalance,CourierCompany,CourierDate,CourierReceipt';
+    let list = 'RecordID,RequestFor,Requesttitle,SelectDepartment,Project,TotalAmount,Description,Division,DirectManager,GSLFLedgerBalance,CurrentLedgerBalance,CourierCompany,CourierDate,CourierReceipt,PeriodFrom,PeriodTo';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
@@ -439,6 +550,7 @@ function getExpenseClaim() {
     });
 }
 function getExpensePerticular() {
+    debugger
     let objectName = "Expense_Particulars";
     let list = 'RecordID,ExpenseLedger,ExpenseDate,Amount,ModeofPayment,Remarks,AttachBills';
     let fieldList = list.split(",");
@@ -448,6 +560,7 @@ function getExpensePerticular() {
     let whereClause = `ParentRecordID='${expenseRecordID}'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((expensePerticulars) => {
         if (Array.isArray(expensePerticulars) && expensePerticulars.length > 0) {
+            debugger
             expenseperticularList = expensePerticulars
             loadExpernseperticularTable()
             onChangeProject()
@@ -465,7 +578,9 @@ function setProjectOnDropdown() {
         projectElement.innerHTML = options;
     }
 }
+
 function setEmployeeinDropdown() {
+
     let requestForElement = document.getElementById('requestfor');
     let options = `<option value=''> Select Employee</option>`;
     if (requestForElement) {
@@ -480,7 +595,24 @@ function setEmployeeinDropdown() {
         requestForElement.value = user.EmployeeGUID
     }
 }
+
+function userOrGroupFieldRecordID(id) {
+    if (id) {
+        if (id && id.includes("[{")) {
+            return (JSON.parse(id))[0].RecordID;
+        }
+        else {
+            return id && id.includes(";#") ? id.split(";#")[0] : id;
+        }
+    }
+}
+
+
+
+
+
 function setReportingManagerinDropdown() {
+
     let reportingManagerElement = document.getElementById('reportingManager');
     let options = `<option value=''> Select Employee</option>`;
     if (reportingManagerElement) {
@@ -493,6 +625,7 @@ function setReportingManagerinDropdown() {
 }
 
 function onChangeRequestFor() {
+
     let requestForElement = document.getElementById('requestfor');
     let departmentElement = document.getElementById("department");
     let FGSPLBalanceElement = document.getElementById("FGSPLBalance");
@@ -500,6 +633,7 @@ function onChangeRequestFor() {
     let divisionElement = document.getElementById("division");
 
     if (requestForElement) {
+
         let requestForRecordID = requestForElement.value;
         const selectedEmployee = employeeList.find(emp => emp.RecordID === requestForRecordID);
         if (selectedEmployee) {
@@ -681,17 +815,17 @@ function loadExpernseperticularTable() {
                 </button>
             </div>
         </td>
-        <td class="qaf-td">
+        <td class="qaf-td amountcell" >
             <input type="text" class="fs-input amount tableinput" id="amount-${index}" name="amount"
                 autocomplete="off" required oninput="calculateTotal(this,'${index}')"
                 onkeydown="handleInput(event)">
         </td>
-        <td class="qaf-td ledger-Name-cell">
+        <td class="qaf-td paymentmode-Name-cell">
             <select class="fs-input tableinput mode_of_payment arrow ledgerName" name="mode_of_payment" id="mode_of_payment-${index}"onchange="onChangepaymentMode('${index}')">
             </select>
         </td>
         <td class="qaf-td">
-            <textarea class="fs-input tableinput remark" name="remarks" rows="5" id='remark-${index}' oninput="oninputRemarks('${index}')"></textarea>
+            <textarea class="fs-input tableinput remark" name="remarks" rows="3" id='remark-${index}' oninput="oninputRemarks('${index}')"></textarea>
         </td>
         <td class="qaf-td">
         <label for="attach_bills-${index}" class="custom-file-upload">
@@ -706,18 +840,18 @@ function loadExpernseperticularTable() {
         </div>
         
     </td>
-        <td class="qaf-td row-action">
-            <button type="button" class="row-add" onclick="addRowExpensePerticular()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="row-add" onclick="deleteRow('${index}')">
+        <td class="qaf-td row-action row-delete-td">
+           <div class="action-delete-row" >
+           <button type="button" class="row-add row-delete" onclick="deleteRow('${index}')">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
+           </div>
+            
         </td>
         </tr>`
 
     })
-    const tableStructure = `
+    let tableStructure = `
         <table class="qaf-table">
             <thead>
                 <tr class="qaf-tr">
@@ -729,7 +863,7 @@ function loadExpernseperticularTable() {
                     <th class="qaf-th">Mode of Payment</th>
                     <th class="qaf-th">Remarks</th>
                     <th class="qaf-th">Attach Bills</th>
-                    <th class="qaf-th"></th>
+                    <th class="qaf-th action-button-th"></th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -737,6 +871,10 @@ function loadExpernseperticularTable() {
             </tbody>
         </table>
     `;
+    tableStructure += `  <button  class="row-add" onclick="addRowExpensePerticular()">
+    <i class="fa fa-plus"> </i>&nbsp;Add New
+</button>`
+
     const tableContainer = document.getElementById('tablecontainer');
     tableContainer.innerHTML = tableStructure;
     modePayment()
@@ -750,6 +888,9 @@ function loadExpernseperticularTable() {
     }
 
 }
+
+
+
 function onChangeDivision() {
 
     let divisionElement = document.getElementById('division');
@@ -789,10 +930,28 @@ function addRowExpensePerticular() {
     expenseperticularList.push(expensePerticularObject)
     loadExpernseperticularTable()
 }
+
 function deleteRow(index) {
     expenseperticularList.splice((parseInt(index)), 1);
     loadExpernseperticularTable()
 }
+
+// function deleteRow(index) {
+//     let order = expenseperticularList[index]
+//     if (window.QafPageService) {
+//         if (order.RecordID) {
+//             expenseperticularList.splice((parseInt(index)), 1);
+//             window.QafPageService.DeleteItem(order.RecordID, function () {
+//                 loadExpernseperticularTable()
+//             });
+//         } else {
+//             expenseperticularList.splice((parseInt(index)), 1);
+//             loadExpernseperticularTable()
+//         }
+
+//     }
+// }
+
 function setExpernseperticularTable() {
 
     expenseperticularList.forEach((perticular, index) => {
@@ -842,13 +1001,23 @@ function getExpenseClaimValue() {
     let reportingManagerElement = document.getElementById('reportingManager')
     let FGSPLBalanceElement = document.getElementById('FGSPLBalance')
     let GSLFLedgerBalanceElement = document.getElementById('GSLFBalance')
+    let PeriodFromElement = document.getElementById('PeriodFrom')
+    let PeriodToElement = document.getElementById('PeriodTo')
 
     if (requestForElement) {
         let requestForRecordID = requestForElement.value;
         const selectedEmployee = employeeList.find(emp => emp.RecordID === requestForRecordID);
         if (selectedEmployee && selectedEmployee.RecordID) {
-            expenseClaimObject['SelectEmployee'] = selectedEmployee.RecordID + ";#" + selectedEmployee.FirstName + " " + selectedEmployee.LastName
+            let SelectedEmployee = [{ UserType: 1, RecordID: selectedEmployee.RecordID }];
+            expenseClaimObject['RequestFor'] = JSON.stringify(SelectedEmployee);
+            // expenseClaimObject['SelectEmployee'] = selectedEmployee.RecordID + ";#" + selectedEmployee.FirstName + " " + selectedEmployee.LastName
         }
+    }
+    if (PeriodFromElement) {
+        expenseClaimObject['PeriodFrom'] = PeriodFromElement.value
+    }
+    if (PeriodToElement) {
+        expenseClaimObject['PeriodTo'] = PeriodToElement.value
     }
     if (requesttitleElement) {
         expenseClaimObject['Requesttitle'] = requesttitleElement.value
@@ -899,6 +1068,7 @@ function getExpenseClaimValue() {
 }
 // set value
 function setExpenseClaimValue() {
+
     let requestForElement = document.getElementById('requestfor')
     let requesttitleElement = document.getElementById('requesttitle')
     let CourierCompanyElement = document.getElementById('CourierCompany')
@@ -911,9 +1081,12 @@ function setExpenseClaimValue() {
     let GSLFBalanceElement = document.getElementById('GSLFBalance')
     let FGSPLBalanceElement = document.getElementById('FGSPLBalance')
     let reportingManagerElement = document.getElementById('reportingManager')
+    let PeriodFromElement = document.getElementById('PeriodFrom')
+    let PeriodToElement = document.getElementById('PeriodTo')
 
     if (requestForElement) {
-        requestForElement.value = expenseClaimObject.SelectEmployee ? expenseClaimObject.SelectEmployee.split(";#")[0] : ''
+        // requestForElement.value = expenseClaimObject.SelectEmployee ? expenseClaimObject.SelectEmployee.split(";#")[0] : ''
+        requestForElement.value = expenseClaimObject.RequestFor ? userOrGroupFieldRecordID(expenseClaimObject.RequestFor) : ''
     }
     if (requesttitleElement) {
         requesttitleElement.value = expenseClaimObject.Requesttitle
@@ -924,6 +1097,14 @@ function setExpenseClaimValue() {
     if (CourierDateElement) {
         CourierDateElement.value = getDate(expenseClaimObject.CourierDate)
     }
+    if (PeriodFromElement) {
+        PeriodFromElement.value = getDate(expenseClaimObject.PeriodFrom)
+    }
+
+    if (PeriodToElement) {
+        PeriodToElement.value = getDate(expenseClaimObject.PeriodTo)
+    }
+
 
     if (expenseClaimObject.CourierReceipt) {
         let attachmentDisplayElement = document.getElementById(`CourierReceipt-display`)
@@ -981,7 +1162,7 @@ function SaveRecord() {
     if (requesttitleElement) {
         if (!requesttitleElement.value) {
             isSaveForm = false
-            alertmessage = "Request title is required"
+            alertmessage = "Brief about Request is required"
         }
     }
     if (divisionElement) {
@@ -1084,6 +1265,14 @@ function resetValueExpense() {
     let projectElement = document.getElementById('Project')
     let totalAmountElement = document.getElementById('totalAmount')
     let descriptionElement = document.getElementById('Description')
+    let PeriodFromElement = document.getElementById('PeriodFrom')
+    let PeriodToElement = document.getElementById('PeriodTo')
+    if (PeriodFromElement) {
+        PeriodFromElement.value = ""
+    }
+    if (PeriodToElement) {
+        PeriodToElement.value = ""
+    }
     if (requestForElement) {
         requestForElement.value = ""
     }
@@ -1116,9 +1305,29 @@ function resetValueExpense() {
     if (isloadingElement) {
         isloadingElement.style.display = 'none'
     }
-
+    let attachmentDisplayElement = document.getElementById(`CourierReceipt-display`)
+    if (attachmentDisplayElement) {
+        attachmentDisplayElement.style.display = 'none'
+    }
+    let attachmentElement = document.getElementById(`CourierReceipt-name`)
+    if (attachmentElement) {
+        attachmentElement.innerHTML = ""
+    }
+    expenseClaimObject['CourierReceipt'] = ""
+    deleteAttachmentReceipt()
     getExpenseClaimList()
 }
+
+// function deleteFile() {
+//     filename = ""
+//     file = null
+//     attachmentRepoAndFieldName = ""
+//     document.getElementById('filename').innerHTML = filename
+//     document.getElementById('deleteicon').style.display = 'none'
+//     document.getElementById('UploadResume').value = "";
+
+// }
+
 function resetChildTable() {
     expenseperticularList = []
     expensePerticularObject = {
@@ -1259,6 +1468,7 @@ function CloseForm(value) {
 }
 // formatting function
 function expgrid_onItemRender(cname, cvalue, row) {
+
     if (cname === 'Requesttitle') {
         if (cvalue) {
             let result;
@@ -1276,10 +1486,14 @@ function expgrid_onItemRender(cname, cvalue, row) {
         }
     }
 
-    if (cname === 'SelectEmployee') {
+    if (cname === 'RequestFor') {
+        let reportingManagerRecordId = userOrGroupFieldRecordID(cvalue)
+        cvalue = getFullNameByRecordID(reportingManagerRecordId)
         return `${cvalue} 
             <style>
-                   
+                   .qaf-grid__row:hover {
+                                      background-color: #fff !important;
+                                              }
                     .qaf-grid__header .qaf-grid__header-item{
                         padding: 12px 50px !important;
                     }
@@ -1332,18 +1546,47 @@ function expgrid_onItemRender(cname, cvalue, row) {
                     color: #009ce7;
                     text-decoration: none;
                     }
+                     .qaf-loader-container{
+                          display:none !important;
+                          }
+                          .qaf-loader{
+                                border: 5px solid transparent !important;
+                              }
+                                .qaf-grid__row-item > a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            cursor:pointer;
+                        } 
+                            .action-items button[data-action="EDIT"] {
+  display: none !important;
+}
+
+
             </style>
         `;
     }
-
-
-
     if (cvalue) {
         return cvalue;
     } else {
         return '';
     }
 }
+
+// let Fullname = getFullNameByRecordID(RecordID)
+
+function getFullNameByRecordID(targetRecordID) {
+
+    const Employee_Data = employeeList;
+    const targetRecord = Employee_Data.find(record => record.RecordID === targetRecordID);
+    if (targetRecord) {
+        const fullName = `${targetRecord.FirstName} ${targetRecord.LastName}`;
+        return fullName;
+    } else {
+        return '';
+    }
+}
+
+
 function onFileChange(event, index) {
     selectedFiles = []
     selectedFiles.push(...event.files);
@@ -1562,6 +1805,7 @@ function endDate() {
     return lastDay;
 }
 function userOrGroupFieldRecordID(id) {
+
     if (id) {
         if (id && id.includes("[{")) {
             return (JSON.parse(id))[0].RecordID;
@@ -1648,6 +1892,7 @@ function deleteAttachmentReceipt() {
         })
 
 }
+
 function openAlert(message) {
     let qafAlertObject = {
         IsShow: true,
@@ -1659,10 +1904,25 @@ function openAlert(message) {
     qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
 
-function clearCourierDate() {
+function clearCourierDate(selector) {
+    let PeriodFrom = document.getElementById('PeriodFrom');
+    let PeriodTo = document.getElementById('PeriodTo');
     let startTime = document.getElementById('CourierDate');
-    if (startTime) {
-        startTime.value = "";
+    if (selector === 'PeriodFrom') {
+        if (PeriodFrom) {
+            PeriodFrom.value = "";
+        }
+    }
+    else if (selector === 'PeriodTo') {
+        if (PeriodTo) {
+            PeriodTo.value = "";
+        }
+    }
+    else {
+        if (startTime) {
+            startTime.value = "";
+        }
+
     }
 
 }

@@ -448,7 +448,7 @@ function filterData(searchTerm) {
 }
 
 function filterData2(searchTerm) {
-    debugger
+    
     const filteredData = ShiftAllocation_List.filter(item => {
         const firstName = item["Employee"];
         if (firstName !== null) {

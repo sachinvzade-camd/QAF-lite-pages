@@ -231,7 +231,7 @@ function getSharedJDURL() {
     let pageNumber = "1";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((response) => {
       if (Array.isArray(response) && response.length > 0) {
-        debugger
+        
         jobTrackerRoleField = getCareerField(response[0])
       }
     })

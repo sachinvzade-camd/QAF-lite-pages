@@ -1,9 +1,9 @@
 /* task Activity CSS */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
 * {
   font-family: "Poppins", sans-serif;
-}
+} */
 
 .main-container {
   display: flex;
@@ -171,11 +171,11 @@ p {
 }
 
 .qaf-th {
-  height: 60px;
+  height: auto;
   padding: 12px 10px;
   text-align: left;
   word-wrap: break-word;
-  min-width: 70px;
+  min-width: 170px;
 }
 .qaf-td {
   height: 40px;
@@ -238,7 +238,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 12px;
 }
 .left-container {
   width: 30%;
@@ -671,4 +671,45 @@ select{
   left: 0%;
   width: 100%;
   top: 45vh;
+}
+
+.as-form-group {
+  margin-top: 8px;
+}
+
+.as-label {
+  margin: 0px 10px 0px 5px;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.as-input {
+  /* margin-bottom: 20px; */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 16px;
+  margin-right: 5px;
+}
+.as-input {
+  transform: scale(1.3);
+  display: inline-block;
+  height: 16px;
+  line-height: 0;
+  margin: auto;
+  order: 0;
+  position: relative;
+  vertical-align: middle;
+  white-space: nowrap;
+  /* width: 16px; */
+  flex-shrink: 0;
+}
+
+input[type="checkbox"] {
+  margin-top: 0px;
+  margin-right: 5px;
+  accent-color: var(--ButtonBackGroundColor);
+  transform: scale(1.5);
 }

@@ -10,108 +10,93 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <div class="page-container">
-        <div class="header-title">
-            <div class="left-container">
-                <div class="common-page-title">User</div>
-            </div>
-            <div class="right-container">
-                <div class="header-button">
-                    <button id="ExportButton" type="button" class="btn btn-primary" onclick="AddForm()">
-                        <i class="fa fa-plus" aria-hidden="true"></i> User
-                </div>
-                <div class="header-button">
-                    <button id="ExportButton" type="button" class="btn btn-primary" onclick="OpenResetForm()">
-                        Reset Password
-                    </button>
-                </div>
-            </div>
+<div class="page-container">
+    <div class="header-title">
+        <div class="left-container">
+            <div class="common-page-title">User</div>
         </div>
-        <div id="pageDisabled">
-            <div class="tablecontainer" id="reportContainer"> </div>
-            <div id="menuId"></div>
+        <div class="right-container">
+            <div class="header-button"> <button id="ExportButton" type="button" class="btn btn-primary"
+                    onclick="AddForm()"> <i class="fa fa-plus" aria-hidden="true"></i> User </div>
+            <div class="header-button"> <button id="ExportButton" type="button" class="btn btn-primary"
+                    onclick="OpenResetForm()"> Reset Password </button> </div>
         </div>
     </div>
-    <div class="qaf-loader-div">
-        <span class="qaf-loader" id="isloading" style="display: none;">
-        </span>
+    <div id="pageDisabled">
+        <div class="tablecontainer" id="reportContainer"> </div>
+        <div id="menuId"></div>
     </div>
-    <div id="blurdiv">
-        <div id="userForm" class="popup-container">
-            <div class="popup-content popup-content-es">
-                <div class="responsive-form">
-                    <div class="header-title ">
-                        <div class="common-page-title">Personal Details</div>
+</div>
+<div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"> </span> </div>
+<div id="blurdiv">
+    <div id="userForm" class="popup-containernew">
+        <div class="popup-content popup-content-es">
+            <div class="responsive-form">
+                <div class="header-title ">
+                    <div class="common-page-title">Personal Details</div>
+                </div>
+                <div class="field-content qaf-section-one">
+                    <div class="column-group">
+                        <div class="qaf-qaf-form-group qaf-column-field"> <label
+                                class="edit-detail-label Customer fs-label" for="firstName">First Name</label> <span
+                                class="required">*</span> <input type="text" class="edit-detail-input" id="firstName"
+                                name="firstName" autocomplete="off"> </div>
+                        <div class="qaf-qaf-form-group qaf-column-field"> <label
+                                class="edit-detail-label Customer fs-label" for="lastName">Last Name</label> <span
+                                class="required">*</span> <input type="text" class="edit-detail-input" id="lastName"
+                                name="lastName" autocomplete="off"> </div>
                     </div>
-                    <div class="field-content">
-                        <div class="qaf-qaf-form-group">
-                            <label class="edit-detail-label Customer fs-label" for="firstName">First Name</label>
-                            <span class="required">*</span>
-                            <input type="text" class="edit-detail-input" id="firstName" name="firstName" autocomplete="off">
-                        </div>
-                        <div class="qaf-qaf-form-group">
-                            <label class="edit-detail-label Customer fs-label" for="lastName">Last Name</label>
-                            <span class="required">*</span>
-                            <input type="text" class="edit-detail-input" id="lastName" name="lastName" autocomplete="off">
-                        </div>
-                        <div class="qaf-qaf-form-group">
-                            <label class="edit-detail-label Customer fs-label" for="template">Email</label>
-                            <span class="required">*</span>
-                            <input type="email" class="edit-detail-input" id="Email" name="Email" autocomplete="off">
-                        </div>
+                    <div class="column-group second-group">
+                        <div class="qaf-qaf-form-group"> <label class="edit-detail-label Customer fs-label"
+                                for="template">Email</label> <span class="required">*</span> <input type="email"
+                                class="edit-detail-input" id="Email" name="Email" autocomplete="off"> </div>
+                        <div class="es-form-group super-admin-checkbox"> <label
+                                class="edit-detail-label Customer fs-label" for="template"></label> <input
+                                class="es-input" type="checkbox" id="superadmin" name="superadmin" value=""> <label
+                                for="superadmin" class="es-label lable-superadmin">Super Admin</label> <br> </div>
                     </div>
-                </div>
-                <div class="common-page-title">Select Apps</div>
-                <div class="responsive-form">
-                    <div class="qaf-qaf-form-group">
-                        <ul class="grid-list" id="applistid">
-                        </ul>
-                    </div>
-                </div>
-                <div class="es-form-group">
-                    <input class="es-input" type="checkbox" id="superadmin" name="superadmin" value="">
-                    <label for="superadmin" class="es-label">Super Admin</label>
-                    <br>
-                </div>
-                <div class="form-buttons es-buttos save-form-buttons">
-                    <button type="button" class="btn btn-secondary" onclick="CloseForm()">Close</button>
-                    <button type="button" class="btn btn-primary " onclick="saveDetails()">Save</button>
-                </div>
-                <div class="qaf-loader-div">
-                    <span class="qaf-loader" id="isloadingpopup" style="display: none;">
-                    </span>
                 </div>
             </div>
+            <div class="responsive-form">
+                <div class="header-title ">
+                    <div class="common-page-title">Access Rights</div>
+                </div>
+                <div class="field-content">
+                    <div class="qaf-qaf-form-group permission-section-group">
+                        <div class=" card-container" id="card-container"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-buttons es-buttos save-form-buttons"> <button type="button" class="btn btn-secondary"
+                    onclick="CloseForm()">Cancel</button> <button type="button" class="btn btn-primary "
+                    onclick="saveDetails()">Save</button> </div>
+            <div class="qaf-loader-div"> <span class="qaf-loader" id="isloadingpopup" style="display: none;"> </span>
+            </div>
         </div>
-        <div class="form" id="resetPassword">
-            <div class="main-container">
-                <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"></span>
-                </div>
-                <div class="button-container">
-                    <div class="header-buttons">
-                        <div class="button"> <button class="btn btn-primary" onclick="SaveRecord()"> Save </button>
-                        </div>
-                        <div class="button"> <button class="btn btn-primary" onclick="CloseResetForm()"> Cancel
-                            </button> </div>
+    </div>
+    <div class="form" id="resetPassword">
+        <div class="main-container">
+            <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"></span> </div>
+            <div class="button-container">
+                <div class="header-buttons">
+                    <div class="button"> <button class="btn btn-primary" onclick="SaveRecord()"> Save </button> </div>
+                    <div class="button"> <button class="btn btn-primary" onclick="CloseResetForm()"> Cancel </button>
                     </div>
                 </div>
-                <div class="form-container">
-                    <div class="container">
-                        <div class="qaf-form-group">
-                            <label for="EmployeeName" class="Customer fs-label">Employee</label>
-                            <span class="required">*</span>
-                            <select class="fs-input fs-select arrow" id="EmployeeName" name="EmployeeName"></select>
-                        </div>
-    
-                        <div class="qaf-form-group">
-                            <label for="Password" class="Customer fs-label">Password</label>
-                            <input type="text" class="fs-input" id="Password" name="Password " autocomplete="off" required>
-                        </div>
-                    </div>
+            </div>
+            <div class="form-container">
+                <div class="container">
+                    <div class="qaf-form-group"> <label for="EmployeeName" class="Customer fs-label">Employee</label>
+                        <span class="required">*</span> <select class="edit-detail-input fs-select arrow1"
+                            id="EmployeeName" name="EmployeeName"></select> </div>
+                    <div class="qaf-form-group"> <label for="Password" class="Customer fs-label">Password</label> <input
+                            type="text" class="edit-detail-input" id="Password" name="Password " autocomplete="off"
+                            required> </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <script src="../jquery/jquery.js"></script>
 <script src="../multiselect autocomplete/multiselect.min.js"></script>
 

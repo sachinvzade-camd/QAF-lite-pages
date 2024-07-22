@@ -487,7 +487,7 @@ function getUserpermission(permissions) {
     }
     let orderBy = "true"
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((userpermissions) => {
-        debugger
+        
         if (Array.isArray(userpermissions) && userpermissions.length > 0) {
             userpermissionsList = userpermissions
             formatPermissionUser(userpermissions)

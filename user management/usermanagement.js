@@ -10,12 +10,18 @@ var employeeSaveObject = {}
 var saveUser = ""
 var apURL = localStorage.getItem('env');
 var employeeListForResetPassword = [];
-// var localStorageApp = ""
 var localStorageAppList
+
+// for Edit
+var updateRecordID = "";
+var editEmployeeRecord=[]
+var user_PermissionRecord = []
+var app_User_MappingRecord = []
+// var localStorageApp = ""
+
 
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-debugger
         // localStorageApp = getQCValue('QAF_CONFIG')
         let qafdashboardList = getQCValuenew('QAF_DASHBOARD_DESKTOP')
         localStorageAppList = qafdashboardList.filter(dash => dash.SectionID === '6')[0].ChildSection
@@ -35,6 +41,7 @@ function getQCValuenew(key) {
     }
     return ""
 }
+
 function getEmployee() {
     ShowLoader()
     Employee = []
@@ -56,6 +63,7 @@ function getEmployee() {
 
     });
 }
+
 function getApplicationRole() {
     applicationRoleList = []
     let objectName = "Application_Role";
@@ -69,18 +77,15 @@ function getApplicationRole() {
         if (Array.isArray(roles) && roles.length > 0) {
             applicationRoleList = roles
         }
-
     });
 }
 
 
 function generateReport(Employee) {
-
     TableData = Employee;
     let reportContainerElement = document.getElementById('reportContainer')
     reportContainerElement.innerHTML = ""
     if (TableData && TableData.length > 0) {
-
         let tableHead = `
         <th class="qaf-th action-head"></th>
         <th class="qaf-th">First Name </th>
@@ -90,7 +95,6 @@ function generateReport(Employee) {
         <th class="qaf-th">Ofiice Location</th>
         `;
         let tableRow = "";
-
         TableData.forEach(entry => {
             const FirstName = entry.FirstName ? entry.FirstName : "";
             const LastName = entry.LastName ? entry.LastName : "";
@@ -108,8 +112,7 @@ function generateReport(Employee) {
                     <td class="qaf-td">${LastName}</td>
                     <td class="qaf-td">${Email}</td>
                     <td class="qaf-td">${Department}</td>
-                    <td class="qaf-td">${OfficeLocation}</td>
-        
+                    <td class="qaf-td">${OfficeLocation}</td>       
                 </tr>
             `;
 
@@ -206,13 +209,104 @@ function ViewRecord(RecordID) {
     }
 }
 
+
 function EditRecord(RecordID) {
-    if (window.QafPageService) {
-        let Repository = 'Employees';
-        window.QafPageService.EditItem(Repository, RecordID, function () {
-            getEmployee();
-        }, ["FirstName", "LastName", "Email"]);
+    updateRecordID = RecordID
+    if (updateRecordID) {
+        let popUp = document.getElementById("userForm");
+        if (popUp) {
+            popUp.style.display = 'block';
+            getApplist();
+            getEmployeeforUpdate();
+            addCssforscroll();
+        }
     }
+}
+
+
+function getEmployeeforUpdate() {
+    editEmployeeRecord=[];
+    let objectName = "Employees";
+    let list = 'RecordID,FirstName,LastName,Email';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = `RecordID='${updateRecordID}'`;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((emplist) => {
+        if (Array.isArray(emplist) && emplist.length > 0) {
+            editEmployeeRecord = emplist[0];
+        
+        }
+        getUser_PermissionUpdate();
+    });
+}
+
+
+function getUser_PermissionUpdate() {
+    user_PermissionRecord = []
+    let objectName = "User_Permission";
+    let list = 'RecordID,ProfileorTeam,AppName,SuperAdmin,Role';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = `ProfileorTeam='${updateRecordID}'`;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((permissionlist) => {
+        if (Array.isArray(permissionlist) && permissionlist.length > 0) {
+            user_PermissionRecord = permissionlist;
+            console.log("user_PermissionRecord", user_PermissionRecord);
+        }
+        getApp_User_MappingUpdate();
+    });
+}
+
+
+function getApp_User_MappingUpdate() {
+    app_User_MappingRecord = []
+    let objectName = "App_User_Mapping";
+    let list = 'RecordID,AppStore,AppName,AllowUsers,TargetPlatform';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    let whereClause = `AllowUsers='${updateRecordID}'`;
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((mappinglist) => {
+        if (Array.isArray(mappinglist) && mappinglist.length > 0) {
+            app_User_MappingRecord = mappinglist;
+            console.log("app_User_MappingRecord", app_User_MappingRecord)
+        }
+        setValuesinForm();
+    });
+}
+
+
+function setValuesinForm() {
+    
+    let updatrRecord = editEmployeeRecord;
+    let commonValue = true;
+    user_PermissionRecord.forEach(record => {
+        if (record.SuperAdmin !== true) {
+            commonValue = false;
+        }
+    });
+    let firstNameElement = document.getElementById('firstName');
+    let lastNameElement = document.getElementById('lastName');
+    let emailElement = document.getElementById('Email');
+    if (firstNameElement) {
+        firstNameElement.value = updatrRecord.FirstName;
+    }
+    if (lastNameElement) {
+        lastNameElement.value = updatrRecord.LastName;
+    }
+    if (emailElement) {
+        emailElement.value = updatrRecord.Email;
+    }
+    let superadminElement = document.getElementById('superadmin');
+    if (superadminElement) {
+        superadminElement.checked = commonValue;
+    }
+
 }
 
 function DeleteRecord(RecordID) {
@@ -281,16 +375,6 @@ function CloseForm() {
 }
 
 function resetFrom() {
-    let officeLocationElement = document.getElementById('officeLocation');
-    if (officeLocationElement) {
-        officeLocationElement.value = "";
-    }
-
-    let departmentElement = document.getElementById('Department');
-    if (departmentElement) {
-        departmentElement.value = "";
-    }
-
     let emailElement = document.getElementById('Email');
     if (emailElement) {
         emailElement.value = ""
@@ -306,97 +390,6 @@ function resetFrom() {
 }
 
 
-function nextFormFirst() {
-
-    let isloadingElement = document.getElementById('isloadingpopup');
-    if (isloadingElement) {
-        isloadingElement.style.display = 'block'
-    }
-    getSaveObject();
-
-}
-function getSaveObject() {
-
-    let officeLocationElement = document.getElementById('officeLocation');
-    let officelocation = ""
-    if (officeLocationElement) {
-        let officevalue = officeLocationElement.value;
-        if (officevalue) {
-            let singleofficelocation = LocationList.filter(lc => lc.RecordID === officevalue);
-            if (singleofficelocation && singleofficelocation.length > 0) {
-                officelocation = singleofficelocation[0].RecordID + ";#" + singleofficelocation[0].Name
-            }
-        }
-    }
-
-    let departmentElement = document.getElementById('Department');
-    let department = ""
-    if (departmentElement) {
-        let departmentvalue = departmentElement.value;
-        if (departmentvalue) {
-            let singleofficeDepartment = departmentList.filter(lc => lc.RecordID === departmentvalue);
-            if (singleofficeDepartment && singleofficeDepartment.length > 0) {
-                department = singleofficeDepartment[0].RecordID + ";#" + singleofficeDepartment[0].Name
-            }
-        }
-    }
-
-    let firstNameElement = document.getElementById('firstName');
-    let firstName = ""
-    if (firstNameElement) {
-        firstName = firstNameElement.value.trim().replace(/\s+/g, ' ');
-    }
-    let lastNameElement = document.getElementById('lastName');
-    let lastname = ""
-    if (lastNameElement) {
-        lastname = lastNameElement.value.trim().replace(/\s+/g, ' ');
-    }
-
-    let emailElement = document.getElementById('Email');
-    let email = ""
-    if (emailElement) {
-        email = emailElement.value
-    }
-
-
-    employeeSaveObject = {
-        FirstName: firstName,
-        LastName: lastname,
-        Email: email,
-        Department: department,
-        OfficeLocation: officelocation,
-    }
-
-    if (!employeeSaveObject.FirstName) {
-        openAlert("First Name is required")
-    }
-    else if (!employeeSaveObject.LastName) {
-        openAlert("Last Name is required")
-    }
-    else if (!employeeSaveObject.Email) {
-        openAlert("Email is required")
-    }
-    else if (!validateEmail(employeeSaveObject.Email)) {
-        openAlert("Please enter Valid email address")
-    }
-    else if (!employeeSaveObject.Department) {
-        openAlert("Department is required")
-    } else if (!employeeSaveObject.OfficeLocation) {
-        openAlert("Office Location is required")
-    }
-    else {
-        let secondSection = document.getElementById('second-section');
-        if (secondSection) {
-            secondSection.style.display = 'block';
-        }
-        let popUp = document.getElementById("userForm");
-        if (popUp) {
-            popUp.style.display = 'none';
-        }
-        getApplist()
-    }
-
-}
 
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -438,7 +431,8 @@ function getApplist() {
                             if (app.AppName === mapp.SectionName) {
                                 subMenuApp.push({
                                     DisplayName: mapp.DisplayName,
-                                    SectionName: mapp.SectionName
+                                    SectionName: mapp.SectionName,
+                                    AppRecordID:app.RecordID
                                 })
                             }
                         })
@@ -464,7 +458,7 @@ function getApplist() {
 
                         let approle = ""
                         let RecordID = ""
-                        let AppRecord = applist.find(app => (field.DisplayName ? field.DisplayName : '') === app.AppName);
+                        let AppRecord = applist.find(app => (field.AppRecordID ? field.AppRecordID : '') === app.RecordID);
                         if (AppRecord) {
                             RecordID = AppRecord.RecordID
                             approle = applicationRoleList.filter(role => (role.AppName ? role.AppName.split(";#")[0] : '') === RecordID)
@@ -539,18 +533,6 @@ function onAppchange(apprecordID) {
 
 }
 
-function nextFormSecond() {
-    console.log(selectedApps);
-
-    let secondSection = document.getElementById('second-section');
-    if (secondSection) {
-        secondSection.style.display = 'none';
-    }
-    let thirdSection = document.getElementById("third-section");
-    if (thirdSection) {
-        thirdSection.style.display = 'block';
-    }
-}
 
 function saveDetails() {
     let sendemailElement = document.getElementById('sendEmail');
@@ -617,19 +599,18 @@ function saveAppUserMapping() {
             }
         }
     })
-
-
     let mapping = []
     selectedApps.forEach(app => {
-        localStorage.removeItem(app.AppName+"User_Permission");
-        localStorage.removeItem(app.AppName+"Teams");
+        
+        localStorage.removeItem(app.AppName + "User_Permission");
+        localStorage.removeItem(app.AppName + "Teams");
         let users = [];
         users.push({
             UserType: '1',
             RecordID: saveUser.split(";#")[0]
         })
         let appUserMapping = {
-            AppStore: app.appName.toLowerCase()==='Field Services'.toLowerCase()?'Field Sales':app.appName,
+            AppStore: app.AppName,
             AppName: app.RecordID + ";#" + app.AppName,
             AllowUsers: JSON.stringify(users),
             TargetPlatform: 'Web'
@@ -642,6 +623,7 @@ function saveAppUserMapping() {
 
 
 function saveUserPermission() {
+    
     let mapping = []
     let selectedApps = []
     applist.forEach(val => {
@@ -653,7 +635,8 @@ function saveUserPermission() {
         }
     })
     selectedApps.forEach(app => {
-        let roleName = applicationRoleList.filter(role => (role.AppName ? role.AppName.split(";#")[0] : '') === app.RecordID);
+        let permissionElmenet = document.getElementById(`permission-${app.RecordID}`)
+        let roleName = applicationRoleList.filter(role => (role.RecordID) ===permissionElmenet.value);
 
         if (roleName && roleName.length > 0) {
             let superadmin = document.getElementById('superadmin')
@@ -775,13 +758,13 @@ function OpenResetForm() {
 
 function getEmployeeforPassword() {
     employeeListForResetPassword = []
-    let objectName = "Employees";
-    let list = 'RecordID,FirstName,LastName,IsOffboarded';
+    let objectName = "QAF_Users";
+    let list = 'RecordID,FirstName,LastName';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = `IsOffboarded!='True'<OR>IsOffboarded=''`;
+    let whereClause = "";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((emplist) => {
         if (Array.isArray(emplist) && emplist.length > 0) {
             employeeListForResetPassword = emplist;
@@ -809,7 +792,6 @@ function validatePassword(password) {
 }
 
 function SaveRecord() {
-
     let employeeName = document.getElementById('EmployeeName').value;
     let password = document.getElementById('Password').value;
     if (employeeName == "") {

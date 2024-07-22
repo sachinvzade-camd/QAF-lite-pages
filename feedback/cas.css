@@ -1,6 +1,7 @@
 .page {
   --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
   --qaf-grid-button-border-radius: 4px;
+  padding: 0px 30px 30px 30px;
 }
 .displaynone{
   display: none;
