@@ -1,0 +1,182 @@
+.first-section {
+  height: 202px;
+  width: 100%;
+  background-image: url("https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fportal-image%20(2)_4b691242-8e34-4546-abba-8516560da1a4.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.my-dashboard-searchbox {
+  position: relative;
+  top: 46%;
+}
+.search-text {
+  padding-left: 50px;
+  color: white;
+  font-family: Poppins;
+  font-size: 24px;
+  line-height: 36px;
+  letter-spacing: 0.005em;
+  text-align: left;
+}
+.input-container {
+  display: -webkit-box;
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.my-dashboard-searchbox .search-icon {
+  -webkit-transform: translate(51px, 0px);
+  transform: translate(51px, 0px);
+}
+.my-dashboard-searchbox .form-control {
+  height: 40px;
+}
+.search-box-input {
+  padding-left: 40px;
+  padding-right: 30px;
+}
+.details-section-ui {
+  padding: 0px 48px 0px 16px;
+}
+.second-section {
+  height: 446px;
+  overflow: scroll;
+}
+
+#cancelSearch-report {
+  display: none;
+}
+
+.main-container {
+  margin-top: 30px;
+  display: flex;
+}
+.container1,
+.container2 {
+  width: 50%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 5px;
+  margin: 0px 8px;
+  height: 400px;
+}
+.container2 {
+  padding: 20px 10px;
+  padding-left: 20px;
+}
+.input-select {
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  height: 50px;
+  padding: 10px 0px;
+}
+.input-select select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  height: 25px;
+  padding: 1px 12px;
+}
+.ticket-card {
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 10px;
+  background: #f7f7f7ab;
+  border-left: 4px solid #c4a795;
+  box-shadow: 1px 2px 5px;
+  border-radius: 5px;
+  margin: 0px 10px 20px 10px;
+}
+
+.ticket-detail p {
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: left;
+  margin-bottom: 4px;
+  margin-top: 0px;
+}
+.ticket-section {
+  height: 340px;
+  overflow: scroll;
+  padding: 5px 0px;
+}
+
+.noRecordFound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avtar {
+  border-radius: 50%;
+  display: flex;
+  font-weight: 500;
+  height: 38px;
+  line-height: 38px;
+  margin: 0 10px 0 0;
+  overflow: hidden;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 38px;
+  position: relative;
+  white-space: nowrap;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.service-section{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 5px 0px;
+  height: 340px;
+  overflow: scroll;
+}
+.job-card {
+  flex: 0 0 auto;
+  width: 50%;
+  padding: 0px 15px;
+  /* margin-bottom: 15px; */
+  height: 120px;
+}
+.card {
+  display: flex;
+  /* margin-bottom: 20px; */
+  height: 115px;
+  box-shadow: 1px 2px 5px;
+  padding: 20px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.serviceTitle {
+  margin-bottom: 4px;
+  font-family: "Poppins";
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  letter-spacing: 0;
+  text-align: left;
+}
+.service-text {
+  font-family: "Poppins";
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.pg-content {
+  padding-top: 0px !important;
+}

@@ -6,7 +6,127 @@
     <title>Document</title>
 </head>
 <body>
-   <div class="page-container"> <div class="header-title"> <div class="left-container"> <div class="common-page-title">List Of Campaign</div> </div> <div class="right-container"> <div class="addform"> <button id="addVendor" type="button" class="btn btn-primary" onclick="addCampaign()"> <i class="fa fa-plus" aria-hidden="true"></i> Campaign </button> </div> </div> </div> <div id="pageDisabled"> <div class="tablecontainer" id="campaignContainer"> </div> <div id="menuId"></div> </div> <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"> </span> </div> </div> <div id="blurdiv"> <div id="userForm" class="popup-container"> <div class="popup-content popup-content-es"> <div class="top-section"> <div class="qaf-button-container"> <div class="header-buttons"> <div class="button"> <button class="cancel-page" onclick="CloseForm()"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back </button> </div> </div> </div> <div class="field-content qaf-section-one"> <div class="column-group"> <div class="qaf-form-group qaf-column-field"> <label class="edit-detail-label Customer fs-label" for="campaignName">Campaign Name</label> <span class="required">*</span> <input type="text" class="edit-detail-input" id="campaignName" name="campaignName" autocomplete="off"> </div> </div> </div> <div class="template"> <h3>Select a template</h3> </div> </div> <div class="card_section"> <div class="card-row" id="job-cards"> </div> </div> </div> </div> </div> <div id="popupContainer" class="popup-container"> <div class="popup-content popup-content-es"> <div class="tab-box"> <button class="tab-btn actbtn isActive" id="actbtn" onclick="showContent('view',1, this)" data-tab="view">View</button> <button class="tab-btn" id="actbtn1" onclick="showContent('send',2, this)" data-tab="send">Send</button> </hr> <div id="line" class="line"> </div> </div> <div class="button-border"> <div class="border-k"> </div> </div> <div id="view" class="tab-content active cardActivity"> <div class="view-section"> <div class="view-campagin" id="viewcampain"> </div> </div> </div> <div id="send" class="tab-content cardActivity"> <div class="send-section"> <div class="recepient-section"> <h3>Recepient</h3> <div class="qaf-form-group qaf-column-field send-fromgroup"> <label class="edit-detail-label Customer fs-label" for="campaignName">Entity</label> <span class="required">*</span> <select class="edit-detail-input" id="entity" onchange="onentityChange()" autocomplete="off"></select> </div> <div class="qaf-form-group qaf-column-field send-fromgroup"> <label class="edit-detail-label Customer fs-label" for="campaignName">list</label> <span class="required">*</span> <select class="edit-detail-input" id="list" class="filter" onchange="onListChange()" autocomplete="off"></select> </div> <div class="right-container"> <div class="addform"> <button id="addVendor" type="button" class="btn btn-primary btn-new" onclick="saveCampagin()">Save</button> </div> </div> </div> <div class="estimate-section"> <div class="count-section"> <h3>Estimate Recepient</h3> <div class="count-entry" id="reciptent-count"></div> </div> <div class="right-container"> <div class="addform"> <button id="addVendor" type="button" class="btn btn-primary btn-new" onclick="sendCampagin()">Send</button> </div> <div class="addform"> <button id="addVendor" type="button" class="btn btn-secondary btn-new" onclick="CancelForm()">Cancel</button> </div> </div> </div> </div> </div> </div> </div>
+<div class="page-container">
+    <div class="header-title">
+        <div class="left-container">
+            <div class="common-page-title">List Of Campaign</div>
+        </div>
+        <div class="right-container">
+            <div class="addform">
+                <button id="addVendor" type="button" class="btn btn-primary" onclick="addCampaign()">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Campaign
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="pageDisabled">
+        <div class="tablecontainer" id="campaignContainer"> </div>
+        <div id="menuId"></div>
+    </div>
+    <div class="qaf-loader-div">
+        <span class="qaf-loader" id="isloading" style="display: none;">
+        </span>
+    </div>
+</div>
+<div id="blurdiv">
+    <div id="userForm" class="popup-container">
+        <div class="popup-content popup-content-es">
+            <div class="top-section">
+                <div class="qaf-button-container">
+                    <div class="header-buttons">
+                        <div class="button">
+                            <button class="cancel-page" onclick="CloseForm()"><i class="fa fa-chevron-left"
+                                    aria-hidden="true"></i> Back </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-content qaf-section-one">
+                    <div class="column-group">
+                        <div class="qaf-form-group qaf-column-field">
+                            <label class="edit-detail-label Customer fs-label" for="campaignName">Campaign
+                                Name</label>
+                            <span class="required">*</span>
+                            <input type="text" class="edit-detail-input" id="campaignName" name="campaignName"
+                                autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="template">
+                    <h3>Select a template</h3>
+                </div>
+            </div>
+            <div class="card_section">
+                <div class="card-row" id="job-cards">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popupContainer" class="popup-container">
+    <div class="popup-content popup-content-es">
+        <div class="tab-box">
+            <button class="tab-btn actbtn isActive" id="actbtn" onclick="showContent('view',1, this)"
+                data-tab="view">View</button>
+            <button class="tab-btn" id="actbtn1" onclick="showContent('send',2, this)" data-tab="send">Send</button>
+            </hr>
+            <div id="line" class="line"> </div>
+        </div>
+        <div class="button-border">
+            <div class="border-k"> </div>
+        </div>
+        <div id="view" class="tab-content active cardActivity">
+            <div class="view-section">
+                <div class="view-campagin" id="viewcampain">
+                </div>
+
+            </div>
+        </div>
+        <div id="send" class="tab-content  cardActivity">
+            <div class="send-section">
+                <div class="recepient-section">
+                    <h3>Recepient</h3>
+
+                    <div class="qaf-form-group qaf-column-field send-fromgroup">
+                        <label class="edit-detail-label Customer fs-label" for="campaignName">Entity</label>
+                        <span class="required">*</span>
+                        <select class="edit-detail-input" id="entity" onchange="onentityChange()"
+                            autocomplete="off"></select>
+                    </div>
+                    <div class="qaf-form-group qaf-column-field send-fromgroup">
+                        <label class="edit-detail-label Customer fs-label" for="campaignName">list</label>
+                        <span class="required">*</span>
+                        <select class="edit-detail-input" id="list" class="filter" onchange="onListChange()"
+                            autocomplete="off"></select>
+                    </div>
+
+                    <div class="right-container">
+                        <div class="addform">
+                            <button id="addVendor" type="button" class="btn btn-primary btn-new"
+                                onclick="saveCampagin()">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="estimate-section">
+                    <div class="count-section">
+                        <h3>Estimate Recepient</h3>
+                        <div class="count-entry" id="reciptent-count"></div>
+                    </div>
+
+                    <div class="right-container">
+                        <div class="addform">
+                            <button id="addVendor" type="button" class="btn btn-primary btn-new"
+                                onclick="sendCampagin()">Send</button>
+                        </div>
+                        <div class="addform">
+                            <button id="addVendor" type="button" class="btn btn-secondary btn-new"
+                                onclick="CancelForm()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

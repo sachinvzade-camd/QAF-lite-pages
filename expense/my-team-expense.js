@@ -1,17 +1,21 @@
+var guidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g;
 var Employee;
 var expenseClaim_Data;
-let expenseGrid = {
+var employeeList = []
+
+var expenseGrid = {
     repository: 'Expense_claims',
     columns: [
-        { field: 'Requesttitle', displayName: 'Request Title', sorting: false },
+        { field: 'Requesttitle', displayName: 'Brief about Request', sorting: false },
+        // { field: 'RequestFor', displayName: 'Request For', sorting: false },
         { field: 'Project', displayName: 'Project', sorting: false },
-        { field: 'Description', displayName: 'Description', sorting: false },
-        { field: 'TotalAmount', displayName: 'Total Amount', sorting: false },
+        // { field: 'Division', displayName: 'Division', sorting: false },
+        // { field: 'DirectManager', displayName: 'Reporting Manager', sorting: false },
+        { field: 'TotalAmount', displayName: 'Total Claimed  Amount', sorting: false },
         { field: 'Approvedamount', displayName: 'Approved Amount', sorting: false },
 
-
     ],
-    viewFields: ['Requesttitle', "Project", "Description", "CreatedByGUID","TotalAmount","Approvedamount"],
+    viewFields: ["RequestFor", "Requesttitle", "SelectDepartment", "Project", "ExpenseDetails", "TotalAmount", "Description", "Division", "DirectManager", "Approvedamount"],
     page: 1,
     pageSize: 10,
     dateFormat: 'YYYY/MM/DD',
@@ -19,15 +23,16 @@ let expenseGrid = {
     filter: ""
 }
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-let gridExpenseColumns = [
-    { field: 'Requesttitle', displayName: 'Request Title', sequence: 1, sorting: false },
-    { field: 'Project', displayName: 'Project', sequence: 2, sorting: false },
-    { field: 'Description', displayName: 'Description', sequence: 3, sorting: false },
-    { field: 'TotalAmount', displayName: 'Total Amount', sequence: 4, sorting: false },
-    { field: 'Approvedamount', displayName: 'Approved Amount',sequence: 5,  sorting: false },
-
+var gridExpenseColumns = [
+    { field: 'Requesttitle', displayName: 'Brief about Request', sequence: 1, sorting: false },
+    // { field: 'RequestFor', displayName: 'Request For', sequence: 2, sorting: false },
+    { field: 'Project', displayName: 'Project', sequence: 3, sorting: false },
+    // { field: 'Division', displayName: 'Division', sequence: 4, sorting: false },
+    // { field: 'DirectManager', displayName: 'Reporting Manager', sequence: 5, sorting: false },
+    { field: 'TotalAmount', displayName: 'Total Claimed  Amount', sequence: 6, sorting: false },
+    { field: 'Approvedamount', displayName: 'Approved Amount', sequence: 7, sorting: false },
 ];
 
 function updateMonthElement() {
@@ -73,13 +78,39 @@ function pageSizeEvent(page) {
     loadExpenseClaim();
 }
 
-let qafServiceLoaded = setInterval(() => {
+qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+        window.localStorage.setItem('ma', "funfirst.quickappflow.com")
+        let mainGridElement = document.getElementById('main-grid');
+        let noGridElement = document.getElementById('no-grid');
+        if (mainGridElement) {
+            mainGridElement.style.display = 'block'
+        }
+        if (noGridElement) {
+            noGridElement.style.display = "none"
+        }
+        getEmployeeAll()
         getEmployee()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
 
+function getEmployeeAll() {
+    employeeList = []
+    let objectName = "Employees";
+    let list = 'RecordID,FirstName,LastName';
+    let whereClause = ``;
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let orderBy = "true";
+    return window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((employees) => {
+        if (Array.isArray(employees) && employees.length > 0) {
+            employeeList = employees;
+        }
+    });
+
+}
 function getEmployee() {
     let userId = getCurrentUserGuid();
     Employee = []
@@ -103,22 +134,22 @@ function GetWhereClause() {
     let idsArray = Employee.map(item => item.RecordID);
     let condtion_whereClause = "";
     if (idsArray.length > 0) {
-        condtion_whereClause = `creaedby='${idsArray.join("'<OR>creaedby='")}'`;
-    }else{
-         condtion_whereClause=`creaedby=''`
+        condtion_whereClause = `CreatedByGUID='${idsArray.join("'<OR>CreatedByGUID='")}'`;
+    } else {
+        condtion_whereClause = `CreatedByGUID=''`
     }
     return condtion_whereClause;
 }
 
 function loadExpenseClaim() {
-    let mainGridElement = document.getElementById('main-grid'); 
-        let noGridElement = document.getElementById('no-grid'); 
-          if(mainGridElement){
-            mainGridElement.style.display='block'
-          }
-          if(noGridElement){
-            noGridElement.style.display="none"
-          }
+    let mainGridElement = document.getElementById('main-grid');
+    let noGridElement = document.getElementById('no-grid');
+    if (mainGridElement) {
+        mainGridElement.style.display = 'block'
+    }
+    if (noGridElement) {
+        noGridElement.style.display = "none"
+    }
     let userId = getCurrentUserGuid();
     let firstDay = startDate();
     let lastDay = endDate();
@@ -150,30 +181,52 @@ function loadExpenseClaim() {
             expenseGridElement.show = false;
 
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
+                expenseClaim.forEach(expense => {
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    // expense.RequestFor=formatLookupFieldValue(expense.RequestFor)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                    }
+                    if (expense.RequestFor) {
+                        let RequestForID = userOrGroupFieldRecordID(expense.RequestFor)
+                        let emp = employeeList.find(a => a.RecordID === RequestForID)
+                        if (emp && emp.RecordID) {
+                            expense.RequestFor = emp.FirstName + " " + emp.LastName
+                        }
+
+                    }
+
+
+                })
+
                 expenseClaim_Data = expenseClaim
-                
+
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
                 updateMonthElement();
             }
-            else{
-
-                let mainGridElement = document.getElementById('main-grid'); 
-                let noGridElement = document.getElementById('no-grid'); 
-                  if(mainGridElement){
-                    mainGridElement.style.display='none'
-                  }
-                  if(noGridElement){
-                    noGridElement.style.display="block"
-                  }
+            else {
+                let mainGridElement = document.getElementById('main-grid');
+                let noGridElement = document.getElementById('no-grid');
+                if (mainGridElement) {
+                    mainGridElement.style.display = 'none'
                 }
-        },(error)=>{
-        expenseGridElement.show = false;
+                if (noGridElement) {
+                    noGridElement.style.display = "block"
+                }
+            }
+        }, (error) => {
+            expenseGridElement.show = false;
         }
-        
+
         ).catch((error) => {
             console.log(error);
-          });
+        });
         expenseGridElement.addEventListener('onNextPageEvent', nextPageEvent);
         expenseGridElement.addEventListener('onPrevPageEvent', prevPageEvent);
         expenseGridElement.addEventListener('onGridSortEvent', sortEvent);
@@ -192,7 +245,6 @@ function nextPageEvent(page) {
     filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
     filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
     let recordForField
-
     let whereClause = GetWhereClause();
     recordForField = {
         Tod: expenseGrid.repository,
@@ -200,7 +252,7 @@ function nextPageEvent(page) {
         Ybod: expenseGrid.orderBy,
         Ucwr: whereClause,
         Zps: expenseGrid.pageSize,
-        Rmgp: expenseGrid.page,
+        Rmgp: page.detail.currentPage,
         Diac: "false",
         isWF: "true",
         wf: "Expense claims",
@@ -212,7 +264,29 @@ function nextPageEvent(page) {
             expenseGridElement.show = false;
 
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
-                
+                expenseClaim_Data = expenseClaim
+                expenseClaim.forEach(expense => {
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                    }
+                    if (expense.RequestFor) {
+                        let RequestForID = userOrGroupFieldRecordID(expense.RequestFor)
+                        let emp = employeeList.find(a => a.RecordID === RequestForID)
+                        if (emp && emp.RecordID) {
+                            expense.RequestFor = emp.FirstName + " " + emp.LastName
+                        }
+
+                    }
+
+
+                })
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
                 updateMonthElement();
@@ -239,7 +313,7 @@ function prevPageEvent(page) {
         Ybod: expenseGrid.orderBy,
         Ucwr: whereClause,
         Zps: expenseGrid.pageSize,
-        Rmgp: expenseGrid.page,
+        Rmgp: page.detail.currentPage,
         Diac: "false",
         isWF: "true",
         wf: "Expense claims",
@@ -251,7 +325,29 @@ function prevPageEvent(page) {
             expenseGridElement.show = false;
 
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
-                
+                expenseClaim_Data = expenseClaim
+                expenseClaim.forEach(expense => {
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                    }
+                    if (expense.RequestFor) {
+                        let RequestForID = userOrGroupFieldRecordID(expense.RequestFor)
+                        let emp = employeeList.find(a => a.RecordID === RequestForID)
+                        if (emp && emp.RecordID) {
+                            expense.RequestFor = emp.FirstName + " " + emp.LastName
+                        }
+
+                    }
+
+
+                })
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
                 updateMonthElement();
@@ -289,7 +385,29 @@ function sortEvent(page) {
         window.QafService.Rfdf(recordForField).then((expenseClaim) => {
             expenseGridElement.show = false;
             if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
-                
+                expenseClaim_Data = expenseClaim
+                expenseClaim.forEach(expense => {
+                    expense.Project = formatLookupFieldValue(expense.Project)
+                    expense.SelectEmployee = formatLookupFieldValue(expense.SelectEmployee)
+                    expense.Approvedamount = expense.Approvedamount ? expense.Approvedamount : 0;
+                    if (expense.DirectManager) {
+                        let directManagerID = userOrGroupFieldRecordID(expense.DirectManager)
+                        let emp = employeeList.find(a => a.RecordID === directManagerID)
+                        if (emp && emp.RecordID) {
+                            expense.DirectManager = emp.FirstName + " " + emp.LastName
+                        }
+                    }
+                    if (expense.RequestFor) {
+                        let RequestForID = userOrGroupFieldRecordID(expense.RequestFor)
+                        let emp = employeeList.find(a => a.RecordID === RequestForID)
+                        if (emp && emp.RecordID) {
+                            expense.RequestFor = emp.FirstName + " " + emp.LastName
+                        }
+
+                    }
+
+
+                })
                 expenseGridElement.Data = expenseClaim;
                 expenseGridElement.show = false;
                 updateMonthElement();
@@ -332,10 +450,10 @@ function nextMonth(e) {
             }
 
             window.QafService.Rfdf(recordForField).then((expenseClaim) => {
-            expenseGridElement.show = false;
+                expenseGridElement.show = false;
 
                 if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
-                    
+                    expenseClaim_Data = expenseClaim
                     expenseGridElement.Data = expenseClaim;
                     expenseGridElement.show = false;
                     updateMonthElement();
@@ -378,10 +496,10 @@ function prevMonth(e) {
             }
 
             window.QafService.Rfdf(recordForField).then((expenseClaim) => {
-            expenseGridElement.show = false;
+                expenseGridElement.show = false;
 
                 if (Array.isArray(expenseClaim) && expenseClaim.length > 0) {
-                    
+                    expenseClaim_Data = expenseClaim
                     expenseGridElement.Data = expenseClaim;
                     expenseGridElement.show = false;
                     updateMonthElement();
@@ -392,8 +510,9 @@ function prevMonth(e) {
 }
 
 function expgrid_onItemRender(cname, cvalue, row) {
+    debugger
     if (cname === 'Requesttitle') {
-        if(cvalue){
+        if (cvalue) {
             let result;
             let matchingObject = expenseClaim_Data.find(item => item.Requesttitle === cvalue);
             if (matchingObject) {
@@ -405,78 +524,11 @@ function expgrid_onItemRender(cname, cvalue, row) {
                 };
             }
             return `
-                <a href="${window.location.origin}/workflow-engine/i-request-details?rn=expense&cbid=${result.CreatedByGUID}&oid=${result.objectid}&rid=${result.RecordID}&incid=${result.InstanceID}" target="_blank">${cvalue}</a>
-                <style>
-                .row-menu{display:none!important}
-                
-                .qaf-grid__footer {
-                    border-top: 1px solid rgba(0,0,0,.12);
-                    background-color: #ffffff;
-                }
-                .qaf-grid{
-                border:none;
-                box-shadow: 1px 2px 5px;
-                }
-                .qaf-grid__header
-                {
-                background-color: #f2f2f2;
-                border-bottom: 1px solid rgba(0,0,0,.12);
-                font-size: 13px;
-                font-weight: 500 !important;
-                
-                }
-                .qaf-grid__row {
-                    font-size: 12px;
-                    font-weight: 500;
-                    background-color: #fff;
-                }
-            
-                .qaf-grid__header-item {
-                    font-weight: 500 !important;
-                    font-size:13px;
-                    
-                }
-                .qaf-grid-page-size label {
-                    font-weight: 500;
-                }
-                .qaf-grid-page-size select {
-                    background-color: #fff;
-                    color: #333;
-                }
-                .qaf-grid__footer > button{
-                background-color: #fff;
-                }
-                .qaf-grid__footer > button > svg {
-                    
-                    fill: #333;
-                }
-
-                .qaf-grid__row-item>a{
-                color: #009ce7;
-                text-decoration: none;
-                }
-        </style>
-                `;
-        }   
-    }
-    
-    if (cname === 'Project') {
-        console.log("Expense Data Fpor URL", expenseClaim_Data)
-        if (cvalue && cvalue.indexOf(';#') !== -1) {
-            let values = cvalue.split(';#');
-            let oddArray = [];
-            values.forEach((v, idx) => {
-                oddArray.push(idx);
-            })
-            let odds = oddArray.filter(n => n % 2);
-            let returnItems = [];
-            odds.forEach((d) => {
-                returnItems.push(values[d]);
-            })
-            return `${returnItems.join(';')} 
-            <style>
+                <a href="${window.location.origin}/workflow-engine/i-request-details?rn=expense&cbid=${result.CreatedByGUID}&oid=${result.objectid}&rid=${result.RecordID}&incid=${result.InstanceID}" target="_blank">${cvalue}</a><style>
                     .row-menu{display:none!important}
-                    
+                    .qaf-grid__row:hover {
+                                      background-color: #fff !important;
+                                              }
                     .qaf-grid__footer {
                         border-top: 1px solid rgba(0,0,0,.12);
                         background-color: #ffffff;
@@ -498,7 +550,9 @@ function expgrid_onItemRender(cname, cvalue, row) {
                         font-weight: 500;
                         background-color: #fff;
                     }
-                
+                    .qaf-grid__row-item_action{
+                        display:'none'
+                    }
                     .qaf-grid__header-item {
                         font-weight: 500 !important;
                         font-size:13px;
@@ -523,9 +577,164 @@ function expgrid_onItemRender(cname, cvalue, row) {
                     color: #009ce7;
                     text-decoration: none;
                     }
+                      .qaf-loader-container{
+                          display:none !important;
+                          }
+                          .qaf-loader{
+                                border: 5px solid transparent !important;
+                              }
+                                .qaf-grid__row-item > a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            cursor:pointer;
+                        }
+            </style>`;
+        }
+    }
+
+    if (cname === 'Project') {
+        if (cvalue) {
+            return `${cvalue} 
+            <style>
+                    .row-menu{display:none!important}
+                    .qaf-grid__row:hover {
+                                      background-color: #fff !important;
+                                              }
+                    .qaf-grid__footer {
+                        border-top: 1px solid rgba(0,0,0,.12);
+                        background-color: #ffffff;
+                    }
+                    .qaf-grid{
+                    border:none;
+                    box-shadow: 1px 2px 5px;
+                    }
+                    .qaf-grid__header
+                    {
+                    background-color: #f2f2f2;
+                    border-bottom: 1px solid rgba(0,0,0,.12);
+                    font-size: 13px;
+                    font-weight: 500 !important;
+                    
+                    }
+                    .qaf-grid__row {
+                        font-size: 12px;
+                        font-weight: 500;
+                        background-color: #fff;
+                    }
+                    .qaf-grid__row-item_action{
+                        display:'none'
+                    }
+                    .qaf-grid__header-item {
+                        font-weight: 500 !important;
+                        font-size:13px;
+                        
+                    }
+                    .qaf-grid-page-size label {
+                        font-weight: 500;
+                    }
+                    .qaf-grid-page-size select {
+                        background-color: #fff;
+                        color: #333;
+                    }
+                    .qaf-grid__footer > button{
+                    background-color: #fff;
+                    }
+                    .qaf-grid__footer > button > svg {
+                        
+                        fill: #333;
+                    }
+
+                    .qaf-grid__row-item>a{
+                    color: #009ce7;
+                    text-decoration: none;
+                    }
+                      .qaf-loader-container{
+                          display:none !important;
+                          }
+                          .qaf-loader{
+                                border: 5px solid transparent !important;
+                              }
+                                .qaf-grid__row-item > a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            cursor:pointer;
+                        }
             </style>
         `;
         }
+    }
+    if (cname === 'SelectEmployee' || cname === 'Project') {
+        return `${cvalue} 
+        <style>
+               
+                .qaf-grid__header .qaf-grid__header-item{
+                    padding: 12px 50px !important;
+                }
+                    .qaf-grid__row:hover {
+                                      background-color: #fff !important;
+                                              }
+                .qaf-grid__footer {
+                    border-top: 1px solid rgba(0,0,0,.12);
+                    background-color: #ffffff;
+                }
+                .qaf-grid{
+                border:none;
+                box-shadow: 1px 2px 5px;
+                }
+                .qaf-grid__header
+                {
+                background-color: #f2f2f2;
+                border-bottom: 1px solid rgba(0,0,0,.12);
+                font-size: 13px;
+                font-weight: 500 !important;
+                
+                }
+                .qaf-grid__row {
+                    font-size: 12px;
+                    font-weight: 500;
+                    background-color: #fff;
+                }
+            
+                .qaf-grid__header-item {
+                    padding: 12px 50px;
+                    font-weight: 500 !important;
+                    font-size:13px;
+                    
+                }
+                .qaf-grid-page-size label {
+                    font-weight: 500;
+                }
+                .qaf-grid-page-size select {
+                    background-color: #fff;
+                    color: #333;
+                }
+                .qaf-grid__footer > button{
+                background-color: #fff;
+                }
+                .qaf-grid__footer > button > svg {
+                    
+                    fill: #333;
+                }
+                .qaf-grid__row-item{
+                    padding: 12px 24px;
+                }
+                .qaf-grid__row-item>a{
+                color: #009ce7;
+                text-decoration: none;
+                }
+                  .qaf-loader-container{
+                          display:none !important;
+                          }
+                          .qaf-loader{
+                                border: 5px solid transparent !important;
+                              }
+                                .qaf-grid__row-item > a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            cursor:pointer;
+                        }
+        </style>
+    `;
     }
     // Handle 'Moved' independently
     if (cvalue) {
@@ -556,4 +765,35 @@ function expgrid_onRowActionEvent(eventName, row) {
 }
 
 
-
+function formatLookupFieldValue(value) {
+    let returnValue = value ? value : "";
+    let updatedRetunValue = [];
+    if (returnValue && returnValue.indexOf(';#') !== -1) {
+        let valuesWithGuid = returnValue.split(';#');
+        for (let i = 0; i < valuesWithGuid.length; i++) {
+            if (!isValidGuid(valuesWithGuid[i])) {
+                updatedRetunValue.push(valuesWithGuid[i].trim());
+            }
+        }
+        returnValue = updatedRetunValue.join('; ');
+    } else {
+        if (isValidGuid(returnValue)) {
+            returnValue = '';
+        }
+    }
+    return returnValue;
+}
+function isValidGuid(guidString) {
+    let guidRegexPattern = new RegExp(guidPattern)
+    return guidRegexPattern.test(guidString);
+}
+function userOrGroupFieldRecordID(id) {
+    if (id) {
+        if (id && id.includes("[{")) {
+            return (JSON.parse(id))[0].RecordID;
+        }
+        else {
+            return id && id.includes(";#") ? id.split(";#")[0] : id;
+        }
+    }
+}

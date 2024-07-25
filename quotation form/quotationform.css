@@ -26,7 +26,7 @@
   background: #8c3838;
   width: 100%;
 }
-.qaf-main-container {
+.qaf-main-container-quotation {
   width: 50%;
   background: #fff;
   float: right;
@@ -357,7 +357,7 @@ input[type="file"] {
   width: 100%;
   bottom: 50vh;
 }
-#Qno-grid {
+#no-grid {
   box-shadow: 1px 2px 5px;
   margin-bottom: 40px;
   margin-top: 20px;
@@ -368,7 +368,7 @@ input[type="file"] {
   display: flex;
   align-items: baseline;
 }
-#QCourierReceipt-name {
+#CourierReceipt-name {
   margin-left: 10px;
 }
 
@@ -406,9 +406,9 @@ input[type="date"]:focus::-webkit-datetime-edit {
   display: block;
 }
 
-.popup-content {
+.popup-content-quotation {
   background: #fff;
-  padding: 15px 20px 20px 20px;
+  padding: 60px 20px 20px 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: 100vh;
@@ -422,7 +422,7 @@ input[type="date"]:focus::-webkit-datetime-edit {
 
 /* Tab Styling */
 
-.qaf-tab-box {
+.qaf-tab-box-quotation {
   display: flex;
   /* justify-content: center; */
   flex-grow: 1;
@@ -431,7 +431,7 @@ input[type="date"]:focus::-webkit-datetime-edit {
   z-index: 1;
   /* border-bottom: 2px solid rgb(235, 234, 234); */
   /* margin-right: 25px; */
-  margin-left: 15%;
+  margin-left: 35%;
 }
 
 .tab-btn {
@@ -457,9 +457,9 @@ input[type="date"]:focus::-webkit-datetime-edit {
   display: block;
 }
 /* for QAF Lite */
-.line {
+.quotation-line {
   position: absolute;
-  top: 118px;
+  top: 163px;
   height: 2px;
   background-color: #311212;
   transition: all 0.3s ease-in-out;
@@ -532,7 +532,7 @@ input[type="date"]:focus::-webkit-datetime-edit {
 }
 
 .action-button-th {
-  background: #fff;
+  background-color: #fff !important;
   border: 1px solid #fff;
   border-left: 1px solid #ccc;
   min-width: 1px;
@@ -586,6 +586,7 @@ img {
 .quoate-id {
   background: #b3b0b03b;
   border: 1px solid black;
+  margin: 0px 0px 30px 0px;
 }
 .quoate-id p {
   padding: 7px 0;
@@ -892,11 +893,37 @@ div .middle-div {
   height: auto;
   overflow: hidden;
   white-space: break-spaces;
-  word-wrap: break-word;
+  word-break: break-word;
 }
 .product-td{
   text-align: left!important;
 }
 .sub-table{
   text-align: left!important;
+}
+
+.img-content {
+  height: 30px;
+  width: 30px;
+  background-color: #fff;
+}
+.img-content img:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: -10px;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  background: 0 0;
+}
+
+.img-content img:after {
+  content: "" " " attr(alt);
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
 }

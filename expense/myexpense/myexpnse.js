@@ -10,10 +10,9 @@ var currentMonth = `${date.toLocaleString([], { month: 'long' })}-${year}`;
 var UpdateStartDate;
 var UpdateLastDate;
 var guidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g;
-var funfirstAttachment = "https://funfirst.quickappflow.com"
-var SITAttachment = "https://qaffirst.quickappflow.com"
-var attachmentAPIURL = SITAttachment
+var attachmentAPIURL =  window.location.origin
 // expense form variable
+// var attachmentAPIURL = window.location.origin
 var employeeList = []
 var departmentList = []
 var projectList = []
@@ -40,10 +39,10 @@ var expenseGrid = {
     repository: 'Expense_claims',
     columns: [
         { field: 'Requesttitle', displayName: 'Brief about Request', sorting: false },
-        { field: 'RequestFor', displayName: 'Request For', sorting: false },
+        // { field: 'RequestFor', displayName: 'Request For', sorting: false },
         { field: 'Project', displayName: 'Project', sorting: false },
-        { field: 'Division', displayName: 'Division', sorting: false },
-        { field: 'DirectManager', displayName: 'Reporting Manager', sorting: false },
+        // { field: 'Division', displayName: 'Division', sorting: false },
+        // { field: 'DirectManager', displayName: 'Reporting Manager', sorting: false },
         { field: 'TotalAmount', displayName: 'Total Claimed  Amount', sorting: false },
         { field: 'Approvedamount', displayName: 'Approved Amount', sorting: false },
 
@@ -60,10 +59,10 @@ var monthNames = ["January", "February", "March", "April", "May", "June", "July"
 
 var gridExpenseColumns = [
     { field: 'Requesttitle', displayName: 'Brief about Request', sequence: 1, sorting: false },
-    { field: 'RequestFor', displayName: 'Request For', sequence: 2, sorting: false },
+    // { field: 'RequestFor', displayName: 'Request For', sequence: 2, sorting: false },
     { field: 'Project', displayName: 'Project', sequence: 3, sorting: false },
-    { field: 'Division', displayName: 'Division', sequence: 4, sorting: false },
-    { field: 'DirectManager', displayName: 'Reporting Manager', sequence: 5, sorting: false },
+    // { field: 'Division', displayName: 'Division', sequence: 4, sorting: false },
+    // { field: 'DirectManager', displayName: 'Reporting Manager', sequence: 5, sorting: false },
     { field: 'TotalAmount', displayName: 'Total Claimed  Amount', sequence: 6, sorting: false },
     { field: 'Approvedamount', displayName: 'Approved Amount', sequence: 7, sorting: false },
 ];
@@ -977,7 +976,7 @@ function setExpernseperticularTable() {
         }
         let attachmentElement = document.getElementById(`attachment-bill-name-${index}`)
         if (attachmentElement) {
-            attachmentElement.innerHTML = perticular.AttachBills ? getAttachmentName(perticular.AttachBills) : ''
+            attachmentElement.innerHTML = perticular.AttachBills ? `<a class="envelop" href="${downloadResume(perticular.AttachBills)}" download>${getAttachmentName(perticular.AttachBills)}</a> `: ''
         }
         if (perticular.AttachBills) {
             let attachmentDisplayElement = document.getElementById(`display-attachment-${index}`)
@@ -1482,7 +1481,79 @@ function expgrid_onItemRender(cname, cvalue, row) {
                 };
             }
             return `
-                <a href="${window.location.origin}/workflow-engine/i-request-details?rn=expense&cbid=${result.CreatedByGUID}&oid=${result.objectid}&rid=${result.RecordID}&incid=${result.InstanceID}" target="_blank">${cvalue}</a>`;
+                <a href="${window.location.origin}/workflow-engine/i-request-details?rn=expense&cbid=${result.CreatedByGUID}&oid=${result.objectid}&rid=${result.RecordID}&incid=${result.InstanceID}" target="_blank">${cvalue}</a>   <style>
+                   .qaf-grid__row:hover {
+                                      background-color: #fff !important;
+                                              }
+                    .qaf-grid__header .qaf-grid__header-item{
+                        padding: 12px 50px !important;
+                    }
+                    .qaf-grid__footer {
+                        border-top: 1px solid rgba(0,0,0,.12);
+                        background-color: #ffffff;
+                    }
+                    .qaf-grid{
+                    border:none;
+                    box-shadow: 1px 2px 5px;
+                    }
+                    .qaf-grid__header
+                    {
+                    background-color: #f2f2f2;
+                    border-bottom: 1px solid rgba(0,0,0,.12);
+                    font-size: 13px;
+                    font-weight: 500 !important;
+                    
+                    }
+                    .qaf-grid__row {
+                        font-size: 12px;
+                        font-weight: 500;
+                        background-color: #fff;
+                    }
+                
+                    .qaf-grid__header-item {
+                        padding: 12px 50px;
+                        font-weight: 500 !important;
+                        font-size:13px;
+                        
+                    }
+                    .qaf-grid-page-size label {
+                        font-weight: 500;
+                    }
+                    .qaf-grid-page-size select {
+                        background-color: #fff;
+                        color: #333;
+                    }
+                    .qaf-grid__footer > button{
+                    background-color: #fff;
+                    }
+                    .qaf-grid__footer > button > svg {
+                        
+                        fill: #333;
+                    }
+                    .qaf-grid__row-item{
+                        padding: 12px 24px;
+                    }
+                    .qaf-grid__row-item>a{
+                    color: #009ce7;
+                    text-decoration: none;
+                    }
+                     .qaf-loader-container{
+                          display:none !important;
+                          }
+                          .qaf-loader{
+                                border: 5px solid transparent !important;
+                              }
+                                .qaf-grid__row-item > a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            cursor:pointer;
+                        } 
+                            .action-items button[data-action="EDIT"] {
+  display: none !important;
+}
+
+
+            </style>`;
         }
     }
 
@@ -1623,7 +1694,7 @@ function uploadAttachment(index) {
                         val.AttachBills = fileResponse.url
                         let attachmentElement = document.getElementById(`attachment-bill-name-${parseInt(index)}`)
                         if (attachmentElement) {
-                            attachmentElement.innerHTML = getAttachmentName(fileResponse.url)
+                            attachmentElement.innerHTML =`<a class="envelop" href="${downloadResume(fileResponse.url)}" download>${getAttachmentName(fileResponse.url)}</a>` 
                         }
                         let attachmentDisplayElement = document.getElementById(`display-attachment-${parseInt(index)}`)
                         if (attachmentDisplayElement) {
@@ -1639,7 +1710,10 @@ function uploadAttachment(index) {
 
 
 }
-
+function downloadResume(url){
+    return window.location.origin+"/Attachment/downloadfile?fileUrl="+encodeURIComponent(((url)))
+   }
+  
 function getAttachmentName(fileUrl) {
     return formateFileName(getURLFromJson(fileUrl))
 }

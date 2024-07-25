@@ -9,41 +9,84 @@
 </head>
 
 <body>
-    <div class="data">
-        <header>
-            <div class="header-container">
-                <div id="headerBtn" class="header-button"> 
-                    <div class="fs-preveous">
-                        <button id="tableButton" class="listview fs-qaf-button fsbtn btn-primary" onclick="previousDate()">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        </button>
+    <div class="qaf-meeting-room">
+<div class="data">
+    <header>
+        <div class="header-container">
+            <div id="headerBtn" class="header-button">
+                <div class="fs-preveous"> <button id="tableButton" class="listview fs-qaf-button fsbtn btn-primary"
+                        onclick="previousDate()"> <i class="fa fa-chevron-left" aria-hidden="true"></i> </button> </div>
+                <div class="currentDate" id="today" style="color: black;"> </div>
+                <div class="next"> <button id="cardButton" class="gridview fs-qaf-button fsbtn btn-primary"
+                        onclick="nextDate()"> <i class="fa fa-chevron-right" aria-hidden="true"></i> </button> </div>
+                <div class="input"> <select class="fs-input fs-select select-first arrow" id="meetingName"
+                        name="meetingName" required></select> </div>
+                <div class="add"> <button class="addplus fs-qaf-button btn btn-primary" onclick="AddForm()"
+                        id="addform"> Add </button> </div>
+            </div>
+        </div>
+    </header>
+    <div class="tablecontainer">
+        <table class="qaf-table" id="table">
+            <div class="loader-container" id="loaderContainer" style="display:none;">
+                <div class="loaderk"></div>
+            </div>
+    </div>
+</div>
+<div class="form" id="expense-from">
+    <div id="pageDisabled"></div>
+    <div class="main-container">
+        <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"></span> </div>
+        <div class="button-container">
+            <div class="header-buttons">
+                <div class="button"> <button class="btn btn-primary" onclick="SaveRecord()"> Save </button> </div>
+                <div class="button"> <button class="btn btn-primary" onclick="CloseForm()"> Cancel </button> </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="container">
+                <div class="qaf-form-group"> <label for="requestFor" class="Customer fs-label fullwidht">Request
+                        For<span class="required">*</span> </label> <!-- <span class="required">*</span> --> <select
+                        class="fs-input fs-select select-input" id="requestfor" name="requestfor"></select> </div>
+                <div class="qaf-form-group"> <label for="requestTitle" class="Customer fs-label">Brief about the
+                        request<span class="required">*</span> </label> <input type="text" class="fs-input"
+                        id="requesttitle" name="requesttitle" autocomplete="off" required> </div>
+                <div class="qaf-form-group"> <label for="meetingroom" class="fs-label fullwidht">Meeting Room<span
+                            class="required">*</span> </label> <select class="fs-input fs-select select-input"
+                        id="meetingroom" name="meetingroom"> </select> </div>
+                <div class="qaf-form-group column">
+                    <div class="label-area"> <label for="fromDate" class="Customer fs-label"> From Time <span
+                                class="required">*</span> </label>
+                        <div class="btn-container"> <button class="clear-date-btn"
+                                onclick="clearDateTimefield('FromDate')">Clear</button> </div>
                     </div>
-                    <div class="currentDate" id="today" style="color: black;"></div>
-                    <div class="next">
-                        <button id="cardButton" class="gridview fs-qaf-button fsbtn btn-primary" onclick="nextDate()">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </button>
+                    <div class="date-area">
+                        <div class="date-container"> <input type="date" class="fs-input" id="fromDate" name="fromDate"
+                                autocomplete="off" required> </div>
+                        <div class="date-container time-container"> <input type="time" class="fs-input input-time"
+                                id="fromtime" name="fromtime" autocomplete="off" required> </div>
                     </div>
-                    <div class="input">
-                        <select class="fs-input fs-select" id="meetingName" name="meetingName" required></select>
+                </div>
+                <div class="qaf-form-group column">
+                    <div class="label-area"> <label for="ToDate" class="Customer fs-label">To Time <span
+                                class="required">*</span> </label>
+                        <div class="btn-container"> <button class="clear-date-btn"
+                                onclick="clearDateTimefield('ToDate')">Clear</button> </div>
                     </div>
-                    <div class="add">
-                        <button class="addplus fs-qaf-button fsbtn btn-primary" onclick="submitScheduleForm()"> Add
-                        </button>
+                    <div class="date-area">
+                        <div class="date-container "> <input type="date" class="fs-input" id="ToDate" name="ToDate"
+                                autocomplete="off" required> </div>
+                        <div class="date-container time-container"> <input type="time" class="fs-input input-time"
+                                id="ToTime" name="ToTime" autocomplete="off" required> </div>
                     </div>
                 </div>
             </div>
-        </header>
-      <div class="tablecontainer">
-        <table>
-            <tr>
-              <th>Hour</th>
-              <th>Event</th>
-            </tr>
-   
-          </table>
-      </div>
+        </div>
     </div>
+</div><qaf-alert></qaf-alert>
+</div>
+
+
 
     <script src="https://kit.fontawesome.com/14097a442a.js" crossorigin="anonymous"></script>
     <script src="/ng4qafLiteComponents.bundle.js"></script>

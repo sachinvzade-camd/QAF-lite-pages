@@ -1303,6 +1303,11 @@ debugger
     let subtotal = orderItemList.reduce((acc, value) => acc + Number(value.ItemTotal), 0);
     priceDetails.SubTotal = parseFloat(subtotal.toFixed(2));
 
+    let priceDiscountSelectElement = document.getElementById('discount-select')
+    if (priceDiscountSelectElement) {
+        let value = priceDiscountSelectElement.value;
+        priceDetails.DiscountType = value
+    }
     let priceDiscountElement = document.getElementById('priceDiscount')
     if (priceDiscountElement) {
         if(priceDetails.DiscountType==='Fixed'){
@@ -1311,9 +1316,14 @@ debugger
             priceDetails.DiscountPercentage = priceDiscountElement.value ? Number(priceDiscountElement.value) : ''
         }
     }
+    let taxTypeSelectElement = document.getElementById('tax-select')
+        if (taxTypeSelectElement) {
+            let value = taxTypeSelectElement.value;
+            priceDetails.SelectTaxType = value
+        }
     let pricetaxElement = document.getElementById('priceTax')
     if (pricetaxElement) {
-        if(priceDetails.TaxType==='Fixed'){
+        if(priceDetails.SelectTaxType==='Fixed'){
             priceDetails.Tax = pricetaxElement.value ? parseFloat(pricetaxElement.value) : ''
         }else{
             priceDetails.TaxPercentage = pricetaxElement.value ? parseFloat(pricetaxElement.value) : ''
@@ -1430,7 +1440,7 @@ function onListPriceinput(e, index) {
 function onDiscountinput(e, index) {
     orderItemList.forEach((val, i) => {
         if (i === parseInt(index)) {
-            let termElement = document.getElementById(`Discount-${index}`);
+            let termElement = document.getElementById(`Discountinv-${index}`);
             if (termElement) {
                 val.Discount = (termElement.value)
             }
@@ -1962,7 +1972,7 @@ function setPreviewData() {
                     <td class="item-width-si">${index + 1}</td>
                     <td>${value.Product ? value.Product.split(";#")[1] : ""}</td>
                     <td class="reviwe-td">${value.Quantity ? value.Quantity : ""}</td>
-                    <td class="reviwe-td">${value.ListPrice ? value.ListPrice.toFixed(2) : ""}</td>
+                    <td class="reviwe-td">${value.ListPrice ? typeof(value.ListPrice)==='string'? value.ListPrice:value.ListPrice.toFixed(2) : ""}</td>
                     <td class="reviwe-td">${value.Discount ? value.Discount.toFixed(2) : "0.00"}</td>
                     <td class="reviwe-td">${value.ItemTotal ? value.ItemTotal.toFixed(2) : ""}</td>
                 </tr>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="qaf-button-container">
+            <div class="header-buttons">
+                <div class="button"> <button class="cancel-page" onclick="BacktoHome()"><i class="fa fa-chevron-left"
+                            aria-hidden="true"></i> Back </button> </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="header-title">
+                <div class="left-container">
+                    <div class="common-page-title" id="titlename"></div>
+                </div>
+            </div>
+            <div class="main-tab">
+                <div class="left-tab-filter">
+                    <div class="left-container">
+                        <div class="common-page-title left-tab-title" id="titlename">Filters</div>
+                    </div>
+                    <div class="controls-tab">
+                        <div class="column-group">
+                            <div class="main-div">
+                                <div class="control-label"> <label class="edit-detail-label Customer fs-label"
+                                        for="ToDate">Filter Customers Based on Annual Revenue</label> </div>
+                                <div class="controls">
+                                    <div class="qaf-qaf-form-group qaf-column-field"> <label
+                                            class="edit-detail-label Customer fs-label" for="fromRevenue">From </label>
+                                        <input type="number" class="fs-input" id="fromRevenue" name="fromRevenue"
+                                            autocomplete="off" required> </div>
+                                    <div class="qaf-qaf-form-group qaf-column-field"> <label
+                                            class="edit-detail-label Customer fs-label" for="toRevenue">To</label> <input
+                                            type="number" class="fs-input" id="toRevenue" name="toRevenue"
+                                            autocomplete="off" required> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column-group">
+                            <div class="main-div">
+                                <div class="control-label"> <label class="edit-detail-label Customer fs-label"
+                                        for="ToDate">Date Range(When Customers was generated)</label> </div>
+                                <div class="controls">
+                                    <div class="qaf-qaf-form-group qaf-column-field"> <label
+                                            class="edit-detail-label Customer fs-label" for="FromDate">From Date</label>
+                                        <input type="date" class="fs-input" id="FromDate" name="FromDate" autocomplete="off"
+                                            required> </div>
+                                    <div class="qaf-qaf-form-group qaf-column-field"> <label
+                                            class="edit-detail-label Customer fs-label" for="ToDate">To Date</label> <input
+                                            type="date" class="fs-input" id="ToDate" name="ToDate" autocomplete="off"
+                                            required> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="qaf-form-group"> <label for="selectCity" class="Customer fs-label">Filter Customer Based
+                                on City</label> <select class="fs-input fs-select" id="selectCity"
+                                name="selectCity"></select> </div>
+                        <div class="qaf-form-group"> <label for="selectSource" class="Customer fs-label">Filter Based on
+                                Different Customer Source</label> <select class="fs-input fs-select" id="selectSource"
+                                name="selectSource" onchange="onChangeSource()"></select> </div>
+                        <!-- <div class="qaf-form-group"> <label for="selectEvent" class="Customer fs-label">Filter Based on
+                                Different Event</label> <select class="fs-input fs-select" id="selectEvent"
+                                name="selectEvent"></select> </div> -->
+                        <div class="qaf-form-group"> <label for="selectCountry" class="Customer fs-label">Filter Customers
+                                Based on Country</label> <select class="fs-input fs-select" id="selectCountry"
+                                name="selectCountry"></select> </div>
+                        <div class="qaf-form-group"> <label for="selectIndustry" class="Customer fs-label">Filter Customers
+                                Based on Industry</label> <select class="fs-input fs-select" id="selectIndustry"
+                                name="selectIndustry"></select> </div>
+                        <div class="btn-container">
+                            <div class="button"> <button id="blinkButton" class="btn btn-primary" onclick="SaveFilter()">
+                                    Save </button> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-tab-grid"> <qaf-crm-grid></qaf-crm-grid> </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

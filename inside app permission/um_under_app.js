@@ -683,6 +683,8 @@ function saveObjectsData() {
     save(employeeSaveObject, 'Employees').then(result => {
         EmployeeResponseId = result.response;
         console.log("EmployeeResponseId", EmployeeResponseId);
+        localStorage.removeItem('Emp_list')
+        localStorage.removeItem('Team_list')
         saveUserPermisson(EmployeeResponseId)
         resetForm();
 

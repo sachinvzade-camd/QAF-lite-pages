@@ -1293,7 +1293,7 @@ debugger
                         <td class="item-width-si">${index + 1}</td>
                         <td>${value.Product ? value.Product.split(";#")[1] : ""}</td>
                         <td class="reviwe-td">${value.Quantity ? value.Quantity : ""}</td>
-                        <td class="reviwe-td">${value.ListPrice ? value.ListPrice.toFixed(2) : ""}</td>
+                        <td class="reviwe-td">${value.ListPrice ? typeof(value.ListPrice)==='string'? value.ListPrice:value.ListPrice.toFixed(2) : ""}</td>
                         <td class="reviwe-td">${value.Discount ? value.Discount.toFixed(2) : "0.00"}</td>
                         <td class="reviwe-td">${value.ItemTotal ? value.ItemTotal.toFixed(2) : ""}</td>
                     </tr>
@@ -1644,7 +1644,7 @@ debugger
     function AddFormQuotation() {
         // document.getElementById('topHeader').style.zIndex = '1';
         document.getElementById('topHeader').style.zIndex = '1052';
-        if(window.location.href.includes('crm-quotation')){
+        if(window.location.href.includes('crm-quotation')||(window.location.href.includes('quotation-details'))){
         document.getElementById('topHeader').style.zIndex = '99999';
 
         }

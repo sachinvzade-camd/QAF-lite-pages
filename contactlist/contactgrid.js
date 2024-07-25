@@ -7,11 +7,12 @@ class QafCrmGrid extends HTMLElement {
         super();
     }
     async connectedCallback() {
-        
+
         if (window.QafService) {
-            
+
             let list = await getAllListData()
             let contacts = []
+
             if (list.Entity.toLowerCase() === "Lead".toLowerCase()) {
 
                 let leads = await getAllLead(list.FilterCriteria)
@@ -49,7 +50,22 @@ class QafCrmGrid extends HTMLElement {
                 contacts = await getAllContact(idswhereclause)
             }
             else if (list.Entity.toLowerCase() === "Customer".toLowerCase()) {
-                contacts = await getAllCustomers(list.FilterCriteria)
+
+                let customers = await getAllCustomers(list.FilterCriteria)
+                let recrordIDS = [];
+                if (customers && customers.length > 0) {
+                    customers.forEach(val => {
+                        if (val && val.AdditionalContactPerson) {
+                            let contactRecordID = val.AdditionalContactPerson.split(";#").filter((contact, index) => index % 2 === 0);
+                            recrordIDS.push(...contactRecordID)
+                        }
+                        if (val && val.ContactPerson) {
+                            recrordIDS.push(val.ContactPerson.split(";#")[0])
+                        }
+                    })
+                }
+                let idswhereclause = recrordIDS.join("'<OR>RecordID='");
+                contacts = await getAllContact(idswhereclause)
             }
             else {
                 contacts = await getAllData(list.FilterCriteria)
@@ -58,10 +74,10 @@ class QafCrmGrid extends HTMLElement {
             if (contacts && contacts.length > 0) {
                 contacts.forEach(val => {
                     contactData += `  <tr class="qaf-tr">
-     
-             <td class="qaf-td">${val.Name ? val.Name : ""}</td>
-             <td class="qaf-td">${val.MobileNumber ? val.MobileNumber : ""}</td>
+             <td class="qaf-td">${val.FirstName ? val.FirstName : ""}</td>
+             <td class="qaf-td">${val.LastName ? val.LastName : ""}</td>
              <td class="qaf-td">${val.Email ? val.Email : ""}</td>
+             <td class="qaf-td">${val.Mobile ? val.Mobile : ""}</td>
              </tr>`
                 });
                 this.innerHTML = `
@@ -179,9 +195,10 @@ class QafCrmGrid extends HTMLElement {
                         <table class="qaf-table" id="table">
                             <thead class="qaf-thead">
                                 <tr class="qaf-tr">
-                                    <th class="qaf-th">Customer Name</th>
-                                    <th class="qaf-th">Contact Number</th>
+                                    <th class="qaf-th">First Name</th>
+                                    <th class="qaf-th">Last Name</th>
                                     <th class="qaf-th">Email</th>
+                                    <th class="qaf-th">Mobile</th>
                                 </tr>
                             </thead>
                             <tbody class="qaf-tbody">
@@ -307,14 +324,15 @@ class QafCrmGrid extends HTMLElement {
                     <table class="qaf-table" id="table">
                         <thead class="qaf-thead">
                             <tr class="qaf-tr">
-                                  <th class="qaf-th">Customer Name</th>
-                                    <th class="qaf-th">Contact Number</th>
-                                    <th class="qaf-th">Email</th>
+                                <th class="qaf-th">First Name</th>
+                                <th class="qaf-th">Last Name</th>
+                                <th class="qaf-th">Email</th>
+                                <th class="qaf-th">Mobile</th>
                             </tr>
                         </thead>
                         <tbody class="qaf-tbody">
                         <tr class="qaf-tr">
-                           <td colspan="3" class="qaf-td" ><div class='no-record'>No Record Found</div></td>
+                           <td colspan="4" class="qaf-td" ><div class='no-record'>No Record Found</div></td>
                            </tr>
                         </tbody>
                     </table>
@@ -377,21 +395,33 @@ class QafCrmGrid extends HTMLElement {
             }
             else if (list.Entity.toLowerCase() === "Customer".toLowerCase()) {
 
-                contacts = await getAllCustomers(list.FilterCriteria)
+                let customers = await getAllCustomers(list.FilterCriteria)
+                let recrordIDS = [];
+                if (customers && customers.length > 0) {
+                    customers.forEach(val => {
+                        if (val && val.AdditionalContactPerson) {
+                            let contactRecordID = val.AdditionalContactPerson.split(";#").filter((contact, index) => index % 2 === 0);
+                            recrordIDS.push(...contactRecordID)
+                        }
+                        if (val && val.ContactPerson) {
+                            recrordIDS.push(val.ContactPerson.split(";#")[0])
+                        }
+                    })
+                }
+                let idswhereclause = recrordIDS.join("'<OR>RecordID='");
+                contacts = await getAllContact(idswhereclause)
             }
             else {
                 contacts = await getAllData(list.FilterCriteria)
             }
-
             let contactData = ``
             if (contacts && contacts.length > 0) {
                 contacts.forEach(val => {
                     contactData += `  <tr class="qaf-tr">
-            
-             <td class="qaf-td">${val.Name ? val.Name : ""}</td>
-             <td class="qaf-td">${val.MobileNumber ? val.MobileNumber : ""}</td>
+             <td class="qaf-td">${val.FirstName ? val.FirstName : ""}</td>
+             <td class="qaf-td">${val.LastName ? val.LastName : ""}</td>
              <td class="qaf-td">${val.Email ? val.Email : ""}</td>
-             
+             <td class="qaf-td">${val.Mobile ? val.Mobile : ""}</td>
              </tr>`
                 });
 
@@ -484,7 +514,7 @@ class QafCrmGrid extends HTMLElement {
                         display: flex;
                         justify-content: end;
                         }
-                         @keyframes blink {
+                        @keyframes blink {
                             0% { opacity: 1; }
                             50% { opacity: 0; }
                             100% { opacity: 1; }
@@ -503,10 +533,10 @@ class QafCrmGrid extends HTMLElement {
                         <table class="qaf-table" id="table">
                             <thead class="qaf-thead">
                                 <tr class="qaf-tr">
-                                    <th class="qaf-th">Customer Name</th>
-                                    <th class="qaf-th">Contact Number</th>
+                                    <th class="qaf-th">First Name</th>
+                                    <th class="qaf-th">Last Name</th>
                                     <th class="qaf-th">Email</th>
-                                  
+                                    <th class="qaf-th">Mobile</th>
                                 </tr>
                             </thead>
                             <tbody class="qaf-tbody">
@@ -631,14 +661,15 @@ class QafCrmGrid extends HTMLElement {
                         <table class="qaf-table" id="table">
                             <thead class="qaf-thead">
                                 <tr class="qaf-tr">
-                                     <th class="qaf-th">Customer Name</th>
-                                    <th class="qaf-th">Contact Number</th>
+                                    <th class="qaf-th">First Name</th>
+                                    <th class="qaf-th">Last Name</th>
                                     <th class="qaf-th">Email</th>
+                                    <th class="qaf-th">Mobile</th>
                                 </tr>
                             </thead>
                             <tbody class="qaf-tbody">
                             <tr class="qaf-tr">
-                               <td colspan="3" class="qaf-td" ><div class='no-record'>No Record Found</div></td>
+                               <td colspan="4" class="qaf-td" ><div class='no-record'>No Record Found</div></td>
                                </tr>
                             </tbody>
                         </table>
@@ -653,10 +684,22 @@ class QafCrmGrid extends HTMLElement {
 function refresh() {
     const myComponent = document.querySelector('qaf-crm-grid');
     myComponent.setAttribute('refresh-grid', false);
-    buttonclick();
+    makeBlinkResetBtn()
 }
+
+function makeBlinkResetBtn() {
+    var button = document.getElementById('resetButton');
+    if (button) {
+        button.classList.add('blink');
+        setTimeout(function() {
+            button.classList.remove('blink');
+        }, 1000);
+    }
+}
+
 function getAllListData() {
     return new Promise((resolve) => {
+        debugger
         let objectName = "CRM_List";
         let list = 'RecordID,FilterCriteria,Entity';
         let fieldList = list.split(",");
@@ -687,14 +730,13 @@ function getAllData(whereclause) {
 function getAllLead(whereclause) {
     return new Promise((resolve) => {
         let objectName = "Leads";
-        let list = 'RecordID,FirstName,LastName,Email,Mobile,City,Country,Industry,Source,EventName,AdditionalContactPerson,ContactPerson';
+        let list = 'RecordID,FirstName,LastName,Email,Mobile,City,Country,Industry,LeadSource,EventName,AdditionalContactPerson,ContactPerson,ExpectedRevenue,LeadOwner';
         let fieldList = list.split(",");
         let pageSize = "20000";
         let pageNumber = "1";
         let orderBy = "true";
         let whereClause = whereclause ? whereclause : "";
         window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((leads) => {
-
             resolve(leads)
         });
     })
@@ -716,7 +758,7 @@ function getAllOpportunities(whereclause) {
 function getAllCustomers(whereclause) {
     return new Promise((resolve) => {
         let objectName = "Customers";
-        let list = 'RecordID,Name,FirstName,LastName,Email,Mobile,City,Country,Industry,LeadSource,EventName,Type,MobileNumber';
+        let list = 'RecordID,FirstName,LastName,Email,Mobile,City,Country,Industry,Source,EventName';
         let fieldList = list.split(",");
         let pageSize = "20000";
         let pageNumber = "1";
@@ -756,13 +798,3 @@ function getAllContact(whereclause) {
 
 
 customElements.define("qaf-crm-grid", QafCrmGrid);
-
-function buttonclick() {
-    var button = document.getElementById('resetButton');
-    if (button) {
-        button.classList.add('blink');
-        setTimeout(function() {
-            button.classList.remove('blink');
-        }, 1000);
-    }
-}

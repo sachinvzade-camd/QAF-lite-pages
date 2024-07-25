@@ -56,7 +56,15 @@ function showContent(tabId, tabNum, clickedButton) {
             getTemplates()
             break;
         case "send":
-            getObjectDetails()
+            if (campaginRecordID) {
+                Setvaluesinfrom()
+                getObjectDetails()
+
+            }
+            else {
+                getObjectDetails()
+            }
+
             break;
         case "report":
 
@@ -68,14 +76,15 @@ function showContent(tabId, tabNum, clickedButton) {
 }
 
 function getTemplates() {
+
     ShiftConfiguration = []
     let objectName = "WA_Template";
-    let list = 'Message';
+    let list = 'Message,RecordID';
     let fieldList = list.split(",");
     let pageSize = "100000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = "";
+    let whereClause = `RecordID='${templateRecordId}'`;
     // let whereClause="";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((templates) => {
         if (Array.isArray(templates) && templates.length > 0) {
@@ -130,15 +139,6 @@ function loadWa_Campaign() {
 function showData() {
     generateTable(waCampaignList);
 }
-
-function isDateBeforeToday(insertedDate) {
-    const currentDate = new Date();
-    let TodaysDate = moment(currentDate).format('YYYY/MM/DD');
-    let repoDate = moment(insertedDate).format('YYYY/MM/DD');
-    return moment(repoDate).isBefore(TodaysDate, 'date')
-
-}
-
 
 
 function generateTable(TableData) {
@@ -246,13 +246,13 @@ window.onclick = function (event) {
         document.getElementById("menuId").innerHTML = ``
     } else {
         if (isStatus.toLowerCase() === "Draft".toLowerCase()) {
-            document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 70}px;left: ${event.pageX - 10}px;">
+            document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 115}px;left: ${event.pageX - 130}px;">
              <button class="edit-btn" onclick="EditRecord('${waCampaignRecordId}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
              <button class="delete-btn" onclick="DeleteRecord('${waCampaignRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
         </div>`
         }
         else {
-            document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 70}px;left: ${event.pageX - 10}px;">
+            document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 115}px;left: ${event.pageX - 130}px;">
             <button class="view-btn" onclick="DeleteRecord('${waCampaignRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>`
         }
 
@@ -270,10 +270,37 @@ function ViewRecord(RecordID) {
 
 }
 
+var RecordForUpdate = [];
 function EditRecord(recordID) {
-    if (recordID) {
-        campaginRecordID = recordID
-        addCampaign()
+    campaginRecordID = recordID
+    if (campaginRecordID) {
+        let UpdatedRecord = waCampaignList.filter(wclist => wclist.RecordID === campaginRecordID);
+        if (UpdatedRecord && UpdatedRecord.length > 0) {
+            RecordForUpdate = UpdatedRecord[0];
+        }
+    }
+    addCampaign()
+    Setvaluesinfrom();
+    
+}
+
+function Setvaluesinfrom() {
+
+    if (RecordForUpdate && Object.keys(RecordForUpdate).length > 0) {
+        let campaignNameElement = document.getElementById('campaignName');
+        let entityElement = document.getElementById('entity');
+        let listElement = document.getElementById('list');
+
+        // Check if the elements are found before assigning values
+        if (campaignNameElement) {
+            campaignNameElement.value = RecordForUpdate.Name;
+        }
+        if (entityElement) {
+            entityElement.value = RecordForUpdate.Entity;
+        }
+        if (listElement) {
+            listElement.value = RecordForUpdate.List ? RecordForUpdate.List.split(";#")[0] : "";
+        }
     }
 }
 
@@ -286,14 +313,7 @@ function DeleteRecord(RecordID) {
 }
 
 function ShowLoader() {
-    let secondTab = document.getElementById('secondTab')
-    if (secondTab) {
-        secondTab.style.display = 'none'
-    }
-    let ShiftReportTableElement = document.getElementById('ShiftReport')
-    if (ShiftReportTableElement) {
-        ShiftReportTableElement.style.display = 'none'
-    }
+
     let pageDisabledElement = document.getElementById('pageDisabled');
     if (pageDisabledElement) {
         pageDisabledElement.classList.add('page-disabled')
@@ -311,14 +331,6 @@ function HideLoader() {
         pageDisabledElement.classList.remove('page-disabled')
     }
     if (isloadingElement) {
-        let secondTab = document.getElementById('secondTab')
-        if (secondTab) {
-            secondTab.style.display = 'block'
-        }
-        let ShiftReportTableElement = document.getElementById('ShiftReport')
-        if (ShiftReportTableElement) {
-            ShiftReportTableElement.style.display = 'flex'
-        }
         isloadingElement.style.display = 'none'
     }
 }
@@ -341,7 +353,6 @@ function addCampaign() {
 var entityObject = {}
 
 function loadtemplate() {
-
     templateList = []
     let objectName = "WA_Template";
     let list = 'Name,Message';
@@ -386,28 +397,47 @@ function CloseForm() {
     if (blurdivElement) {
         blurdivElement.classList.remove('page-blur')
     }
-    resetFrom()
+    resetForm()
 }
 
-function resetFrom() {
+function resetForm() {
     let campaignNameElement = document.getElementById('campaignName');
+    let entityTemplate = document.getElementById('entity');
+    let listTemplate = document.getElementById('list');
     if (campaignNameElement) {
         campaignNameElement.value = "";
     }
+    if (entityTemplate) {
+        entityTemplate.value = "";
+    }
+    if (listTemplate) {
+        listTemplate.value = "";
+    }
+    let recipentElement = document.getElementById('reciptent-count');
+    if (recipentElement) {
+        recipentElement.innerHTML = '';
+    }
+
 }
 
 
 function CancelForm() {
+    RecordForUpdate = [];
+    resetForm()
+
     let popUp = document.getElementById("popupContainer");
     if (popUp) {
         popUp.style.display = 'none';
         removeCss()
+
     }
     loadWa_Campaign();
+    campaginRecordID = ""
 }
 
-function gotoViewSendPage(templateRecordId) {
-    templateRecordId = templateRecordId
+function gotoViewSendPage(templateId) {
+    
+    templateRecordId = templateId
     let campaignNameElement = document.getElementById('campaignName');
     let campaignName = ""
     if (campaignNameElement) {
@@ -416,12 +446,14 @@ function gotoViewSendPage(templateRecordId) {
 
     waCampaignObject = {
         Name: campaignName,
+        Status: 'Draft',
     }
 
     if (!waCampaignObject.Name) {
         openAlert("Campaign Name is required")
     }
     else {
+
         let secondSection = document.getElementById('popupContainer');
         if (secondSection) {
             secondSection.style.display = 'block';
@@ -454,6 +486,9 @@ function gotoViewSendPage(templateRecordId) {
             // activeLine1.style.left = activeTab1.offsetLeft + 'px';
             const buttonElement = document.getElementById('actbtn');
             showContent('view', 1, buttonElement)
+            // if (campaginRecordID) {
+            //     Setvaluesinfrom()
+            // }
         }
         let popUp = document.getElementById("userForm");
         if (popUp) {
@@ -472,7 +507,6 @@ function gotoViewSendPage(templateRecordId) {
 
     }
 }
-
 
 function save(object, repositoryName) {
     return new Promise((resolve) => {
@@ -502,6 +536,34 @@ function save(object, repositoryName) {
     )
 }
 
+function updateItem(submitFormObject, repositoryName, recodId) {
+    return new Promise((resolve) => {
+        var recordFieldValueList = [];
+        var intermidiateRecord = {}
+        var user = getCurrentUser()
+        Object.keys(submitFormObject).forEach((key, value) => {
+            recordFieldValueList.push({
+                FieldID: null,
+                FieldInternalName: key,
+                FieldValue: submitFormObject[key]
+            });
+        });
+        intermidiateRecord.CreatedByID = user.EmployeeID;
+        intermidiateRecord.CreatedDate = new Date();
+        intermidiateRecord.LastModifiedBy = null;
+        intermidiateRecord.ObjectID = repositoryName;
+        intermidiateRecord.RecordID = recodId;
+        intermidiateRecord.RecordFieldValues = recordFieldValueList;
+        window.QafService.UpdateItem(intermidiateRecord).then(response => {
+            // CancelForm();
+            resolve({
+                response
+            })
+        });
+    })
+}
+
+
 function openAlert(message) {
     let qafAlertObject = {
         IsShow: true,
@@ -526,7 +588,10 @@ function removeCss() {
 }
 
 function getObjectDetails() {
+
+
     window.QafService.GetObjectById('WA_Campaign').then((responses) => {
+
         responses[0].Fields.forEach(val => {
             if (val.InternalName === 'Entity') {
                 entityList = val.Choices.split(";#")
@@ -535,7 +600,9 @@ function getObjectDetails() {
         displayEntity()
     })
 }
+
 function displayEntity() {
+
     let sourceDropdown = document.getElementById('entity');
     let options = `<option value=''>Select entity</option>`
     if (sourceDropdown) {
@@ -544,6 +611,11 @@ function displayEntity() {
         })
         sourceDropdown.innerHTML = options;
     }
+    if (RecordForUpdate && Object.keys(RecordForUpdate).length > 0 > 0) {
+        sourceDropdown.value = RecordForUpdate.Entity;
+        onListChange()
+    }
+
 }
 function onentityChange() {
     let entityvalue = "";
@@ -581,7 +653,7 @@ function onListChange() {
 
 function getEntityFilterList(whereclauseObject, repoName) {
     let objectName = repoName;
-    let list = 'AccessToMember';
+    let list = 'AccessToMember,City,Country,Industry,Source,EventName';
     let fieldList = list.split(",");
     let pageSize = "100000";
     let pageNumber = "1";
@@ -609,6 +681,7 @@ function getCrmList(entityvalue) {
         crmList = []
         if (Array.isArray(lists) && lists.length > 0) {
             crmList = lists;
+            entityObject = crmList
         }
         displaylists()
     });
@@ -627,6 +700,7 @@ function displaylists() {
 
 
 function saveCampagin() {
+    
     let entityvalue = "";
     let listvalue = "";
     let entityTemplate = document.getElementById('entity');
@@ -653,14 +727,19 @@ function saveCampagin() {
     else if (!campaginObject.List) {
         openAlert("List is required")
     }
-    else{
+    else {
+        let newId=campaginRecordID;
+        console.log('newId',newId)
         saveForm(campaginObject)
         openAlert("Data is saved");
     }
-   
+
 }
 
 function sendCampagin() {
+    
+    let entityvalue = "";
+    let listvalue = "";
     let entityTemplate = document.getElementById('entity');
     if (entityTemplate) {
         entityvalue = entityTemplate.value
@@ -690,18 +769,20 @@ function sendCampagin() {
     else if (!campaginObject.List) {
         openAlert("List is required")
     }
-    else{
+    else {
         sendCampaigainApi().then(response => {
             saveForm(campaginObject)
-            openAlert("Data is sended")
+            openAlert("WA campaign is being executed");
+            CancelForm();
         })
+        
     }
-
-
 }
 
 function saveForm(submitFormObject) {
+    
     return new Promise((resolve) => {
+        
         var recordFieldValueList = [];
         var intermidiateRecord = {}
         var user = getCurrentUser()
@@ -719,33 +800,8 @@ function saveForm(submitFormObject) {
         intermidiateRecord.RecordID = campaginRecordID;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.UpdateItem(intermidiateRecord).then(response => {
-            CancelForm();
-            resolve({
-                response
-            })
-        });
-    })
-}
-function updateItem(submitFormObject, repositoryName, recodId) {
-    return new Promise((resolve) => {
-        var recordFieldValueList = [];
-        var intermidiateRecord = {}
-        var user = getCurrentUser()
-        Object.keys(submitFormObject).forEach((key, value) => {
-            recordFieldValueList.push({
-                FieldID: null,
-                FieldInternalName: key,
-                FieldValue: submitFormObject[key]
-            });
-        });
-        intermidiateRecord.CreatedByID = user.EmployeeID;
-        intermidiateRecord.CreatedDate = new Date();
-        intermidiateRecord.LastModifiedBy = null;
-        intermidiateRecord.ObjectID = repositoryName;
-        intermidiateRecord.RecordID = recodId;
-        intermidiateRecord.RecordFieldValues = recordFieldValueList;
-        window.QafService.UpdateItem(intermidiateRecord).then(response => {
-            CancelForm();
+            loadWa_Campaign();
+            // campaginRecordID = ""
             resolve({
                 response
             })
