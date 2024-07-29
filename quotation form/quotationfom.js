@@ -287,6 +287,12 @@ const QAFQuotation = (function () {
                 }
                 orderItemList = []
                 quotationRecordObject = null
+                let dateIssuedElement = document.getElementById('QdateIssued');
+                dateIssuedElement.value =moment().format('YYYY-MM-DD') 
+                let statusElement = document.getElementById('Qstatus')
+                if(statusElement){
+                    statusElement.value ="Draft" 
+                }
                 // resetquotationvalue()
             }
         })
@@ -350,8 +356,8 @@ const QAFQuotation = (function () {
         window.QafService.Rfdf(recordForField).then((employees) => {
 
             if (Array.isArray(employees) && employees.length > 0) {
-
                 employeesList = employees
+                employeesList=  employeesList.sort((a, b) => a.FirstName.localeCompare(b.FirstName));
                 setEmployeesOnDropdown()
                 setEmployeesAssessToMemberOnDropdown()
                 setEmployeesQuotationByOnDropdown()
@@ -416,6 +422,7 @@ const QAFQuotation = (function () {
         let companyOfficeElement = document.getElementById('QcompanyOffice')
         let contactElement = document.getElementById('Qcontact')
         let quoteNameElement = document.getElementById('QquoteName')
+        let QlinkElement = document.getElementById('Qlink')
         let CommentsElement = document.getElementById('QComments')
         let TermsandConditionsElement = document.getElementById('QTermsandConditions')
         let dateIssuedElement = document.getElementById('QdateIssued')
@@ -472,6 +479,7 @@ const QAFQuotation = (function () {
         if (quoteNameElement) {
             quotationObject['QuoteName'] = quoteNameElement.value
         }
+      
         if (CommentsElement) {
             quotationObject['Comments'] = CommentsElement.value
         }
@@ -522,8 +530,12 @@ const QAFQuotation = (function () {
         let QpriceTaxElement = document.getElementById('QpriceTax')
         let discountSelectElement = document.getElementById('Qdiscount-select')
         let taxSelectElement = document.getElementById('Qtax-select')
+        let QlinktElement = document.getElementById('Qlink')
         if (customerElement) {
             customerElement.value = quotationRecordObject.Customer ? quotationRecordObject.Customer.split(";#")[0] : ''
+        }
+        if (QlinktElement) {
+            QlinktElement.value = quotationRecordObject.qlink ? JSON.parse(quotationRecordObject.qlink).link : ''
         }
         if (discountSelectElement) {
             discountSelectElement.value = quotationRecordObject.DiscountType ? quotationRecordObject.DiscountType : ''
@@ -585,7 +597,11 @@ const QAFQuotation = (function () {
             quotationbyElement.value = quotationRecordObject.QuotationBy ? JSON.parse(quotationRecordObject.QuotationBy)[0].RecordID : ''
         }
         if (dateIssuedElement) {
-            dateIssuedElement.value = quotationRecordObject.DateIssued ? moment(quotationRecordObject.DateIssued).format('YYYY-MM-DD') : ''
+            if(quotationRecordID){
+                dateIssuedElement.value = quotationRecordObject.DateIssued ? moment(quotationRecordObject.DateIssued).format('YYYY-MM-DD') : ''
+            }else{
+                dateIssuedElement.value =moment().format('YYYY-MM-DD') 
+            }
         }
         if (ExpirationDateElement) {
             ExpirationDateElement.value = quotationRecordObject.ExpirationDate ? moment(quotationRecordObject.ExpirationDate).format('YYYY-MM-DD') : ''
@@ -612,7 +628,14 @@ const QAFQuotation = (function () {
             intermidiateRecord.RecordID = null;
             intermidiateRecord.RecordFieldValues = recordFieldValueList;
             window.QafService.CreateItem(intermidiateRecord).then(response => {
-                quotationRecordID = response
+                quotationRecordID = response;
+                    let link={
+                        displayName: "Quotation Preview",
+                        link: `${window.location.origin}/preview?type=Quotation&id=${quotationRecordID}`
+                    }
+                    let quotationupdate={}
+                     quotationupdate['qlink']=JSON.stringify(link)
+                    updateQuotationForm(quotationupdate)
                 getQuotation()
 
                 resolve({
@@ -712,7 +735,6 @@ const QAFQuotation = (function () {
                 setValueInPriceObjectQ()
                 loadChildTable()
             } else {
-                
                 orderItemObject = {
                     Product: '',
                     ProductCode: '',
@@ -725,12 +747,9 @@ const QAFQuotation = (function () {
                 }
                 orderItemList.push(orderItemObject)
                 priceDetails = []
-                orderItemList = removeEmptyOrderItemList(orderItemList);
+                // orderItemList = removeEmptyOrderItemList(orderItemList);
                 resetItemsOnOrderTab();
                 loadChildTable();
-                // if (orderItemList.length < 2) {
-                //     loadChildTable()
-                // }
                 setValueInPriceObjectQ();
             }
         });
@@ -746,7 +765,7 @@ const QAFQuotation = (function () {
                     let totalAmount = (val.Quantity * val.ListPrice)
                     let total = (val.Quantity * val.ListPrice) * (val.Discount / 100)
                     val.ItemTotal = totalAmount - total
-                    termElement.value = val.ItemTotal.toFixed(2);
+                    termElement.innerHTML = val.ItemTotal.toFixed(2);
                 }
             }
         })
@@ -754,7 +773,7 @@ const QAFQuotation = (function () {
     }
 
     function setValueInPriceObjectQ() {
-debugger
+
         priceDetails = {
             Subtotal: '',
             Discount: '',
@@ -873,6 +892,7 @@ debugger
 
 
     function loadChildTable() {
+        debugger
         let perticularTable = ""
         orderItemList.forEach((perticular, index) => {
             perticularTable += `<tr class="qaf-tr qaf-tr-data">
@@ -888,29 +908,30 @@ debugger
                     autocomplete="off" required oninput="QAFQuotation.onTermsinput(this,'${index}')"
                     >
             </td>
-       <td class="qaf-td ledger-Name-cell">
+       <td class="qaf-td ">
                 <select class="fs-input tableinput ledgerName" id="BillingFrequency-${index}" name="BillingFrequency" onchange="QAFQuotation.onChangeBillingFrequency('${index}')"></select>
             </td>
-       <td class="qaf-td">
-                <input type="number" class="fs-input Quantity tableinput" id="Quantity-${index}" name="Quantity"
+       <td class="qaf-td ">
+
+                <input type="number" class="fs-input Quantity tableinput currency-field" id="Quantity-${index}" name="Quantity"
                     autocomplete="off" required oninput="QAFQuotation.onQuantityinput(this,'${index}')"
                     >
             </td>
        <td class="qaf-td">
-                <input type="number" class="fs-input ListPrice tableinput" id="ListPrice-${index}" name="ListPrice"
+                <input type="number" class="fs-input ListPrice tableinput currency-field" id="ListPrice-${index}" name="ListPrice"
                     autocomplete="off" required oninput="QAFQuotation.onListPriceinput(this,'${index}')"
                     >
             </td>
        <td class="qaf-td">
-                <input type="number" class="fs-input Discount tableinput" id="Discount-${index}" name="Discount"
+                <input type="number" class="fs-input Discount tableinput currency-field" id="Discount-${index}" name="Discount"
                     autocomplete="off" required oninput="QAFQuotation.onDiscountinput(this,'${index}')"
                     >
             </td>
             <td class="qaf-td">
 
-                <input type="number" class="fs-input Discount tableinput" id="ItemTotal-${index}" name="ItemTotal" disabled
-                    autocomplete="off" required oninput="QAFQuotation.onItemTotalinput(this,'${index}')"
-                    >
+       <div id="ItemTotal-${index}" class="currency-field itemtotal-child"></div>
+            
+              
             </td>
             <td class="qaf-td row-delete-td">
             <div class="action-delete-row" >
@@ -925,6 +946,7 @@ debugger
 
 
         let tableStructure = `
+            <div class='table-name'>Product and Services</div>
             <table class="qaf-table">
                 <thead>
                      <tr class="qaf-tr">
@@ -932,10 +954,10 @@ debugger
                         <th class="qaf-th sub-table">SKU</th>
                         <th class="qaf-th sub-table">Terms</th>
                         <th class="qaf-th sub-table">Billing Frequency</th>
-                        <th class="qaf-th sub-table">Quantity</th>
-                        <th class="qaf-th sub-table">List Price</th>
-                        <th class="qaf-th sub-table">Discount</th>
-                        <th class="qaf-th sub-table">Item Total</th>
+                        <th class="qaf-th sub-table currency-field">Quantity</th>
+                        <th class="qaf-th sub-table currency-field">List Price</th>
+                        <th class="qaf-th sub-table currency-field">Discount</th>
+                        <th class="qaf-th sub-table currency-field">Item Total</th>
                         <th class="qaf-th sub-table action-button-th"></th>
                     </tr>
                 </thead>
@@ -960,7 +982,7 @@ debugger
     function billingFrequesyOnDropdown() {
         orderItemList.forEach((perticular, index) => {
             let expenseLedgerElement = document.getElementById(`BillingFrequency-${index}`);
-            let options = `<option value=''> Select Billing Frequency</option>`; ``
+            let options = ``; ``
             if (expenseLedgerElement) {
                 billingFrequencyList.forEach(product => {
                     options += `<option value="${product}">${product}</option>`;
@@ -974,7 +996,7 @@ debugger
     function expenseLedgerOnDropdown() {
         orderItemList.forEach((perticular, index) => {
             let expenseLedgerElement = document.getElementById(`product-${index}`);
-            let options = `<option value=''> Select Product</option>`; ``
+            let options = ``; ``
             if (expenseLedgerElement) {
                 productList.forEach(product => {
                     options += `<option value="${product.RecordID}">${product.ProductName}</option>`;
@@ -1018,9 +1040,10 @@ debugger
             if (DiscountElement) {
                 DiscountElement.value = perticular.Discount ? perticular.Discount : ''
             }
+            debugger
             let ItemTotalElement = document.getElementById(`ItemTotal-${index}`);
             if (ItemTotalElement) {
-                ItemTotalElement.value = perticular.ItemTotal ? perticular.ItemTotal.toFixed(2) : ''
+                ItemTotalElement.innerHTML = perticular.ItemTotal ? perticular.ItemTotal.toFixed(2) : ''
             }
         })
     }
@@ -1050,7 +1073,7 @@ debugger
     }
 
     function setValueInPricing() {
-        debugger
+        
   
         let SubtotalElement = document.getElementById('QSubtotal');
         if (SubtotalElement) {
@@ -1406,7 +1429,7 @@ debugger
                             </div>
 
                             <div class="table-order-items">
-
+<div class='table-name'>Product and Services</div>
                                 <table>
                                     <thead>
                                         <tr class="header-rowView">
@@ -1488,7 +1511,9 @@ debugger
         let whereClause = ``;
         window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((offices) => {
             if (Array.isArray(offices) && offices.length > 0) {
-                companyOfficeList = offices
+                companyOfficeList = offices;
+                companyOfficeList=  companyOfficeList.sort((a, b) => a.RegisteredCompanyName.localeCompare(b.RegisteredCompanyName));
+
                 setofficesOnDropdown()
             }
         });
@@ -1529,7 +1554,9 @@ debugger
             let whereClause = `RecordID='${id}'`
             window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, orderBy, isAscending).then((contacts) => {
                 if (Array.isArray(contacts) && contacts.length > 0) {
-                    contactList = contacts
+                    contactList = contacts;
+                    contactList=  contactList.sort((a, b) => a.FirstName.localeCompare(b.FirstName));
+
                     setContactOnDropdown()
                 }
             });
@@ -1547,7 +1574,9 @@ debugger
         let whereClause = ``;
         window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((customers) => {
             if (Array.isArray(customers) && customers.length > 0) {
-                customersList = customers
+                customersList = customers;
+                customersList=  customersList.sort((a, b) => a.Name.localeCompare(b.Name));
+
                 setCustomerOnDropdown()
             }
         });
@@ -1583,6 +1612,7 @@ debugger
         let accessToMemberElement = document.getElementById('QaccessToMember')
         let companyOfficeElement = document.getElementById('QcompanyOffice')
         let quoteNameElement = document.getElementById('QquoteName')
+        let QlinkElement = document.getElementById('Qlink')
         let TermsandConditionsElement = document.getElementById('QTermsandConditions')
         let CommentsElement = document.getElementById('QComments')
         let dateIssuedElement = document.getElementById('QdateIssued')
@@ -1592,6 +1622,9 @@ debugger
         let priceDiscountElement = document.getElementById('QpriceDiscount')
         let priceTaxElement = document.getElementById('QpriceTax')
 
+        if (QlinkElement) {
+            QlinkElement.value = ''
+        }
         if (customerElement) {
             customerElement.value = ''
         }
@@ -1652,9 +1685,11 @@ debugger
         let actbtnElement = document.getElementById('Qactbtn')
         if (actbtnElement) {
             let lineElement = document.querySelector(".quotation-line");
-
-            lineElement.style.width = 88 + "px";
-            lineElement.style.transform = "translateX(" + 0 + "px)";
+            if(lineElement){
+                lineElement.style.width = 88 + "px";
+                lineElement.style.transform = "translateX(" + 0 + "px)";
+            }
+           
             actbtnElement.classList.add('isActive')
         }
         let actbtn2Element = document.getElementById('Qactbtn2')
@@ -1684,7 +1719,7 @@ debugger
             const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
             const activeLine1 = activeTab1.parentNode.getElementsByClassName('quotation-line')[0];
             activeLine1.style.width = activeTab1.offsetWidth + 'px';
-            activeLine1.style.left = activeTab1.offsetLeft + 'px';
+            // activeLine1.style.left = activeTab1.offsetLeft + 'px';
             let actionsButtons = document.getElementById("actionsButtons");
             if (actionsButtons) {
                 actionsButtons.style.display = 'none'

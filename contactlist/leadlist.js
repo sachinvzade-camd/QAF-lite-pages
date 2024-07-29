@@ -5,23 +5,23 @@ var listName = urlParams.get("name");
 var fromList = listName;
 var industriesList = [];
 var countryList = [];
-var employeesList = [];
 var updateRecordID = recordID;
 var LeadSourceID = ""
-var crmListNewObject ;
+var crmListNewObject = [];
 var EventNameID = ""
 var qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        // getAppName()
+        getAppName()
         rendorTitle();
         getIndustries();
-        getListData()
+        getListData();
         clearInterval(qafServiceLoaded);
     }
 }, 10);
 
+
 function getListData() {
-    crmListNewObject = null
+    crmListNewObject = []
     let objectName = "CRM_List";
     let list = 'RecordID,FilterCriteria,Entity';
     let fieldList = list.split(",");
@@ -69,6 +69,7 @@ function getIndustries() {
         if (Array.isArray(indlist) && indlist.length > 0) {
             industriesList = indlist;
             industriesList= industriesList.sort((a, b) => a.Industry.localeCompare(b.Industry));
+
         }
         loadIndustries();
     });
@@ -101,7 +102,7 @@ function getCountry() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((contry) => {
         if (Array.isArray(contry) && contry.length > 0) {
             countryList = contry;
-            countryList= countryList.sort((a, b) => a.Country.localeCompare(b.Country));
+            countryList= countryList.sort((a, b) => a.State.localeCompare(b.State));
         }
         loadCountry()
     });
@@ -122,7 +123,7 @@ function loadCountry() {
     });
     if (selectCountryElement) {
         filteredCountryList.forEach(valCon => {
-            options += `<option value="${valCon.RecordID}">${valCon.Country}</option>`;
+            options += `<option value="${valCon.Country}">${valCon.Country}</option>`;
         });
         selectCountryElement.innerHTML = options;
     }
@@ -134,15 +135,14 @@ function loadCity() {
     let selectCityElement = document.getElementById('selectCity');
     let options = `<option value=''> Select City</option>`;
     if (selectCityElement) {
-      let cityList= countryList.sort((a, b) => a.City.localeCompare(b.City));
-      cityList.forEach(city => {
-            options += `<option value="${city.RecordID}">${city.City}</option>`;
-
-        });
+        let cityList= countryList.sort((a, b) => a.City.localeCompare(b.City));
+        cityList.forEach(city => {
+              options += `<option value="${city.RecordID}">${city.City}</option>`;
+  
+          });
         selectCityElement.innerHTML = options;
     }
     getLead_Source()
-    setcrmListValue();
 }
 
 var LeadSourceList = []
@@ -159,14 +159,16 @@ function getLead_Source() {
         if (Array.isArray(leads) && leads.length > 0) {
             LeadSourceList = leads;
             LeadSourceList= LeadSourceList.sort((a, b) => a.LeadSource.localeCompare(b.LeadSource));
+
         }
         loadLead_Source();
     });
 }
 
+
 function loadLead_Source() {
     let selectSourceElement = document.getElementById('selectSource');
-    let options = `<option value=''> Select Customer Source</option>`;
+    let options = `<option value=''> Select Lead Source</option>`;
     if (selectSourceElement) {
         LeadSourceList.forEach(valInd => {
             options += `<option value="${valInd.RecordID}">${valInd.LeadSource}</option>`;
@@ -174,8 +176,10 @@ function loadLead_Source() {
         });
         selectSourceElement.innerHTML = options;
     }
-    setcrmListValue()
+    // getMarketing_Event()
+    getObject();
 }
+
 
 function onChangeSource() {
     LeadSourceID = ""
@@ -186,9 +190,11 @@ function onChangeSource() {
     getMarketing_Event()
 }
 
-var Marketing_EventList = []
+
+var marketing_EventList = []
 function getMarketing_Event() {
-    Marketing_EventList = []
+
+    marketing_EventList = []
     let objectName = "Marketing_Event";
     let list = 'LeadSource,EventName';
     let fieldList = list.split(",");
@@ -198,8 +204,8 @@ function getMarketing_Event() {
     let pageNumber = "1";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((eventsname) => {
         if (Array.isArray(eventsname) && eventsname.length > 0) {
-            Marketing_EventList = eventsname;
-            Marketing_EventList= Marketing_EventList.sort((a, b) => a.EventName.localeCompare(b.EventName));
+            marketing_EventList = eventsname;
+            marketing_EventList= marketing_EventList.sort((a, b) => a.EventName.localeCompare(b.EventName));
             loadEventList()
         }
         else {
@@ -210,21 +216,42 @@ function getMarketing_Event() {
 }
 
 function loadEventList() {
+
     let selectEventElement = document.getElementById('selectEvent');
     let options = `<option value=''> Select Event</option>`;
     if (selectEventElement) {
-        Marketing_EventList.forEach(eve => {
+        marketing_EventList.forEach(eve => {
             options += `<option value="${eve.RecordID}">${eve.EventName}</option>`;
 
         });
         selectEventElement.innerHTML = options;
     }
     selectEventElement.value = EventNameID
+
+}
+
+function getObject() {
+    window.QafService.GetObjectById('Leads').then((responses) => {
+        responses[0].Fields.forEach(val => {
+            if (val.InternalName === 'LeadPriority') {
+                let leadRatingDropdown = document.getElementById('leadRating');
+                let options = `<option value=''>Select Lead Rating</option>`
+                if (leadRatingDropdown) {
+                    val.Choices.split(";#").forEach(choise => {
+                        options += `<option value=${choise}>${choise}</option>`
+                    })
+                    leadRatingDropdown.innerHTML = options;
+                }
+            }
+
+        })
+    })
 }
 
 var appNameDetails = [];
 var mappingID = []
 function getAppName() {
+
     appNameDetails = [];
     let objectName = "App_Configuration";
     let list = "RecordID,AppName,EncryptedName,Accessible,AppID";
@@ -279,6 +306,7 @@ function userOrGroupFieldRecordIDList(id) {
     }
 }
 
+
 function getTeams(mappingID) {
     let EmployeeWhereClause = []
     let objectName = "Teams";
@@ -305,6 +333,8 @@ function getTeams(mappingID) {
         }
     });
 }
+
+var employeesList = [];
 
 function getEmployees(WhereClause) {
     let objectName = "Employees";
@@ -354,31 +384,35 @@ function setCreatedByOnDropdown() {
         });
         employeeAssessToMemeberElement.innerHTML = options;
     }
-
+    setcrmListValue();
 }
 
-
 function setcrmListValue() {
-
     let crmListObject = parseFilterCriteria(crmListNewObject.FilterCriteria);
     if (crmListObject) {
 
-
+        let assignedToeElement = document.getElementById('AssignedTo');
+        let createdByElement = document.getElementById('CreatedBy');
         let fromRevenueElement = document.getElementById('fromRevenue');
         let toRevenueElement = document.getElementById('toRevenue');
         let fromDateElement = document.getElementById('FromDate');
         let ToDateElement = document.getElementById('ToDate');
         let selectSourceElement = document.getElementById('selectSource');
         let selectEventElement = document.getElementById('selectEvent');
-        let selectCountryElement = document.getElementById('selectCountry');
+        let leadRatingElement = document.getElementById('leadRating');
         let selectCityElement = document.getElementById('selectCity');
         let selectIndustryElement = document.getElementById('selectIndustry');
-
+        if (assignedToeElement) {
+            assignedToeElement.value = crmListObject.LeadOwner ? crmListObject.LeadOwner : ''
+        }
+        if (createdByElement) {
+            createdByElement.value = crmListObject.CreatedByGUID ? crmListObject.CreatedByGUID : ""
+        }
         if (fromRevenueElement) {
-            fromRevenueElement.value = crmListObject.AnnualRevenuemin ? crmListObject.AnnualRevenuemin : "";
+            fromRevenueElement.value = crmListObject.ExpectedRevenuemin ? crmListObject.ExpectedRevenuemin : "";
         }
         if (toRevenueElement) {
-            toRevenueElement.value = crmListObject.AnnualRevenuemax ? crmListObject.AnnualRevenuemax : "";
+            toRevenueElement.value = crmListObject.ExpectedRevenuemax ? crmListObject.ExpectedRevenuemax : "";
         }
 
         if (fromDateElement) {
@@ -390,20 +424,20 @@ function setcrmListValue() {
         }
 
         if (selectSourceElement) {
-            selectSourceElement.value = crmListObject.Source ? crmListObject.Source : ''
+            selectSourceElement.value = crmListObject.LeadSource ? crmListObject.LeadSource : ''
         }
-        if (selectCountryElement) {
-            selectCountryElement.value = crmListObject.Country ? crmListObject.Country : ""
+        if (leadRatingElement) {
+            leadRatingElement.value = crmListObject.LeadPriority ? crmListObject.LeadPriority : ""
         }
         if (selectCityElement) {
-            selectCityElement.value = crmListObject.BillingCity ? crmListObject.BillingCity.split(")")[0] : ''
+            selectCityElement.value = crmListObject.City ? crmListObject.City.split(")")[0] : ''
         }
         if (selectIndustryElement) {
             selectIndustryElement.value = crmListObject.Industry ? crmListObject.Industry.split(")")[0] : ""
         }
         if (selectEventElement) {
             EventNameID = crmListObject.EventName ? crmListObject.EventName.split(")")[0] : "";
-            LeadSourceID = crmListObject.Source ? crmListObject.Source : "";
+            LeadSourceID = crmListObject.LeadSource ? crmListObject.LeadSource : "";
             getMarketing_Event();
         }
     }
@@ -414,19 +448,18 @@ function parseFilterCriteria(filterString) {
     let newListObject = {};
     let conditions = filterString.split(")<<NG>>");
     conditions.forEach(condition => {
-
         let parts = condition.split("='");
         let key = parts[0].replace("(", "").trim();
         let value = parts[1].replace("'", "").trim();
         let dateCondtion = condition
 
-        if (key === 'AnnualRevenue>') {
+        if (key === 'ExpectedRevenue>') {
 
             let revenue = extractAndSetExpectedRevenue(dateCondtion)
             let revenueParts = value.split('<AND>');
-            newListObject['AnnualRevenuemin'] = revenue.AnnualRevenuemin;
-            newListObject['AnnualRevenuemax'] = revenue.AnnualRevenuemax;
-            getTemplates
+            newListObject['ExpectedRevenuemin'] = revenue.ExpectedRevenuemin;
+            newListObject['ExpectedRevenuemax'] = revenue.ExpectedRevenuemax;
+
         } else if (key === 'CreatedDate>') {
 
             let dates = extractDatesFromCondition(dateCondtion)
@@ -458,24 +491,23 @@ function extractDatesFromCondition(condition) {
 }
 
 function extractAndSetExpectedRevenue(str) {
-
-    const regex = /AnnualRevenue>='(\d+)'<AND>AnnualRevenue<='(\d+)'/;
+    const regex = /ExpectedRevenue>='(\d+)'<AND>ExpectedRevenue<='(\d+)'/;
     const match = str.match(regex);
 
     if (match) {
-        const AnnualRevenueMin = match[1];
-        const AnnualRevenueMax = match[2];
+        const expectedRevenueMin = match[1];
+        const expectedRevenueMax = match[2];
         const result = {
-            AnnualRevenuemin: AnnualRevenueMin,
-            AnnualRevenuemax: AnnualRevenueMax
+            ExpectedRevenuemin: expectedRevenueMin,
+            ExpectedRevenuemax: expectedRevenueMax
         };
 
         return result;
     } else {
 
         return {
-            AnnualRevenuemin: '',
-            AnnualRevenuemax: ''
+            ExpectedRevenuemin: '',
+            ExpectedRevenuemax: ''
         };
     }
 }
@@ -485,29 +517,47 @@ function getDate(date) {
     return dateValue.toString();
 }
 
-
 function SaveFilter() {
+
+    let assignedToeElement = document.getElementById('AssignedTo');
+    let createdByElement = document.getElementById('CreatedBy');
 
     let fromRevenueElement = document.getElementById('fromRevenue');
     let toRevenueElement = document.getElementById('toRevenue');
+
     let fromDateElement = document.getElementById('FromDate');
     let ToDateElement = document.getElementById('ToDate');
-    let selectCityElement = document.getElementById('selectCity');
     let selectSourceElement = document.getElementById('selectSource');
     let selectEventElement = document.getElementById('selectEvent');
-    let selectCountryElement = document.getElementById('selectCountry');
+    let leadRatingElement = document.getElementById('leadRating');
+    let selectCityElement = document.getElementById('selectCity');
     let selectIndustryElement = document.getElementById('selectIndustry');
     let whereClauseArray = [];
+
+    let assignedTo;
+    let createdBy;
+
     let fromRevenue;
     let toRevenue;
+
     let fromDate;
     let ToDate;
+
     let selectSource;
     let selectEvent;
+    let leadRating;
+
     let selectCity;
     let selectIndustry;
-    let selectCountry;
 
+
+
+    if (assignedToeElement) {
+        assignedTo = assignedToeElement.value;
+    }
+    if (createdByElement) {
+        createdBy = createdByElement.value;
+    }
     if (fromRevenueElement) {
         fromRevenue = fromRevenueElement.value;
     }
@@ -522,10 +572,6 @@ function SaveFilter() {
     if (ToDateElement) {
         ToDate = ToDateElement.value;
     }
-    if (selectCityElement) {
-        selectCity = selectCityElement.value;
-    }
-
     if (selectSourceElement) {
         selectSource = selectSourceElement.value;
     }
@@ -533,57 +579,50 @@ function SaveFilter() {
         selectEvent = selectEventElement.value;
     }
 
-
-    if (selectCountryElement) {
-        selectCountry = selectCountryElement.value;
+    if (leadRatingElement) {
+        leadRating = leadRatingElement.value;
     }
-
+    if (selectCityElement) {
+        selectCity = selectCityElement.value;
+    }
     if (selectIndustryElement) {
         selectIndustry = selectIndustryElement.value;
     }
-    let customerType = 'Customer'
 
-    if (customerType) {
-        whereClauseArray.push(`(Type='${customerType}')`);
+    if (assignedTo) {
+        whereClauseArray.push(`(LeadOwner='${assignedTo}')`);
+    }
+    if (createdBy) {
+        whereClauseArray.push(`(CreatedByGUID='${createdBy}')`);
     }
 
-
     if (selectSource) {
-        if(crmListNewObject){
-            if(crmListNewObject.Entity.toLocaleLowerCase()==='customer'.toLocaleLowerCase()){
-                whereClauseArray.push(`(LeadSource='${selectSource}')`);
-            }else{
-                whereClauseArray.push(`(Source='${selectSource}')`);
-            }
-        }else{
-            whereClauseArray.push(`(Source='${selectSource}')`);
-        }
+        whereClauseArray.push(`(LeadSource='${selectSource}')`);
     }
 
     if (selectEvent) {
         whereClauseArray.push(`(EventName='${selectEvent}')`);
     }
 
+    if (leadRating) {
+        whereClauseArray.push(`(LeadPriority='${leadRating}')`);
+    }
     if (selectCity) {
-        whereClauseArray.push(`(BillingCity='${selectCity}')`);
+        whereClauseArray.push(`(City='${selectCity}')`);
     }
 
-    if (selectCountry) {
-        whereClauseArray.push(`(Country='${selectCountry}')`);
-    }
     if (selectIndustry) {
         whereClauseArray.push(`(Industry='${selectIndustry}')`);
     }
+
     if (fromRevenue || toRevenue) {
-        whereClauseArray.push(`(AnnualRevenue>='${fromRevenue}'<AND>AnnualRevenue<='${toRevenue}')`);
+        whereClauseArray.push(`(ExpectedRevenue>='${fromRevenue}'<AND>ExpectedRevenue<='${toRevenue}')`);
     }
-    if (fromDate && ToDate) {
+    if (fromDate || ToDate) {
         let fromDatevalue = moment(fromDate).format('YYYY/MM/DD');
         let todateValue = moment(ToDate).format('YYYY/MM/DD');
         whereClauseArray.push(`(CreatedDate>='${fromDatevalue}'<AND>CreatedDate<='${todateValue}')`);
-
     }
-
     let whereClause = "";
     if (whereClauseArray && whereClauseArray.length > 0) {
         if (whereClauseArray.length === 1) {
@@ -592,6 +631,7 @@ function SaveFilter() {
         else {
             whereClause = whereClauseArray.join("<<NG>>")
         }
+
     }
 
     let filterObject = {
@@ -602,12 +642,10 @@ function SaveFilter() {
     }
     else {
         update(filterObject, "CRM_List")
-      
+
     }
 
 }
-
-
 
 function update(object, repositoryName) {
     return new Promise((resolve) => {
@@ -658,6 +696,8 @@ function BacktoHome() {
 document.getElementById('blinkButton').addEventListener('click', function () {
     var button = this;
     button.classList.add('blink');
+
+    // Remove the class after 1 second to stop the blinking
     setTimeout(function () {
         button.classList.remove('blink');
     }, 1000);

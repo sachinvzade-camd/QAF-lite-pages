@@ -16,6 +16,7 @@ var totalRecipentCount = 0
 
 
 function showContent(tabId, tabNum, clickedButton) {
+    debugger
     tabLable = clickedButton.textContent;
     tabName = tabId;
     selectedTab = tabNum;
@@ -29,7 +30,7 @@ function showContent(tabId, tabNum, clickedButton) {
         button.style.fontWeight = "normal";
     });
     clickedButton.classList.add("isActive");
-    clickedButton.style.fontWeight = "600";
+    // clickedButton.style.fontWeight = "600";
 
     var tabBox = document.querySelector(".tab-box");
     var lineElement = document.querySelector(".line");
@@ -66,7 +67,7 @@ function showContent(tabId, tabNum, clickedButton) {
             }
 
             break;
-        case "report":
+        case "template":
 
 
             break;
@@ -113,6 +114,15 @@ function movingTabs(value) {
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
         loadWa_Campaign()
+        debugger
+        let imgpath=localStorage.getItem('baseImagesPath')
+        let imgsrc = imgpath + "" + "assets/img/phone.jpg";
+        let mbimgELement=document.getElementById('view-mb-img');
+        if(mbimgELement){
+            // mbimgELement.style.backgroundImage= `url(${imgsrc})`
+            mbimgELement.style.backgroundImage= `url(https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fmobile_6b0a8cd5-4512-4840-84eb-646c95cc792d.jpg)`;
+            mbimgELement.classList.add('mb-image')
+        }
         clearInterval(qafServiceLoaded);
     }
 }, 10);
@@ -248,7 +258,7 @@ window.onclick = function (event) {
         if (isStatus.toLowerCase() === "Draft".toLowerCase()) {
             document.getElementById("menuId").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 115}px;left: ${event.pageX - 130}px;">
              <button class="edit-btn" onclick="EditRecord('${waCampaignRecordId}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
-             <button class="delete-btn" onclick="DeleteRecord('${waCampaignRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
+             <button class="qaf-delete-btn" onclick="DeleteRecord('${waCampaignRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
         </div>`
         }
         else {
@@ -336,9 +346,11 @@ function HideLoader() {
 }
 
 function addCampaign() {
-    let popUp = document.getElementById("userForm");
+    let popUp = document.getElementById("popupContainer");
     if (popUp) {
         popUp.style.display = 'block';
+        const buttonElement = document.getElementById('actbtn');
+        showContent('template', 1, buttonElement)
         loadtemplate();
         if (campaginRecordID) {
             let entityValue = waCampaignList.find(cmp => cmp.RecordID === campaginRecordID).Entity
@@ -375,6 +387,7 @@ function loadtemplate() {
                                         <p class="msg-p">${val.Message}</p>
                                     </div>
                                     <div class="template-name">
+                                    <input type="checkbox" class="es-input-campagin"  onchange="gotoViewSendPage('${val.RecordID}')" id='${val.RecordID}'>
                                         <h3>${val.Name}</h3>
                                     </div>
                                 </div>
@@ -434,9 +447,23 @@ function CancelForm() {
     loadWa_Campaign();
     campaginRecordID = ""
 }
+function previousview(){
+    const buttonElement = document.getElementById('actbtn');
+        showContent('template', 1, buttonElement)
+}
+function nextview(){
+    const buttonElement = document.getElementById('actbtn');
+        showContent('send', 3, buttonElement)
+}
+function previoussend(){
+    const buttonElement = document.getElementById('actbtn');
+        showContent('view', 2, buttonElement)
+}
 
 function gotoViewSendPage(templateId) {
     
+    let checkboxElement=document.getElementById(`${templateId}`)
+    if( checkboxElement.checked){
     templateRecordId = templateId
     let campaignNameElement = document.getElementById('campaignName');
     let campaignName = ""
@@ -454,46 +481,52 @@ function gotoViewSendPage(templateId) {
     }
     else {
 
-        let secondSection = document.getElementById('popupContainer');
-        if (secondSection) {
-            secondSection.style.display = 'block';
-            let actbtnElement = document.getElementById('actbtn')
-            if (actbtnElement) {
-                let lineElement = document.querySelector(".line");
+        const buttonElement = document.getElementById('actbtn');
+        showContent('view', 2, buttonElement)
+        // let secondSection = document.getElementById('popupContainer');
+        // if (secondSection) {
+        //     secondSection.style.display = 'block';
+        //     let actbtnElement = document.getElementById('actbtn')
+        //     if (actbtnElement) {
+        //         let lineElement = document.querySelector(".line");
 
-                lineElement.style.width = 88 + "px";
-                lineElement.style.transform = "translateX(" + 0 + "px)";
-                actbtnElement.classList.add('isActive')
-            }
-            let actbtn2Element = document.getElementById('actbtn2')
-            if (actbtn2Element) {
-                actbtn2Element.classList.remove('isActive')
-            }
+        //         lineElement.style.width = 88 + "px";
+        //         lineElement.style.transform = "translateX(" + 0 + "px)";
+        //         actbtnElement.classList.add('isActive')
+        //     }
+        //     let actbtn2Element = document.getElementById('actbtn2')
+        //     if (actbtn2Element) {
+        //         actbtn2Element.classList.remove('isActive')
+        //     }
 
-            let firstElement = document.getElementById('view')
-            if (firstElement) {
-                firstElement.classList.add('active')
-            }
-            let secondElement = document.getElementById('send')
-            if (secondElement) {
-                secondElement.classList.remove('active')
-            }
+        //     let firstElement = document.getElementById('view')
+        //     if (firstElement) {
+        //         firstElement.classList.add('active')
+        //     }
+        //     let secondElement = document.getElementById('send')
+        //     if (secondElement) {
+        //         secondElement.classList.remove('active')
+        //     }
 
-            // const container = document.getElementsByClassName('popup-content')[0];
-            // const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
-            // const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
-            // activeLine1.style.width = activeTab1.offsetWidth + 'px';
-            // activeLine1.style.left = activeTab1.offsetLeft + 'px';
-            const buttonElement = document.getElementById('actbtn');
-            showContent('view', 1, buttonElement)
-            // if (campaginRecordID) {
-            //     Setvaluesinfrom()
-            // }
-        }
-        let popUp = document.getElementById("userForm");
-        if (popUp) {
-            popUp.style.display = 'none';
-        }
+        //     // const container = document.getElementsByClassName('popup-content')[0];
+        //     // const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
+        //     // const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
+        //     // activeLine1.style.width = activeTab1.offsetWidth + 'px';
+        //     // activeLine1.style.left = activeTab1.offsetLeft + 'px';
+        //     const buttonElement = document.getElementById('actbtn');
+        //     showContent('view', 1, buttonElement)
+        //     // if (campaginRecordID) {
+        //     //     Setvaluesinfrom()
+        //     // }
+        // }
+        // let popUp = document.getElementById("userForm");
+        // if (popUp) {
+        //     popUp.style.display = 'none';
+        // }
+        
+        if (campaginRecordID) {
+                 Setvaluesinfrom()
+             }
         if (campaginRecordID) {
             updateItem(waCampaignObject, "WA_Campaign", campaginRecordID)
         }
@@ -506,6 +539,8 @@ function gotoViewSendPage(templateId) {
 
 
     }
+}
+
 }
 
 function save(object, repositoryName) {
@@ -606,6 +641,7 @@ function displayEntity() {
     let sourceDropdown = document.getElementById('entity');
     let options = `<option value=''>Select entity</option>`
     if (sourceDropdown) {
+        entityList=entityList.sort()
         entityList.forEach(entity => {
             options += `<option value='${entity}'>${entity}</option>`
         })
@@ -681,6 +717,7 @@ function getCrmList(entityvalue) {
         crmList = []
         if (Array.isArray(lists) && lists.length > 0) {
             crmList = lists;
+            crmList= crmList.sort((a, b) => a.Name.localeCompare(b.Name));
             entityObject = crmList
         }
         displaylists()
@@ -731,7 +768,7 @@ function saveCampagin() {
         let newId=campaginRecordID;
         console.log('newId',newId)
         saveForm(campaginObject)
-        openAlert("Data is saved");
+        openAlert("Recipient list is saved!");
     }
 
 }
@@ -840,4 +877,12 @@ function sendCampaigainApi() {
                 resolve(data)
             })
     })
+}
+
+function CloseFormvIEW() {
+    let popUp = document.getElementById("popupContainer");
+    if (popUp) {
+        popUp.style.display = 'none';
+        removeCss()
+    }
 }

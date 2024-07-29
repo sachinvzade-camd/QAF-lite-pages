@@ -352,7 +352,10 @@ function addExistingUser() {
     if (window.QafPageService) {
         window.QafPageService.AddItem("App_User_Mapping", function () {
             getAppuserMapping();
-
+            if(currentAppName==='CRM'){
+                localStorage.removeItem('Field Sales'+ "User_Permission");
+                localStorage.removeItem('Field Sales' + "Teams");
+            }
             localStorage.removeItem(currentAppName+ "User_Permission");
             localStorage.removeItem(currentAppName + "Teams");
         }, fields, fieldsValue, fieldFilterConditions, null, fieldsDoNotdiaply);

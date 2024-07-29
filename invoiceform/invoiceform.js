@@ -205,7 +205,7 @@ function AddInvoiceForm() {
         let activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
         let activeLine1;
         if (activeTab1) {
-            activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
+            activeLine1 = activeTab1.parentNode.getElementsByClassName('qafline')[0];
             activeLine1.style.width = activeTab1.offsetWidth + 'px';
             activeLine1.style.left = activeTab1.offsetLeft + 'px';
         }
@@ -352,7 +352,7 @@ function getContact() {
 
 function setContactOnDropdown() {
     let contactElement = document.getElementById('contact');
-    let options = `<option value=''> Select Contact</option>`;
+    let options = ``;
     if (contactElement) {
         contactList.forEach(contact => {
             options += `<option value="${contact.RecordID}">${contact.FirstName} ${contact.LastName}</option>`;
@@ -514,6 +514,8 @@ function getObjectID() {
             }
             orderItemList = []
             quotationRecordObject = null
+            let dateIssuedElement = document.getElementById('dateIssued');
+            dateIssuedElement.value =moment().format('YYYY-MM-DD') 
             // resetquotationvalue()
         }
     })
@@ -796,9 +798,12 @@ function setquotationValue() {
     let QpriceTaxElement = document.getElementById('priceTax')
     let discountSelectElement = document.getElementById('discount-select')
     let taxSelectElement = document.getElementById('tax-select')
+    let QlinktElement = document.getElementById('Qlink')
 
 
-
+    if (QlinktElement) {
+        QlinktElement.value = quotationRecordObject.Ilink  ? JSON.parse(quotationRecordObject.Ilink).link : ''
+    }
     if (discountSelectElement) {
         discountSelectElement.value = quotationRecordObject.DiscountType ? quotationRecordObject.DiscountType : ''
     }
@@ -1008,6 +1013,13 @@ function saveQuotationForm() {
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         window.QafService.CreateItem(intermidiateRecord).then(response => {
             invoiceRecordID = response
+            let link={
+                displayName: "Invoice Preview",
+                link: `${window.location.origin}/preview?type=Invoice&id=${invoiceRecordID}`
+            }
+            let invoiceupdate={}
+            invoiceupdate['Ilink']=JSON.stringify(link)
+            updateQuotationForm(invoiceupdate)
             getQuotation()
 
             resolve({
@@ -1277,7 +1289,7 @@ function calculateTotal(index) {
                 let totalAmount = (val.Quantity * val.ListPrice)
                 let total = (val.Quantity * val.ListPrice) * (val.Discount / 100)
                 val.ItemTotal = totalAmount - total
-                termElement.value = val.ItemTotal.toFixed(2)
+                termElement.innerHTML = val.ItemTotal.toFixed(2)
             }
         }
     })
@@ -1490,29 +1502,27 @@ function loadChildTable() {
                 autocomplete="off" required oninput="onTermsinput(this,'${index}')"
                 >
         </td>
-   <td class="qaf-td ledger-Name-cell">
+   <td class="qaf-td ">
             <select class="fs-input tableinput ledgerName" id="BillingFrequencyinv-${index}" name="BillingFrequency" onchange="onChangeBillingFrequency('${index}')"></select>
         </td>
    <td class="qaf-td">
-            <input type="number" class="fs-input Quantity tableinput" id="Quantityinv-${index}" name="Quantity"
+            <input type="number" class="fs-input Quantity tableinput currency-field" id="Quantityinv-${index}" name="Quantity"
                 autocomplete="off" required oninput="onQuantityinput(this,'${index}')"
                 >
         </td>
    <td class="qaf-td">
-            <input type="number" class="fs-input ListPrice tableinput" id="ListPriceinv-${index}" name="ListPrice"
+            <input type="number" class="fs-input ListPrice tableinput currency-field" id="ListPriceinv-${index}" name="ListPrice"
                 autocomplete="off" required oninput="onListPriceinput(this,'${index}')"
                 >
         </td>
    <td class="qaf-td">
-            <input type="number" class="fs-input Discount tableinput" id="Discountinv-${index}" name="Discount"
+            <input type="number" class="fs-input Discount tableinput currency-field" id="Discountinv-${index}" name="Discount"
                 autocomplete="off" required oninput="onDiscountinput(this,'${index}')"
                 >
         </td>
         <td class="qaf-td">
-            
-            <input type="number" class="fs-input Discount tableinput" id="ItemTotalInv-${index}" name="ItemTotal" disabled
-                autocomplete="off" required oninput="onItemTotalinput(this,'${index}')"
-                >
+       <div id="ItemTotalInv-${index}" class="currency-field itemtotal-child"></div>
+        
         </td>
         <td class="qaf-td row-delete-td">
         <div class="action-delete-row" >
@@ -1527,6 +1537,7 @@ function loadChildTable() {
 
 
     let tableStructure = `
+    <div class='table-name'>Product and Services</div>
         <table class="qaf-table">
             <thead>
                  <tr class="qaf-tr">
@@ -1534,10 +1545,10 @@ function loadChildTable() {
                     <th class="qaf-th sub-table">SKU</th>
                     <th class="qaf-th sub-table">Terms</th>
                     <th class="qaf-th sub-table">Billing Frequency</th>
-                    <th class="qaf-th sub-table">Quantity</th>
-                    <th class="qaf-th sub-table">List Price</th>
-                    <th class="qaf-th sub-table">Discount</th>
-                    <th class="qaf-th sub-table">Item Total</th>
+                    <th class="qaf-th sub-table currency-field">Quantity</th>
+                        <th class="qaf-th sub-table currency-field">List Price</th>
+                        <th class="qaf-th sub-table currency-field">Discount</th>
+                        <th class="qaf-th sub-table currency-field">Item Total</th>
                     <th class="qaf-th sub-table action-button-th"></th>
                 </tr>
             </thead>
@@ -1596,7 +1607,7 @@ function deleteRow(index) {
 function billingFrequesyOnDropdown() {
     orderItemList.forEach((perticular, index) => {
         let expenseLedgerElement = document.getElementById(`BillingFrequencyinv-${index}`);
-        let options = `<option value=''> Select Billing Frequency</option>`; ``
+        let options = ``; ``
         if (expenseLedgerElement) {
             billingFrequencyList.forEach(product => {
                 options += `<option value="${product}">${product}</option>`;
@@ -1657,7 +1668,7 @@ function setExpernseperticularTable() {
         }
         let ItemTotalElement = document.getElementById(`ItemTotalInv-${index}`);
         if (ItemTotalElement) {
-            ItemTotalElement.value = perticular.ItemTotal ? perticular.ItemTotal.toFixed(2) : ''
+            ItemTotalElement.innerHTML = perticular.ItemTotal ? perticular.ItemTotal.toFixed(2) : ''
         }
     })
 }
@@ -2085,7 +2096,7 @@ function setPreviewData() {
                         </div>
                                         
                         <div class="table-order-items">
-
+<div class='table-name'>Product and Services</div>
                             <table>
                                 <thead>
                                     <tr class="header-rowView">

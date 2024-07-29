@@ -68,6 +68,7 @@ function getIndustries() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((indlist) => {
         if (Array.isArray(indlist) && indlist.length > 0) {
             industriesList = indlist;
+            industriesList= industriesList.sort((a, b) => a.Industry.localeCompare(b.Industry));
 
         }
         loadIndustries();
@@ -99,7 +100,7 @@ function getCountry() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((contry) => {
         if (Array.isArray(contry) && contry.length > 0) {
             countryList = contry;
-
+            countryList= countryList.sort((a, b) => a.Country.localeCompare(b.Country));
         }
         loadCountry()
         getLead_Source();
@@ -119,6 +120,7 @@ function getLead_Source() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((leads) => {
         if (Array.isArray(leads) && leads.length > 0) {
             LeadSourceList = leads;
+            LeadSourceList= LeadSourceList.sort((a, b) => a.LeadSource.localeCompare(b.LeadSource));
         }
         loadLead_Source();
     });
@@ -164,6 +166,7 @@ function getMarketing_Event() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((eventsname) => {
         if (Array.isArray(eventsname) && eventsname.length > 0) {
             marketing_EventList = eventsname;
+            marketing_EventList= marketing_EventList.sort((a, b) => a.EventName.localeCompare(b.EventName));
             loadEventList()
         }
         else {
@@ -214,10 +217,11 @@ function loadCity() {
     let selectCityElement = document.getElementById('selectCity');
     let options = `<option value=''> Select City</option>`;
     if (selectCityElement) {
-        countryList.forEach(city => {
-            options += `<option value="${city.RecordID}">${city.City}</option>`;
-
-        });
+        let cityList= countryList.sort((a, b) => a.City.localeCompare(b.City));
+        cityList.forEach(city => {
+              options += `<option value="${city.RecordID}">${city.City}</option>`;
+  
+          });
         selectCityElement.innerHTML = options;
     }
 }
@@ -250,15 +254,12 @@ function setcrmListValue() {
             selectCountryElement.value = crmListObject.Country ? crmListObject.Country : ""
         }
         if (selectCityElement) {
-            debugger
             selectCityElement.value = crmListObject.City ? crmListObject.City.split(")")[0] : ''
         }
         if (selectIndustryElement) {
-            debugger
             selectIndustryElement.value = crmListObject.Industry ? crmListObject.Industry.split(")")[0] : ""
         }
         if (selectEventElement) {
-            debugger
             EventNameID = crmListObject.EventName?crmListObject.EventName.split(")")[0]:"";
             LeadSourceID = crmListObject.Source?crmListObject.Source:"";
             getMarketing_Event();
@@ -267,10 +268,9 @@ function setcrmListValue() {
 }
 
 function parseFilterCriteria(filterString) {
-    debugger
+    
     let newListObject = {};
-    let conditions = filterString?filterString.split(")<<NG>>"):[];
-    if(conditions&&conditions.length>0){
+    let conditions = filterString.split(")<<NG>>");
     conditions.forEach(condition => {
         let parts = condition.split("='");
         let key = parts[0].replace("(", "").trim();
@@ -278,7 +278,7 @@ function parseFilterCriteria(filterString) {
         let dateCondtion = condition
 
         if (key === 'ExpectedRevenue>') {
-debugger
+
             let revenue = extractAndSetExpectedRevenue(dateCondtion)
             let revenueParts = value.split('<AND>');
             newListObject['ExpectedRevenuemin'] = revenue.ExpectedRevenuemin;
@@ -295,10 +295,6 @@ debugger
             newListObject[key] = value;
         }
     });
-}else{
-    return "";
-
-}
     return newListObject;
 }
 

@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="q-invoice">
 <div class="qaf-invoice">
     <div class="qaf-form popup-container" id="invoice-form" style="display: none;">
         <div id="pageDisabled"></div>
@@ -21,7 +22,7 @@
                 <div class="qaf-tab-box"> <button class="tab-btn actbtn isActive" id="actbtn"
                         data-tab="first">Details</button> <button class="tab-btn" id="actbtn2" data-tab="second">Order
                         Items</button> <button class="tab-btn" id="actbtn3" data-tab="third">Review</button> </hr>
-                    <div id="line" class="line"> </div>
+                    <div id="line" class="qafline"> </div>
                 </div>
                 <div class="button-border">
                     <div class="border-k"> </div>
@@ -38,7 +39,10 @@
                                             class="Customer fs-label">Invoice Title</label> <span
                                             class="required">*</span> <input type="text" class="fs-input" id="quoteName"
                                             name="quoteName" autocomplete="off" required> </div>
-                                  
+                                            <div class="qaf-form-group"> <label for="quoteNamelink" class="Customer fs-label">Invoice
+                                                Link</label> <input type="text"
+                                                class="fs-input" id="Qlink" name="quoteNamelink" autocomplete="off"
+                                                readonly> </div>
                                     <div class="qaf-form-group date-input-courier" id="customer-drop">
                                         <div class="labelarea"> <label for="contact" class="fs-label">Customer <span
                                             class="required">*</span></label>
@@ -107,6 +111,7 @@
                     </div>
                 </div>
                 <div id="second" class="qaf-tab-content">
+                    <div class="qsecond-top">
                     <div class="tablecontainer" id="tablecontainer"> </div>
                     <div class="header-title table-heading">
                         <div class="common-page-title">Summary</div>
@@ -164,6 +169,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                     <div class="end-buttons"> <button class="btn btn-secondary"
                             onclick="backtofirstTabClick('actbtn')">Previous</button> <button
                             class="btn btn-primary next-button" onclick="nextSecondTabClick(this)">Next</button> </div>
@@ -177,6 +183,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script src="https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Pages1%2Finvoiceform_89e5fe5a-01a0-4b15-b840-7218f73398a3.js"></script>

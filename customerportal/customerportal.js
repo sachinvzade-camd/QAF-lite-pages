@@ -750,6 +750,7 @@ async function getObjectID(item) {
     }
 
     window.QafPageService.AddItem(item.ObjectName, function () {
+        getServices()
     }, null, fieldsValue, fieldFilterConditions, null, fieldsDoNotdiaply);
 
 }
@@ -762,7 +763,6 @@ function openEdit(object) {
 
 
 document.getElementById('search').addEventListener('keyup', function (event) {
-    debugger
     let searchCancel = document.getElementById('cancelSearch-report');
     if (searchCancel) {
         searchCancel.style.display = 'block';
@@ -797,7 +797,7 @@ document.getElementById('search').addEventListener('keyup', function (event) {
 
 function searchByText(searchTerm){
     let servicesText = "";
-  let apps=  serviceList.filter(a=>a.RequestTitle.includes(searchTerm))
+  let apps=  serviceList.filter(a=>a.RequestTitle.toLowerCase().includes(searchTerm.toLowerCase()))
   if(apps&&apps.length>0){
     apps.forEach(val => {
         servicesText += ` 

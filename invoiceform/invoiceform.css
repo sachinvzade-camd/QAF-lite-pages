@@ -1,4 +1,4 @@
-/* Form Style */
+
 
 .qaf-form {
   justify-content: center;
@@ -18,6 +18,7 @@
   font-family: inherit;
   color: inherit;
   margin-bottom: 12px;
+  padding-left: 20px;
 }
 
 .page-main {
@@ -31,22 +32,22 @@
 }
 .form-container {
   padding-top: 20px;
+  height: 63vh;
+  overflow-y: scroll;
+  margin-bottom: 22px;
 }
 .qaf-container {
   margin: 0px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   border-radius: 5px;
-  /* box-shadow: 1px 2px 5px; */
-  border: 1px solid #e4dede;
   margin-bottom: 20px;
   width: 100%;
 }
 .qaf-container-main {
   margin: 0px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   border-radius: 5px;
   /* box-shadow: 1px 2px 5px; */
-  border: 1px solid #e4dede;
   margin-bottom: 20px;
   width: 100%;
 }
@@ -90,7 +91,6 @@
   display: block;
   justify-content: flex-start;
   width: 100%;
-  border: 1px solid #e4dede;
   padding: 10px;
   margin: 20px 0px 10px 0px;
   border-radius: 5px;
@@ -196,11 +196,11 @@
   font-weight: 400;
 }
 .header-buttons {
-  padding: 12px 0px;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: start;
+  padding: 12px 0px 0px 0px;
+	 width: 100%;
+	 box-sizing: border-box;
+	 display: flex;
+	 justify-content: start;
 }
 
 .form-container::-webkit-scrollbar {
@@ -466,9 +466,9 @@ input[type="date"]:focus::-webkit-datetime-edit {
   display: block;
 }
 /* for QAF Lite */
-.line {
+.qafline {
   position: absolute;
-  top: 118px;
+  top: 85px;
   height: 2px;
   background-color: #311212;
   transition: all 0.3s ease-in-out;
@@ -921,6 +921,7 @@ div .middle-div {
   font-family: inherit;
   color: inherit;
   margin-bottom: 12px;
+  padding-left: 20px;
 }
 
 .page-main {
@@ -934,10 +935,13 @@ div .middle-div {
 }
 .form-container {
   padding-top: 20px;
+  height: 63vh;
+  overflow-y: scroll;
+  margin-bottom: 22px;
 }
 .qaf-container {
   margin: 0px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   border-radius: 5px;
   /* box-shadow: 1px 2px 5px; */
   border: 1px solid #e4dede;
@@ -946,7 +950,7 @@ div .middle-div {
 }
 .qaf-container-main {
   margin: 0px;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   border-radius: 5px;
   /* box-shadow: 1px 2px 5px; */
   border: 1px solid #e4dede;
@@ -993,7 +997,6 @@ div .middle-div {
   display: block;
   justify-content: flex-start;
   width: 100%;
-  border: 1px solid #e4dede;
   padding: 10px;
   margin: 20px 0px 10px 0px;
   border-radius: 5px;
@@ -1098,13 +1101,7 @@ div .middle-div {
   margin: 10px 0px;
   font-weight: 400;
 }
-.header-buttons {
-  padding: 12px 0px;
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: start;
-}
+
 
 .form-container::-webkit-scrollbar {
   width: 10px; /* Set the width of the scrollbar */
@@ -1369,9 +1366,9 @@ input[type="date"]:focus::-webkit-datetime-edit {
   display: block;
 }
 /* for QAF Lite */
-.line {
+.qafline {
   position: absolute;
-  top: 118px;
+  top: 85px;
   height: 2px;
   background-color: #311212;
   transition: all 0.3s ease-in-out;
@@ -1831,4 +1828,45 @@ div .middle-div {
 }
 .RemoveZindex{
   z-index: 1053;
+}
+ .qsecond-top,  #QpreviewQuotation {
+  height: 70vh;
+  overflow-y: scroll;
+}
+ input::-webkit-outer-spin-button,  input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+ .currency-field {
+  text-align: end !important;
+}
+ .qaf-tr .currency-field {
+  padding-right: 20px;
+}
+ .itemtotal-child {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding-right: 0 !important;
+  font-size: 15px;
+}
+ #Subtotal,  #GrandTotal {
+  font-size: 15px;
+  font-weight: bold;
+}
+ .tablecontainer::-webkit-scrollbar {
+  width: 10px;
+  height: 16px;
+}
+ .table-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+ .tableinput {
+  width: 130px;
+}
+ .ledger-Name-cell .tableinput {
+  width: 244px !important;
 }
