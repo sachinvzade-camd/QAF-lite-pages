@@ -16,6 +16,7 @@ var employeeSaveObject = {}
 var appRecordID = "";
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+        debugger
         getPageUrl();
         getDepartment();
         clearInterval(qafServiceLoaded);

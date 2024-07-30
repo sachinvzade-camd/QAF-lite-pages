@@ -39,7 +39,7 @@ qafServiceLoaded = setInterval(() => {
 }, 10);
 
 function getContactDetails() {
-    debugger
+    
     let objectName = "CH_User";
     let fieldList = "RecordID,Email,ParentReferenceID,FirstName,LastName,Offboarded,CustomerName".split(",");
     let orderBy = "";
@@ -531,7 +531,7 @@ function getServiceAppList(getList) {
 }
 
 async function onRequest(item) {
-    debugger
+    
     if (item.CustomerList && window.location.pathname != "/c-helpdesk/helpdesk-my-tickets") {
         if (item.CustomerList) {
             let contact = await getContactOfCustomerListOfQAF(item.CustomerList)

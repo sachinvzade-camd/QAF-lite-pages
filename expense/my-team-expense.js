@@ -510,7 +510,7 @@ function prevMonth(e) {
 }
 
 function expgrid_onItemRender(cname, cvalue, row) {
-    debugger
+    
     if (cname === 'Requesttitle') {
         if (cvalue) {
             let result;

@@ -892,7 +892,7 @@ const QAFQuotation = (function () {
 
 
     function loadChildTable() {
-        debugger
+        
         let perticularTable = ""
         orderItemList.forEach((perticular, index) => {
             perticularTable += `<tr class="qaf-tr qaf-tr-data">
@@ -1040,7 +1040,7 @@ const QAFQuotation = (function () {
             if (DiscountElement) {
                 DiscountElement.value = perticular.Discount ? perticular.Discount : ''
             }
-            debugger
+            
             let ItemTotalElement = document.getElementById(`ItemTotal-${index}`);
             if (ItemTotalElement) {
                 ItemTotalElement.innerHTML = perticular.ItemTotal ? perticular.ItemTotal.toFixed(2) : ''

@@ -1297,7 +1297,7 @@ function calculateTotal(index) {
 }
 
 function setValueInPriceObject() {
-debugger
+
     priceDetails = {
         Subtotal: '',
         Discount: '',

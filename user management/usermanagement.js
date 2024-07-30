@@ -219,6 +219,7 @@ function EditRecord(RecordID) {
             getApplist();
             getEmployeeforUpdate();
             addCssforscroll();
+
         }
     }
 }
@@ -256,6 +257,7 @@ function getUser_PermissionUpdate() {
         if (Array.isArray(permissionlist) && permissionlist.length > 0) {
             user_PermissionRecord = permissionlist;
             console.log("user_PermissionRecord", user_PermissionRecord);
+
         }
         getApp_User_MappingUpdate();
     });
@@ -282,7 +284,7 @@ function getApp_User_MappingUpdate() {
 
 
 function setValuesinForm() {
-    
+    debugger
     let updatrRecord = editEmployeeRecord;
     let commonValue = true;
     user_PermissionRecord.forEach(record => {
@@ -414,7 +416,7 @@ function getApplist() {
                     return objOne.AppName === objTwo;
                 });
             });
-
+debugger
             const htmlContent = document.getElementById("card-container")
             let html = '';
             console.log(localStorageAppList);
@@ -571,7 +573,11 @@ function saveDetails() {
         openAlert("Please enter Valid email address")
     }
     else {
-        save(employeeSaveObject, 'Employees', getDetails)
+        if(updateRecordID){
+            update(employeeSaveObject, 'Employees', getDetails)
+        }else{
+            save(employeeSaveObject, 'Employees', getDetails)
+        }
 
     }
 
@@ -601,7 +607,7 @@ function saveAppUserMapping() {
     })
     let mapping = []
     selectedApps.forEach(app => {
-        
+        debugger
         localStorage.removeItem(app.AppName + "User_Permission");
         localStorage.removeItem(app.AppName + "Teams");
         let users = [];
@@ -623,7 +629,7 @@ function saveAppUserMapping() {
 
 
 function saveUserPermission() {
-    
+    debugger
     let mapping = []
     let selectedApps = []
     applist.forEach(val => {
@@ -687,6 +693,30 @@ function save(object, repositoryName, callback) {
     )
 
 }
+
+function update(object, repositoryName, callback) {
+        var recordFieldValueList = [];
+        var intermidiateRecord = {}
+        var user = getCurrentUser()
+        Object.keys(object).forEach((key, value) => {
+            recordFieldValueList.push({
+                FieldID: null,
+                FieldInternalName: key,
+                FieldValue: object[key]
+            });
+        });
+        intermidiateRecord.CreatedByID = user.EmployeeID;
+        intermidiateRecord.CreatedDate = new Date();
+        intermidiateRecord.LastModifiedBy = null;
+        intermidiateRecord.ObjectID = repositoryName;
+        intermidiateRecord.RecordID = updateRecordID;
+        intermidiateRecord.RecordFieldValues = recordFieldValueList;
+        window.QafService.UpdateItem
+            (intermidiateRecord).then(response => {
+                callback(response)
+            });
+}
+
 
 function bulkadd(objectArray, repositoryName) {
     let records = [];

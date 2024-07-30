@@ -16,7 +16,7 @@ var totalRecipentCount = 0
 
 
 function showContent(tabId, tabNum, clickedButton) {
-    debugger
+    
     tabLable = clickedButton.textContent;
     tabName = tabId;
     selectedTab = tabNum;
@@ -114,13 +114,12 @@ function movingTabs(value) {
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
         loadWa_Campaign()
-        debugger
         let imgpath=localStorage.getItem('baseImagesPath')
         let imgsrc = imgpath + "" + "assets/img/phone.jpg";
         let mbimgELement=document.getElementById('view-mb-img');
         if(mbimgELement){
             // mbimgELement.style.backgroundImage= `url(${imgsrc})`
-            mbimgELement.style.backgroundImage= `url(https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fmobile_6b0a8cd5-4512-4840-84eb-646c95cc792d.jpg)`;
+            mbimgELement.style.backgroundImage= `url(https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fsimulator_c705ad55-5fe8-4690-84a1-6a7da942a3d6.jpg)`;
             mbimgELement.classList.add('mb-image')
         }
         clearInterval(qafServiceLoaded);
@@ -380,14 +379,14 @@ function loadtemplate() {
             templateList = temp;
             templateList.forEach(val => {
                 html += `
-                        <div class="col-md-4 job-card" onclick="gotoViewSendPage('${val.RecordID}')">
+                        <div class="col-md-4 job-card" >
                             <div class="card">
                                 <div class="card-body">
                                     <div class="template-msg">
                                         <p class="msg-p">${val.Message}</p>
                                     </div>
                                     <div class="template-name">
-                                    <input type="checkbox" class="es-input-campagin"  onchange="gotoViewSendPage('${val.RecordID}')" id='${val.RecordID}'>
+                                    <input type="checkbox" class="es-input-campagin"  onchange="checkboxCLick('${val.RecordID}')" id='${val.RecordID}'>
                                         <h3>${val.Name}</h3>
                                     </div>
                                 </div>
@@ -398,7 +397,14 @@ function loadtemplate() {
         }
     })
 };
-
+function checkboxCLick(templateId){
+    let checkboxElement=document.getElementById(`${templateId}`)
+    if( checkboxElement&&checkboxElement.checked){
+             templateRecordId = templateId
+    }else{
+        openAlert("Select template")
+    }
+}
 
 function CloseForm() {
     let popUp = document.getElementById("userForm");
@@ -451,6 +457,9 @@ function previousview(){
     const buttonElement = document.getElementById('actbtn');
         showContent('template', 1, buttonElement)
 }
+function nextTemplate(){
+        gotoViewSendPage(templateRecordId)
+}
 function nextview(){
     const buttonElement = document.getElementById('actbtn');
         showContent('send', 3, buttonElement)
@@ -463,7 +472,7 @@ function previoussend(){
 function gotoViewSendPage(templateId) {
     
     let checkboxElement=document.getElementById(`${templateId}`)
-    if( checkboxElement.checked){
+    if( checkboxElement&&checkboxElement.checked){
     templateRecordId = templateId
     let campaignNameElement = document.getElementById('campaignName');
     let campaignName = ""
@@ -539,7 +548,9 @@ function gotoViewSendPage(templateId) {
 
 
     }
-}
+    }else{
+        openAlert("Select template")
+    }
 
 }
 

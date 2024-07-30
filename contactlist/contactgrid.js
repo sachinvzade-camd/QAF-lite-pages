@@ -699,7 +699,7 @@ function makeBlinkResetBtn() {
 
 function getAllListData() {
     return new Promise((resolve) => {
-        debugger
+        
         let objectName = "CRM_List";
         let list = 'RecordID,FilterCriteria,Entity';
         let fieldList = list.split(",");

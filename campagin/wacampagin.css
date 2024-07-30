@@ -260,12 +260,12 @@
 
 .popup-content {
   background: #fff;
-  padding: 30px 20px 20px 20px;
+  padding: 0px 20px 0px 20px;
   /* border-radius: 8px; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 50%;
-  height: 95vh;
-  overflow: scroll;
+  height: 100vh;
+  overflow: hidden;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -274,8 +274,8 @@
 }
 
 .popup-content-es {
-  min-width: 99%;
-  max-width: 99%;
+  min-width: 100%;
+  max-width: 100%;
   margin: 0;
 }
 
@@ -382,7 +382,7 @@
 
 /* Back Buttons */
 .header-buttons {
-  padding: 12px 0px;
+  padding: 12px 0px 0px 0px;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -480,7 +480,7 @@
 .tab-content {
   display: none;
   width: 100%;
-  padding: 20px 0px;
+  padding: 15px 0px 0px 0px;
   /* border: 1px solid #ddd;  */
 }
 
@@ -490,7 +490,7 @@
 
 .line {
   position: absolute;
-  top: 111px;
+  top: 70px;
   height: 2px;
   background-color: #311212;
   transition: all 0.3s ease-in-out;
@@ -580,6 +580,7 @@
 }
 .es-input-campagin{
   margin-top: -1px!important;
+  scale: 1.3;
 }
 .template-name{
   display: flex;
@@ -597,15 +598,15 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100%;
-  height: 956px;
+  width: 447px;
+  height: 853px;
 }
 #viewcampain{
   position: absolute;
   top: 100px;
-  width: 82%;
   left: 50px;
-  height: calc(887px - 104px);
+  height: 703px;
+  width: 357px;
   overflow-y: scroll;
 }
 .next-prev-view{
@@ -613,6 +614,17 @@
   margin-top: 18px;
 }
 .campagin-temp{
-  height: 961px;
+  height: 858px;
   overflow: scroll;
+}
+.content_area{
+  /* margin-bottom: 1px; */
+  height: 82vh;
+  overflow: scroll;
+}
+.button-aligment{
+  /* display: flex;
+  justify-content: space-between; */
+  text-align: end;
+  transform: translate(0,-13px);
 }

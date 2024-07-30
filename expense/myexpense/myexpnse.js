@@ -549,7 +549,7 @@ function getExpenseClaim() {
     });
 }
 function getExpensePerticular() {
-    debugger
+    
     let objectName = "Expense_Particulars";
     let list = 'RecordID,ExpenseLedger,ExpenseDate,Amount,ModeofPayment,Remarks,AttachBills';
     let fieldList = list.split(",");
@@ -559,7 +559,7 @@ function getExpensePerticular() {
     let whereClause = `ParentRecordID='${expenseRecordID}'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((expensePerticulars) => {
         if (Array.isArray(expensePerticulars) && expensePerticulars.length > 0) {
-            debugger
+            
             expenseperticularList = expensePerticulars
             loadExpernseperticularTable()
             onChangeProject()
