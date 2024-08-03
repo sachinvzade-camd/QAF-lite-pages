@@ -1,0 +1,85 @@
+.salesforce-authentication .qaf-btn-primary {
+    margin-left: 8px;
+    background-color: var(--ButtonBackGroundColor);
+    border: none;
+    color: var(--qaf-grid-button-color, #fff);
+    padding: var(--qaf-grid-button-color, 4px 12px 4px 12px);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: var(--qaf-grid-button-font-size, 12px);
+    border-radius: var(--qaf-grid-button-border-radius, 4px);
+}
+.salesforce-authentication .popup-containernew {
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+}
+.salesforce-authentication .popup-content {
+    background: #fff;
+    padding:0px;
+   /* border-radius: 8px;
+    */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 22%;
+    height: 47vh;
+    overflow: auto;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 30px;
+}
+.salesforce-authentication .container {
+    width: 100%;
+    margin: 0px;
+    padding: 20px 20px 9px 20px;
+    border-radius: 5px;
+   /* box-shadow: 1px 2px 5px;
+    */
+    /* border: 1px solid #e4dede;
+    margin-bottom: 20px; */
+}
+.salesforce-authentication .fs-label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-family: Poppins;
+    color: #333;
+    transform: translate(0, 5px);
+    font-weight: 400;
+}
+.salesforce-authentication .fs-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 13px;
+    outline: none;
+    color: #333;
+}
+.salesforce-authentication .es-buttos {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.salesforce-authentication .salesForcetitle {
+    background: #80808029;
+    padding: 20px;
+    font-size: 15px;
+    font-weight: 500;
+}
+img::before{
+    background: transparent!important;
+    width: 0!important;
+    height: 0!important;
+}

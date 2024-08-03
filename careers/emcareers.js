@@ -1,24 +1,25 @@
-
+var apURL = window.localStorage.getItem('env')
 var noRecordFoundImages;
 var sharedJDURL;
 let qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+      window.QafService.SetEnvUrl(apURL)
         getDetails()
         clearInterval(qafServiceLoaded);
     }
 }, 10);
 
 function getDetails() {
-    let objectName = "Recruitment_Settings";
-    let list = "Attachment,SettingName";
+    let objectName = "Company_Settings";
+    let list = "PortalImage";
     let orderBy = "";
-    let whereClause = "SettingName='PortalImage'";
+    let whereClause = "";
     let fieldList = list.split(",")
     let pageSize = "20000";
     let pageNumber = "1";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((data) => {
       if (Array.isArray(data) && data.length > 0) {
-      noRecordFoundImages = window.location.origin+"/Attachment/downloadfile?fileUrl="+encodeURIComponent(getURLFromJson(data[0].Attachment))
+      noRecordFoundImages = window.location.origin+"/Attachment/downloadfile?fileUrl="+encodeURIComponent(getURLFromJson(data[0].PortalImage))
         this.getSharedJDURL()
       }
     })
@@ -90,6 +91,7 @@ function getURLFromJson(values) {
     let pageSize = "20000";
     let pageNumber = "1";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((settings) => {
+      debugger
       if (Array.isArray(settings) && settings.length > 0) {
         sharedJDURL=settings[0].SettingValue
         this.getJobPosting()
