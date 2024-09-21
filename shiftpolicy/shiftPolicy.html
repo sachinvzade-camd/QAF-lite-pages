@@ -1,25 +1,110 @@
-<div class="page-details">
-    <div class="header-title">
-        <div class="left-conatiner">
-            <div class="common-page-title">Shift Allocation Policy </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div class="shiftPolicy">
+    <div class="container">
+        <div class="tab-box"> <button class="tab-btn actbtn isActive" id="actbtn"
+                onclick="showContent('activity',1, this)" data-tab="activity">Shift Config</button> <button
+                class="tab-btn" onclick="showContent('other',2, this)" data-tab="other">Shift Assignment</button>
+            <button class="tab-btn" onclick="showContent('report',3, this)" data-tab="report">Report</button> </hr>
+            <div id="line" class="line"> </div>
         </div>
-        <div class="right-conatiner">
-            <div class="qaf-search-bar">
-                <i class="fa fa-search qafsearch-icon" aria-hidden="true"></i>
-                <input type="text" class="search-input" id="search" placeholder="" autocomplete="off" />
-                <i id="cancelSearch" onclick="cancelSearch()" class="fa fa-times cancel-icon" aria-hidden="true"></i>
-            </div>
-            <div class="addform">
-                <button type="button" class="btn-primary add-btn" onclick="download_csv()">
-                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                </button>
+        <div id="activity" class="tab-content active cardActivity">
+            <div id="pageDisabled">
+                <div class="page-details">
+                    <div class="header-title" id="header-title">
+                        <div class="left-container">
+                            <div class="common-page-title">Shift Configuration</div>
+                        </div>
+                        <div class="right-container">
+                            <div class="addform"> <button type="button" class="btn btn-primary" onclick="AddRecord()">
+                                    <i class="fa fa-plus" aria-hidden="true"></i> New Record </button> </div>
+                        </div>
+                    </div>
+                    <div class="tablecontainer" id="tablecontainer"> </div>
+                    <div id="menuId"></div>
+                </div>
             </div>
         </div>
+        <div id="other" class="tab-content">
+            <div id="pageDisabled">
+                <div class="child-container" id="secondTab">
+                    <div class="form-container">
+                        <div class="input-container">
+                            <div class="qaf-form-group"> <label for="selectpolicy" class="Customer fs-label">Select
+                                    Policy</label> <select class="fs-input fs-select arrow" id="selectpolicy"
+                                    name="selectpolicy"></select> </div>
+                        </div>
+                        <div class="allocation-shifting"> <input type="checkbox" class="as-input" id="shfit-allocation-emp"
+                            name="shfit-allocation-emp" value="1" onchange="toggleoffboardingEmployeeShift()"> <label class="as-label"
+                            for="shfit-allocation-emp">Show Offboarded</label> </div>
+                        <div class="select-employee-tab">
+                            <div class="first-tab">
+                                <div class="tab-heading">
+                                    <div class="policies-title">Select Employee</div>
+                                    <div class="qaf-search-bar"> <i class="fa fa-search search-icon search-icon-first"
+                                            aria-hidden="true"></i> <input type="text" class="search-input" id="search"
+                                            placeholder="" autocomplete="off" /> <i id="firstCancelSearch"
+                                            onclick="cancelSearch('firstCancelSearch')" class="fa fa-times cancel-icon"
+                                            aria-hidden="true"></i> </div>
+                                </div>
+                                <div id="employeeNames" class="list-policyholder employeeNames"> </div>
+                            </div>
+                            <div class="second-tab">
+                                <div class="right-tab">
+                                    <div class="tabs">
+                                        <div class="tab-heading">
+                                            <div class="policies-title">Selected <span id="noofemployee"></span></div>
+                                        </div>
+                                        <div class="clear-button policies-title"> <button class="clear-All-btn"
+                                                onclick="removeAllEmployeeFromList()">Clear All</button> </div>
+                                    </div>
+                                    <div class="qaf-search-bar selected-search"> <i
+                                            class="fa fa-search search-icon search-icon-second" aria-hidden="true"></i>
+                                        <input type="text" class="search-input-second" id="search-selectedEmployee"
+                                            placeholder="" autocomplete="off" /> <i id="secondCancelSearch"
+                                            onclick="cancelSearch('secondCancelSearch')"
+                                            class="fa fa-times cancel-icon2" aria-hidden="true"></i> </div>
+                                </div>
+                                <div id="selectedEmployeeNames" class="list-policyholder selectedEmployeeNames"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="report" class="tab-content">
+            <div id="pageDisabled">
+                <div class="page-details">
+                    <div class="header-title">
+                        <div class="left-conatiner">
+                            <div class="common-page-title">Shift Allocation Policy </div>
+                        </div>
+                        <div class="right-conatiner">
+                            <div class="as-form-group"> <input type="checkbox" class="as-input" id="Offboarded"
+                                    name="Offboarded" value="1" onchange="toggleCheckbox()"> <label class="as-label"
+                                    for="Offboarded">Show Offboarded</label> </div>
+                            <div class="search-bar-report"> <i class="fa fa-search search-icon-report"
+                                    aria-hidden="true"></i> <input type="text" class="input-report" id="searchReport"
+                                    placeholder="" autocomplete="off" /> <i id="cancelSearch-report"
+                                    onclick="cancelSearchReport()" class="fa fa-times cancel-icon-report"
+                                    aria-hidden="true"> </i> </div>
+                            <div class="addform"> <button type="button" class="btn-primary add-btn"
+                                    onclick="download_csv()"> <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                </button> </div>
+                        </div>
+                    </div>
+                    <div class="tablecontainer" id="ShiftReport"> </div>
+                </div>
+            </div>
+        </div>
+        <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"> </span> </div>
     </div>
-    <div class="tablecontainer" id="tablecontainer">
-    </div>
-</div>
-
-<script src=""></script>
-<script src=""></script>
-
+</div> <qaf-alert></qaf-alert>
+</body>
+</html>

@@ -6,7 +6,7 @@ var reportTypeMasterList = [
     { displayname: "My Tickets", internalName: 'myticket' },
     { displayname: "Completed Tickets", internalName: 'completedticket' }
 ];
-var selectReport = 'pendingticket'
+    var selectReport = 'pendingticket'
 var reportType = "PS";
 var user;
 var workflowCategoriesList = []

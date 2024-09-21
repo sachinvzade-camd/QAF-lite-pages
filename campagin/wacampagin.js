@@ -12,7 +12,8 @@ var entityList = []
 var crmList = []
 var campaginRecordID = "";
 var templateRecordId = ""
-var totalRecipentCount = 0
+var totalRecipentCount = 0;
+var selectedTemplate=""
 
 
 function showContent(tabId, tabNum, clickedButton) {
@@ -60,7 +61,6 @@ function showContent(tabId, tabNum, clickedButton) {
             if (campaginRecordID) {
                 Setvaluesinfrom()
                 getObjectDetails()
-
             }
             else {
                 getObjectDetails()
@@ -130,7 +130,7 @@ function loadWa_Campaign() {
     ShowLoader()
     waCampaignList = []
     let objectName = "WA_Campaign";
-    let list = 'Name,Status,SentDate,RecordID,Entity,List,EstimatedRecipients';
+    let list = 'Name,Status,SentDate,RecordID,Entity,List,EstimatedRecipients,Template';
     let fieldList = list.split(",");
     let pageSize = "100000";
     let pageNumber = "1";
@@ -294,15 +294,17 @@ function EditRecord(recordID) {
 }
 
 function Setvaluesinfrom() {
-
+debugger
     if (RecordForUpdate && Object.keys(RecordForUpdate).length > 0) {
         let campaignNameElement = document.getElementById('campaignName');
         let entityElement = document.getElementById('entity');
         let listElement = document.getElementById('list');
-
+       
         // Check if the elements are found before assigning values
         if (campaignNameElement) {
-            campaignNameElement.value = RecordForUpdate.Name;
+            if(RecordForUpdate.Name){
+                campaignNameElement.value = RecordForUpdate.Name;
+            }
         }
         if (entityElement) {
             entityElement.value = RecordForUpdate.Entity;
@@ -345,6 +347,7 @@ function HideLoader() {
 }
 
 function addCampaign() {
+    resetForm()
     let popUp = document.getElementById("popupContainer");
     if (popUp) {
         popUp.style.display = 'block';
@@ -383,7 +386,7 @@ function loadtemplate() {
                             <div class="card">
                                 <div class="card-body">
                                     <div class="template-msg">
-                                        <p class="msg-p">${val.Message}</p>
+                                        <p class="msg-p ellipses">${val.Message}</p>
                                     </div>
                                     <div class="template-name">
                                     <input type="checkbox" class="es-input-campagin"  onchange="checkboxCLick('${val.RecordID}')" id='${val.RecordID}'>
@@ -394,6 +397,14 @@ function loadtemplate() {
                         </div>`
             });
             myContent.innerHTML = html;
+            if(RecordForUpdate&&RecordForUpdate.Template){
+                let templateElement = document.getElementById(RecordForUpdate.Template.split(";#")[0]);
+                if(templateElement){
+                    templateElement.checked=true
+                }
+                templateRecordId=RecordForUpdate.Template.split(";#")[0]
+            }
+    
         }
     })
 };
@@ -401,8 +412,11 @@ function checkboxCLick(templateId){
     let checkboxElement=document.getElementById(`${templateId}`)
     if( checkboxElement&&checkboxElement.checked){
              templateRecordId = templateId
-    }else{
-        openAlert("Select template")
+             let unselectedTemplateList=templateList.filter(a=>a.RecordID!=templateId);
+             unselectedTemplateList.forEach(val=>{
+    let uncheckboxElement=document.getElementById(`${val.RecordID}`)
+    uncheckboxElement.checked=false
+             })
     }
 }
 
@@ -418,13 +432,30 @@ function CloseForm() {
     }
     resetForm()
 }
+function CheckUncheckAllAndExcludeDisabledByClass( theCheckBoxClass) {
+    var checks = document.querySelectorAll('.' + theCheckBoxClass);
+    var checked = Array.prototype.filter.call(checks, function(el) {
+      return !el.disabled
+    }).every(function(el) {
+      return el.checked
+    });
+  
+    for (var i = 0; i < checks.length; i++) {
+      var check = checks[i];
+        check.checked = false;
+    }
+  }
 
 function resetForm() {
     let campaignNameElement = document.getElementById('campaignName');
     let entityTemplate = document.getElementById('entity');
     let listTemplate = document.getElementById('list');
+    let checkboxList=document.getElementsByClassName('es-input-campagin')
     if (campaignNameElement) {
         campaignNameElement.value = "";
+    }
+    if(checkboxList&&checkboxList.length>0){
+        CheckUncheckAllAndExcludeDisabledByClass('es-input-campagin')
     }
     if (entityTemplate) {
         entityTemplate.value = "";
@@ -470,7 +501,9 @@ function previoussend(){
 }
 
 function gotoViewSendPage(templateId) {
-    
+    debugger
+    templateId
+
     let checkboxElement=document.getElementById(`${templateId}`)
     if( checkboxElement&&checkboxElement.checked){
     templateRecordId = templateId
@@ -479,12 +512,20 @@ function gotoViewSendPage(templateId) {
     if (campaignNameElement) {
         campaignName = campaignNameElement.value.trim().replace(/\s+/g, ' ');
     }
+    let selectedTemplate=templateList.find(a=>a.RecordID===templateRecordId)
 
     waCampaignObject = {
         Name: campaignName,
         Status: 'Draft',
     }
-
+    if(RecordForUpdate){
+        if(RecordForUpdate.Name){
+RecordForUpdate.Name=campaignName
+        }
+    }
+if(selectedTemplate){
+    waCampaignObject['Template']=selectedTemplate.RecordID+";#"+selectedTemplate.Name
+}
     if (!waCampaignObject.Name) {
         openAlert("Campaign Name is required")
     }
@@ -549,7 +590,9 @@ function gotoViewSendPage(templateId) {
 
     }
     }else{
-        openAlert("Select template")
+        if(!selectedTemplate){
+            openAlert("Select template")
+        }
     }
 
 }
@@ -648,7 +691,7 @@ function getObjectDetails() {
 }
 
 function displayEntity() {
-
+debugger
     let sourceDropdown = document.getElementById('entity');
     let options = `<option value=''>Select entity</option>`
     if (sourceDropdown) {
@@ -699,6 +742,7 @@ function onListChange() {
 }
 
 function getEntityFilterList(whereclauseObject, repoName) {
+    debugger
     let objectName = repoName;
     let list = 'AccessToMember,City,Country,Industry,Source,EventName';
     let fieldList = list.split(",");
@@ -712,6 +756,11 @@ function getEntityFilterList(whereclauseObject, repoName) {
             let recipentElement = document.getElementById('reciptent-count');
             if (recipentElement) {
                 recipentElement.innerHTML = totalRecipentCount
+            }
+        }else{
+            let recipentElement = document.getElementById('reciptent-count');
+            if (recipentElement) {
+                recipentElement.innerHTML = 0
             }
         }
     });
@@ -748,7 +797,7 @@ function displaylists() {
 
 
 function saveCampagin() {
-    
+    debugger
     let entityvalue = "";
     let listvalue = "";
     let entityTemplate = document.getElementById('entity');
@@ -776,6 +825,8 @@ function saveCampagin() {
         openAlert("List is required")
     }
     else {
+    RecordForUpdate=campaginObject
+
         let newId=campaginRecordID;
         console.log('newId',newId)
         saveForm(campaginObject)
@@ -819,9 +870,16 @@ function sendCampagin() {
     }
     else {
         sendCampaigainApi().then(response => {
-            saveForm(campaginObject)
             openAlert("WA campaign is being executed");
-            CancelForm();
+            saveForm(campaginObject)
+            resetForm()
+            document.addEventListener('alertclose', (event) => {
+                let actionType=event.detail
+                    if(actionType==='yes'){
+                    CancelForm();
+                    }
+              });
+            
         })
         
     }

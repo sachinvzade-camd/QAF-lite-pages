@@ -3,20 +3,21 @@ var ShiftConfiguration;
 var currentTab = 1;
 var tabName = "activity";
 var tabLable = "My Requests";
-
-var Employee;
-var Geofencing_Allocation_List;
-var Geofencelist;
+var TableData = [];
+var Employee = [];
+var Geofencing_Allocation_List = [];
+var Geofencelist = [];
 var selectPolicyName;
 var SearchSelectedEmployee;
 var SelectedpolicyEmployer
 var user;
 var shiftRecordId;
+var isOffboarded = false
 var topbar = document.getElementById("header-title")
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        const container = document.getElementsByClassName('container')[0];
-        const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
+        const maincontainer = document.getElementsByClassName('maincontainer')[0];
+        const activeTab1 = maincontainer.getElementsByClassName('tab-btn isActive')[0];
         const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
         activeLine1.style.width = activeTab1.offsetWidth + 'px';
         activeLine1.style.left = activeTab1.offsetLeft + 'px';
@@ -67,13 +68,42 @@ function showContent(tabId, tabNum, clickedButton) {
             loadGeofencing_Grid();
             break;
         case "other":
+            clearAllocationsearch()
             loadGeofencelist();;
             break;
         case "report":
+            clearReportSearch()
             getEmployeeForReport();
             break;
         default:
             break;
+    }
+}
+function clearAllocationsearch(){
+    debugger
+    let allocationElement=document.getElementById('allocation-emp');
+    if(allocationElement){
+        allocationElement.checked=false
+    }
+    let searchInputSelected = document.getElementById("search-selectedEmployee");
+    searchInputSelected.value = '';
+    let searchCancle = document.getElementById('secondCancelSearch')
+    if (searchCancle) {
+        searchCancle.style.display = 'none'
+    }
+}
+function clearReportSearch(){
+    let allocationElement=document.getElementById('Offboarded');
+    if(allocationElement){
+        allocationElement.checked=false
+    }
+    let searchElement=document.getElementById('searchReport');
+    if(searchElement){
+        searchElement.value=""
+    }
+    let searchCancle = document.getElementById('cancelSearch-report')
+    if (searchCancle) {
+        searchCancle.style.display = 'none'
     }
 }
 
@@ -210,31 +240,31 @@ function filterData(searchTerm) {
     }
 }
 
-function toggleActionButtons(button,recordID) {
-    
-    shiftRecordId=recordID;
-     const actionButtons = button.nextElementSibling;
-     const allActionButtons = document.querySelectorAll('.action-buttons');
-     allActionButtons.forEach(btn => {
-         if (btn !== actionButtons) {
-             btn.style.display = 'none';
-         }
-     });
-     if(actionButtons){
-         if (actionButtons.style.display === 'block') {
-             actionButtons.style.display = 'none';
-         } else {
-             actionButtons.style.display = 'block';
-         }
-     }
-  
- }
- 
- window.onclick = function (event) {
+function toggleActionButtons(button, recordID) {
+
+    shiftRecordId = recordID;
+    const actionButtons = button.nextElementSibling;
+    const allActionButtons = document.querySelectorAll('.action-buttons');
+    allActionButtons.forEach(btn => {
+        if (btn !== actionButtons) {
+            btn.style.display = 'none';
+        }
+    });
+    if (actionButtons) {
+        if (actionButtons.style.display === 'block') {
+            actionButtons.style.display = 'none';
+        } else {
+            actionButtons.style.display = 'block';
+        }
+    }
+
+}
+
+window.onclick = function (event) {
     if (!(event.target.classList.contains('fa-ellipsis-v') || event.target.classList.contains('action-btn'))) {
-        document.getElementById("actionMenuID").innerHTML=``
+        document.getElementById("actionMenuID").innerHTML = ``
     } else {
-        document.getElementById("actionMenuID").innerHTML=`<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY-70}px;left: ${event.pageX-110}px;">
+        document.getElementById("actionMenuID").innerHTML = `<div class="action-buttons" id="actionsButtons"  style="top: ${event.pageY - 70}px;left: ${event.pageX - 110}px;">
             <button class="view-btn" onclick="ViewRecord('${shiftRecordId}')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</button>
              <button class="edit-btn" onclick="EditRecord('${shiftRecordId}')"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Edit</button>
              <button class="delete-btn" onclick="DeleteRecord('${shiftRecordId}')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete</button>
@@ -359,6 +389,7 @@ document.getElementById('search-selectedEmployee').addEventListener('keyup', fun
         searchCancle.style.display = 'block'
     }
     if (event.key === "Enter") {
+        debugger
         let searchCancle = document.getElementById('secondCancelSearch')
         if (searchCancle) {
             searchCancle.style.display = 'block'
@@ -411,8 +442,9 @@ function filterData(searchTerm) {
 }
 
 function filterData2(searchTerm) {
-
-    const filteredData = Geofencing_Allocation_List.filter(item => {
+    let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
+    let  SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+    const filteredData = SelectedpolicyEmployer.filter(item => {
         const firstName = item["Employee"];
         if (firstName !== null) {
             return (
@@ -424,7 +456,57 @@ function filterData2(searchTerm) {
 
     if (filteredData.length > 0) {
         SearchSelectedEmployee = filteredData
-        loadSelectedEmployee();
+        if (filteredData.length > 0) {
+            let newSearchSelectedEmployee = filteredData
+            let Number = document.getElementById('noofemployee');
+        Number.textContent = `(${newSearchSelectedEmployee.length})`
+        const myContent = document.querySelector(".selectedEmployeeNames");
+        let html = "";
+        let geofenceEmployee=[]
+        filteredData.forEach(val=>{
+            geofenceEmployee.push({
+                RecordID:val.Employee.split(";#")[0],
+                FirstName:val.Employee.split(";#")[1].split(' ')[0],
+                LastName:val.Employee.split(";#")[1].split(' ')[1],
+            })
+        })
+        if (geofenceEmployee && geofenceEmployee.length > 0) {
+            geofenceEmployee.forEach(emp => {
+                html += `  
+                    <div class="Employee-list second-tab-Employee">
+                    <div class="name">
+                        <span class="employee-name">${emp.FirstName} ${emp.LastName}</span>
+                    </div>
+                    <div class="add-employee-name">
+                        <button class="btnAction btn btn-primary" onclick="RemoveEmployeeFromList('${emp.RecordID}')"><i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                    </div>
+                </div> 
+                      `
+            });
+            myContent.innerHTML = html;
+        }
+        else {
+            html = `
+                <div class="Employee-list">
+                <div class="nodata">No Record Found</div>
+              </div> 
+                  `
+        }
+        myContent.innerHTML = html;
+        }
+        else {
+            let Number = document.getElementById('noofemployee');
+            Number.textContent = `(${filteredData.length})`
+            const myContent = document.querySelector(".selectedEmployeeNames");
+            let html = "";
+            html = `
+            <div class="Employee-list">
+            <div class="nodata">No Record Found</div>
+          </div> 
+              `
+            myContent.innerHTML = html;
+        }
     }
     else {
         let Number = document.getElementById('noofemployee');
@@ -482,45 +564,46 @@ function Changepolicy() {
 
 
 function loadSelectedEmployee() {
-    let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
-    if (SearchSelectedEmployee && SearchSelectedEmployee.length > 0) {
+    // let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
+    // if (SearchSelectedEmployee && SearchSelectedEmployee.length > 0) {
 
-        let newSearchSelectedEmployee = SearchSelectedEmployee.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
-        SelectedpolicyEmployer = newSearchSelectedEmployee
-    }
-    else {
-        SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+    //     let newSearchSelectedEmployee = SearchSelectedEmployee.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+    //     SelectedpolicyEmployer = newSearchSelectedEmployee
+    // }
+    // else {
+    //     SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
 
-    }
+    // }
 
-    let Number = document.getElementById('noofemployee');
-    Number.textContent = `(${SelectedpolicyEmployer.length})`
-    const myContent = document.querySelector(".selectedEmployeeNames");
-    let html = "";
-    if (SelectedpolicyEmployer && SelectedpolicyEmployer.length > 0) {
-        SelectedpolicyEmployer.forEach(emp => {
-            html += `  
-                <div class="Employee-list second-tab-Employee">
-                <div class="name">
-                    <span class="employee-name">${emp.Employee.split(';#')[1]}</span>
-                </div>
-                <div class="add-employee-name">
-                    <button class="btnAction btn btn-primary" onclick="RemoveEmployeeFromList('${emp.RecordID}')"><i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                </div>
-            </div> 
-                  `
-        });
-        myContent.innerHTML = html;
-    }
-    else {
-        html = `
-            <div class="Employee-list">
-            <div class="nodata">No Record Found</div>
-          </div> 
-              `
-    }
-    myContent.innerHTML = html;
+    // let Number = document.getElementById('noofemployee');
+    // Number.textContent = `(${SelectedpolicyEmployer.length})`
+    // const myContent = document.querySelector(".selectedEmployeeNames");
+    // let html = "";
+    // if (SelectedpolicyEmployer && SelectedpolicyEmployer.length > 0) {
+    //     SelectedpolicyEmployer.forEach(emp => {
+    //         html += `  
+    //             <div class="Employee-list second-tab-Employee">
+    //             <div class="name">
+    //                 <span class="employee-name">${emp.Employee.split(';#')[1]}</span>
+    //             </div>
+    //             <div class="add-employee-name">
+    //                 <button class="btnAction btn btn-primary" onclick="RemoveEmployeeFromList('${emp.RecordID}')"><i class="fa fa-times" aria-hidden="true"></i>
+    //             </button>
+    //             </div>
+    //         </div> 
+    //               `
+    //     });
+    //     myContent.innerHTML = html;
+    // }
+    // else {
+    //     html = `
+    //         <div class="Employee-list">
+    //         <div class="nodata">No Record Found</div>
+    //       </div> 
+    //           `
+    // }
+    // myContent.innerHTML = html;
+    filterDataOffboarded(false)
 }
 
 
@@ -679,12 +762,20 @@ function getEmployeeForReport() {
     ShowLoader()
     EmployeeForReport = []
     let objectName = "Employees";
-    let list = 'RecordID,FirstName,LastName';
+    let list = 'RecordID,EmployeeID,FirstName,LastName,IsOffboarded';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
     let whereClause = `IsOffboarded!='True'<OR>IsOffboarded=''`;
+    let offboardElement = document.getElementById('Offboarded');
+    if (offboardElement) {
+        isOffboarded = offboardElement.checked;
+    }
+    if (isOffboarded) {
+        whereClause = "";
+    }
+
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((empList) => {
         if (Array.isArray(empList) && empList.length > 0) {
             EmployeeForReport = empList;
@@ -731,22 +822,30 @@ function printData() {
     generateGeofenceReport(TableData);
 }
 
+function toggleCheckbox() {
+    getEmployeeForReport()
+}
+
 function generateGeofenceReport(TableData) {
+    // console.log("Table Data",TableData)
     if (TableData && TableData.length > 0) {
         let tableHead = `
+                        <th class="qaf-th">Emp ID</th>
                         <th class="qaf-th">Employee Name</th>
                         <th class="qaf-th">Location</th>
                          `;
         let tableRow = "";
 
         TableData.forEach(entry => {
-            const employeeName = (entry.FirstName ? entry.FirstName : "") + (entry.LastName ? " " + entry.LastName : "");
-            const location = entry.GeofencePolicy ? entry.GeofencePolicy : "";
+            let EmpID = entry.EmployeeID;
+            let employeeName = (entry.FirstName ? entry.FirstName : "") + (entry.LastName ? " " + entry.LastName : "");
+            let location = entry.GeofencePolicy ? entry.GeofencePolicy : "";
 
 
             if (employeeName.trim() !== "" || location.trim() !== "") {
                 tableRow += `
                     <tr class="qaf-tr">
+                        <td class="qaf-td">${EmpID}</td>
                         <td class="qaf-td">${employeeName}</td>
                         <td class="qaf-td">${location}</td>
                     </tr>
@@ -806,7 +905,6 @@ function cancelSearchRecords() {
 
 
 function filterReport(searchTerm) {
-
     const filteredData = TableData.filter(item => {
         const firstName = item["FirstName"];
         const lastName = item["LastName"];
@@ -881,20 +979,17 @@ function sortData(data) {
     });
 }
 
-
 function download_csv() {
     let data = TableData;
     let csvData = [];
     data.forEach(val => {
+        let EmpID=val["EmployeeID"] ? val["EmployeeID"] : "";
         let employeeName = (val["FirstName"] ? val["FirstName"] : "") + " " + (val["LastName"] ? val["LastName"] : "");
         let location = val["GeofencePolicy"] ? val["GeofencePolicy"] : "";
-        csvData.push([employeeName, location].join(","));
+        csvData.push([EmpID,employeeName, location].join(","));
     });
-
     let csvBody = csvData.join('\n');
-
-    let csvHeader = ["Employee Name", "Location"].join(',') + '\n';
-
+    let csvHeader = ["EmpID","Employee Name", "Location"].join(',') + '\n';
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvHeader + csvBody);
     hiddenElement.target = '_blank';
@@ -902,13 +997,16 @@ function download_csv() {
     hiddenElement.click();
 }
 
-function  ShowLoader(){
-    let secondTab=document.getElementById('secondTab')
-    if(secondTab){
+
+
+
+function ShowLoader() {
+    let secondTab = document.getElementById('secondTab')
+    if (secondTab) {
         secondTab.style.display = 'none'
     }
-    let ShiftReportTableElement=document.getElementById('geofenceReport')
-    if(ShiftReportTableElement){
+    let ShiftReportTableElement = document.getElementById('geofenceReport')
+    if (ShiftReportTableElement) {
         ShiftReportTableElement.style.display = 'none'
     }
     let pageDisabledElement = document.getElementById('pageDisabled');
@@ -919,23 +1017,103 @@ function  ShowLoader(){
     if (isloadingElement) {
         isloadingElement.style.display = 'block'
     }
-  }
-  
-  function HideLoader(){
+}
+
+function HideLoader() {
     let pageDisabledElement = document.getElementById('pageDisabled');
     let isloadingElement = document.getElementById('isloading');
     if (pageDisabledElement) {
         pageDisabledElement.classList.remove('page-disabled')
     }
     if (isloadingElement) {
-        let secondTab=document.getElementById('secondTab')
-        if(secondTab){
+        let secondTab = document.getElementById('secondTab')
+        if (secondTab) {
             secondTab.style.display = 'block'
         }
-        let ShiftReportTableElement=document.getElementById('geofenceReport')
-        if(ShiftReportTableElement){
+        let ShiftReportTableElement = document.getElementById('geofenceReport')
+        if (ShiftReportTableElement) {
             ShiftReportTableElement.style.display = 'flex'
         }
         isloadingElement.style.display = 'none'
     }
-  }
+}
+function toggleoffboardingEmployee(){
+    let isOffboardingEmployee=false
+    let offboardElement = document.getElementById('allocation-emp');
+    if (offboardElement) {
+        isOffboardingEmployee = offboardElement.checked;
+    }
+    filterDataOffboarded(isOffboardingEmployee);
+}
+
+function filterDataOffboarded(isOffboardingEmployee) {
+    let filteredData=[];
+    let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
+    let  SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+if(isOffboardingEmployee){
+    let geofenceEmployee=[]
+    SelectedpolicyEmployer.forEach(val=>{
+        geofenceEmployee.push({
+            RecordID:val.Employee.split(";#")[0],
+            FirstName:val.Employee.split(";#")[1].split(' ')[0],
+            LastName:val.Employee.split(";#")[1].split(' ')[1],
+        })
+    })
+     filteredData = geofenceEmployee
+ 
+}else{
+  
+    filteredData = Employee.filter((objOne) => {
+        return SelectedpolicyEmployer.some((objTwo) => {
+            return objOne.RecordID === objTwo.Employee.split(";#")[0];
+        });
+    });
+}
+    
+
+    if (filteredData.length > 0) {
+        let newSearchSelectedEmployee = filteredData
+        let Number = document.getElementById('noofemployee');
+    Number.textContent = `(${newSearchSelectedEmployee.length})`
+    const myContent = document.querySelector(".selectedEmployeeNames");
+    let html = "";
+    if (newSearchSelectedEmployee && newSearchSelectedEmployee.length > 0) {
+        newSearchSelectedEmployee.forEach(emp => {
+            html += `  
+                <div class="Employee-list second-tab-Employee">
+                <div class="name">
+                    <span class="employee-name">${emp.FirstName} ${emp.LastName}</span>
+                </div>
+                <div class="add-employee-name">
+                    <button class="btnAction btn btn-primary" onclick="RemoveEmployeeFromList('${emp.RecordID}')"><i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                </div>
+            </div> 
+                  `
+        });
+        myContent.innerHTML = html;
+    }
+    else {
+        html = `
+            <div class="Employee-list">
+            <div class="nodata">No Record Found</div>
+          </div> 
+              `
+    }
+    myContent.innerHTML = html;
+    }
+    else {
+        let Number = document.getElementById('noofemployee');
+        Number.textContent = `(${filteredData.length})`
+        const myContent = document.querySelector(".selectedEmployeeNames");
+        let html = "";
+        html = `
+        <div class="Employee-list">
+        <div class="nodata">No Record Found</div>
+      </div> 
+          `
+        myContent.innerHTML = html;
+    }
+
+
+}

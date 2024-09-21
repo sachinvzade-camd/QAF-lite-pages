@@ -421,7 +421,7 @@
 	 right: 10px;
 	 padding-top: 12px;
 	 left: 39%;
-	 top: 34%;
+	 top: 36.5%;
 }
  .shiftPolicy .cancel-icon2 {
 	 color: gray;
@@ -431,7 +431,7 @@
 	 right: 10px;
 	 padding-top: 4px;
 	 left: 87.5%;
-	 top: 35%;
+	 top: 37.8%;
 }
  .shiftPolicy .qaf-search-bar {
 	 margin: 10px 0px;
@@ -601,3 +601,12 @@
 	 top: 45vh;
 }
  
+.shiftPolicy .allocation-shifting{
+	text-align: end;
+}
+.shiftPolicy #shfit-allocation-emp{
+	transform: translate(0,3px);
+}
+.shiftPolicy .btnAction .fa-plus{
+	transform: translate(0,1px);
+}

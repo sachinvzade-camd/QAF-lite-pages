@@ -437,7 +437,7 @@
 	 right: 10px;
 	 padding-top: 12px;
 	 left: 39%;
-	 top: 34%;
+	 top: 36.5%;
 }
  .geofencing .cancel-icon2 {
 	 color: gray;
@@ -446,8 +446,8 @@
 	 width: 10px;
 	 right: 10px;
 	 padding-top: 12px;
-	 left: 87.5%;
-	 top: 34%;
+	 left: 88.5%;
+	 top: 36.8%;
 }
  .geofencing .qaf-search-bar {
 	 margin: 10px 0px;
@@ -512,7 +512,7 @@
 	 align-items: center;
 }
  .geofencing .search-icon-first {
-	 left: 0%;
+	 left: -1%;
 }
  .geofencing .search-icon-second {
 	 left: 43%;
@@ -618,4 +618,12 @@
 	 width: 100%;
 	 top: 45vh;
 }
- 
+.geofencing .allocation-geofencing{
+	text-align: end;
+}
+.geofencing #allocation-emp{
+	transform: translate(0,3px);
+}
+.geofencing .btnAction .fa-plus{
+	transform: translate(0,1px);
+}

@@ -435,12 +435,12 @@ function getCustomer() {
         document.getElementById('customer-drop').style.display='none'
     }
     let objectName = "Customers";
-    let list = 'RecordID,Name,BillingCity,State,Country,Email';
+    let list = 'RecordID,Name,BillingCity,State,Country,Email,Type';
     let fieldList = list.split(",");
     let pageSize = "20000";
     let pageNumber = "1";
     let orderBy = "true";
-    let whereClause = ``;
+    let whereClause = `Type='Customer'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((customers) => {
         if (Array.isArray(customers) && customers.length > 0) {
             customersList = customers
@@ -798,9 +798,9 @@ function setquotationValue() {
     let QpriceTaxElement = document.getElementById('priceTax')
     let discountSelectElement = document.getElementById('discount-select')
     let taxSelectElement = document.getElementById('tax-select')
-    let QlinktElement = document.getElementById('Qlink')
+    let QlinktElement = document.getElementById('Ilink')
 
-
+debugger
     if (QlinktElement) {
         QlinktElement.value = quotationRecordObject.Ilink  ? JSON.parse(quotationRecordObject.Ilink).link : ''
     }
@@ -1297,7 +1297,7 @@ function calculateTotal(index) {
 }
 
 function setValueInPriceObject() {
-
+debugger
     priceDetails = {
         Subtotal: '',
         Discount: '',
