@@ -506,18 +506,24 @@ function getServiceAppList(getList) {
 
                     service += ` 
                             <div class="col-md-4 job-card">
-                            <div class="card"  onclick=openEdit('${dt.ObjectID}')>
+                            <div class="card"  >
                                 <div class="service-photo">
                                     <a class="avtar">
                                         <img src="https://qaffirst.quickappflow.com/SmartHR/assets/img/default_service.png">
                                     </a>
 
                                 </div>
-                                <div class="services-detail">
-                                    <div class="serviceTitle">${dt.AppTitle ? dt.AppTitle : ""}</div>
-                                    <div class="service-text">${dt.AppDescription ? dt.AppDescription : ""}</div>
+                                <div class="services-detail" >
+                                    <div class="serviceTitle" onclick=openEdit('${dt.ObjectID}')>${dt.AppTitle ? dt.AppTitle : ""}</div>
+                                    <div class="service-text"onclick=openEdit('${dt.ObjectID}')>${dt.AppDescription ? dt.AppDescription : ""}</div>
+                                        <div class="report-permission">
+                    <span onclick="openFAQ('${dt.ObjectID}')">FAQ</span> &nbsp;|&nbsp;
+                    <span onclick="preview('${dt.ObjectID}')">Details</span>
+                  </div>
                                 </div>
+                           
                             </div>
+                             
                         </div>`
                 })
             }
@@ -528,6 +534,18 @@ function getServiceAppList(getList) {
             serviceticketElement.innerHTML = service
         }
     }
+}
+function openFAQ(objectID){
+    let service=allServiceappList.filter(a=>a.ObjectID===objectID);
+    if(service&&service.length>0){
+        var event = new CustomEvent('FaqEvent', { detail: service[0] })
+        window.parent.document.dispatchEvent(event)
+    }
+}
+function preview(objectID){
+    debugger
+        var event = new CustomEvent('DetailsEvent', { detail: objectID })
+        window.parent.document.dispatchEvent(event)
 }
 
 async function onRequest(item) {
