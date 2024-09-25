@@ -47,15 +47,14 @@ window.qafChatbot = (function () {
             let chatAPIUrl = `https://demtis.quickappflow.com/api/ptcssad`;
             let json;
             try {
-                let payLoad = { Mcp: input,Pid:this.pid };
+                let payLoad = { Mcp: input, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
                 if (this.isFirstMessage) {
-                    payLoad = { Mcp: input, tmf: 1,Pid:this.pid };
+                    payLoad = { Mcp: input, tmf: 1, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
                 }
-                let sid=localStorage.getItem('Sid')
-                if(sid){
-                    payLoad['Sid']=sid
+                let sid = localStorage.getItem('Sid')   
+                if (sid) {
+                    payLoad['Sid'] = sid
                 }
-
                 const response = await fetch(chatAPIUrl, {
                     method: 'POST',
                     headers: {
@@ -118,8 +117,8 @@ window.qafChatbot = (function () {
                     }
 
                     this.qafAIChatRequest(text).then((d) => {
-                        
-                        localStorage.setItem('Sid',d.Sid)
+
+                        localStorage.setItem('Sid', d.Sid?d.Sid:'')
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
                         if (d && d.Mcs) {
@@ -168,16 +167,17 @@ window.qafChatbot = (function () {
 
             return conversionHtml;
         }
-
-
         connectedCallback() {
+            debugger
             // browser calls this method when the element is added to the document
             // (can be called many times if an element is repeatedly added/removed)
             let isPreview = this.getAttribute('preview') || this.preview;
             let elementID = this.getAttribute('elementId') || this.elementId;
             let title = this.getAttribute('title') || this.title;
             let projectID = this.getAttribute('pid') || this.pid;
-            
+            debugger
+            let Txt = this.getAttribute('Txt') || this.txt;
+            let Tdp = this.getAttribute('Tdp') || this.tdp;
             let name = this.getAttribute('name') || this.name;
             let welcomeMessage = this.getAttribute('welcomeMessage') || this.welcomeMessage;
             let space = this.getAttribute('spacing') || this.spacing;
@@ -617,7 +617,9 @@ window.qafChatbot = (function () {
             position: params.Position,
             spacing: params.Spacing,
             preview: false,
-            pid:params.Pid
+            pid: params.Pid,
+            txt: params.Txt,
+            tdp: params.Tdp
         });
 
         document.body.append(chatElement);
@@ -653,8 +655,11 @@ window.qafChatbot = (function () {
 
         } else {
             if (!isDefined) {
-                customElements.define("qaf-chat-bot", QAFChatBot);
+                if (!customElements.get('qaf-chat-bot')) {
+                    customElements.define('qaf-chat-bot', QAFChatBot);
+                }
                 isDefined = true;
+                // customElements.define("qaf-chat-bot", QAFChatBot);
             }
 
             var chatElement = Object.assign(document.createElement('qaf-chat-bot'), {
