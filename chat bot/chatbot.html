@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+                window.qafChatbot.initialize({
+                Title: 'QAF',
+                Name: 'Krunal', 
+                IconUrl: 'https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Company_Settings%2FSIT%20Logo_8e10d099-95f3-4c4c-8631-cde80bf22f80.png', 
+                HeaderBgColor: 'Green',
+                WelcomeMessage: 'Hello hello', 
+                Position: 'Right',
+                Spacing: 50,
+                Pid: '05F4B8AF-AD9A-4D5F-8239-53EAFD2B75D5'
+            })
+            };
+            v.src = "./qaf-chatbot.js"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
+</body>
+</html>
