@@ -543,7 +543,7 @@ function openFAQ(objectID){
     }
 }
 function preview(objectID){
-    debugger
+    
         var event = new CustomEvent('DetailsEvent', { detail: objectID })
         window.parent.document.dispatchEvent(event)
 }

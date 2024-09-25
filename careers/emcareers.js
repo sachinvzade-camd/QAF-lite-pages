@@ -91,7 +91,7 @@ function getURLFromJson(values) {
     let pageSize = "20000";
     let pageNumber = "1";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((settings) => {
-      debugger
+      
       if (Array.isArray(settings) && settings.length > 0) {
         sharedJDURL=settings[0].SettingValue
         this.getJobPosting()

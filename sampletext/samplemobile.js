@@ -8,7 +8,7 @@ qafServiceLoaded = setInterval(() => {
 }, 10);
 
 function getMobileDetails(event){
-    debugger
+    
     console.log(event);
     let popUp = document.getElementById("mobile");
     if (popUp) {

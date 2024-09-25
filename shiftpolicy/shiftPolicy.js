@@ -68,7 +68,7 @@ function showContent(tabId, tabNum, clickedButton) {
     if (contentArea) {
         contentArea.classList.toggle("active");
     }
-    debugger
+    
     switch (tabId) {
         case "activity":
             ;
@@ -87,7 +87,7 @@ function showContent(tabId, tabNum, clickedButton) {
     }
 }
 function clearAllocationsearch(){
-    debugger
+    
     let allocationElement=document.getElementById('shfit-allocation-emp');
     if(allocationElement){
         allocationElement.checked=false
@@ -1083,7 +1083,7 @@ function toggleoffboardingEmployeeShift(){
     filterDataOffboarded(isOffboardingEmployee);
 }
 function filterDataOffboarded(isOffboardingEmployee) {
-    debugger
+    
     let filteredData=[];
     let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
     let  SelectedpolicyEmployer = ShiftAllocation_List.filter(policy => policy.ShiftName.split(';#')[0] === SelectedPolicyRecordID);

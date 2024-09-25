@@ -1,6 +1,6 @@
 setTimeout(() => {
     if (window.QafService) {
-        debugger
+        
         let jobdetailURL=window.location.href;
         let paramString = jobdetailURL.split('?')[1];
         var ifrm = document.createElement("iframe");

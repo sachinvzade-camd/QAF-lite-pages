@@ -8,7 +8,7 @@ qafServiceLoaded = setInterval(() => {
 
 function getSalesforceDetails(event){
 integrationDetail=event.detail.integration;
-debugger
+
     let popUp = document.getElementById("authenticateForm");
     if (popUp) {
         popUp.style.display = 'block';

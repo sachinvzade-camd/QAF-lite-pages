@@ -80,7 +80,7 @@ function showContent(tabId, tabNum, clickedButton) {
     }
 }
 function clearAllocationsearch(){
-    debugger
+    
     let allocationElement=document.getElementById('allocation-emp');
     if(allocationElement){
         allocationElement.checked=false
@@ -389,7 +389,7 @@ document.getElementById('search-selectedEmployee').addEventListener('keyup', fun
         searchCancle.style.display = 'block'
     }
     if (event.key === "Enter") {
-        debugger
+        
         let searchCancle = document.getElementById('secondCancelSearch')
         if (searchCancle) {
             searchCancle.style.display = 'block'

@@ -4,6 +4,9 @@
 * {
   font-family: "Poppins", sans-serif;
 }
+.pg-content {
+	padding-top: 0px !important;
+}
 .shiftPolicy {
 	/* for QAF Lite */
 	/* TAble CSS */
@@ -124,9 +127,7 @@
 	 border-radius: 4px;
 	 padding: 0;
 }
- .pg-content {
-	 padding-top: 0px !important;
-}
+
  .shiftPolicy .payroll-details {
 	 margin: 60px 20px 20px 20px;
 	 padding-top: 10px;

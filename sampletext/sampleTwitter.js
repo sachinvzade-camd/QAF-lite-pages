@@ -8,7 +8,7 @@ qafServiceLoaded = setInterval(() => {
 }, 10);
 
 function getTwitter(event){
-    debugger
+    
     console.log(event);
     let popUp = document.getElementById("Twitter");
     if (popUp) {

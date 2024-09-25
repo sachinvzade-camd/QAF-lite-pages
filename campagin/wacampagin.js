@@ -294,7 +294,7 @@ function EditRecord(recordID) {
 }
 
 function Setvaluesinfrom() {
-debugger
+
     if (RecordForUpdate && Object.keys(RecordForUpdate).length > 0) {
         let campaignNameElement = document.getElementById('campaignName');
         let entityElement = document.getElementById('entity');
@@ -501,7 +501,7 @@ function previoussend(){
 }
 
 function gotoViewSendPage(templateId) {
-    debugger
+    
     templateId
 
     let checkboxElement=document.getElementById(`${templateId}`)
@@ -691,7 +691,7 @@ function getObjectDetails() {
 }
 
 function displayEntity() {
-debugger
+
     let sourceDropdown = document.getElementById('entity');
     let options = `<option value=''>Select entity</option>`
     if (sourceDropdown) {
@@ -742,7 +742,7 @@ function onListChange() {
 }
 
 function getEntityFilterList(whereclauseObject, repoName) {
-    debugger
+    
     let objectName = repoName;
     let list = 'AccessToMember,City,Country,Industry,Source,EventName';
     let fieldList = list.split(",");
@@ -797,7 +797,7 @@ function displaylists() {
 
 
 function saveCampagin() {
-    debugger
+    
     let entityvalue = "";
     let listvalue = "";
     let entityTemplate = document.getElementById('entity');

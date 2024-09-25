@@ -284,7 +284,7 @@ function getApp_User_MappingUpdate() {
 
 
 function setValuesinForm() {
-    debugger
+    
     let updatrRecord = editEmployeeRecord;
     let commonValue = true;
     user_PermissionRecord.forEach(record => {
@@ -416,7 +416,7 @@ function getApplist() {
                     return objOne.AppName === objTwo;
                 });
             });
-debugger
+
             const htmlContent = document.getElementById("card-container")
             let html = '';
             console.log(localStorageAppList);
@@ -607,7 +607,7 @@ function saveAppUserMapping() {
     })
     let mapping = []
     selectedApps.forEach(app => {
-        debugger
+        
         localStorage.removeItem(app.AppName + "User_Permission");
         localStorage.removeItem(app.AppName + "Teams");
         let users = [];
@@ -629,7 +629,7 @@ function saveAppUserMapping() {
 
 
 function saveUserPermission() {
-    debugger
+    
     let mapping = []
     let selectedApps = []
     applist.forEach(val => {

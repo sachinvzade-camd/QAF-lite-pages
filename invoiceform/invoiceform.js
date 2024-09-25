@@ -800,7 +800,7 @@ function setquotationValue() {
     let taxSelectElement = document.getElementById('tax-select')
     let QlinktElement = document.getElementById('Ilink')
 
-debugger
+
     if (QlinktElement) {
         QlinktElement.value = quotationRecordObject.Ilink  ? JSON.parse(quotationRecordObject.Ilink).link : ''
     }
@@ -1297,7 +1297,7 @@ function calculateTotal(index) {
 }
 
 function setValueInPriceObject() {
-debugger
+
     priceDetails = {
         Subtotal: '',
         Discount: '',

@@ -4,6 +4,9 @@
 * {
   font-family: "Poppins", sans-serif;
 }
+.pg-content {
+	padding-top: 0px !important;
+}
 .geofencing {
 	/* for QAF Lite */
 	/* TAble CSS */
