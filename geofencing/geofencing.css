@@ -541,6 +541,9 @@
 	 display: flex;
 	 justify-content: end;
 }
+.geofencing .offboardedReport {
+	transform: translate(0,3px);
+}
  .geofencing .search-bar-report {
 	 position: relative;
 	 display: flex;
@@ -548,6 +551,7 @@
 	 width: 25%;
 	 margin: 10px 5px;
 	 color: gray;
+	 margin-bottom: 15px;
 }
  .geofencing .input-report {
 	 text-align: start;

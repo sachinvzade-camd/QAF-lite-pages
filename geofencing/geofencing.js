@@ -652,12 +652,18 @@ function AddEmployeeinList(EmployeeId) {
 
 
 function RemoveEmployeeFromList(RecordID) {
-
-    if (window.QafPageService) {
-        window.QafPageService.DeleteItem(RecordID, function () {
-            Geofence_Allocation();
-        });
+    let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
+    let  SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+    let geofecning=SelectedpolicyEmployer.find(a=>a.Employee.split(";#")[0]===RecordID)
+    if(geofecning&&geofecning.RecordID){
+        debugger
+        if (window.QafPageService) {
+            window.QafPageService.DeleteItem(geofecning.RecordID, function () {
+                Geofence_Allocation();
+            });
+        }
     }
+  
 }
 
 function save(object, repositoryName) {
