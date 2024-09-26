@@ -39,6 +39,9 @@
  .shiftPolicy .main-container {
 	 display: flex;
 }
+ .shiftPolicy .offboardedReport {
+	 transform: translate(0,3px);
+}
  .shiftPolicy .container {
 	 width: 100%;
 	 margin: 0px;
@@ -255,6 +258,7 @@
  .shiftPolicy .add-btn {
 	 background-color: #de5b22;
 	 color: #fff;
+	 margin-right: 0;
 }
  .shiftPolicy a {
 	 text-decoration: none;
@@ -528,6 +532,7 @@
 	 width: 25%;
 	 margin: 10px 5px;
 	 color: gray;
+	 margin-bottom: 15px;
 }
  .shiftPolicy .input-report {
 	 text-align: start;

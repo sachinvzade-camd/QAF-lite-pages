@@ -603,10 +603,15 @@ function AddEmployeeinList(EmployeeId) {
 
 
 function RemoveEmployeeFromList(RecordID) {
+    let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
+    let  SelectedpolicyEmployer = ShiftAllocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
+    let shiftPolicy=SelectedpolicyEmployer.find(a=>a.Employee.split(";#")[0]===RecordID)
+    if(shiftPolicy&&shiftPolicy.RecordID){
     if (window.QafPageService) {
         window.QafPageService.DeleteItem(RecordID, function () {
             getshiftAllocation();
         });
+    }
     }
 }
 
