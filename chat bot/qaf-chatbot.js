@@ -12,6 +12,10 @@ window.qafChatbot = (function () {
         }
 
         chatWindowOpen() {
+            let qafChatbotElement=document.getElementById('qaf-ai-chat-bot');
+            if(qafChatbotElement){
+                qafChatbotElement.title=''
+            }
             this.shadowRoot.querySelector(".qaf-ai-widget--launcher").classList.add('chat-open');
             this.shadowRoot.querySelector(".qaf-ai-widget-chat").classList.add('open');
         }
@@ -191,16 +195,34 @@ window.qafChatbot = (function () {
 
             // Add default QAF AI message
             this.conversationList.push({ Type: 'SYSTEM', Message: welcomeMessage })
-
             let customStyle = `bottom: ${space}px; right: ${space}px;`
-            if (position === 'RIGHT') {
+            if (position.toUpperCase() === 'RIGHT') {
                 customStyle = `bottom: ${space}px; right: ${space}px;`
             } else {
                 customStyle = `bottom: ${space}px; left: ${space}px;`
             }
+            let customStyleChat=customStyle
 
+if (window.matchMedia('screen and (max-width: 768px)').matches) {
+      customStyleChat=`width:100%;height:100%;`
+}
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `<style>
+            .qaf-chat-start{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 26px;
+}
+.qaf-ai-chat-image img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.qaf-ai-chat-image{
+    width: 60px;
+    height: 60px;
+}
            .loader {
     width: 30px;
     aspect-ratio: 2;
@@ -383,12 +405,12 @@ window.qafChatbot = (function () {
                                     padding: 10px 14px;
                                     background-color: ${headerBgColor};
                                     margin-left: auto;
-                                    border-radius: 4px;
+                                    border-radius: 8px;
                                         font-size: 15px;
     font-weight: 400;
     line-height: 20px;
     overflow-wrap: anywhere;
-                            max-width: 86%;
+                            max-width: 70%;
                                 }
 
                             }
@@ -466,6 +488,7 @@ window.qafChatbot = (function () {
                                 transition: border-color 150ms, box-shadow 150ms;  
                                 
                                 textarea {
+                                height:41px;
                                     box-sizing: border-box;
                                     border-width: 1px 1px 1px 1px;
                                     border-style: solid;
@@ -479,7 +502,7 @@ window.qafChatbot = (function () {
                                     margin: 0px;
                                     border-top-right-radius: 0px;
                                     border-bottom-right-radius: 0px;
-                                    padding: 11px 16px 11px;
+                                    padding: 12px 12px 10px;
                                     width: 100%;
                                     border-radius: 8px;
                                     font-family: inherit;
@@ -566,7 +589,7 @@ window.qafChatbot = (function () {
 
             shadow.innerHTML += `<div class='qaf-ai-chat-widget ${previewClass}'>
                 <div class="qaf-ai-widget--launcher" style="${customStyle}"><button class="qaf-ai-chat-launcher"><img src="data:image/svg+xml,%3csvg%20viewBox='0%200%2036%2036'%20xmlns='http://www.w3.org/2000/svg'%20xmlns:xlink='http://www.w3.org/1999/xlink'%3e%3cg%20stroke='none'%20stroke-width='1'%20fill='none'%20fill-rule='evenodd'%3e%3cpath%20d='M18.0000533,7%20C24.6266329,7%2030,11.4789312%2030,16.9976931%20C30,22.5163617%2024.6266329,26.9953062%2018.0000533,26.9953062%20C17.123351,26.9971724%2016.2483812,26.9169271%2015.386606,26.7553699%20C14.0404188,27.7431078%2012.5315125,28.4873102%2010.9284053,28.9541197%20C10.4583473,29.0903502%209.95341047,28.916663%209.66660965,28.5199682%20C9.37982216,28.1234068%209.37297168,27.5894152%209.64952342,27.1855224%20C10.1505552,26.5172998%2010.5515886,25.7796289%2010.840002,24.9957036%20C7.9365286,23.3624038%206.10015838,20.3278759%206,16.9976931%20C6,11.4789179%2011.3733271,7%2018.0000533,7%20Z%20M18.0000533,18.0020932%20L14.0000889,18.0020932%20L13.8644511,18.0112196%20C13.3765531,18.0774186%2013.0005042,18.4957012%2013.0005042,19.0018279%20C13.0005042,19.5539661%2013.4480335,20.0015625%2014.0000889,20.0015625%20L18.0000533,20.0015625%20L18.135691,19.9924361%20C18.623589,19.9262371%2018.9996379,19.5079545%2018.9996379,19.0018279%20C18.9996379,18.4496896%2018.5521087,18.0020932%2018.0000533,18.0020932%20Z%20M22.0001244,14.001515%20L14.0000889,14.001515%20L13.8644511,14.0106414%20C13.3765531,14.0768404%2013.0005042,14.495123%2013.0005042,15.0012497%20C13.0005042,15.5533879%2013.4480335,16.0009843%2014.0000889,16.0009843%20L22.0001244,16.0009843%20L22.1357621,15.9918579%20C22.6236601,15.9256589%2022.999709,15.5073764%2022.999709,15.0012497%20C22.999709,14.4491115%2022.5521797,14.001515%2022.0001244,14.001515%20Z'%20fill='%23ffffff'%3e%3c/path%3e%3c/g%3e%3c/svg%3e" alt="launch"></button></div>
-                <div class="qaf-ai-widget-chat" style="${customStyle}">
+                <div class="qaf-ai-widget-chat" style="${customStyleChat}">
                     <div class="qaf-ai-chat--container">
                         <article>
                             <header class="qaf-ai-chat-header">
@@ -585,12 +608,17 @@ window.qafChatbot = (function () {
                                     </div>
                                 </button>
                             </header>
+                         
                             <main class="qaf-ai-chat-main" id='create'>
+                               <div class='qaf-chat-start'> <div class="qaf-ai-chat-image">
+                                    <img src="${iconUrl}"/>
+                                </div>
+                                <h1 class="qaf-ai-chat-title">${title}</h1></div>
                                 ${this.buildConversions()}
                             </main>
                             <footer class="qaf-ai-chat-footer">
                                 <div class="qaf-ai-chat-input">
-                                    <textarea id="qaf-ai-chat-ctrl" placeholder="Message"></textarea>
+                                    <textarea id="qaf-ai-chat-ctrl" placeholder="Message..." row='1'></textarea>
                                 </div>
                             </footer>
                             <div class="qaf-ai-chat--overlay"></div>
