@@ -1,4 +1,6 @@
 var TalentBankDataforExport;
+var startTime = "";
+var endTime = "";
 
 gridExpenseColumns = [
   { field: 'JobPost', displayName: 'Job Post', sequence: 1, sorting: false },
@@ -79,7 +81,8 @@ function loadTalentBank() {
   filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
   filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
-  let filterGridCondition = filterFormat;
+  let filterGridCondition = getWhereClause();
+  debugger
   let expenseGridElement = document.querySelector('#expgrid');
   if (expenseGridElement) {
     expenseGridElement.show = true;
@@ -127,7 +130,7 @@ function nextPageEvent(page) {
   filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
   filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
-  let filterGridCondition = filterFormat;
+  let filterGridCondition = getWhereClause();
   let expenseGridElement = document.querySelector('#expgrid');
   if (expenseGridElement) {
     expenseGridElement.show = true;
@@ -156,7 +159,7 @@ function prevPageEvent(page) {
   filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
   filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
-  let filterGridCondition = filterFormat;
+  let filterGridCondition = getWhereClause();
   let expenseGridElement = document.querySelector('#expgrid');
   if (expenseGridElement) {
     expenseGridElement.show = true;
@@ -183,7 +186,7 @@ function sortEvent(page) {
   filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
   filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
-  let filterGridCondition = filterFormat;
+  let filterGridCondition = getWhereClause();;
   let expenseGridElement = document.querySelector('#expgrid');
   if (expenseGridElement) {
     expenseGridElement.show = true;
@@ -233,7 +236,7 @@ function nextMonth(e) {
       filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
       filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
-      let filterGridCondition = filterFormat;
+      let filterGridCondition = getWhereClause();;
 
       window.QafService.GetItems(expenseGrid.repository, expenseGrid.viewFields, expenseGrid.pageSize, expenseGrid.page, filterGridCondition).then((filteredExpense) => {
         let propertiesToSplit = ["JobPost", "Candidate"];
@@ -266,7 +269,7 @@ function prevMonth(e) {
       filterFormat = filterFormat.replace('{{STARTOFMONTH}}', startMonth);
       filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
-      let filterGridCondition = filterFormat;
+      let filterGridCondition = getWhereClause();;
 
       window.QafService.GetItems(expenseGrid.repository, expenseGrid.viewFields, expenseGrid.pageSize, expenseGrid.page, filterGridCondition).then((filteredExpense) => {
         let propertiesToSplit = ["JobPost", "Candidate"];
@@ -382,11 +385,71 @@ function expgrid_onRowActionEvent(eventName, row) {
 }
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
+    document.getElementById('endTime').valueAsDate = new Date();
+    var date = new Date();
+    var day = date.getTime() - (14 * 24 * 60 * 60 * 1000);
+         date.setTime(day);
+    document.getElementById('startTime').valueAsDate = date
+    startTime = date;
+    endTime = new Date()
     loadTalentBank();
+    getjobposting()
     clearInterval(qafServiceLoaded);
   }
 }, 10);
+function searchReport() {
+  debugger
+  const date1 = new Date(startTime);
+const date2 = new Date(endTime);
+const diffTime = Math.abs(date2 - date1);
+const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+if(diffDays>14){
+  openAlert("Date range not more than 14 days")
+}else{
+  loadTalentBank();
+}
 
+}
+function getWhereClause() {
+  let whereclause = [];
+  let jobpost = document.getElementById("jobpost");
+  if (jobpost) {
+      jobpostValue = jobpost.value;
+  }
+  if (jobpostValue) {
+      whereclause.push(`(JobPost='${jobpostValue}')`);
+  }
+  if (startTime && endTime) {
+
+      let startDate = moment(startTime).format('YYYY/MM/DD');
+      let endDate = moment(endTime).format('YYYY/MM/DD');
+      whereclause.push(
+          `(MovedDate>='${startDate}'<AND>MovedDate<='${endDate}')`
+      );
+  }
+  if (whereclause && whereclause.length > 0) {
+      if (whereclause.length === 1) {
+          return whereclause[0]
+              .substring(0, whereclause[0].length - 1)
+              .substring(1);
+      }
+      return whereclause.join("<<NG>>");
+  }
+  return "";
+}
+function openAlert(message) {
+  let qafAlertObject = {
+      IsShow: true,
+      Message: message,
+      Type: 'ok'
+  }
+  const body = document.body;
+  let alertElement = document.createElement('qaf-alert')
+  body.appendChild(alertElement);
+  const qafAlertComponent = document.querySelector('qaf-alert');
+  qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
+  qafAlertComponent.setAttribute('qaf-event', 'alertclose');
+}
 function ExportReport() {
   let data = TalentBankDataforExport;
   console.log("TalentBankDataforExport", TalentBankDataforExport)
@@ -419,4 +482,34 @@ function formatedDate(Datevalue) {
   else {
     return ''
   }
+}
+document.getElementById("startTime").addEventListener("change", function () {
+  startTime = new Date(this.value);
+});
+
+
+document.getElementById("endTime").addEventListener("change", function () {
+  endTime = new Date(this.value);
+});
+function getjobposting() {
+  let objectName = "Job_Posting";
+  let list = "JobTitle";
+  let fieldList = list.split(",");
+  let pageSize = "20000";
+  let pageNumber = "1";
+  let whereClause = ``;
+  let orderBy = "true";
+  window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((jobpostings) => {
+      if (Array.isArray(jobpostings) && jobpostings.length > 0) {
+          jobpostings = jobpostings.reverse();
+          let jobpostDropdown = document.getElementById("jobpost");
+          let options = `<option value=''>Select Job Post</option>`;
+          if (jobpostDropdown) {
+              jobpostings.forEach((job) => {
+                  options += `<option value=${job.RecordID}>${job.JobTitle}</option>`;
+              });
+              jobpostDropdown.innerHTML = options;
+          }
+      }
+  });
 }

@@ -216,7 +216,6 @@ function EditRecord(RecordID) {
         let popUp = document.getElementById("userForm");
         if (popUp) {
             popUp.style.display = 'block';
-            getApplist();
             getEmployeeforUpdate();
             addCssforscroll();
 
@@ -255,10 +254,10 @@ function getUser_PermissionUpdate() {
     let whereClause = `ProfileorTeam='${updateRecordID}'`;
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((permissionlist) => {
         if (Array.isArray(permissionlist) && permissionlist.length > 0) {
+            
             user_PermissionRecord = permissionlist;
-            console.log("user_PermissionRecord", user_PermissionRecord);
-
         }
+        getApplist();
         getApp_User_MappingUpdate();
     });
 }
@@ -353,6 +352,8 @@ function removeCss() {
 }
 
 function AddForm() {
+    updateRecordID="";
+    saveUser=""
     // loadTable()
     let popUp = document.getElementById("userForm");
     if (popUp) {
@@ -474,7 +475,7 @@ function getApplist() {
                                                 <br> 
                                             </div>
                                             <div class='permission-dropdown'>
-                                                <select class="fs-input fs-select arrow" id="permission-${RecordID}" name="permission">${addRole(approle)}</select>
+                                                <select class="fs-input fs-select arrow" id="permission-${RecordID}" name="permission">${addRole(approle,RecordID)}</select>
                                             </div>
                                         </li>
                                     `;
@@ -487,6 +488,20 @@ function getApplist() {
             });
 
             htmlContent.innerHTML = html;
+            NewAppList.forEach((val, index) => {
+                let submenuListlength = val.SubmenuAppList
+                if (Array.isArray(submenuListlength) && submenuListlength.length > 0) {
+            val.SubmenuAppList.forEach(field => {
+                let approle = ""
+                let RecordID = ""
+                let AppRecord = applist.find(app => (field.AppRecordID ? field.AppRecordID : '') === app.RecordID);
+                if (AppRecord) {
+                    RecordID = AppRecord.RecordID
+                    approle = applicationRoleList.filter(role => (role.AppName ? role.AppName.split(";#")[0] : '') === RecordID)
+                }
+                setRole(approle,RecordID)
+            });
+        }})
 
         }
     });
@@ -510,14 +525,42 @@ function moveOtherToLast(data) {
     return data;
 }
 
-
-function addRole(approle) {
+function setRole(approle,RecordID) {
+    if(user_PermissionRecord&&user_PermissionRecord.length>0){
+        let selectedroles = approle.filter((objOne) => {
+             return user_PermissionRecord.some((objTwo) => {
+               return objOne.RecordID === objTwo.Role.split(";#")[0];
+             });
+           });
+           if(selectedroles&&selectedroles.length>0){
+             let appElement=document.getElementById(`permission-${RecordID}`);
+             if(appElement){
+                appElement.value=selectedroles[0].RecordID
+             }
+           }
+     }
+}
+function addRole(approle,RecordID) {
     let role = `<option value=''>Select Permision</option>`
     if (approle && approle.length > 0) {
         approle.forEach(val => {
             role += `<option value='${val.RecordID}'>${val.RoleName}</option>`
         })
     }
+    if(user_PermissionRecord&&user_PermissionRecord.length>0){
+        let selectedroles = approle.filter((objOne) => {
+             return user_PermissionRecord.some((objTwo) => {
+               return objOne.RecordID === objTwo.Role.split(";#")[0];
+             });
+           });
+           if(selectedroles&&selectedroles.length>0){
+            
+             let appElement=document.getElementById(`permission-${RecordID}`);
+             if(appElement){
+                appElement.value=selectedroles[0].RecordID
+             }
+           }
+     }
     return role
 }
 
@@ -537,6 +580,7 @@ function onAppchange(apprecordID) {
 
 
 function saveDetails() {
+    
     let sendemailElement = document.getElementById('sendEmail');
     let firstNameElement = document.getElementById('firstName');
     let firstName = ""
@@ -584,7 +628,11 @@ function saveDetails() {
 }
 
 function getDetails(RecordID) {
-    saveUser = RecordID + ";#" + employeeSaveObject.FirstName + " " + employeeSaveObject.LastName;
+    if(updateRecordID){
+        saveUser = updateRecordID + ";#" + employeeSaveObject.FirstName + " " + employeeSaveObject.LastName;
+    }else{
+        saveUser = RecordID + ";#" + employeeSaveObject.FirstName + " " + employeeSaveObject.LastName;
+    }
     saveAppUserMapping()
     getEmployee();
     let superadminElement = document.getElementById('superadmin');
@@ -592,6 +640,16 @@ function getDetails(RecordID) {
 
     // }
     CloseForm();
+}
+
+function getJsonRecord(userJson){
+        if(userJson){
+            let object=JSON.parse(userJson)[0];
+            if(object&&object.RecordID){
+                return object.RecordID
+            }
+        }
+        return ""
 }
 
 
@@ -607,6 +665,11 @@ function saveAppUserMapping() {
     })
     let mapping = []
     selectedApps.forEach(app => {
+        let app_mapping;
+if(app_User_MappingRecord&&app_User_MappingRecord.length>0){
+       app_mapping=app_User_MappingRecord.find(a=>a.AppName.split(";#")[0]===app.RecordID&&getJsonRecord(a.AllowUsers)===saveUser.split(";#")[0])
+     }
+
         
         localStorage.removeItem(app.AppName + "User_Permission");
         localStorage.removeItem(app.AppName + "Teams");
@@ -619,7 +682,8 @@ function saveAppUserMapping() {
             AppStore: app.AppName,
             AppName: app.RecordID + ";#" + app.AppName,
             AllowUsers: JSON.stringify(users),
-            TargetPlatform: 'Web'
+            TargetPlatform: 'Web',
+            RecordID:app_mapping&&app_mapping.RecordID?app_mapping.RecordID:""
         }
         mapping.push(appUserMapping)
     })
@@ -645,6 +709,13 @@ function saveUserPermission() {
         let roleName = applicationRoleList.filter(role => (role.RecordID) ===permissionElmenet.value);
 
         if (roleName && roleName.length > 0) {
+            debugger
+            let user_permission;
+            if(user_PermissionRecord&&user_PermissionRecord.length>0){
+                user_permission=user_PermissionRecord.find(a=>getJsonRecord(a.ProfileorTeam)===saveUser.split(";#")[0]&&a.AppName.split(";#")[0]===app.RecordID)
+                 }
+
+
             let superadmin = document.getElementById('superadmin')
             let users = [];
             users.push({
@@ -655,7 +726,8 @@ function saveUserPermission() {
                 AppName: app.RecordID + ";#" + app.AppName,
                 ProfileorTeam: JSON.stringify(users),
                 SuperAdmin: superadmin.checked,
-                Role: roleName[0].RecordID + ";#" + roleName[0].RoleName
+                Role: roleName[0].RecordID + ";#" + roleName[0].RoleName,
+                RecordID:user_permission&&user_permission.RecordID?user_permission.RecordID:''
             }
             mapping.push(appUserMapping)
         }
@@ -735,7 +807,7 @@ function bulkadd(objectArray, repositoryName) {
         intermidiateRecord.CreatedDate = new Date();
         intermidiateRecord.LastModifiedBy = null;
         intermidiateRecord.ObjectID = repositoryName;
-        intermidiateRecord.RecordID = null;
+        intermidiateRecord.RecordID = object.RecordID;
         intermidiateRecord.RecordFieldValues = recordFieldValueList;
         records.push(intermidiateRecord);
     })

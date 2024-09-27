@@ -44,6 +44,9 @@
             <div class="expense-grid">
                 <div class="expense-top">
                     <h3>Talent Bank</h3>
+                    <div class="expense-action"><select id="jobpost" class="filter"> </select> <input type="date"
+                        id="startTime" name="startTime" class="filter"><input type="date" id="endTime" name="endTime"
+                        class="filter"> <button id="search" onclick="searchReport()">Search</button> </div>
                 </div>
                 <div class="expense-data-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns"
                         action="true"></qaf-grid> </div>
