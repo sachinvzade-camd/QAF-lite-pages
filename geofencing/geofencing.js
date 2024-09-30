@@ -358,6 +358,7 @@ function Geofence_Allocation() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((policy) => {
         if (Array.isArray(policy) && policy.length > 0) {
             Geofencing_Allocation_List = policy;
+            Geofencing_Allocation_List=Geofencing_Allocation_List.filter(geofence=>geofence.GeofencePolicy)
         }
         loadEmployee(Employee)
         loadSelectedEmployee();
@@ -442,6 +443,7 @@ function filterData(searchTerm) {
 }
 
 function filterData2(searchTerm) {
+    
     let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
     let  SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
     const filteredData = SelectedpolicyEmployer.filter(item => {
@@ -463,6 +465,7 @@ function filterData2(searchTerm) {
         const myContent = document.querySelector(".selectedEmployeeNames");
         let html = "";
         let geofenceEmployee=[]
+        
         filteredData.forEach(val=>{
             geofenceEmployee.push({
                 RecordID:val.Employee.split(";#")[0],
@@ -608,6 +611,7 @@ function loadSelectedEmployee() {
 
 
 function checkEmployeeIsInShift(EmployeeID) {
+    
     let selectedShifts = Geofencing_Allocation_List.filter(policy => policy.Employee.split(";#")[0] === EmployeeID);
     return selectedShifts;
 }
@@ -652,11 +656,12 @@ function AddEmployeeinList(EmployeeId) {
 
 
 function RemoveEmployeeFromList(RecordID) {
+    
     let SelectedPolicyRecordID = document.getElementById("selectpolicy").value
     let  SelectedpolicyEmployer = Geofencing_Allocation_List.filter(policy => policy.GeofencePolicy.split(';#')[0] === SelectedPolicyRecordID);
     let geofecning=SelectedpolicyEmployer.find(a=>a.Employee.split(";#")[0]===RecordID)
     if(geofecning&&geofecning.RecordID){
-        debugger
+        
         if (window.QafPageService) {
             window.QafPageService.DeleteItem(geofecning.RecordID, function () {
                 Geofence_Allocation();
@@ -803,13 +808,14 @@ function getGeoFencePolicyForReport() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((policy) => {
         if (Array.isArray(policy) && policy.length > 0) {
             GeoFencePolicyForReport = policy;
-
+            GeoFencePolicyForReport=GeoFencePolicyForReport.filter(geofence=>geofence.GeofencePolicy)
         }
         printData();
     });
 }
 
 function getNewEmployee() {
+    
     const result = [];
     EmployeeForReport.forEach(emp => {
         const matchedPolicy = GeoFencePolicyForReport.find(policy => policy.Employee.split(';#')[0] === emp.RecordID);
@@ -819,6 +825,7 @@ function getNewEmployee() {
             emp.GeofencePolicy = '';
         }
     });
+    
 }
 
 

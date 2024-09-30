@@ -12,9 +12,9 @@ window.qafChatbot = (function () {
         }
 
         chatWindowOpen() {
-            let qafChatbotElement=document.getElementById('qaf-ai-chat-bot');
-            if(qafChatbotElement){
-                qafChatbotElement.title=''
+            let qafChatbotElement = document.getElementById('qaf-ai-chat-bot');
+            if (qafChatbotElement) {
+                qafChatbotElement.title = ''
             }
             this.shadowRoot.querySelector(".qaf-ai-widget--launcher").classList.add('chat-open');
             this.shadowRoot.querySelector(".qaf-ai-widget-chat").classList.add('open');
@@ -91,19 +91,29 @@ window.qafChatbot = (function () {
             //     if($event.preventDefault) $event.preventDefault();
             //     return false;
             // }
-
+            let exceedMsgElement = this.shadowRoot.getElementById('exceed-msg');
+            if (exceedMsgElement) {
+                exceedMsgElement.innerHTML = ``
+            }
+            debugger
             if (key === 13 && text) {
+                if (this.messageLimit) {
+                    if (this.messageLimit < text.length) {
+                        let exceedMsgElement =  this.shadowRoot.getElementById('exceed-msg');
+                        if (exceedMsgElement) {
+                            exceedMsgElement.innerHTML = this.Elms?this.Elms:'Message limit exceed'
+                        }
+                        return
+                    }
+                }
                 if ($event.preventDefault) $event.preventDefault();
                 this.conversationList.push({ Type: 'SYSTEM', Message: text })
-
-              
-
                 // user entry
                 var userRequest = `<div class="qaf-ai-chat-user-response">
                         <div class="qaf-ai-chat-user-message">${text}</div>
                     </div>`
                 this.shadowRoot.querySelector(".qaf-ai-chat-main").insertAdjacentHTML('beforeend', userRequest);
-           
+
 
                 // Wait for chat response
                 var processingMessage = `<div class="qaf-ai-chat-processing">
@@ -112,12 +122,12 @@ window.qafChatbot = (function () {
                                     </div>
                                     <div class='loader'></div>
                                 </div>`
-                               
+
                 //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.add('show');
                 this.shadowRoot.querySelector(".qaf-ai-chat-main").insertAdjacentHTML('beforeend', processingMessage);
                 this.shadowRoot.querySelector(".qaf-ai-chat-main").scrollTop = this.shadowRoot.querySelector(".qaf-ai-chat-main").scrollHeight + 5;
                 setTimeout(() => {
-               
+
 
                     if (text && this.conversationList.length === 2) {
                         this.isFirstMessage = true;
@@ -185,6 +195,8 @@ window.qafChatbot = (function () {
             let projectID = this.getAttribute('pid') || this.pid;
             let Txt = this.getAttribute('Txt') || this.txt;
             let Tdp = this.getAttribute('Tdp') || this.tdp;
+            let MessageLimit = this.getAttribute('MessageLimit') || this.messageLimit;
+            let AutoOpen = this.getAttribute('AutoOpen') || this.autoOpen;
             let name = this.getAttribute('name') || this.name;
             let welcomeMessage = this.getAttribute('welcomeMessage') || this.welcomeMessage;
             let space = this.getAttribute('spacing') || this.spacing;
@@ -201,13 +213,19 @@ window.qafChatbot = (function () {
             } else {
                 customStyle = `bottom: ${space}px; left: ${space}px;`
             }
-            let customStyleChat=customStyle
+            let customStyleChat = customStyle
 
-if (window.matchMedia('screen and (max-width: 768px)').matches) {
-      customStyleChat=`width:100%;height:100%;`
-}
+            if (window.matchMedia('screen and (max-width: 768px)').matches) {
+                customStyleChat = `width:100%;height:100%;`
+            }
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `<style>
+            #exceed-msg{
+                color: red;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-bottom: 2px;
+            }
             .qaf-chat-start{
     display: flex;
     flex-direction: column;
@@ -617,6 +635,7 @@ if (window.matchMedia('screen and (max-width: 768px)').matches) {
                                 ${this.buildConversions()}
                             </main>
                             <footer class="qaf-ai-chat-footer">
+                            <div id='exceed-msg'></div>
                                 <div class="qaf-ai-chat-input">
                                     <textarea id="qaf-ai-chat-ctrl" placeholder="Message..." row='1'></textarea>
                                 </div>
@@ -630,7 +649,6 @@ if (window.matchMedia('screen and (max-width: 768px)').matches) {
                     </div>
                 </div>
             </div>`;
-
             //Register events
             setTimeout(() => {
                 this.shadowRoot.querySelector("button.qaf-ai-chat-launcher").addEventListener("click", this.chatWindowOpen.bind(this));
@@ -639,7 +657,11 @@ if (window.matchMedia('screen and (max-width: 768px)').matches) {
                 this.shadowRoot.querySelector("button.qaf-ai-chat-btn-cancel").addEventListener("click", this.cancelEndConversion.bind(this));
                 this.shadowRoot.querySelector("button.qaf-ai-chat-btn-warn").addEventListener("click", this.endChat.bind(this));
                 this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").addEventListener("keypress", this.submitRequest.bind(this));
-
+                if (this.autoOpen && !isPreview) {
+                    setTimeout(() => {
+                        this.chatWindowOpen()
+                    }, this.autoOpen*1000);
+                }
             }, 100);
 
         }
@@ -680,14 +702,16 @@ if (window.matchMedia('screen and (max-width: 768px)').matches) {
             preview: false,
             pid: params.Pid,
             txt: params.Txt,
-            tdp: params.Tdp
+            tdp: params.Tdp,
+            messageLimit: params.MessageLimit,
+            autoOpen: params.AutoOpen,
+            Elms:params.Elms
         });
 
         document.body.append(chatElement);
     }
 
     function chatPreview(params) {
-
         // Check is this added already
         let chatbot = document.querySelector("#qaf-ai-chat-bot");
         if (chatbot && chatbot.length > 0) {
@@ -705,7 +729,13 @@ if (window.matchMedia('screen and (max-width: 768px)').matches) {
                 position: params.Position,
                 spacing: params.Spacing,
                 preview: true,
-                elementId: params.PreviewElementId
+                elementId: params.PreviewElementId,
+                pid: params.Pid,
+                txt: params.Txt,
+                tdp: params.Tdp,
+                messageLimit: params.MessageLimit,
+                autoOpen: params.AutoOpen,
+                Elms:params.Elms
             });
 
             if (params.PreviewElementId) {
@@ -733,11 +763,17 @@ if (window.matchMedia('screen and (max-width: 768px)').matches) {
                 position: params.Position,
                 spacing: params.Spacing,
                 preview: true,
-                elementId: params.PreviewElementId
+                elementId: params.PreviewElementId,
+                pid: params.Pid,
+                txt: params.Txt,
+                tdp: params.Tdp,
+                messageLimit: params.MessageLimit ? params.MessageLimit : 500,
+                autoOpen: params.AutoOpen,
+                Elms:params.Elms
             });
 
             if (params.PreviewElementId) {
-                document.querySelector(`#${params.PreviewElementId}`).append(chatElement);
+                document.querySelector(`#${params.PreviewElementId}`).replaceChildren(chatElement);
             } else {
                 //document.body.append(chatElement);
             }

@@ -11,16 +11,19 @@
             var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
             v.onload = function() {
                 window.qafChatbot.initialize({
-                Title: 'Title *',
-                Name:'Name', 
-                IconUrl:'https://images.unsplash.com/photo-1454023492550-5696f8ff10e1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D', 
-                HeaderBgColor:' #09ec60',
-                WelcomeMessage: 'Welcome Message *', 
-                Position: 'Left',
-                Spacing: 11,
-                Pid: '',
-                Txt :'',
-                Tdp : ''
+                Title: 'QAF Assistant',
+                Name:'Bot for website', 
+                IconUrl:'https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fqaf-big-logo_new_7b1d3dca-c6b7-4e47-a38b-80bcb9881924.jpg', 
+                HeaderBgColor:' #5e1c1c',
+                WelcomeMessage: 'Hi! How can I help you?', 
+                Position: 'Right',
+                Spacing: 30,
+                Pid: '5cfa7019-f4b9-4e5c-a27b-c1a66956e774',
+                Txt :'demtis.quickappflow.com',
+                Tdp : 'qaffirst.quickappflow.com',
+                MessageLimit:10,
+                 AutoOpen: 1,
+                 Elms: 'swwwwdddddddddddddddddddasds',
             })
             };
             v.src = "./qaf-chatbot.js"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
