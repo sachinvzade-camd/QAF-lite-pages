@@ -1,0 +1,148 @@
+.tl-portfolio{
+    padding-top: 0!important;
+ }
+ .tl-portfolio .page {
+	 --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+	 --qaf-grid-button-border-radius: 4px;
+}
+
+ .tl-portfolio .qaf-btn-primary {
+	 margin-left: 8px;
+	 background-color: var(--qaf-grid-button-bg-color, #313cbf);
+	 border: none;
+	 color: var(--qaf-grid-button-color, #fff);
+	 padding: var(--qaf-grid-button-color, 8px 13px 8px 13px);
+	 text-align: center;
+	 text-decoration: none;
+	 display: inline-block;
+	 font-size: var(--qaf-grid-button-font-size, 12px);
+	 border-radius: var(--qaf-grid-button-border-radius, 24px);
+}
+.btn-revenue {
+    font-size: 12px!important;
+    padding: 5px 10px 5px 10px!important;
+    
+}
+
+ .tl-portfolio .pg-content, .tl-portfolio .container-fluid {
+	 padding-top: 0 !important;
+}
+ .tl-portfolio .page {
+	 display: flex;
+	 flex-direction: row;
+	 padding-top: 20px;
+}
+ .tl-portfolio .page-nav .expense-app-links {
+	 position: fixed;
+	 height: 100%;
+	 padding: 8px 16px;
+	 background-color: #000;
+	 color: white;
+	 display: none;
+}
+ .tl-portfolio .page-content {
+	 padding-top: 16px;
+}
+ .tl-portfolio .expense-grid .qaf-btn-primary.nav-btns {
+	 font-size: 14px;
+	 border-radius: 4px;
+	 padding-bottom: 4px;
+	 padding-left: 6px;
+	 padding-right: 8px;
+}
+ .tl-portfolio .expense-top, .tl-portfolio .expense-action, .tl-portfolio .expense-nav {
+	 display: flex;
+	 flex-direction: row;
+	 align-items: baseline;
+}
+ .tl-portfolio .expense-action {
+	 margin-left: auto;
+}
+ .tl-portfolio .expense-top {
+	 justify-content: space-between;
+	 align-items: center;
+}
+ .tl-portfolio .expense-current-month, .tl-portfolio .expense-current-month-report {
+	 margin-left: 10px;
+	 font-size: 16px;
+	 font-weight: 600;
+	 min-width: 100px;
+	 text-align: center;
+}
+ .tl-portfolio .expense-app-links-dt {
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
+	 justify-content: space-between;
+}
+ .tl-portfolio .expense-app-links-dt a.dashboard-App {
+	 text-decoration: none;
+}
+ .tl-portfolio a.dashboard-App {
+	 text-decoration: none;
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
+	 color: white;
+	 font-size: 14px;
+}
+ .tl-portfolio a.dashboard-App .fa {
+	 font-size: 28px;
+}
+ .tl-portfolio .no-record {
+	 margin-top: 0;
+	 font-size: 16px;
+	 text-align: center;
+	 background: #efebeb 73;
+	 padding: 5px;
+}
+ .tl-portfolio #no-grid {
+	 box-shadow: 1px 2px 5px;
+	 margin-bottom: 40px;
+}
+ .tl-portfolio .common-page-title {
+	 font-size: 18px;
+	 font-family: inherit;
+	 line-height: 1.1;
+	 color: inherit;
+	 padding: 0;
+	 margin-bottom: 0;
+}
+ .tl-portfolio .date-nevigator {
+	 width: auto;
+	 display: flex;
+	 justify-content: flex-end;
+	 color: #fff;
+	 align-items: center;
+}
+ .tl-portfolio .button {
+	 cursor: pointer;
+	 border-radius: 4px;
+	 border: none;
+	 margin: 0px 5px;
+}
+ .tl-portfolio .currentDate {
+	 color: #000;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 padding: 0px 20px;
+}
+ .tl-portfolio .right-conatiner {
+	 display: flex;
+	 justify-content: flex-end;
+	 width: auto;
+	 align-items: center;
+}
+ .tl-portfolio .qaf-grid__row-item a {
+	 color: #009ce7;
+	 text-decoration: none;
+}
+ .tl-portfolio .table-heading {
+	 transform: translate(0, 0px) !important;
+	 margin-bottom: 12px;
+}
+ .tl-portfolio .pg-content {
+	 padding-top: 40px !important;
+}
+ 

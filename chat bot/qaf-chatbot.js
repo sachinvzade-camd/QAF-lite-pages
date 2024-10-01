@@ -95,7 +95,7 @@ window.qafChatbot = (function () {
             if (exceedMsgElement) {
                 exceedMsgElement.innerHTML = ``
             }
-            debugger
+            
             if (key === 13 && text) {
                 if (this.messageLimit) {
                     if (this.messageLimit < text.length) {

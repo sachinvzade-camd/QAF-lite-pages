@@ -82,7 +82,7 @@ function loadTalentBank() {
   filterFormat = filterFormat.replace('{{ENDOFMONTH}}', endMonth);
 
   let filterGridCondition = getWhereClause();
-  debugger
+  
   let expenseGridElement = document.querySelector('#expgrid');
   if (expenseGridElement) {
     expenseGridElement.show = true;
@@ -398,7 +398,7 @@ qafServiceLoaded = setInterval(() => {
   }
 }, 10);
 function searchReport() {
-  debugger
+  
   const date1 = new Date(startTime);
 const date2 = new Date(endTime);
 const diffTime = Math.abs(date2 - date1);

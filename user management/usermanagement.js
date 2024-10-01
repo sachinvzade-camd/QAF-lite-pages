@@ -709,7 +709,7 @@ function saveUserPermission() {
         let roleName = applicationRoleList.filter(role => (role.RecordID) ===permissionElmenet.value);
 
         if (roleName && roleName.length > 0) {
-            debugger
+            
             let user_permission;
             if(user_PermissionRecord&&user_PermissionRecord.length>0){
                 user_permission=user_PermissionRecord.find(a=>getJsonRecord(a.ProfileorTeam)===saveUser.split(";#")[0]&&a.AppName.split(";#")[0]===app.RecordID)

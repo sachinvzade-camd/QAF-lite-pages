@@ -1,0 +1,148 @@
+.am-matrix{
+    padding-top: 0!important;
+ }
+ .am-matrix .page {
+	 --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+	 --qaf-grid-button-border-radius: 4px;
+}
+
+ .am-matrix .qaf-btn-primary {
+	 margin-left: 8px;
+	 background-color: var(--qaf-grid-button-bg-color, #313cbf);
+	 border: none;
+	 color: var(--qaf-grid-button-color, #fff);
+	 padding: var(--qaf-grid-button-color, 8px 13px 8px 13px);
+	 text-align: center;
+	 text-decoration: none;
+	 display: inline-block;
+	 font-size: var(--qaf-grid-button-font-size, 12px);
+	 border-radius: var(--qaf-grid-button-border-radius, 24px);
+}
+.btn-revenue {
+    font-size: 12px!important;
+    padding: 5px 10px 5px 10px!important;
+    
+}
+
+ .am-matrix .pg-content, .am-matrix .container-fluid {
+	 padding-top: 0 !important;
+}
+ .am-matrix .page {
+	 display: flex;
+	 flex-direction: row;
+	 padding-top: 20px;
+}
+ .am-matrix .page-nav .expense-app-links {
+	 position: fixed;
+	 height: 100%;
+	 padding: 8px 16px;
+	 background-color: #000;
+	 color: white;
+	 display: none;
+}
+ .am-matrix .page-content {
+	 padding-top: 16px;
+}
+ .am-matrix .expense-grid .qaf-btn-primary.nav-btns {
+	 font-size: 14px;
+	 border-radius: 4px;
+	 padding-bottom: 4px;
+	 padding-left: 6px;
+	 padding-right: 8px;
+}
+ .am-matrix .expense-top, .am-matrix .expense-action, .am-matrix .expense-nav {
+	 display: flex;
+	 flex-direction: row;
+	 align-items: baseline;
+}
+ .am-matrix .expense-action {
+	 margin-left: auto;
+}
+ .am-matrix .expense-top {
+	 justify-content: space-between;
+	 align-items: center;
+}
+ .am-matrix .expense-current-month, .am-matrix .expense-current-month-report {
+	 margin-left: 10px;
+	 font-size: 16px;
+	 font-weight: 600;
+	 min-width: 100px;
+	 text-align: center;
+}
+ .am-matrix .expense-app-links-dt {
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
+	 justify-content: space-between;
+}
+ .am-matrix .expense-app-links-dt a.dashboard-App {
+	 text-decoration: none;
+}
+ .am-matrix a.dashboard-App {
+	 text-decoration: none;
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
+	 color: white;
+	 font-size: 14px;
+}
+ .am-matrix a.dashboard-App .fa {
+	 font-size: 28px;
+}
+ .am-matrix .no-record {
+	 margin-top: 0;
+	 font-size: 16px;
+	 text-align: center;
+	 background: #efebeb 73;
+	 padding: 5px;
+}
+ .am-matrix #no-grid {
+	 box-shadow: 1px 2px 5px;
+	 margin-bottom: 40px;
+}
+ .am-matrix .common-page-title {
+	 font-size: 18px;
+	 font-family: inherit;
+	 line-height: 1.1;
+	 color: inherit;
+	 padding: 0;
+	 margin-bottom: 0;
+}
+ .am-matrix .date-nevigator {
+	 width: auto;
+	 display: flex;
+	 justify-content: flex-end;
+	 color: #fff;
+	 align-items: center;
+}
+ .am-matrix .button {
+	 cursor: pointer;
+	 border-radius: 4px;
+	 border: none;
+	 margin: 0px 5px;
+}
+ .am-matrix .currentDate {
+	 color: #000;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 padding: 0px 20px;
+}
+ .am-matrix .right-conatiner {
+	 display: flex;
+	 justify-content: flex-end;
+	 width: auto;
+	 align-items: center;
+}
+ .am-matrix .qaf-grid__row-item a {
+	 color: #009ce7;
+	 text-decoration: none;
+}
+ .am-matrix .table-heading {
+	 transform: translate(0, 0px) !important;
+	 margin-bottom: 12px;
+}
+ .am-matrix .pg-content {
+	 padding-top: 40px !important;
+}
+ 
