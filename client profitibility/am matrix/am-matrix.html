@@ -45,17 +45,16 @@
                 <div class="expense-top table-heading">
                     <div class="common-page-title">AM Client Matrix
                     </div>
-                    <div class="expense-action"> 
-                        <select id="employees" class="filter"> </select>
-                      </div>
+                    <div class="expense-action">
+                        <select id="employees" class="filter"  onchange="onEmployeeChanges()"> </select>
+                    </div>
                 </div>
-                </div>
-                <div class="expense-data-grid" id="no-grid" style="display: none;">
-                    <p class='no-record'>No Record Found</p>
-                </div>
-                <div class="expense-data-grid" id="main-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns"
-                        action="true"></qaf-grid> </div>
             </div>
+            <div class="expense-data-grid" id="no-grid-am" style="display: none;">
+                <p class='no-record'>No Record Found</p>
+            </div>
+            <div class="expense-data-grid" id="main-grid-am"><qaf-grid id="expgrid-am" columns="gridExpenseColumnsam"
+                    action="true"></qaf-grid> </div>
         </div>
     </div>
 </div>

@@ -12,12 +12,14 @@ window.qafChatbot = (function () {
         }
 
         chatWindowOpen() {
+            
             let qafChatbotElement = document.getElementById('qaf-ai-chat-bot');
             if (qafChatbotElement) {
                 qafChatbotElement.title = ''
             }
             this.shadowRoot.querySelector(".qaf-ai-widget--launcher").classList.add('chat-open');
             this.shadowRoot.querySelector(".qaf-ai-widget-chat").classList.add('open');
+            this.conversationList.push({ Type: 'SYSTEM', Message: this.welcomeMessage })
         }
 
         chatWindowClose() {
@@ -40,6 +42,15 @@ window.qafChatbot = (function () {
             let mainElement = this.shadowRoot.querySelector(".qaf-ai-chat-main");
             mainElement.replaceChildren(mainElement.firstElementChild);
             localStorage.removeItem('Sid')
+            var systemRequest = `<div class="qaf-ai-chat-system-response">
+            <div class="qaf-ai-chat-system-icon">
+                <img src="${this.chatBotIconUrl}"/>
+            </div>
+            <div class="qaf-ai-chat-system-msg">
+                ${this.welcomeMessage}
+            </div>
+        </div>`
+            this.shadowRoot.querySelector(".qaf-ai-chat-main").insertAdjacentHTML('beforeend', systemRequest);
         }
 
         cancelEndConversion() {
@@ -166,6 +177,7 @@ window.qafChatbot = (function () {
         }
 
         buildConversions() {
+            
             var conversionHtml = "";
             this.conversationList.map((conversion) => {
                 if (conversion.Type === 'SYSTEM') {
@@ -220,6 +232,17 @@ window.qafChatbot = (function () {
             }
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `<style>
+            #copyright{
+            display: flex;
+    justify-content: center;
+    margin-top: 12px;
+    gap: 6px;
+    color: grey;
+            }
+    #copyright img{
+    width:16px;
+    height:16px
+    }
             #exceed-msg{
                 color: red;
     font-size: 12px;
@@ -639,6 +662,7 @@ window.qafChatbot = (function () {
                                 <div class="qaf-ai-chat-input">
                                     <textarea id="qaf-ai-chat-ctrl" placeholder="Message..." row='1'></textarea>
                                 </div>
+                                <div id='copyright'>Powered by <img src="https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fqaf-big-logo_new_7b1d3dca-c6b7-4e47-a38b-80bcb9881924.jpg"/><b>QuickAppFlow</b></div>
                             </footer>
                             <div class="qaf-ai-chat--overlay"></div>
                             <div class="qaf-ai-chat--prompt">

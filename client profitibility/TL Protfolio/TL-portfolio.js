@@ -100,13 +100,77 @@ function getCommonEmployee(){
     if (expenseGridElement) {
     expenseGridElement.show = true;
     resetObject()
-    let commonEmployee=clientAllocationMatrixList.filter((v,i,a)=>a.findIndex(t=>userOrGroupFieldRecordID(t.Employee)===userOrGroupFieldRecordID(v.Employee))===i);
-
+    let commonEmployee=clientAllocationMatrixList.filter((v,i,a)=>a.findIndex(t=>userOrGroupField(t.Employee)===userOrGroupField(v.Employee))===i);
         commonEmployee.forEach(val => {
             resetObject()
-            let employees = clientAllocationMatrixList.filter(a => userOrGroupFieldRecordID(a.Employee) === userOrGroupFieldRecordID(val.Employee));
+            let employees = clientAllocationMatrixList.filter(a => userOrGroupField(a.Employee) === userOrGroupField(val.Employee));
             if (employees && employees.length > 0) {
-                TLProfibility.NameOfTeamLead = val.Employee;
+                TLProfibility.NameOfTeamLead = val.Employee?`${getFullName(userOrGroupField(val.Employee))}<style>                      
+                            .qaf-grid__row:hover {
+                            background-color: #fff !important;
+                            }
+.qaf-grid__row-item_action{
+                        display:none
+                    }
+                            .qaf-grid__footer {
+                            border-top: 1px solid rgba(0, 0, 0, 0.12);
+                            background-color: #ffffff;
+                            }
+                            .qaf-grid {
+                            border: none;
+                            box-shadow: 1px 2px 5px;
+                            }
+                            .qaf-grid__header {
+                            background-color: #f2f2f2;
+                            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                            font-size: 13px;
+                            font-weight: 500 !important;
+                            }
+                            .qaf-grid__row {
+                            font-size: 12px;
+                            font-weight: 500;
+                            background-color: #fff;
+                            }
+
+                            .qaf-grid__header-item {
+                            font-weight: 500 !important;
+                            font-size: 13px;
+                            }
+
+                            .qaf-grid-page-size label {
+                            font-weight: 500;
+                            }
+                            .qaf-grid-page-size select {
+                            background-color: #fff;
+                            color: #333;
+                            }
+                            .qaf-grid__footer > button {
+                            background-color: #fff;
+                            }
+                            .qaf-grid__footer > button > svg {
+                            fill: #333;
+                            }
+                            .qaf-grid__row-item a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            }
+                            .qaf-loader-container{
+                          display:none !important;
+                          }
+                          .qaf-loader{
+                                border: 5px solid transparent !important;
+                              }
+                                .qaf-grid__row-item > a {
+                            color: #009ce7;
+                            text-decoration: none;
+                            cursor:pointer;
+                        }
+                              .pg-content{
+                      padding-top: 40px !important;
+                        }
+
+ 
+                      </style>`:'';
                 TLProfibility.NoOfClient = employees.length;
                 TLProfibility.TotalRevenue = employees.reduce((acc, value) => acc + Number(value.BillingAmount), 0);
                 let totalCost = 0
@@ -158,7 +222,7 @@ function resetObject(){
         TotalCostEmp:0
     }
 }
-function userOrGroupFieldRecordID(id) {
+function userOrGroupField(id) {
     if (id) {
         if (id && id.includes("[{")) {
             return (JSON.parse(id))[0].RecordID;
@@ -445,150 +509,7 @@ function prevMonth(e) {
 
 function expgrid_onItemRender(cname, cvalue, row) {
     
-    if (cname === 'NameOfTeamLead'||cname === 'ProductOffering') {
-        if (cvalue) {
-            let reportingManagerRecordId = userOrGroupFieldRecordID(cvalue)
-            cvalue = getFullNameByRecordID(reportingManagerRecordId)
-            return `${cvalue}
-                       <style>                      
-                            .qaf-grid__row:hover {
-                            background-color: #fff !important;
-                            }
-.qaf-grid__row-item_action{
-                        display:none
-                    }
-                            .qaf-grid__footer {
-                            border-top: 1px solid rgba(0, 0, 0, 0.12);
-                            background-color: #ffffff;
-                            }
-                            .qaf-grid {
-                            border: none;
-                            box-shadow: 1px 2px 5px;
-                            }
-                            .qaf-grid__header {
-                            background-color: #f2f2f2;
-                            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-                            font-size: 13px;
-                            font-weight: 500 !important;
-                            }
-                            .qaf-grid__row {
-                            font-size: 12px;
-                            font-weight: 500;
-                            background-color: #fff;
-                            }
-
-                            .qaf-grid__header-item {
-                            font-weight: 500 !important;
-                            font-size: 13px;
-                            }
-
-                            .qaf-grid-page-size label {
-                            font-weight: 500;
-                            }
-                            .qaf-grid-page-size select {
-                            background-color: #fff;
-                            color: #333;
-                            }
-                            .qaf-grid__footer > button {
-                            background-color: #fff;
-                            }
-                            .qaf-grid__footer > button > svg {
-                            fill: #333;
-                            }
-                            .qaf-grid__row-item a {
-                            color: #009ce7;
-                            text-decoration: none;
-                            }
-                            .qaf-loader-container{
-                          display:none !important;
-                          }
-                          .qaf-loader{
-                                border: 5px solid transparent !important;
-                              }
-                                .qaf-grid__row-item > a {
-                            color: #009ce7;
-                            text-decoration: none;
-                            cursor:pointer;
-                        }
-                              .pg-content{
-                      padding-top: 40px !important;
-                        }
-
- 
-                      </style>`;
-        }
-        else {
-            return `    <style>
-        
-                    .qaf-grid__row:hover {
-                    background-color: #fff !important;
-                    }
-
-                    .qaf-grid__footer {
-                    border-top: 1px solid rgba(0, 0, 0, 0.12);
-                    background-color: #ffffff;
-                    }
-                    .qaf-grid {
-                    border: none;
-                    box-shadow: 1px 2px 5px;
-                    }
-                    .qaf-grid__header {
-                    background-color: #f2f2f2;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-                    font-size: 13px;
-                    font-weight: 500 !important;
-                    }
-                    .qaf-grid__row {
-                    font-size: 12px;
-                    font-weight: 500;
-                    background-color: #fff;
-                    }
-
-                    .qaf-grid__header-item {
-                    font-weight: 500 !important;
-                    font-size: 13px;
-                    }
-
-                    .qaf-grid-page-size label {
-                    font-weight: 500;
-                    }
-                    .qaf-grid-page-size select {
-                    background-color: #fff;
-                    color: #333;
-                    }
-                    .qaf-grid__footer > button {
-                    background-color: #fff;
-                    }
-                    .qaf-grid__footer > button > svg {
-                    fill: #333;
-                    }
-                    .qaf-grid__row-item a {
-                            color: #009ce7;
-                            text-decoration: none;
-                            }
-                            .qaf-loader-container{
-                          display:none !important;
-                          }
-                          .qaf-loader{
-                                border: 5px solid transparent !important;
-                              }
-                                .qaf-grid__row-item > a {
-                            color: #009ce7;
-                            text-decoration: none;
-                            cursor:pointer;
-                        }
-                        .pg-content{
-                      padding-top: 40px !important;
-                        }
-                      .btn-revenue{
-                      font-size: 12px!important;
-    padding: 5px 10px 5px 10px!important;
-                      }
-    
-
-                </style>`
-        }
-    }
+   
     if(cname === 'EngagementStartDate'||cname === 'EngagementEndDate'){
         if(cvalue ){
           let date = new Date(cvalue);
@@ -599,16 +520,8 @@ function expgrid_onItemRender(cname, cvalue, row) {
         return  ''
         }
       }
-    if (cname === "NameOfTeamLead") {
-        if (cvalue) {
-            let reportingManagerRecordId = userOrGroupFieldRecordID(cvalue)
-            cvalue = getFullNameByRecordID(reportingManagerRecordId)
-            return cvalue;
-        } else {
-            return "";
-        }
-    }
-    if (cname === "NoOfClient") {
+
+    if (cname === "NoOfClient"||cname === "ClientName") {
         if (cvalue) {
             return cvalue.split(";#")[1];
         } else {
@@ -695,7 +608,7 @@ function expgrid_onRowActionEvent(eventName, row) {
 }
 
 
-function userOrGroupFieldRecordID(id) {
+function userOrGroupField(id) {
     if (id) {
         if (id && id.includes("[{")) {
             return (JSON.parse(id))[0].RecordID;
@@ -707,8 +620,7 @@ function userOrGroupFieldRecordID(id) {
 }
 
 
-function getFullNameByRecordID(targetRecordID) {
-
+function getFullName(targetRecordID) {
     const Employee_Data = Employee;
     const targetRecord = Employee_Data.find(record => record.RecordID === targetRecordID);
     if (targetRecord) {
