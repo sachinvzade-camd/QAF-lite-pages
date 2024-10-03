@@ -66,6 +66,15 @@ function endDate() {
 }
 
 function loadTalentBank() {
+  let mainGridElement = document.getElementById('main-grid');
+  let noGridElement = document.getElementById('no-grid');
+  if (mainGridElement) {
+    mainGridElement.style.display = 'block'
+  }
+  if (noGridElement) {
+    noGridElement.style.display = "none"
+  }
+
   let exportBtnElement = document.getElementById("ExportButton")
   if (exportBtnElement) {
     exportBtnElement.disabled = false;
@@ -98,7 +107,15 @@ function loadTalentBank() {
         if (exportBtnElement) {
           exportBtnElement.disabled = true;
         }
-
+          TalentBankDataforExport = [];
+          let mainGridElement = document.getElementById('main-grid');
+              let noGridElement = document.getElementById('no-grid');
+              if (mainGridElement) {
+                  mainGridElement.style.display = 'none'
+              }
+              if (noGridElement) {
+                  noGridElement.style.display = "block"
+              }
       }
 
       expenseGridElement.show = false;
@@ -135,8 +152,6 @@ function nextPageEvent(page) {
   if (expenseGridElement) {
     expenseGridElement.show = true;
     window.QafService.GetItems(expenseGrid.repository, expenseGrid.viewFields, expenseGrid.pageSize, page.detail.currentPage, filterGridCondition, null, false).then((filteredExpense) => {
-
-
       let propertiesToSplit = ["JobPost", "Candidate"];
       let talentBankData = splitIdentifiers(filteredExpense, propertiesToSplit);
       TalentBankDataforExport = talentBankData

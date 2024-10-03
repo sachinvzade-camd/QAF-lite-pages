@@ -48,7 +48,10 @@
                         id="startTime" name="startTime" class="filter"><input type="date" id="endTime" name="endTime"
                         class="filter"> <button id="search" onclick="searchReport()">Search</button> </div>
                 </div>
-                <div class="expense-data-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns"
+                <div class="expense-data-grid" id="no-grid" style="display: none;">
+                    <p class='no-record'>No Record Found</p>
+                </div>
+                <div class="expense-data-grid" id="main-grid"><qaf-grid id="expgrid" columns="gridExpenseColumns"
                         action="true"></qaf-grid> </div>
             </div>
         </div>
