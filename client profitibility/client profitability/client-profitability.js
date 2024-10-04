@@ -1,6 +1,7 @@
 var guidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g;
 var Employee = [];
 var revenueDetailsList=[]
+var clientAllocationMatrixList=[]
 var expenseClaim_Data;
 var currentDate = new Date();
 var FirstDay;
@@ -45,7 +46,7 @@ function addRevenue() {
 var expenseGrid = {
     repository: 'Customer_Revenue_Details',
     columns: [
-        { field: 'NameOfClient', displayName: 'Name Of Client', sorting: false },
+        { field: 'NameOfClient', displayName: 'Name of Client', sorting: false },
         { field: 'BillingAmount', displayName: 'Billing Amount', sorting: false },
         { field: 'AccountManagerCost', displayName: 'Account Manager Cost', sorting: false },
         { field: 'AccountManagerPercentage', displayName: '% of Revenue', sorting: false },
@@ -67,7 +68,7 @@ var expenseGrid = {
 
 var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var gridExpenseColumns =  [
-    { field: 'NameOfClient', displayName: 'Name Of Client', sorting: false },
+    { field: 'NameOfClient', displayName: 'Name of Client', sorting: false },
     { field: 'BillingAmount', displayName: 'Billing Amount', sorting: false },
     { field: 'AccountManagerCost', displayName: 'Account Manager Cost', sorting: false },
     { field: 'AccountManagerPercentage', displayName: '% of Revenue', sorting: false },
@@ -83,6 +84,14 @@ var gridExpenseColumns =  [
 
 
 function getRevenueDetails() {
+    let mainGridElement = document.getElementById('main-grid');
+            let noGridElement = document.getElementById('no-grid');
+            if (mainGridElement) {
+                mainGridElement.style.display = 'block'
+            }
+            if (noGridElement) {
+                noGridElement.style.display = "none"
+            }
     revenueDetailsList = []
     let objectName = "Customer_Revenue_Details";
     let list = 'RecordID,Name,ProductOffering,BillingAmount';
@@ -92,12 +101,47 @@ function getRevenueDetails() {
     let whereClause = ``;
     let orderBy = "true";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((revenues) => {
-        if (Array.isArray(revenues) && revenues.length > 0) {
+        if (Array.isArray(revenues) && revenues.length >0) {
             revenueDetailsList = revenues;
-            getCommonCustomer()
+            getClientAllocationMatrix()
+        }else{
+            let mainGridElement = document.getElementById('main-grid');
+            let noGridElement = document.getElementById('no-grid');
+            if (mainGridElement) {
+                mainGridElement.style.display = 'none'
+            }
+            if (noGridElement) {
+                noGridElement.style.display = "block"
+            }
+            
         }
     });
-
+}
+function getClientAllocationMatrix() {
+    clientAllocationMatrixList = []
+    let objectName = "Client_Allocation_Matrix";
+    let list = 'RecordID,Customer,ProductOffering,Employee,NumberofHours,HourlyRate';
+    let fieldList = list.split(",");
+    let pageSize = "20000";
+    let pageNumber = "1";
+    let whereClause = ``;
+    let orderBy = "true";
+    window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((matrixs) => {
+        if (Array.isArray(matrixs) && matrixs.length > 0) {
+            clientAllocationMatrixList = matrixs;
+            getCommonCustomer()
+        }else{
+            let mainGridElement = document.getElementById('main-grid');
+            let noGridElement = document.getElementById('no-grid');
+            if (mainGridElement) {
+                mainGridElement.style.display = 'none'
+            }
+            if (noGridElement) {
+                noGridElement.style.display = "block"
+            }
+            
+        }
+    });
 }
 function getCommonCustomer(){
     let expenseGridElement = document.querySelector('#expgrid');
@@ -127,21 +171,30 @@ function getCommonCustomer(){
                 clientProfibility.BillingAmount=amount;
 
                 let accountManagers=customer.filter(a=>a.ProductOffering.includes('Account Manager'))
+                let accountManagersmatrix=clientAllocationMatrixList.filter(a=>a.ProductOffering.includes('Account Manager')&&a.Customer===val.Name)
                 if(accountManagers&&accountManagers.length>0){
-                    let accountManagerCost=accountManagers.reduce((acc, value) => acc + Number(value.BillingAmount), 0);
-                    clientProfibility.AccountManagerCost=accountManagerCost;
-                    clientProfibility.AccountManagerPercentage= (clientProfibility.AccountManagerCost/clientProfibility.BillingAmount)*100;
+                    let accountManagerCost=0;
+                    accountManagersmatrix.forEach(mtx=>{
+                        accountManagerCost+=mtx.NumberofHours*mtx.HourlyRate
+                    })
+                    clientProfibility.AccountManagerCost=parseFloat((accountManagerCost).toFixed(2));
+                    clientProfibility.AccountManagerPercentage= parseFloat(((clientProfibility.AccountManagerCost/clientProfibility.BillingAmount)*100).toFixed(2));
                 }
 
                 let teamLeads=customer.filter(a=>a.ProductOffering.includes('Team Lead')||a.ProductOffering.includes('TL'))
+                let teamLeadsmatrix=clientAllocationMatrixList.filter(a=>(a.ProductOffering.includes('Team Lead')||a.ProductOffering.includes('TL'))&&a.Customer===val.Name)
                 if(teamLeads&&teamLeads.length>0){
-                    let teamLeadsCost=teamLeads.reduce((acc, value) => acc + Number(value.BillingAmount), 0);
-                    clientProfibility.TLCost=teamLeadsCost;
-                    clientProfibility.TLCostPercentage= (clientProfibility.TLCost/clientProfibility.BillingAmount)*100;
+                    // let teamLeadsCost=teamLeads.reduce((acc, value) => acc + Number(value.BillingAmount), 0);
+                    let teamLeadsCost=0;
+                    teamLeadsmatrix.forEach(mtx=>{
+                        teamLeadsCost+=mtx.NumberofHours*mtx.HourlyRate
+                    })
+                    clientProfibility.TLCost=parseFloat((teamLeadsCost).toFixed(2));;
+                    clientProfibility.TLCostPercentage= parseFloat(((clientProfibility.TLCost/clientProfibility.BillingAmount)*100).toFixed(2));
                 }
 
                 clientProfibility.TotalResourceCost=clientProfibility.AccountManagerCost+clientProfibility.TLCost
-                clientProfibility.TotalResourceCostPercentage= (clientProfibility.TotalResourceCost/clientProfibility.BillingAmount)*100;
+                clientProfibility.TotalResourceCostPercentage= parseFloat(((clientProfibility.TotalResourceCost/clientProfibility.BillingAmount)*100).toFixed(2));
 
                 clientProfibility.Profibility=clientProfibility.BillingAmount-clientProfibility.TotalResourceCost;
                 clientProfibility.TotalSalesContribution=((clientProfibility.BillingAmount/totalRevenueAmount)*100).toFixed(2);

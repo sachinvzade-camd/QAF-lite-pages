@@ -499,7 +499,7 @@ function expgrid_onItemRender(cname, cvalue, row) {
         if(cvalue ){
           let date = new Date(cvalue);
           let formatedDate=convertUTCDateToLocalDate( new Date(cvalue) )
-           formatedDate=`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear() } ${date.getHours() }:${date.getMinutes() } `
+           formatedDate=`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear() } `
           return formatedDate;
         }else{
         return  ''
@@ -538,9 +538,9 @@ if(revenue&&revenue.RecordID){
           } else if (val === 'EndDate') {
             fieldsValue.push({ fieldName: val, fieldValue:convertUTCDateToLocalDate( new Date(revenue.EngagementEndDate) )})
           }else if (val === 'NumberofHours') {
-            fieldsValue.push({ fieldName: val, fieldValue:revenue.NumberofHours/revenue.NumberofSeats})
+            fieldsValue.push({ fieldName: val, fieldValue:parseFloat((revenue.NumberofHours/revenue.NumberofSeats).toFixed(2))})
           }else if (val === 'BillingAmount') {
-            fieldsValue.push({ fieldName: val, fieldValue:revenue.BillingAmount/revenue.NumberofSeats})
+            fieldsValue.push({ fieldName: val, fieldValue:parseFloat((revenue.BillingAmount/revenue.NumberofSeats).toFixed(2))})
         }else if (val === 'ProductOffering') {
             fieldsValue.push({ fieldName: val, fieldValue:revenue.ProductOffering})
           }
@@ -549,13 +549,14 @@ if(revenue&&revenue.RecordID){
         }
       })
       let fieldsDoNotdiaply = ['Customer'];//check
+      let readOnlyFormField = ['NumberofHours','BillingAmount'];//check
       let excludeFieldFromForm = [];//check
      let displayFieldlist = fields.filter((objOne) => {
         return !fieldsDoNotdiaply.some((objTwo) => {
           return objOne === objTwo;
         });
       });
-      window.QafPageService.AddItem("Client_Allocation_Matrix",{},displayFieldlist,fieldsValue,null,null,fieldsDoNotdiaply,excludeFieldFromForm,null,null,null,true,null,null,null)
+      window.QafPageService.AddItem("Client_Allocation_Matrix",{},displayFieldlist,fieldsValue,null,null,fieldsDoNotdiaply,excludeFieldFromForm,null,null,null,true,readOnlyFormField,null,null)
 }
 
 }

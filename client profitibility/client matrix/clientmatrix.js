@@ -496,7 +496,7 @@ function expgrid_onItemRender(cname, cvalue, row) {
         if(cvalue ){
           let date = new Date(cvalue);
           let formatedDate=convertUTCDateToLocalDate( new Date(cvalue) )
-           formatedDate=`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear() } ${date.getHours() }:${date.getMinutes() } `
+           formatedDate=`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear() } `
           return formatedDate;
         }else{
         return  ''
@@ -508,6 +508,13 @@ function expgrid_onItemRender(cname, cvalue, row) {
             let reportingManagerRecordId = userOrGroupFieldRecordID(cvalue)
             cvalue = getFullNameByRecordID(reportingManagerRecordId)
             return cvalue;
+        } else {
+            return "";
+        }
+    }
+    if (cname === "NumberofHours" || cname ==="BillingAmount") {
+        if (cvalue) {
+            return cvalue.toFixed(2);
         } else {
             return "";
         }
@@ -571,7 +578,7 @@ function expgrid_onRowActionEvent(eventName, row) {
         } else if (eventName === 'EDIT') {
             window.QafPageService.EditItem(expenseGrid.repository, row.RecordID, function () {
                 loadCustomerRevenue();
-            }, null, null, null, null, ["Approvedamount"], ["Approvedamount"]);
+            }, null, null, null, null, ["Approvedamount"], ["Approvedamount"],null,null,null,null,["BillingAmount","HourlyRate","NumberofHours"]);
 
         } else if (eventName === 'DELETE') {
             window.QafPageService.DeleteItem(row.RecordID, function () {

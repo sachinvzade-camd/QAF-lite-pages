@@ -139,7 +139,7 @@
 	 text-decoration: none;
 }
  .revenue-details .table-heading {
-	 transform: translate(0, 0px) !important;
+	 transform: translate(0, 8px) !important;
 	 margin-bottom: 12px;
 }
  .revenue-details .pg-content {

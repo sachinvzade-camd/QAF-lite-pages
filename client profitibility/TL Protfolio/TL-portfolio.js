@@ -51,11 +51,11 @@ function getEmployee() {
 var expenseGrid = {
     repository: 'Client_Allocation_Matrix',
     columns: [
-        { field: 'NameOfTeamLead', displayName: 'Name Of Team Lead', sorting: false },
-        { field: 'NoOfClient', displayName: 'No Of Client', sorting: false },
+        { field: 'NameOfTeamLead', displayName: 'Name of Team Lead', sorting: false },
+        { field: 'NoOfClient', displayName: 'No of Client', sorting: false },
         { field: 'TotalRevenue', displayName: 'Total Revenue', sorting: false },
         { field: 'TotalCostEmp', displayName: 'Total Cost', sorting: false },
-        { field: 'clientProfibility', displayName: 'Client Profibility', sorting: false },
+        { field: 'clientProfibility', displayName: 'Client Profitability', sorting: false },
 
     ],
     viewFields: ["NameOfTeamLead", "NoOfClient", "TotalRevenue", "clientProfibility"],
@@ -68,11 +68,11 @@ var expenseGrid = {
 
 var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var gridExpenseColumns =  [
-    { field: 'NameOfTeamLead', displayName: 'Name Of Team Lead', sorting: false },
-        { field: 'NoOfClient', displayName: 'No Of Client', sorting: false },
+    { field: 'NameOfTeamLead', displayName: 'Name of Team Lead', sorting: false },
+        { field: 'NoOfClient', displayName: 'No of Client', sorting: false },
         { field: 'TotalRevenue', displayName: 'Total Revenue', sorting: false },
         { field: 'TotalCostEmp', displayName: 'Total Cost', sorting: false },
-        { field: 'clientProfibility', displayName: 'Client Profibility', sorting: false },
+        { field: 'clientProfibility', displayName: 'Client Profitability', sorting: false },
 ];
 
 
@@ -89,6 +89,7 @@ function getClientAllocation() {
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((revenues) => {
         if (Array.isArray(revenues) && revenues.length > 0) {
             clientAllocationMatrixList = revenues;
+            clientAllocationMatrixList=clientAllocationMatrixList.filter(a=>a.ProductOffering.toLowerCase().includes("tl")||a.ProductOffering.toLowerCase().includes("team lead"))
             getCommonEmployee()
         }
     });
@@ -105,6 +106,7 @@ function getCommonEmployee(){
             resetObject()
             let employees = clientAllocationMatrixList.filter(a => userOrGroupField(a.Employee) === userOrGroupField(val.Employee));
             if (employees && employees.length > 0) {
+                
                 TLProfibility.NameOfTeamLead = val.Employee?`${getFullName(userOrGroupField(val.Employee))}<style>                      
                             .qaf-grid__row:hover {
                             background-color: #fff !important;
@@ -508,8 +510,6 @@ function prevMonth(e) {
 }
 
 function expgrid_onItemRender(cname, cvalue, row) {
-    
-   
     if(cname === 'EngagementStartDate'||cname === 'EngagementEndDate'){
         if(cvalue ){
           let date = new Date(cvalue);
@@ -621,11 +621,12 @@ function userOrGroupField(id) {
 
 
 function getFullName(targetRecordID) {
-    const Employee_Data = Employee;
-    const targetRecord = Employee_Data.find(record => record.RecordID === targetRecordID);
-    if (targetRecord) {
-        const fullName = `${targetRecord.FirstName} ${targetRecord.LastName}`;
-        return fullName;
+    debugger
+    const Employee_Data_tl = Employee;
+    const targetRecordTL = Employee_Data_tl.find(record => record.RecordID === targetRecordID);
+    if (targetRecordTL) {
+        const fullNameTL = `${targetRecordTL.FirstName} ${targetRecordTL.LastName}`;
+        return fullNameTL;
     } else {
         return '';
     }
