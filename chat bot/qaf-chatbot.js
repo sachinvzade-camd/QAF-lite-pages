@@ -12,7 +12,7 @@ window.qafChatbot = (function () {
         }
 
         chatWindowOpen() {
-            
+
             let qafChatbotElement = document.getElementById('qaf-ai-chat-bot');
             if (qafChatbotElement) {
                 qafChatbotElement.title = ''
@@ -91,32 +91,38 @@ window.qafChatbot = (function () {
 
             return json;
         }
+        submitRequestImage() {
+            let chatValue =this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").value
+            let event = {
+                target: {
+                    value: chatValue
+                },
+                keyCode: 13,
+                shiftKey: false
+            }
+            this.submitRequest(event)
+        }
 
         submitRequest($event) {
             let text = $event.target.value;
             var key = $event.keyCode;
-
+            var shiftKey = $event.shiftKey;
             text = text.trim().replace('\n', '').replace('\r', '');
-
-            // if(!text){
-            //     if($event.preventDefault) $event.preventDefault();
-            //     return false;
-            // }
             let exceedMsgElement = this.shadowRoot.getElementById('exceed-msg');
             if (exceedMsgElement) {
                 exceedMsgElement.innerHTML = ``
             }
-            
-            if (key === 13 && text) {
+            if (!shiftKey&&key === 13 && text) {
                 if (this.messageLimit) {
                     if (this.messageLimit < text.length) {
-                        let exceedMsgElement =  this.shadowRoot.getElementById('exceed-msg');
+                        let exceedMsgElement = this.shadowRoot.getElementById('exceed-msg');
                         if (exceedMsgElement) {
-                            exceedMsgElement.innerHTML = this.Elms?this.Elms:'Message limit exceed'
+                            exceedMsgElement.innerHTML = this.Elms ? this.Elms : 'Message limit exceed'
                         }
                         return
                     }
                 }
+                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=true
                 if ($event.preventDefault) $event.preventDefault();
                 this.conversationList.push({ Type: 'SYSTEM', Message: text })
                 // user entry
@@ -151,6 +157,8 @@ window.qafChatbot = (function () {
                         localStorage.setItem('Sid', d.Sid ? d.Sid : '')
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
+                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=false
+
                         if (d && d.Mcs) {
                             // system entry
                             var systemRequest = `<div class="qaf-ai-chat-system-response">
@@ -167,6 +175,7 @@ window.qafChatbot = (function () {
                     }, (error) => {
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
+                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=false
                     })
                 }, 500);
                 this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").value = "";
@@ -177,7 +186,7 @@ window.qafChatbot = (function () {
         }
 
         buildConversions() {
-            
+
             var conversionHtml = "";
             this.conversationList.map((conversion) => {
                 if (conversion.Type === 'SYSTEM') {
@@ -543,12 +552,20 @@ window.qafChatbot = (function () {
                                     margin: 0px;
                                     border-top-right-radius: 0px;
                                     border-bottom-right-radius: 0px;
-                                    padding: 12px 12px 10px;
+                                    padding: 12px 45px 10px 12px;
                                     width: 100%;
                                     border-radius: 8px;
                                     font-family: inherit;
                                     font-size: 14px;
                                 }
+                                    img{
+                                        width: 18px;
+    height: 18px;
+    position: absolute;
+    right: 10%;
+    top: 27%;
+    object-fit: contain;
+}
                             }
                         }
 
@@ -661,6 +678,7 @@ window.qafChatbot = (function () {
                             <div id='exceed-msg'></div>
                                 <div class="qaf-ai-chat-input">
                                     <textarea id="qaf-ai-chat-ctrl" placeholder="Message..." row='1'></textarea>
+                                    <img src="https://quickappflow.com/wp-content/uploads/2024/10/post_icon.png" id='qaf-ai-enter-img'/>
                                 </div>
                                 <div id='copyright'>Powered by <img src="https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fqaf-big-logo_new_7b1d3dca-c6b7-4e47-a38b-80bcb9881924.jpg"/><b>QuickAppFlow</b></div>
                             </footer>
@@ -681,10 +699,11 @@ window.qafChatbot = (function () {
                 this.shadowRoot.querySelector("button.qaf-ai-chat-btn-cancel").addEventListener("click", this.cancelEndConversion.bind(this));
                 this.shadowRoot.querySelector("button.qaf-ai-chat-btn-warn").addEventListener("click", this.endChat.bind(this));
                 this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").addEventListener("keypress", this.submitRequest.bind(this));
+                this.shadowRoot.querySelector("#qaf-ai-enter-img").addEventListener("click", this.submitRequestImage.bind(this));
                 if (this.autoOpen && !isPreview) {
                     setTimeout(() => {
                         this.chatWindowOpen()
-                    }, this.autoOpen*1000);
+                    }, this.autoOpen * 1000);
                 }
             }, 100);
 
@@ -729,7 +748,7 @@ window.qafChatbot = (function () {
             tdp: params.Tdp,
             messageLimit: params.MessageLimit,
             autoOpen: params.AutoOpen,
-            Elms:params.Elms
+            Elms: params.Elms
         });
 
         document.body.append(chatElement);
@@ -759,7 +778,7 @@ window.qafChatbot = (function () {
                 tdp: params.Tdp,
                 messageLimit: params.MessageLimit,
                 autoOpen: params.AutoOpen,
-                Elms:params.Elms
+                Elms: params.Elms
             });
 
             if (params.PreviewElementId) {
@@ -793,7 +812,7 @@ window.qafChatbot = (function () {
                 tdp: params.Tdp,
                 messageLimit: params.MessageLimit ? params.MessageLimit : 500,
                 autoOpen: params.AutoOpen,
-                Elms:params.Elms
+                Elms: params.Elms
             });
 
             if (params.PreviewElementId) {
