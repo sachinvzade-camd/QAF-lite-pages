@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registation</title>
+    <link rel="stylesheet" href="./user-registration.css">
+</head>
+<body>
+
+    <div class="user-registration">
+        <div class="reg-form">
+            <div id="work-email">
+                <p class="reg-title">Welcome to QuickAppFlow</p>
+                <div class="reg-control">
+                    <label for="" class="control-label">Enter your work email</label><br>
+                    <input type="text" id="w-email" name="work-email" class="form-control">
+                </div>
+                <div class="error-response">
+                    <p id="error-work">Something Went wrong</p>
+                </div>
+    
+                <button class="btn btn-primary btn-block account-btn" onclick="onclickworkemail()">Continue</button>
+                <p class="reg-sign-in">Already have account? <a href="">Sign in</a></p>
+    
+            </div>
+    
+            <div id="verification">
+                <p class="reg-title">Check Your Email
+                </p>
+                <p class="text-align">A confirmation code was sent<br> to <span id="displayemail"></span>
+                </p>
+                <div class="reg-control">
+                    <label for="code" class="control-label">Enter confirmation code to activate your account
+                    </label><br>
+                    <input type="number" id="verification-code" name="code" class="form-control"><br>
+                </div>
+                <div class="error-response"></div>
+                <p id="error-verify"></p>
+                <button class="btn btn-primary btn-block account-btn" onclick="onclickverification()">Verify</button>
+                <p class="reg-sign-in">Haven't received the email from us yet?
+                </p>
+                <p class="reg-sign-in"><a onclick="onresentCode()">Resend Code</a> or <a onclick="onchangeEmailID()">Change
+                        email address</a></p>
+            </div>
+    
+            <div id="workspace">
+                <div>
+                    <p class="setup-title">Setup Workspace</p>
+                    <p class="setup-sub-title">Complete profile information</p>
+                </div>
+                <div class="grid-container">
+                    <div>
+                        <label for="fname" class="control-label">First Name</label><br>
+                        <input type="text" id="fname" name="fname" class="form-control">
+                    </div>
+                    <div>
+                        <label for="lname" class="control-label">Last Name</label><br>
+                        <input type="text" id="lname" name="lname" class="form-control">
+                    </div>
+                    <div>
+                        <label for="" class="control-label">Contact Number</label><br>
+                        <input type="text" id="contactnumber" name="contactnumber" class="form-control">
+                    </div>
+                    <div>
+                        <label for="" class="control-label">Company Website</label><br>
+                        <input type="text" id="website" name="website" class="form-control">
+                    </div>
+                    <div>
+                        <label for="" class="control-label">Company Size</label><br>
+                        <input type="text" id="companySize" name="companySize" class="form-control">
+                    </div>
+                </div>
+                <div class="confirm-btn">
+                <button class="btn btn-primary pull-right" onclick="onClickWorksendDetails()">Confirm</button>
+            </div>
+            </div>
+            <div id="sent-details">
+                <p class="reg-title">Welcome to QuickAppFlow</p>
+                <p class="reg-sign-in">Login details have been sent to your registered email? <a href="">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

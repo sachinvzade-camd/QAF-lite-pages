@@ -1,0 +1,81 @@
+.pg-content{
+    padding-top: 0!important;
+}
+.user-registration{
+    font-family: "Poppins", sans-serif;
+    /* height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+.reg-form{
+    border:1px solid #80808059;
+    padding: 25px;
+    max-width: 450px;
+}
+.reg-form .reg-title{
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+.reg-sign-in{
+    text-align: center;
+    margin-top: 20px;
+}
+.reg-control{
+    margin-top: 30px;
+}
+.control-label{
+    font-weight: 500;
+    font-size: 13px;
+    font-family: "Poppins";
+    -webkit-transform: translate(0, 5px);
+    transform: translate(0, 5px);
+}
+.form-control{
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    color: #000;
+    height: 36px;
+    margin-top: 6px;
+}
+.account-btn{
+    border-radius: 0;
+    font-size: 22px!important;
+    padding: 10px 26px;
+    border: 0;
+    height: 51px;
+    box-shadow: 0 6px 15px #888888;
+}
+#verification,#workspace,#sent-details,#error-work{
+    display: none;
+}
+.text-align{
+    text-align: center;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  .setup-title{
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .setup-sub-title{
+    font-size: 16px;
+    color: grey;
+  }
+  .error-response{
+    height: 25px;
+    color: red;
+  }
+  .confirm-btn{
+    margin-bottom: 20px;
+  }
