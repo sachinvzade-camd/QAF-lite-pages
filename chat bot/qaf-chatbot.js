@@ -20,6 +20,7 @@ window.qafChatbot = (function () {
             this.shadowRoot.querySelector(".qaf-ai-widget--launcher").classList.add('chat-open');
             this.shadowRoot.querySelector(".qaf-ai-widget-chat").classList.add('open');
             this.conversationList.push({ Type: 'SYSTEM', Message: this.welcomeMessage })
+            this.conversationList.splice(1);
         }
 
         chatWindowClose() {
@@ -62,6 +63,7 @@ window.qafChatbot = (function () {
             let chatAPIUrl = `https://demtis.quickappflow.com/api/ptcssad`;
             let json;
             try {
+                
                 let payLoad = { Mcp: input, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
                 if (this.isFirstMessage) {
                     payLoad = { Mcp: input, tmf: 1, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
@@ -153,8 +155,10 @@ window.qafChatbot = (function () {
                     }
 
                     this.qafAIChatRequest(text).then((d) => {
-
-                        localStorage.setItem('Sid', d.Sid ? d.Sid : '')
+                        let sidValue=localStorage.getItem('Sid')
+                        if(!sidValue){
+                            localStorage.setItem('Sid', d.Sid ? d.Sid : '')
+                        }
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
                 this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=false
@@ -247,6 +251,7 @@ window.qafChatbot = (function () {
     margin-top: 12px;
     gap: 6px;
     color: grey;
+    align-items: center;
             }
     #copyright img{
     width:16px;

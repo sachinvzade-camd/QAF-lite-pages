@@ -357,7 +357,15 @@ function expgrid_onItemRender(cname, cvalue, row) {
     if (cname === 'Name'||cname === 'ProductOffering') {
         if (cvalue) {
             return `${cvalue.split(";#")[1]}
-                       <style>                      
+                       <style>
+                       .qaf-grid__row-item_action .action-content .action-items > button{
+                           display: flex;
+    font-weight: 500;
+    gap: 10px;
+                       }
+    .qaf-grid__row-item_action .action-content{
+    width:130px
+    }                      
                             .qaf-grid__row:hover {
                             background-color: #fff !important;
                             }
@@ -549,7 +557,7 @@ if(revenue&&revenue.RecordID){
         }
       })
       let fieldsDoNotdiaply = ['Customer'];//check
-      let readOnlyFormField = ['NumberofHours','BillingAmount'];//check
+      let readOnlyFormField = ['NumberofHours','BillingAmount','StartDate','EndDate'];//check
       let excludeFieldFromForm = [];//check
      let displayFieldlist = fields.filter((objOne) => {
         return !fieldsDoNotdiaply.some((objTwo) => {

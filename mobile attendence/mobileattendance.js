@@ -1,9 +1,9 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = funFirstapiURL
+var apURL = SITapiURL
 var sitHostURL='demtis.quickappflow.com'
 var funFirstHostURL='inskferda.azurewebsites.net'
-var hostName=funFirstHostURL
+var hostName=sitHostURL
 var todayMonth = document.getElementById("today");
 var date = new Date();
 var day = date.getDate();

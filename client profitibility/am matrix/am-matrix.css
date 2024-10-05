@@ -1,3 +1,6 @@
+.pg-content {
+	padding-top: 0px !important;
+  }
 .am-matrix{
     padding-top: 0!important;
  }
@@ -30,7 +33,7 @@
  .am-matrix .page {
 	 display: flex;
 	 flex-direction: row;
-	 padding-top: 20px;
+	 padding-top: 0px;
 }
  .am-matrix .page-nav .expense-app-links {
 	 position: fixed;
@@ -93,7 +96,7 @@
 	 margin-top: 0;
 	 font-size: 16px;
 	 text-align: center;
-	 background: #efebeb 73;
+	 background: #efebeb73;
 	 padding: 5px;
 }
  .am-matrix #no-grid {

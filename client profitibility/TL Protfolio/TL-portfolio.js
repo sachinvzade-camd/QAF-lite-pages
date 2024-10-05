@@ -55,7 +55,7 @@ var expenseGrid = {
         { field: 'NoOfClient', displayName: 'No of Client', sorting: false },
         { field: 'TotalRevenue', displayName: 'Total Revenue', sorting: false },
         { field: 'TotalCostEmp', displayName: 'Total Cost', sorting: false },
-        { field: 'clientProfibility', displayName: 'Client Profitability', sorting: false },
+        { field: 'clientProfibility', displayName: 'Client Profitability (%)', sorting: false },
 
     ],
     viewFields: ["NameOfTeamLead", "NoOfClient", "TotalRevenue", "clientProfibility"],
@@ -72,7 +72,7 @@ var gridExpenseColumns =  [
         { field: 'NoOfClient', displayName: 'No of Client', sorting: false },
         { field: 'TotalRevenue', displayName: 'Total Revenue', sorting: false },
         { field: 'TotalCostEmp', displayName: 'Total Cost', sorting: false },
-        { field: 'clientProfibility', displayName: 'Client Profitability', sorting: false },
+        { field: 'clientProfibility', displayName: 'Client Profitability (%)', sorting: false },
 ];
 
 
@@ -174,7 +174,7 @@ function getCommonEmployee(){
  
                       </style>`:'';
                 TLProfibility.NoOfClient = employees.length;
-                TLProfibility.TotalRevenue = employees.reduce((acc, value) => acc + Number(value.BillingAmount), 0);
+                TLProfibility.TotalRevenue = Math.round(employees.reduce((acc, value) => acc + Number(value.BillingAmount), 0));
                 let totalCost = 0
                 employees.forEach(emp => {
                     totalCost += emp.NumberofHours * emp.HourlyRate
@@ -193,7 +193,7 @@ function getCommonEmployee(){
                         TLProfibility.NoOfClient = val.Customer;
                         let customers = commonCustomer.filter(a => (a.Customer) === (val.Customer));
                         if(customers&&customers.length>0){
-                         TLProfibility.TotalRevenue = customers.reduce((acc, value) => acc + Number(value.BillingAmount), 0);
+                         TLProfibility.TotalRevenue = Math.round(customers.reduce((acc, value) => acc + Number(value.BillingAmount), 0));
                      let totalCostCustomer = 0
                       customers.forEach(emp => {
                         totalCostCustomer += emp.NumberofHours * emp.HourlyRate
@@ -621,7 +621,7 @@ function userOrGroupField(id) {
 
 
 function getFullName(targetRecordID) {
-    debugger
+    
     const Employee_Data_tl = Employee;
     const targetRecordTL = Employee_Data_tl.find(record => record.RecordID === targetRecordID);
     if (targetRecordTL) {

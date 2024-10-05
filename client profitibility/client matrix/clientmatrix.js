@@ -357,7 +357,17 @@ function expgrid_onItemRender(cname, cvalue, row) {
     if (cname === 'Customer'||cname === 'ProductOffering') {
         if (cvalue) {
             return `${cvalue.split(";#")[1]}
-                       <style>                      
+                       <style>     
+                       .qaf-grid__row-item_action .action-content .action-items > button{
+                           display: flex;
+    font-weight: 500;
+    gap: 10px;
+                       }
+    .qaf-grid__row-item_action .action-content{
+    width:130px
+    }
+    
+                       
                             .qaf-grid__row:hover {
                             background-color: #fff !important;
                             }
@@ -578,7 +588,7 @@ function expgrid_onRowActionEvent(eventName, row) {
         } else if (eventName === 'EDIT') {
             window.QafPageService.EditItem(expenseGrid.repository, row.RecordID, function () {
                 loadCustomerRevenue();
-            }, null, null, null, null, ["Approvedamount"], ["Approvedamount"],null,null,null,null,["BillingAmount","HourlyRate","NumberofHours"]);
+            }, null, null, null, null, ["Approvedamount"], ["Approvedamount"],null,null,null,null,["BillingAmount","HourlyRate","NumberofHours",'StartDate','EndDate']);
 
         } else if (eventName === 'DELETE') {
             window.QafPageService.DeleteItem(row.RecordID, function () {

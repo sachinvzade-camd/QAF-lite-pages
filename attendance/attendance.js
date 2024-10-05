@@ -722,6 +722,10 @@ function getAllAttendence() {
   })
     .then(response => response.json())
     .then(attendanceList => {
+      let attendancecontainerElement=document.getElementById('attendance-container');
+      if(attendancecontainerElement){
+        attendancecontainerElement.style.display='block'
+      }
 removeBlur()
       let attendanceCard = ""
       if (Array.isArray(attendanceList) && attendanceList.length > 0) {
@@ -730,6 +734,9 @@ removeBlur()
           let date = moment((new Date(attendance.Day)))
           // let date = moment(convertUTCDateToLocalDate(new Date(attendance.Day)))
           if (moment(date).isSameOrBefore(moment(), 'date')) {
+            if (moment(date).isSame(moment(), 'date')) {
+              attendance.DayStatus=""
+            }
             attendanceCard += ` <div class="card">
 <div class="main">
   <div class="attandance-date ${index%2===0 ? 'color-green':'color-yellow'}">
@@ -744,7 +751,7 @@ removeBlur()
     </div>
   </div>
   <div class="attendance-body">
-    <div class="attendance-timing timing-container">
+    <div class="attendance-timing timing-container time-punch">
       <div class="start">
         <span>${attendance.FirstPunch ? attendance.FirstPunch : "--:--"}</span>
       </div>
@@ -758,12 +765,12 @@ removeBlur()
         <p> ${attendance.IsRegularized ? '<i class="fa fa-repeat" aria-hidden="true"></i>' : ""} </p>
       </div>
     </div>
-    <div class="attendance-timing timing-container staus-container" id="present">
+    <div class="attendance-timing timing-container staus-container present-div" id="present">
       <div class="start">
-        <button class="attendance present ${getStatusColor(attendance.DayStatus)}">${attendance.DayStatus} </button>
+        ${attendance.DayStatus? `<button class="attendance present ${getStatusColor(attendance.DayStatus)}">${attendance.DayStatus} </button>`:""}
       </div>
       <div class="end numberOfHours">
-        <span>${attendance.NumberOfHours ? attendance.NumberOfHours + ' hrs' : ""}</span>
+        <span>${attendance.NumberOfHours ? formatAttendence(attendance.NumberOfHours) : ""}</span>
       </div>
     </div>
   </div>
@@ -781,20 +788,41 @@ removeBlur()
     })
 
 }
+function formatAttendence(time){
+  if(time){
+    if(time.includes('day')){
+      let timeArray=[];
+      let halfday=time.split(")")[0]
+      timeArray=time.split(")")[1].split(".");
+      let timestring= halfday+') '+timeArray[0]+" h "+(timeArray[1]?(timeArray[1].length===1?timeArray[1]+'0':timeArray[1]):'00')+" m"
+      return timestring
+    }else{
+      let timeArray=[];
+      timeArray=time.split(".");
+      let timestring= timeArray[0]+" h "+(timeArray[1]?(timeArray[1].length===1?timeArray[1]+'0':timeArray[1]):'00')+" m"
+      return timestring
+    }
+  }
+  return ""
+
+}
 function getStatusColor(status) {
   let statusclass = "";
   if (status) {
-    if (status.toLowerCase() === "Present".toLowerCase()) {
-      statusclass = "present-color"
-    }
     if (status.toLowerCase() === "Absent".toLowerCase()) {
       statusclass = "absent-color"
     }
-    if (status.toLowerCase() === "Holiday".toLowerCase() || status.toLowerCase() === "WO".toLowerCase()) {
-      statusclass = "holiday-color"
-    }
-    if (status.toLowerCase() === "On Leave".toLowerCase()) {
+   else if (status.toLowerCase() === "On Leave".toLowerCase()) {
       statusclass = "leave-color"
+    }
+   else if (status.toLowerCase() === "WO".toLowerCase()) {
+      statusclass = "wo-color"
+    }
+   else if (status.toLowerCase() === "Holiday".toLowerCase()) {
+      statusclass = "wo-color"
+    }
+    else{
+      statusclass = "present-color"
     }
   }
   return statusclass

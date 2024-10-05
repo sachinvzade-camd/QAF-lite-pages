@@ -161,7 +161,8 @@ function getClientAllocationMatrix() {
 
 }
 
-function getReportingTeamLead() {
+function getReportingTeamLead() {4
+    
     let commonCustomer = clientAllocationAMatrixList.filter((v, i, a) => a.findIndex(t => t.Customer === v.Customer) === i);
     let customerIds=commonCustomer.map(a=>a.Customer.split(";#")[0]).join("'<OR>Customer='")
     clientAllocationTeamLeadList = []
@@ -183,6 +184,8 @@ function getReportingTeamLead() {
 
 }
 function getCommonCustomer() {
+    
+
     let expenseGridElement = document.querySelector('#expgrid-am');
     if (expenseGridElement) {
         expenseGridElement.show = true;
@@ -264,6 +267,16 @@ function getCommonCustomer() {
                 amMatrix.ReportingTL =teamLeadName&&teamLeadName.RecordID? getFullNameByRecordID(userOrGroupFieldRecordID(teamLeadName.Employee)):"";
                 clientamMaxtrixProfitList.push(amMatrix)
             })
+        }
+        if(clientamMaxtrixProfitList&&clientamMaxtrixProfitList.length>0){
+            let mainGridElement = document.getElementById('main-grid-am');
+            let noGridElement = document.getElementById('no-grid-am');
+            if (mainGridElement) {
+                mainGridElement.style.display = 'block'
+            }
+            if (noGridElement) {
+                noGridElement.style.display = "none"
+            }
         }
         expenseGridElement.Data = clientamMaxtrixProfitList;
         expenseGridElement.show = false;

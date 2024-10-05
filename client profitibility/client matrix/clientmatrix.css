@@ -1,3 +1,6 @@
+.pg-content {
+	padding-top: 0px !important;
+  }
 .client-matrix{
     padding-top: 0!important;
  }
@@ -30,7 +33,7 @@
  .client-matrix .page {
 	 display: flex;
 	 flex-direction: row;
-	 padding-top: 20px;
+	 padding-top: 0px;
 }
  .client-matrix .page-nav .expense-app-links {
 	 position: fixed;
