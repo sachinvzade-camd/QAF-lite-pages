@@ -22,6 +22,8 @@
                                                 type="text" class="search-input" id="search" placeholder=""
                                                 autocomplete="off" /> <i id="cancelSearch" onclick="cancelSearch()"
                                                 class="fa fa-times cancel-icon" aria-hidden="true"></i> </div>
+
+                                <select id="employee-search" class='select-emp-search ' onchange="onEmployeeDropdownChange()"> </select>
                                 <div class="addform"> <button type="button" class="btn-primary add-btn" onclick="openAddForm()">
                                                 <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button> </div>
                                 <div class="dropdown" id="more-button"> <button onclick="myMoreButton()"

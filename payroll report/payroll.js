@@ -523,6 +523,7 @@ function getEmployee() {
     let orderBy = "true"
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((employees) => {
         if (Array.isArray(employees) && employees.length > 0) {
+            debugger
             employeeListAll = employees
             let employeeDropdown = document.getElementById('employee');
             let options = `<option value=''>Select Employee</option>`
@@ -531,6 +532,15 @@ function getEmployee() {
                     options += `<option value=${emp.RecordID}>${emp.FirstName} ${emp.LastName}</option>`
                 })
                 employeeDropdown.innerHTML = options;
+            }
+
+            let employeeSearchDropdown = document.getElementById('employee-search');
+            let optionsSearch = `<option value=''>Select Employee</option>`
+            if (employeeSearchDropdown) {
+                employees.forEach(emp => {
+                    optionsSearch += `<option value=${emp.RecordID}>${emp.FirstName} ${emp.LastName}</option>`
+                })
+                employeeSearchDropdown.innerHTML = optionsSearch;
             }
 
         }
@@ -1486,4 +1496,7 @@ function downloadTemplate() {
     hiddenElement.target = '_blank';
     hiddenElement.download = 'Payroll' + '.csv';
     hiddenElement.click();
+}
+function onEmployeeDropdownChange(){
+
 }

@@ -499,9 +499,6 @@ async function getGeofenceDetails() {
   });
 }
 
-
-
-
 function isLateCheckin() {
   if (shiftCongfigration && shiftCongfigration.StartTime) {
     let startTime = moment(shiftCongfigration.StartTime, 'hh:mm A');
@@ -542,27 +539,13 @@ function checkout(timesheet,istype) {
 
 
 async function checkOutButtonClick() {
+  addBlur()
+  resettimer()
   getCoordinates()
   setTimeout(() => {
-  if (userAttendenceType === 1) {
-    let checkoutDetails = {}
-    checkoutDetails['EmployeeID'] =EmployeeID_Value;
-    checkoutDetails['Type'] = "out";
-    checkoutDetails['IsWebLogin'] = true;
-    checkoutDetails['EmployeeGUID'] = EmployeeGUID_Value;
-    checkoutDetails['Qld1'] = 0
-    checkoutDetails['Qld2'] = 0
-    checkout(checkoutDetails,'checkout')
-      alert("You are check out successfully")
-  } else {
-    if (errormessage) {
-      alert(errormessage)
-      removeBlur()
-      return
-    }
-    if (locationLatitude&&locationLongitute) {
-      let latitude = locationLatitude;// position.coords.latitude;
-      let longitude = locationLongitute;//position.coords.longitude; 
+    if (userAttendenceType === 1) {
+      let latitude = parseFloat(locationLatitude);// position.coords.latitude;
+      let longitude = parseFloat(locationLongitute);//position.coords.longitude;
       let checkoutDetails = {}
       checkoutDetails['EmployeeID'] = EmployeeID_Value;
       checkoutDetails['Type'] = "out";
@@ -570,11 +553,117 @@ async function checkOutButtonClick() {
       checkoutDetails['EmployeeGUID'] = EmployeeGUID_Value;
       checkoutDetails['Qld1'] = parseFloat(latitude)
       checkoutDetails['Qld2'] = parseFloat(longitude);
-      checkout(checkoutDetails,'checkout')
-      alert("You are check out successfully")
+      checkout(checkoutDetails)
+
     }
-  }
-}, 200);
+
+    if (userAttendenceType === 2 || userAttendenceType === 3) {
+      if (isLocationPermission) {
+        if (userAttendenceType === 2) {
+          attendanceTypeTwo()
+        }
+        if (userAttendenceType === 3) {
+
+          if (configuredUserOfficeLocation) {
+            let lat = parseFloat(configuredUserOfficeLocation.Latitude);
+            let long = parseFloat(configuredUserOfficeLocation.Longitude);
+            let rad = parseInt(configuredUserOfficeLocation.Radius);
+
+            let latitude = parseFloat(locationLatitude);// position.coords.latitude;
+            let longitude = parseFloat(locationLongitute);//position.coords.longitude;
+            let startCordinate = {
+              latitude: lat,
+              longitude: long,
+            }
+            let destCordinate = {
+              latitude: latitude,
+              longitude: longitude,
+            }
+            var distanceJson = haversine(startCordinate, destCordinate)
+            if (errormessage) {
+              alert(errormessage)
+              removeBlur()
+              return
+            }
+            let distanceInMeter = distanceJson;
+            if (distanceInMeter <= rad) {
+
+              let checkoutDetails = {}
+              checkoutDetails['EmployeeID'] = EmployeeID_Value;
+              checkoutDetails['Type'] = "out";
+              checkoutDetails['IsWebLogin'] = true;
+              checkoutDetails['EmployeeGUID'] = EmployeeGUID_Value;
+              checkoutDetails['Qld1'] = parseFloat(latitude)
+              checkoutDetails['Qld2'] = parseFloat(longitude);
+              checkout(checkoutDetails)
+
+            } else {
+              removeBlur()
+
+              alert('Not allowed to check in from this location!')
+            }
+          } else {
+            // Geolocation details and distance
+            getGeofenceDetails().then(async (geofence) => {
+
+              if (geofence) {
+                configuredUserOfficeLocation = geofence;
+                let lat = parseFloat(configuredUserOfficeLocation.Latitude);
+                let long = parseFloat(configuredUserOfficeLocation.Longitude);
+                let rad = parseInt(configuredUserOfficeLocation.Radius);
+                let latitude = parseFloat(locationLatitude);// position.coords.latitude;
+                let longitude = parseFloat(locationLongitute);//position.coords.longitude;
+                let startCordinate = {
+                  latitude: lat,
+                  longitude: long,
+                }
+                let destCordinate = {
+                  latitude: latitude,
+                  longitude: longitude,
+                }
+                var distanceJson = haversine(startCordinate, destCordinate)
+                if (errormessage) {
+                  alert(errormessage)
+                  removeBlur()
+
+                  return
+                }
+
+                if (distanceJson <= rad) {
+                  let checkoutDetails = {}
+                  checkoutDetails['EmployeeID'] = EmployeeID_Value;
+                  checkoutDetails['Type'] = "out";
+                  checkoutDetails['IsWebLogin'] = true;
+                  checkoutDetails['EmployeeGUID'] = EmployeeGUID_Value;
+                  checkoutDetails['Qld1'] = parseFloat(latitude)
+                  checkoutDetails['Qld2'] = parseFloat(longitude);
+                  checkout(checkoutDetails)
+                } else {
+                  removeBlur()
+
+                  alert('Not allowed to check in from this location!')
+                }
+              } else {
+                if (isLocationPermission) {
+                  attendanceTypeTwo()
+                } else {
+                  removeBlur()
+
+                  alert('Enable location permission to check in or check out')
+                }
+              }
+            })
+          }
+        }
+      } else {
+        if (userAttendenceType === 2 || userAttendenceType === 3) {
+          removeBlur()
+
+          alert('Enable location permission to check in or check out',)
+        }
+      }
+    }
+  }, 200);
 }
 
 function showError(error) {

@@ -1,8 +1,8 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
 var apURL = SITapiURL
-let todayMonth = document.getElementById("today");
-const date = new Date();
+var todayMonth = document.getElementById("today");
+var date = new Date();
 var day = date.getDate();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
@@ -29,7 +29,7 @@ var configuredUserOfficeLocation;
 var isLocationPermission = true
 
 
-let qafServiceLoaded = setInterval(() => {
+ qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
     window.QafService.SetEnvUrl(apURL)
     let breadcum = document.getElementById("breadcrum");
@@ -356,7 +356,7 @@ async function checkinButtonClick() {
           }
           var distanceJson = haversine(startCordinate, destCordinate)
           if (errormessage) {
-            alert(errormessage)
+            openAlert(errormessage)
   removeBlur()
 
             return
@@ -378,7 +378,7 @@ async function checkinButtonClick() {
           } else {
   removeBlur()
 
-            alert('Not allowed to check in from this location!')
+  openAlert('Not allowed to check in from this location!')
           }
         } else {
           // Geolocation details and distance
@@ -402,7 +402,7 @@ async function checkinButtonClick() {
               }
               var distanceJson = haversine(startCordinate, destCordinate)
               if (errormessage) {
-                alert(errormessage)
+                openAlert(errormessage)
   removeBlur()
 
                 return
@@ -422,7 +422,7 @@ async function checkinButtonClick() {
               } else {
   removeBlur()
 
-                alert('Not allowed to check in from this location!')
+  openAlert('Not allowed to check in from this location!')
               }
             } else {
               if (isLocationPermission) {
@@ -430,7 +430,7 @@ async function checkinButtonClick() {
               } else {
   removeBlur()
 
-                alert('Enable location permission to check in or check out')
+  openAlert('Enable location permission to check in or check out')
               }
             }
           })
@@ -440,7 +440,7 @@ async function checkinButtonClick() {
       if (userAttendenceType === 2 || userAttendenceType === 3) {
   removeBlur()
 
-        alert('Enable location permission to check in or check out',)
+  openAlert('Enable location permission to check in or check out',)
       }
     }
   }
@@ -501,7 +501,7 @@ function isLateCheckin() {
     var endTime = moment(moment(new Date()))
     if (endTime.isAfter(beginningTime)) {
 
-      alert("You are late for check-in")
+      openAlert("You are late for check-in")
       return true
     } else {
       return false
@@ -587,7 +587,7 @@ function showError(error) {
 async function attendanceTypeTwo() {
   coordinateValue=await getCoordinates()
   if (errormessage) {
-    alert(errormessage)
+    openAlert(errormessage)
     removeBlur()
 
     return
@@ -832,4 +832,17 @@ function formatDay(attendance) {
 }
 function formatMonth(attendance) {
   return moment(attendance.Day).format("MMM")
+}
+function openAlert(message) {
+  let qafAlertObject = {
+      IsShow: true,
+      Message: message,
+      Type: 'ok'
+  }
+  const body = document.body;
+  let alertElement = document.createElement('qaf-alert')
+  body.appendChild(alertElement);
+  const qafAlertComponent = document.querySelector('qaf-alert');
+  qafAlertComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));
+  qafAlertComponent.setAttribute('qaf-event', 'alertclose');
 }
