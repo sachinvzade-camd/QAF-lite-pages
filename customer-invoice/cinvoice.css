@@ -1,0 +1,140 @@
+.page {
+    --qaf-grid-button-bg-color: var(--ButtonBackGroundColor);
+    --qaf-grid-button-border-radius: 4px;
+  }
+  .qaf-btn-primary {
+    margin-left: 8px;
+    background-color: var(--qaf-grid-button-bg-color, #313cbf);
+    border: none;
+    color: var(--qaf-grid-button-color, #fff);
+    padding: var(--qaf-grid-button-color, 8px 13px 8px 13px);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: var(--qaf-grid-button-font-size, 12px);
+    border-radius: var(--qaf-grid-button-border-radius, 24px);
+  }
+  
+  .container-fluid {
+    padding: 0px !important;
+  }
+  
+  .page {
+    display: flex;
+    flex-direction: row;
+  }
+  .pg-content{
+    margin-right: 25px;
+  }
+  .page-nav .expense-app-links {
+    position: fixed;
+    height: 100%;
+    padding: 8px 16px;
+    background-color: #000;
+    color: white;
+    display: none;
+  }
+  
+  .page-content {
+    padding-top: 0px;
+    margin-left: 0px;
+  }
+  
+  #breadcrum {
+    margin-left: 3.5%;
+  }
+  
+  /* .col-md-offset-1{
+          margin-left: 4%;
+        } */
+  
+  .expense-grid .qaf-btn-primary.nav-btns {
+    font-size: 14px;
+    border-radius: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 8px;
+  }
+  
+  .expense-top {
+    transform: translate(0, 0) !important;
+    /* display: none !important; */
+  }
+  
+  .expense-top,
+  .expense-action,
+  .expense-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin: 12px 0px;
+  }
+  .expense-top h3 {
+    margin: 0px;
+  }
+  
+  .expense-action {
+    margin-left: auto;
+  }
+  
+  .expense-current-month,
+  .expense-current-month-report {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+  }
+  
+  .expense-app-links-dt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .expense-app-links-dt a.dashboard-App {
+    text-decoration: none;
+  }
+  a.dashboard-App {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+  }
+  
+  a.dashboard-App .fa {
+    font-size: 28px;
+  }
+  .no-record {
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+    background: #efebeb73;
+    padding: 5px;
+  }
+  
+  #no-grid {
+    box-shadow: 1px 2px 5px;
+    margin-bottom: 40px;
+  }
+  
+  h3 {
+    font-size: 20px;
+  }
+  
+  .crm-menu-display {
+    width: 95%;
+  }
+  .qaf-grid__row:hover {
+    background-color: #fff !important;
+  }
+  .pg-content{
+    padding-top: 0!important;
+  }
+  
+  /* .invoice-grid-title{
+    display: flex !important;
+  } */

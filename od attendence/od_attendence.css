@@ -52,7 +52,7 @@ p {
 /* for QAF Lite */
 .line {
   position: absolute;
-  top: 95px;
+  top: 121px;
   height: 2px;
   background-color: #311212;
   transition: all 0.3s ease-in-out;

@@ -1,6 +1,6 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = SITapiURL
+var apURL = localStorage.getItem('env')
 var todayMonth = document.getElementById("today");
 var date = new Date();
 var day = date.getDate();
