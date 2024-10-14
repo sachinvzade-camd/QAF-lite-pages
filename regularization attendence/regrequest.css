@@ -1,383 +1,317 @@
-/* task Activity CSS */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
-
-* {
-  font-family: "Poppins", sans-serif;
+ .rg-request .main-container {
+	 display: flex;
 }
-
-.main-container {
-  display: flex;
+ .rg-request .container {
+	 width: 100%;
+	 margin: 0px 0px 0px 0px;
 }
-.container {
-  width: 100%;
-  margin: 0px 0px 0px 0px;
+ .rg-request p {
+	 font-size: 18px;
 }
-p {
-  font-size: 18px;
+ .rg-request .tab-box {
+	 display: flex;
+	 flex-grow: 1;
+	 flex-wrap: wrap;
+	 overflow: hidden;
+	 z-index: 1;
+	 border-bottom: 2px solid #ebeaea;
+	/* margin-right: 25px;
+	 */
 }
-
-.tab-box {
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  overflow: hidden;
-  z-index: 1;
-  border-bottom: 2px solid rgb(235, 234, 234);
-  /* margin-right: 25px; */
+ .rg-request .tab-btn {
+	 border: none;
+	 background-color: #fff;
+	 font-size: 14px;
+	 font-weight: 400;
+	 color: #000;
+	 display: flex;
+	 padding: 10px 30px;
+	 text-align: center;
+	 cursor: pointer;
 }
-
-.tab-btn {
-  border: none;
-  background-color: #fff;
-  font-size: 14px;
-  font-weight: 400;
-  color: rgb(0, 0, 0);
-  display: flex;
-  padding: 10px 30px;
-  text-align: center;
-  cursor: pointer;
+ .rg-request .tab-content {
+	 display: none;
+	 width: 100%;
+	 padding: 20px 0px;
+	/* border: 1px solid #ddd;
+	 */
 }
-
-.tab-content {
-  display: none;
-  width: 100%;
-  padding: 20px 0px;
-  /* border: 1px solid #ddd; */
+ .rg-request .tab-content.active {
+	 display: block;
 }
-
-.tab-content.active {
-  display: block;
+ .rg-request .line {
+	 position: absolute;
+	 top: 112px;
+	 height: 2px;
+	 background-color: #311212;
+	 transition: all 0.3s ease-in-out;
 }
-/* for QAF Lite */
-.line {
-  position: absolute;
-  top: 139px;
-  height: 2px;
-  background-color: #311212;
-  transition: all 0.3s ease-in-out;
+ .rg-request .nodata {
+	 display: flex;
+	 justify-content: center;
+	 font-size: 15px;
+	 width: 100%;
 }
-
-.nodata {
-  display: flex;
-  justify-content: center;
-  font-size: 15px;
-  width: 100%;
+ .rg-request .tab-content {
+	 display: none;
+	 animation: moving 0.5s ease;
 }
-
-.tab-content {
-  display: none;
-  animation: moving 0.5s ease;
+ .rg-request .moving-left {
+	 animation: moving-left 0.5s;
 }
-.moving-left {
-  animation: moving-left 0.5s;
+ .rg-request .moving-right {
+	 animation: moving-right 0.5s;
 }
-
-.moving-right {
-  animation: moving-right 0.5s;
+ @keyframes moving-left {
+	 from {
+		 transform: translateX(50%);
+		 opacity: 0;
+	}
+	 to {
+		 transform: translateX(0);
+		 opacity: 1;
+	}
 }
-
-@keyframes moving-left {
-  from {
-    transform: translateX(50%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+ @keyframes moving-right {
+	 from {
+		 transform: translateX(-50%);
+		 opacity: 0;
+	}
+	 to {
+		 transform: translateX(0);
+		 opacity: 1;
+	}
 }
-
-@keyframes moving-right {
-  from {
-    transform: translateX(-50%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+ .rg-request .inner-sub-title {
+	 font-weight: 600;
 }
-
-.inner-sub-title {
-  font-weight: 600;
+ .rg-request .table-data {
+	 border-radius: 4px;
+	 padding: 0;
 }
-
-/* TAble CSS */
-.table-data {
-  border-radius: 4px;
-  padding: 0;
-}
-/* .payroll-details {
-  margin: 0px 20px 20px 20px;
-}
-.common-page-title {
-  font-size: 18px;
-  font-family: inherit;
-  line-height: 1.1;
-  color: inherit;
-  padding: 0;
-  margin-bottom: 5px;
-} */
-
 .pg-content {
-  padding-top: 0px !important;
+	 padding-top: 0px !important;
 }
-.payroll-details {
-  margin: 60px 20px 20px 20px;
-  padding-top: 10px;
+ .rg-request .payroll-details {
+	 margin: 60px 20px 20px 20px;
+	 padding-top: 10px;
 }
-.common-page-title {
-  font-size: 18px;
-  font-family: inherit;
-  line-height: 1.1;
-  color: inherit;
-  padding: 0;
+ .rg-request .common-page-title {
+	 font-size: 18px;
+	 font-family: inherit;
+	 line-height: 1.1;
+	 color: inherit;
+	 padding: 0;
 }
-
-.tablecontainer {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+ .rg-request .tablecontainer {
+	 display: flex;
+	 justify-content: flex-start;
+	 width: 100%;
+	 box-shadow: #333 0px 0px 3px 0px;
 }
-.add-btn {
-  padding: 6px 12px;
-  border-radius: 5px;
-  margin-right: 4px;
-  cursor: pointer;
-  border: none;
+ .rg-request .add-btn {
+	 padding: 6px 12px;
+	 border-radius: 5px;
+	 margin-right: 4px;
+	 cursor: pointer;
+	 border: none;
 }
-
-.qaf-table {
-  font-size: 13px;
-  width: 100%;
-  margin: 2px auto;
-  border-collapse: collapse;
-  background-color: #fff;
-  overflow: hidden;
-  font-weight: 400;
+ .rg-request .qaf-table {
+	 font-size: 13px;
+	 width: 100%;
+	 margin: 2px auto;
+	 border-collapse: collapse;
+	 background-color: #fff;
+	 overflow: hidden;
+	 font-weight: 400;
 }
-.qaf-tr,
-.qaf-td {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+ .rg-request .qaf-tr, .rg-request .qaf-td {
+	 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
-.table > tbody > tr > td,
-.table > tbody > tr > th,
-.table > tfoot > tr > td,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > thead > tr > th {
-  vertical-align: middle;
+ .rg-request .table > tbody > tr > td, .rg-request .table > tbody > tr > th, .rg-request .table > tfoot > tr > td, .rg-request .table > tfoot > tr > th, .rg-request .table > thead > tr > td, .rg-request .table > thead > tr > th {
+	 vertical-align: middle;
 }
-
-.qaf-th {
-  height: 60px;
-  padding: 12px 10px;
-  text-align: left;
-  word-wrap: break-word;
-  min-width: 70px;
+ .rg-request .qaf-th {
+	 height: 60px;
+	 padding: 12px 10px;
+	 text-align: left;
+	 word-wrap: break-word;
+	 min-width: 70px;
 }
-.qaf-td {
-  height: 40px;
-  padding: 0px 10px;
-  text-align: left;
-  word-wrap: break-word;
-  min-width: 135px;
+ .rg-request .qaf-td {
+	 height: 40px;
+	 padding: 0px 10px;
+	 text-align: left;
+	 word-wrap: break-word;
+	 min-width: 135px;
 }
-
-.qaf-th {
-  background-color: rgb(242, 242, 242);
-  color: rgb(0, 0, 0);
-  font-weight: 400;
+ .rg-request .qaf-th {
+	 background-color: #f2f2f2;
+	 color: #000;
+	 font-weight: 400;
 }
-/* .table-container {
-  overflow: scroll;
-  box-shadow: rgb(51, 51, 51) 0px 0px 3px 0px;
+ .rg-request .qaf-tr:nth-child(even) {
+	 background-color: rgba(0, 0, 0, 0);
 }
-
-.table-container::-webkit-scrollbar {
-  height: 20px;
-} */
-
-.qaf-tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0);
+ .rg-request .tablecontainer {
+	 overflow-x: auto;
+	/* Add this line */
+	 max-width: 100%;
+	/* Add this line to limit the width */
+	 max-height: 68vh;
 }
-
-.tablecontainer {
-  overflow-x: auto; /* Add this line */
-  max-width: 100%; /* Add this line to limit the width */
-  max-height: 68vh;
+ .rg-request .tablecontainer::-webkit-scrollbar {
+	 height: 10px;
 }
-.tablecontainer::-webkit-scrollbar {
-  height: 10px;
+ @media screen and (max-width: 600px) {
+	 .rg-request .qaf-th, .rg-request .qaf-td {
+		 display: block;
+		 width: 100%;
+		 box-sizing: border-box;
+	}
 }
-
-@media screen and (max-width: 600px) {
-  .qaf-th,
-  .qaf-td {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
+ .rg-request .sorted-button {
+	 padding: 0px 5px;
+	 display: none;
 }
-.sorted-button {
-  padding: 0px 5px;
-  display: none;
+ .rg-request .qaf-th:hover .sorted-button {
+	 display: inline;
+	 cursor: pointer;
 }
-.qaf-th:hover .sorted-button {
-  display: inline;
-  cursor: pointer;
+ .rg-request .header-title {
+	 height: 30px;
+	 display: flex;
+	 justify-content: flex-end;
+	 align-items: center;
+	 margin-bottom: 5px;
 }
-
-/* Form Styling */
-
-/* Search BAr */
-.header-title {
-  height: 30px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 5px;
+ .rg-request .right-container {
+	 height: inherit;
+	 width: 100%;
+	 display: flex;
+	 justify-content: end;
 }
-/* .left-container {
-  width: 30%;
-} */
-
-.right-container {
-  height: inherit;
-  width: 100%;
-  display: flex;
-  justify-content: end;
+ .rg-request .qaf-search-bar {
+	 width: 20%;
+	 margin: 0px;
 }
-.qaf-search-bar {
-  width: 60%;
-  margin: 0px;
+ .rg-request .search-bar {
+	 position: relative;
+	 display: flex;
+	 align-items: center;
+	 width: 25%;
+	 margin: 10px 5px;
+	 color: gray;
 }
-.search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 25%;
-  margin: 10px 5px;
-  color: gray;
+ .rg-request .search-input {
+	 text-align: start;
+	 width: 100%;
+	 padding-left: 10px;
+	 border: 1px solid gray;
+	 border-radius: 4px;
+	 font-size: 14px;
+	 height: 30px;
+	 outline: none;
 }
-
-.search-input {
-  text-align: start;
-  width: 100%;
-  padding-left: 10px;
-  border: 1px solid gray;
-  border-radius: 4px;
-  font-size: 14px;
-  height: 30px;
-  outline: none;
+ .rg-request .apply-input {
+	 margin: 0px 5px;
+	 padding: 6px;
+	 border-radius: 4px;
+	 border: 1px solid gray;
 }
-
-.apply-input {
-  margin: 0px 5px;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid gray;
+ .rg-request .search-icon, .rg-request .cancel-icon {
+	 color: gray;
+	 position: absolute;
+	 cursor: pointer;
 }
-.search-icon,
-.cancel-icon {
-  color: gray;
-  position: absolute;
-  cursor: pointer;
+ .rg-request .search-bar .search-icon {
+	 padding-top: 15px;
+	 padding-left: 10px;
+	 color: gray;
+	 margin-left: -60px;
 }
-.search-bar .search-icon {
-  padding-top: 15px;
-  padding-left: 10px;
-  color: gray;
-  margin-left: -60px;
+ .rg-request .search-bar #cancelSearch {
+	 display: none;
+	 color: gray;
 }
-.search-bar #cancelSearch {
-  display: none;
-  color: gray;
+ .rg-request .cancel-icon {
+	 right: 10px;
 }
-
-.cancel-icon {
-  right: 10px;
+ .rg-request .no-record {
+	 width: 100vw;
+	 text-align: center;
+	 font-size: 14px;
+	 font-weight: 500;
 }
-
-.no-record {
-  width: 100vw;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
+ .rg-request .datefield {
+	 display: flex;
+	 margin: 0px 5px;
 }
-
-.datefield {
-  display: flex;
-  margin: 0px 5px;
+ .rg-request .add-btn {
+	 background-color: #de5b22;
+	 color: #fff;
 }
-.add-btn {
-  background-color: rgb(222, 91, 34);
-  color: #fff;
+ .rg-request a {
+	 text-decoration: none;
+	 color: #009ce7;
+	 cursor: pointer;
 }
-a {
-  text-decoration: none;
-  color: #009ce7;
-  cursor: pointer;
+ .rg-request .action-btn {
+	 display: flex;
 }
-
-.action-btn{
-  display: flex;
+ .rg-request .hide {
+	 display: none;
 }
-.hide{
-  display: none;
+ .rg-request .search-input {
+	 -webkit-appearance: none;
+	 appearance: none;
+	 appearance: none;
+	 background-image: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat scroll right 15px center;
 }
-.search-input {
-  -webkit-appearance: none;
-  appearance: none;
-  appearance: none;
-  background-image: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
-    no-repeat scroll right 15px center;
+ .rg-request .arrow {
+	 background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat scroll right 4px center;
+	 background-size: 11px;
 }
-.arrow{
-  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat scroll right 4px center;
-  background-size: 11px;
+ .rg-request .left-child-right-container {
+	 width: 55%;
+   display: flex;
+   justify-content: end;
 }
-
-.left-child-right-container{
-  width: 55%;
+ .rg-request .page-disabled {
+	 background: #fff;
+	 position: fixed;
+	 width: 100%;
+	 height: 100%;
+	 top: 0;
+	 left: 0;
+	 z-index: 999;
+	 display: none;
 }
-/* Loader */
-.page-disabled {
-  background: #fff;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  display: none;
+ .rg-request .qaf-loader {
+	 width: 48px;
+	 height: 48px;
+	 border: 5px solid #fff;
+	 border-bottom-color: #ff7a59;
+	 border-radius: 50%;
+	 display: inline-block;
+	 box-sizing: border-box;
+	 animation: rotation 1s linear infinite;
 }
-.qaf-loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #fff;
-  border-bottom-color: #ff7a59;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+ @keyframes rotation {
+	 0% {
+		 transform: rotate(0deg);
+	}
+	 100% {
+		 transform: rotate(360deg);
+	}
 }
-
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+ .rg-request .qaf-loader-div {
+	 text-align: center;
+	 display: flex;
+	 justify-content: center;
+	 position: absolute;
+	 left: 0%;
+	 width: 100%;
+	 top: 45vh;
 }
-.qaf-loader-div {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  left: 0%;
-  width: 100%;
-  top: 45vh;
-}
+ 

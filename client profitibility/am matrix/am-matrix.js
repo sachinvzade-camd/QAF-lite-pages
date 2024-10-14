@@ -58,6 +58,15 @@ function getproductTeamLead() {
         if (Array.isArray(products) && products.length > 0) {
             teamProductID = products[0].RecordID
             getEmployeeUser();
+        }else{
+            let mainGridElement = document.getElementById('main-grid-am');
+            let noGridElement = document.getElementById('no-grid-am');
+            if (mainGridElement) {
+                mainGridElement.style.display = 'none'
+            }
+            if (noGridElement) {
+                noGridElement.style.display = "block"
+            }
         }
 
 
@@ -83,6 +92,15 @@ function getAccountManager() {
             let orderBy = "true";
             window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((employees) => {
                 if (Array.isArray(employees) && employees.length > 0) {
+                    employees.sort(function (a, b) {
+                        if (a.FirstName < b.FirstName) {
+                          return -1;
+                        }
+                        if (a.FirstName > b.FirstName) {
+                          return 1;
+                        }
+                        return 0;
+                      });
                     let employeeDropdownElement = document.getElementById('employees');
                     let options = `<option value=''>Select Manager</option>`
                     if (employeeDropdownElement) {

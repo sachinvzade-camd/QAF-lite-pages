@@ -489,7 +489,30 @@ function expgrid_onItemRender(cname, cvalue, row) {
     if (cname === 'NameOfClient'||cname === 'ProductOffering') {
         if (cvalue) {
             return `${cvalue}
-                       <style>                      
+                       <style> 
+                       .qaf-grid:hover::-webkit-scrollbar {
+  width: 10px;
+  height: 13px;
+}
+
+.qaf-grid::-webkit-scrollbar {
+  width: 10px;
+  height: 13px;
+}
+
+.qaf-grid::-webkit-scrollbar-thumb {
+  background-color: transparent;
+    border-radius: 4px;
+
+}
+
+.qaf-grid:hover::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+    border-radius: 4px;
+
+}
+
+                       
                             .qaf-grid__row:hover {
                             background-color: #fff !important;
                             }

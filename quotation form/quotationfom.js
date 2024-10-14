@@ -1985,6 +1985,7 @@ const QAFQuotation = (function () {
             setValueInPriceObjectQ()
         },
         CloseFormQ: function (value) {
+            removeIndexMenu()
             if (isSave) {
                 SaveRecord()
             } else {
@@ -2051,6 +2052,7 @@ const QAFQuotation = (function () {
             if (typeof (event.detail) === 'object') {
 
                 if (event.detail.isQuotation) {
+                    setIndexMenu()
                     contactRecordIDS = event.detail.contact
                     quotationRecordID = event.detail.RecordID
                     billtoName = event.detail.quotation.BilltoName;
@@ -2087,3 +2089,18 @@ qafServiceLoaded = setInterval(() => {
         clearInterval(qafServiceLoaded);
     }
 }, 10);
+
+function setIndexMenu() {
+    let menuLayout = document.getElementById('menuLayout');
+    if (menuLayout) {
+        menuLayout.style.zIndex = '0';
+    }
+}
+function removeIndexMenu() {
+    let menuLayout = document.getElementById('menuLayout');
+    if (menuLayout) {
+        menuLayout.style.zIndex = '2';
+    }
+    document.getElementById('topHeader').style.zIndex = '1052';
+
+}

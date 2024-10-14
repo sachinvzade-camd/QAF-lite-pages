@@ -9,6 +9,12 @@
   position: relative;
   top: 46%;
 }
+.ellipses {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
 .search-text {
   padding-left: 50px;
   color: white;

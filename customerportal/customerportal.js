@@ -514,10 +514,10 @@ function getServiceAppList(getList) {
 
                                 </div>
                                 <div class="services-detail" >
-                                    <div class="serviceTitle" onclick=openEdit('${dt.ObjectID}')>${dt.AppTitle ? dt.AppTitle : ""}</div>
-                                    <div class="service-text"onclick=openEdit('${dt.ObjectID}')>${dt.AppDescription ? dt.AppDescription : ""}</div>
+                                    <div class="serviceTitle ellipses" onclick=openEdit('${dt.ObjectID}')>${dt.AppTitle ? dt.AppTitle : ""}</div>
+                                    <div class="service-text ellipses"onclick=openEdit('${dt.ObjectID}')>${dt.AppDescription ? dt.AppDescription : ""}</div>
                                         <div class="report-permission">
-                    <span onclick="openFAQ('${dt.ObjectID}')">FAQ</span> &nbsp;|&nbsp;
+                    <span onclick="openFAQ('${dt.ObjectID}')">FAQ</span> &nbsp;&nbsp;|&nbsp;&nbsp;
                     <span onclick="preview('${dt.ObjectID}')">Details</span>
                   </div>
                                 </div>

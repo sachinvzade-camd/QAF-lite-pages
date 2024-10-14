@@ -82,7 +82,7 @@
 }
  .shiftPolicy .line {
 	 position: absolute;
-	 top: 121px;
+	 top: 95px;
 	 height: 2px;
 	 background-color: #311212;
 	 transition: all 0.3s ease-in-out;
@@ -446,7 +446,7 @@
 	 width: 100%;
 }
  .shiftPolicy .search-input-second {
-	 width: 91%;
+	 /* width: 91%; */
 }
  .shiftPolicy .policies-title {
 	 font-size: 18px;
@@ -501,10 +501,17 @@
 	 align-items: center;
 }
  .shiftPolicy .search-icon-first {
+	position: relative;
+	top: 3px;
 	 left: 0%;
 }
  .shiftPolicy .search-icon-second {
-	 left: 43%;
+	 /* left: 43%; */
+	 position: relative;
+	 top: 3px;
+}
+ .shiftPolicy .qaf-search-bar {
+	transform: translate(-56px,0);
 }
  .shiftPolicy select {
 	 -webkit-appearance: none;

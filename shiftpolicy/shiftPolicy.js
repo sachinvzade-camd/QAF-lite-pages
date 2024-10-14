@@ -16,16 +16,39 @@ var ShiftList;
 var shiftRecordId;
 var IsShiftBeforeToday;
 var isOffboarded = false
+function outputsize() {
+    var allButtons = document.querySelectorAll(".tab-btn");
+    allButtons.forEach(function (button) {
+        button.classList.remove("isActive");
+        button.style.fontWeight = "normal";
+    });
+    var lineElement = document.querySelector(".line");
 
+    var tabBox = document.querySelector(".tab-box");
+
+    var buttonRect = button.getBoundingClientRect();
+    var tabBoxRect = tabBox.getBoundingClientRect();
+    var offsetLeft = buttonRect.left - tabBoxRect.left;
+    lineElement.style.width = button.offsetWidth + "px";
+    lineElement.style.transform = "translateX(" + offsetLeft + "px)";
+   }
 var topbar = document.getElementById("header-title");
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
         // document.getElementById("breadcrum").style.display = "none";
-        const container = document.getElementsByClassName('container')[0];
-        const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
-        const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
-        activeLine1.style.width = activeTab1.offsetWidth + 'px';
-        activeLine1.style.left = activeTab1.offsetLeft + 'px';
+        const container = document.getElementsByClassName('shiftPolicy')[0];
+        if(container){
+            const activeTab1 = container.getElementsByClassName('tab-btn isActive')[0];
+            if(activeTab1){
+                const activeLine1 = activeTab1.parentNode.getElementsByClassName('line')[0];
+                if(activeLine1){
+                    activeLine1.style.width = activeTab1.offsetWidth + 'px';
+                    activeLine1.style.left = activeTab1.offsetLeft + 'px';
+                }
+            }
+          
+        }
+       
         user = getCurrentUser();
         loadShiftConfig()
         clearInterval(qafServiceLoaded);

@@ -95,7 +95,7 @@
 }
  .geofencing .line {
 	 position: absolute;
-	 top: 121px;
+	 top: 95px;
 	 height: 2px;
 	 background-color: #311212;
 	 transition: all 0.3s ease-in-out;
@@ -453,7 +453,8 @@
 	 top: 36.8%;
 }
  .geofencing .qaf-search-bar {
-	 margin: 10px 0px;
+	 /* margin: 10px 0px; */
+	 transform: translate(-56px,0);
 }
  .geofencing .selected-search {
 	 margin-top: 0px;
@@ -516,11 +517,13 @@
 }
  .geofencing .search-icon-first {
 	 left: -1%;
+	 position: relative;
+	top: 3px;
+	 left: 0%;
 }
  .geofencing .search-icon-second {
-	 left: 43%;
-	 padding: 0px;
-	 padding-right: 10px;
+	position: relative;
+	top: 3px;
 }
  .geofencing select {
 	 -webkit-appearance: none;

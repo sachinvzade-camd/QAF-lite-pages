@@ -60,10 +60,9 @@ window.qafChatbot = (function () {
         }
 
         async qafAIChatRequest(input) {
-            let chatAPIUrl = `https://demtis.quickappflow.com/api/ptcssad`;
+            let chatAPIUrl = `https://demtis.quickappflow.com/api/ptcssad1`;
             let json;
             try {
-                
                 let payLoad = { Mcp: input, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
                 if (this.isFirstMessage) {
                     payLoad = { Mcp: input, tmf: 1, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
@@ -94,7 +93,7 @@ window.qafChatbot = (function () {
             return json;
         }
         submitRequestImage() {
-            let chatValue =this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").value
+            let chatValue = this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").value
             let event = {
                 target: {
                     value: chatValue
@@ -114,7 +113,7 @@ window.qafChatbot = (function () {
             if (exceedMsgElement) {
                 exceedMsgElement.innerHTML = ``
             }
-            if (!shiftKey&&key === 13 && text) {
+            if (!shiftKey && key === 13 && text) {
                 if (this.messageLimit) {
                     if (this.messageLimit < text.length) {
                         let exceedMsgElement = this.shadowRoot.getElementById('exceed-msg');
@@ -124,7 +123,7 @@ window.qafChatbot = (function () {
                         return
                     }
                 }
-                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=true
+                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled = true
                 if ($event.preventDefault) $event.preventDefault();
                 this.conversationList.push({ Type: 'SYSTEM', Message: text })
                 // user entry
@@ -155,13 +154,13 @@ window.qafChatbot = (function () {
                     }
 
                     this.qafAIChatRequest(text).then((d) => {
-                        let sidValue=localStorage.getItem('Sid')
-                        if(!sidValue){
-                            localStorage.setItem('Sid', d.Sid ? d.Sid : '')
+                        let sidValue = localStorage.getItem('Sid')
+                        if (!sidValue) {
+                            localStorage.setItem('Sid', d && d.Sid ? d.Sid : '')
                         }
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
-                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=false
+                        this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled = false
 
                         if (d && d.Mcs) {
                             // system entry
@@ -179,7 +178,7 @@ window.qafChatbot = (function () {
                     }, (error) => {
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
-                this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled=false
+                        this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled = false
                     })
                 }, 500);
                 this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").value = "";
@@ -245,6 +244,21 @@ window.qafChatbot = (function () {
             }
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `<style>
+
+.qaf-chat-send{
+position: absolute;
+    width: 100%;
+                                  img{
+                                 cursor: pointer;
+                                        width: 18px;
+        height: 18px;
+        position: absolute;
+        right: 50px;
+        /* top: 14%; */
+        object-fit: contain;
+        transform: translate(0px, -29px);
+}}
+
             #copyright{
             display: flex;
     justify-content: center;
@@ -563,16 +577,10 @@ window.qafChatbot = (function () {
                                     font-family: inherit;
                                     font-size: 14px;
                                 }
-                                    img{
-                                        width: 18px;
-    height: 18px;
-    position: absolute;
-    right: 10%;
-    top: 27%;
-    object-fit: contain;
-}
-                            }
+                                  
                         }
+                                
+                            }
 
                         .qaf-ai-chat--overlay {
                             position: absolute;
@@ -683,7 +691,10 @@ window.qafChatbot = (function () {
                             <div id='exceed-msg'></div>
                                 <div class="qaf-ai-chat-input">
                                     <textarea id="qaf-ai-chat-ctrl" placeholder="Message..." row='1'></textarea>
-                                    <img src="https://quickappflow.com/wp-content/uploads/2024/10/post_icon.png" id='qaf-ai-enter-img'/>
+                                 
+                                </div>
+                                <div class="qaf-chat-send">
+                                   <img src="https://quickappflow.com/wp-content/uploads/2024/10/post_icon.png" id='qaf-ai-enter-img'/>
                                 </div>
                                 <div id='copyright'>Powered by <img src="https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=Media_Library%2Fqaf-big-logo_new_7b1d3dca-c6b7-4e47-a38b-80bcb9881924.jpg"/><b>QuickAppFlow</b></div>
                             </footer>

@@ -115,6 +115,7 @@ function movingTabs(value) {
 window.document.addEventListener('openInvoiceFormEvent', getinvoiceDetails)
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+        debugger
         user = getCurrentUser()
         clearInterval(qafServiceLoaded);
     }
@@ -125,6 +126,8 @@ function getinvoiceDetails(event) {
 
     if (typeof (event.detail) === 'object') {
         if (event.detail.isInvoice) {
+        setIndexMenu()
+
             contactRecordIDS = event.detail.contact
             invoiceRecordID = event.detail.RecordID
             // billtoName = event.detail.customerInvoice?event.detail.customerInvoice.BilltoName:"";
@@ -656,6 +659,7 @@ function SaveRecord() {
 }
 
 function CloseForm(value) {
+    removeIndexMenu()
     if (isSave) {
         SaveRecord()
     } else {
@@ -2151,4 +2155,18 @@ function setPreviewData() {
                 </div>`
 
     document.getElementById('previewQuotation').innerHTML = preview;
+}
+function setIndexMenu() {
+    let menuLayout = document.getElementById('menuLayout');
+    if (menuLayout) {
+        menuLayout.style.zIndex = '0';
+    }
+}
+function removeIndexMenu() {
+    let menuLayout = document.getElementById('menuLayout');
+    if (menuLayout) {
+        menuLayout.style.zIndex = '2';
+    }
+    document.getElementById('topHeader').style.zIndex = '1052';
+
 }

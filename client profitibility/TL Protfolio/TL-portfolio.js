@@ -91,6 +91,18 @@ function getClientAllocation() {
             clientAllocationMatrixList = revenues;
             clientAllocationMatrixList=clientAllocationMatrixList.filter(a=>a.ProductOffering.toLowerCase().includes("tl")||a.ProductOffering.toLowerCase().includes("team lead"))
             getCommonEmployee()
+        }else{
+    let expenseGridElement = document.querySelector('#expgrid');
+
+        expenseGridElement.show = false;
+        let mainGridElement = document.getElementById('main-grid');
+        let noGridElement = document.getElementById('no-grid');
+        if (mainGridElement) {
+            mainGridElement.style.display = 'none'
+        }
+        if (noGridElement) {
+            noGridElement.style.display = "block"
+        }
         }
     });
 
