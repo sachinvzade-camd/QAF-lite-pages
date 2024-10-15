@@ -8,6 +8,10 @@
     justify-content: center;
     align-items: center; */
 }
+.disable-reg-form{
+    opacity: 0.6;
+    pointer-events: none;
+}
 .reg-form{
     border:1px solid #80808059;
     padding: 25px;
@@ -53,7 +57,7 @@
     height: 51px;
     box-shadow: 0 6px 15px #888888;
 }
-#verification,#workspace,#sent-details,#error-work{
+#verification,#workspace,#sent-details{
     display: none;
 }
 .text-align{
@@ -73,9 +77,27 @@
     color: grey;
   }
   .error-response{
-    height: 25px;
+    height: auto;
     color: red;
+    position: relative;
   }
   .confirm-btn{
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+    margin-top: 8px;
+  }
+  #error-verify{
+    width: 92%;
+  }
+  .required {
+    display: inline;
+    color: #cc0000;
+    padding-left: 5px;
+  }
+  .text-end{
+    text-align: end;
+  }
+  .conf-btn-div{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
   }

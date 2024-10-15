@@ -115,7 +115,7 @@ function movingTabs(value) {
 window.document.addEventListener('openInvoiceFormEvent', getinvoiceDetails)
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
-        debugger
+        
         user = getCurrentUser()
         clearInterval(qafServiceLoaded);
     }

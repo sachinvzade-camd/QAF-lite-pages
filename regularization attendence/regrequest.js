@@ -19,7 +19,7 @@ var topbar = document.getElementById("header-title")
 
 qafServiceLoaded = setInterval(() => {
   if (window.QafService) {
-debugger
+
     // document.getElementById("breadcrum").style.display = "none";
     const container = document.getElementsByClassName('rg-request')[0];
     if(container){

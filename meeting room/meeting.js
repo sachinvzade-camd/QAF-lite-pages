@@ -268,7 +268,7 @@ function closeForm() {
 }
 
 function getFullNameByRecordID(targetRecordID) {
-    debugger
+    
     const Employee_Data = Employee;
     const targetRecord = Employee_Data.find(record => record.RecordID === targetRecordID);
     if (targetRecord) {
@@ -312,7 +312,7 @@ function updateMeetinginTable(EventData) {
 
        
             EventForSameTime.forEach(event => {
-                debugger
+                
                 let RequestFor = JSON.parse(event.RequestFor);
                 let RecordID = RequestFor[0].RecordID;
                 let Fullname = getFullNameByRecordID(RecordID)
@@ -433,7 +433,7 @@ function CloseForm() {
 }
 
 function setEmployeeinDropdown() {
-    debugger
+    
     let requestForElement = document.getElementById('requestfor');
     let options = `<option value=''></option>`;
     if (requestForElement) {
@@ -540,7 +540,7 @@ function SaveRecord() {
     const todate = ToDate;
     const to_time = ToTime;
     const NewtoTime = new Date(`${todate}T${to_time}`);
-debugger
+
     if (EmployeName) {
         let employee = Employee.filter(emp => emp.RecordID === EmployeName);
         if (employee && employee.length > 0) {

@@ -9,19 +9,19 @@
 <body>
 
     <div class="user-registration">
-        <div class="reg-form">
+        <div class="reg-form" id="regForm">
             <div id="work-email">
                 <p class="reg-title">Welcome to QuickAppFlow</p>
                 <div class="reg-control">
                     <label for="" class="control-label">Enter your work email</label><br>
-                    <input type="text" id="w-email" name="work-email" class="form-control">
+                    <input type="text" id="w-email" name="work-email" class="form-control" onkeypress="checkemail()">
                 </div>
                 <div class="error-response">
-                    <p id="error-work">Something Went wrong</p>
+                    <p id="error-work"></p>
                 </div>
     
-                <button class="btn btn-primary btn-block account-btn" onclick="onclickworkemail()">Continue</button>
-                <p class="reg-sign-in">Already have account? <a href="">Sign in</a></p>
+                <button class="btn btn-primary btn-block account-btn " onclick="onclickworkemail()">Continue</button>
+                <!-- <p class="reg-sign-in">Already have account? <a href="">Sign in</a></p> -->
     
             </div>
     
@@ -33,14 +33,15 @@
                 <div class="reg-control">
                     <label for="code" class="control-label">Enter confirmation code to activate your account
                     </label><br>
-                    <input type="number" id="verification-code" name="code" class="form-control"><br>
+                    <input type="text" id="verification-code" name="code" class="form-control">
                 </div>
-                <div class="error-response"></div>
-                <p id="error-verify"></p>
-                <button class="btn btn-primary btn-block account-btn" onclick="onclickverification()">Verify</button>
+                <div class="error-response">
+                    <p id="error-verify"></p>
+                </div>
+                <button class="btn btn-primary btn-block account-btn " onclick="onclickverification()">Verify</button>
                 <p class="reg-sign-in">Haven't received the email from us yet?
                 </p>
-                <p class="reg-sign-in"><a onclick="onresentCode()">Resend Code</a> or <a onclick="onchangeEmailID()">Change
+                <p class="reg-sign-in m-t-0"><a onclick="onchangeEmailID()">Change
                         email address</a></p>
             </div>
     
@@ -51,33 +52,39 @@
                 </div>
                 <div class="grid-container">
                     <div>
-                        <label for="fname" class="control-label">First Name</label><br>
+                        <label for="fname" class="control-label">Name<span
+                            class="required">*</span></label><br>
                         <input type="text" id="fname" name="fname" class="form-control">
                     </div>
                     <div>
-                        <label for="lname" class="control-label">Last Name</label><br>
-                        <input type="text" id="lname" name="lname" class="form-control">
-                    </div>
-                    <div>
-                        <label for="" class="control-label">Contact Number</label><br>
+                        <label for="" class="control-label">Contact Number<span
+                            class="required">*</span></label><br>
                         <input type="text" id="contactnumber" name="contactnumber" class="form-control">
                     </div>
                     <div>
-                        <label for="" class="control-label">Company Website</label><br>
+                        <label for="" class="control-label">Company Website<span
+                            class="required">*</span></label><br>
                         <input type="text" id="website" name="website" class="form-control">
                     </div>
                     <div>
-                        <label for="" class="control-label">Company Size</label><br>
+                        <label for="" class="control-label">Company Size<span
+                            class="required">*</span></label><br>
                         <input type="text" id="companySize" name="companySize" class="form-control">
                     </div>
                 </div>
-                <div class="confirm-btn">
-                <button class="btn btn-primary pull-right" onclick="onClickWorksendDetails()">Confirm</button>
+                <div class="conf-btn-div">
+                <div class="error-response">
+                    <p id="error-workspace"></p>
+                </div>
+                <div class="confirm-btn ">
+                    <p id="error-workspace"></p>
+                    <button class="btn btn-primary " onclick="onClickWorksendDetails()">Confirm</button>
+                </div>
             </div>
             </div>
             <div id="sent-details">
                 <p class="reg-title">Welcome to QuickAppFlow</p>
-                <p class="reg-sign-in">Login details have been sent to your registered email? <a href="">Sign in</a></p>
+                <p class="reg-sign-in">Login details have been sent to your registered email.</p>
             </div>
         </div>
     </div>

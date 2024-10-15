@@ -523,7 +523,7 @@ function getEmployee() {
     let orderBy = "true"
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((employees) => {
         if (Array.isArray(employees) && employees.length > 0) {
-            debugger
+            
             employeeListAll = employees
             let employeeDropdown = document.getElementById('employee');
             let options = `<option value=''>Select Employee</option>`

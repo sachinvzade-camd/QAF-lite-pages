@@ -77,7 +77,7 @@ function capitalizeFirstLetter(string) {
 }
 
 function getJobsTo_Vendor() {
-    debugger
+    
     jobsToVendorData = []
     let objectName = "Jobs_To_Vendor";
     let list = 'RecordID,JobPost,Vendor,PublishToAll';
@@ -89,7 +89,7 @@ function getJobsTo_Vendor() {
     let RecordIDs = ""
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((vendors) => {
         if (Array.isArray(vendors) && vendors.length > 0) {
-            debugger
+            
             jobsToVendorData = vendors;
             let RecordIdsArray = jobsToVendorData.map(item => item.JobPost ? item.JobPost.split(';#')[0] : "");
             RecordIDs = `RecordID='${RecordIdsArray.join("'<OR> RecordID='")}'`;
