@@ -34,6 +34,9 @@ function externalFormValidationRule() {
                         resolve(true)
                     }
                 }
+            }else{
+                isApicall = false
+                resolve(true)
             }
         })
     }

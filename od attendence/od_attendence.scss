@@ -1,5 +1,4 @@
 .od-attendence{
-
 .main-container {
   display: flex;
 }
@@ -45,7 +44,7 @@ p {
   display: block;
 }
 /* for QAF Lite */
-.line {
+.od-attendence .line {
   position: absolute;
   top: 95px;
   height: 2px;
@@ -247,7 +246,7 @@ p {
   justify-content: end;
 }
 .qaf-search-bar {
-  width: 60%;
+  width: 20%;
   margin: 0px;
 }
 .search-bar {
@@ -341,6 +340,8 @@ a {
 
 .child-left-content{
   width: 55%;
+  display: flex;
+  justify-content: end;
 }
 /* Loader */
 .page-disabled {

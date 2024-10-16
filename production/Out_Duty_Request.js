@@ -1,11 +1,12 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = SITapiURL
+var apURL = localStorage.getItem('env')
 var isApicall=false
 var selectedDate
 var hiddenFieldsFormWindow = ["RequestFor"];
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
+var maHostName=sitHostURL
 function externalFormValidationRule() {
     if(!isApicall){
         isApicall=true
@@ -20,12 +21,16 @@ function externalFormValidationRule() {
             else {
                 resolve(true)
             }
+        }else{
+        isApicall=false
+            resolve(true)
         }
     })}
 
 }
 qafServiceLoaded = setInterval(() => {
     if (window.QafService) {
+        window.localStorage.setItem('ma',maHostName)
         clearInterval(qafServiceLoaded);
     }
 }, 10);

@@ -424,7 +424,7 @@ input[type="date"]:focus::-webkit-datetime-edit {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -42%);
+  transform: translate(-50%, -50%);
   z-index: 9999;
   margin-top: 0!important;
 }
@@ -1324,7 +1324,7 @@ input[type="date"]:focus::-webkit-datetime-edit {
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -42%);
+  transform: translate(-50%, -50%);
   z-index: 9999;
   margin-top: 0!important;
 }

@@ -1,23 +1,22 @@
 var eventNameqaf;
 var qafAlertObject;
-if (!customElements.get('qaf-alert')) {
-  class QafAlert extends HTMLElement {
-    static observedAttributes = ["qaf-alert-show", 'qaf-event', 'qaf-message'];
-    constructor() {
-      super();
-    }
-    connectedCallback() {
-    }
-    disconnectedCallback() {
-    }
-    adoptedCallback() {
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'qaf-alert-show') {
-        qafAlertObject = JSON.parse(newValue)
-        if (typeof (qafAlertObject) === 'object') {
-          if (qafAlertObject.IsShow) {
-            this.innerHTML = `
+class QafAlert extends HTMLElement {
+  static observedAttributes = ["qaf-alert-show", 'qaf-event', 'qaf-message'];
+  constructor() {
+    super();
+  }
+  connectedCallback() {
+  }
+  disconnectedCallback() {
+  }
+  adoptedCallback() {
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'qaf-alert-show') {
+      qafAlertObject = JSON.parse(newValue)
+      if (typeof (qafAlertObject) === 'object') {
+        if (qafAlertObject.IsShow) {
+          this.innerHTML = `
               <style>
               .trigger{
                 text-align: center;
@@ -107,26 +106,27 @@ if (!customElements.get('qaf-alert')) {
                     <button class="qaf-alert-button-cancel btn  qaf-alert-btn" onclick="oncloseModal('no')">No</button>
                 </div>`
 
-              }
+            }
               </div>
           </div>
               `;
-          } else {
-            this.innerHTML = ''
-          }
+        } else {
+          this.innerHTML = ''
         }
-
-      } else if (name === 'qaf-event') {
-        eventNameqaf = newValue
       }
+
+    } else if (name === 'qaf-event') {
+      eventNameqaf = newValue
     }
-    
   }
+
+}
+if (!customElements.get('qaf-alert')) {
   customElements.define("qaf-alert", QafAlert);
 }
 function oncloseModal(actionType) {
   const myComponent = document.querySelector('qaf-alert');
-  if(qafAlertObject.IsShow){
+  if (qafAlertObject.IsShow) {
     qafAlertObject.IsShow = false
   }
   myComponent.setAttribute('qaf-alert-show', JSON.stringify(qafAlertObject));

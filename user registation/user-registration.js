@@ -151,7 +151,7 @@ async function onclickworkemail() {
         let isValidEmail=validateEmail(workEmailvalue)
         if(!isValidEmail){
             if(errorElement){
-                errorElement.innerHTML="Enter valid email"
+                errorElement.innerHTML="Please enter a valid email address"
             }
             return
         }

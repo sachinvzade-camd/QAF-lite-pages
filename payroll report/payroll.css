@@ -9,6 +9,10 @@
   padding: 0;
   margin-bottom: 5px;
 } */
+.payroll-header{
+  display: flex;
+  align-items: baseline;
+}
  .select-emp-search{
   width: 200px;
     margin-right: 8px;
@@ -572,12 +576,13 @@ height: 30px;
 outline: none;
 }
 
-.search-icon,
+
+/* .search-icon,
 .cancel-icon {
 color: gray;
 position: absolute;
 cursor: pointer;
-}
+} */
 .search-bar .fa-search {
 padding-top: 15px;
 padding-left: 10px;

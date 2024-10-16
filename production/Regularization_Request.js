@@ -1,18 +1,13 @@
 var funFirstapiURL = "https://inskferda.azurewebsites.net"
 var SITapiURL = "https://demtis.quickappflow.com"
-var apURL = funFirstapiURL
+var apURL = localStorage.getItem('env')
 var selectedDate
 var isApicall = false;
 var attendenceList = [];
 var webURL_Value;
-var sitHostURL='demtis.quickappflow.com'
-var funFirstHostURL='inskferda.azurewebsites.net'
-var hostName=funFirstHostURL
+var sitHostURL = 'demtis.quickappflow.com'
+var hostName = sitHostURL
 var hiddenFieldsFormWindow = ["RequestFor"];
-var sitHostURL='qaffirst.quickappflow.com'
-var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=funFirstHostURL
-
 
 var inputDate;
 function externalFormValidationRule() {
@@ -63,6 +58,9 @@ function externalFormValidationRule() {
                         }
                     }
                 }
+            }else{
+                 isApicall = false
+                 resolve(true)
             }
         })
     }
@@ -135,7 +133,7 @@ function getAllAttendence() {
             'Host': hostName,
             'Employeeguid': user.EmployeeGUID,
             'Hrzemail': user.Email,
-            'ma': maHostName
+            'ma': webURL_Value
         },
     })
         .then(response => response.json())
@@ -181,7 +179,6 @@ function onQafInit() {
 setTimeout(() => {
     qafServiceLoaded = setInterval(() => {
         if (window.QafService) {
-            window.localStorage.setItem('ma',maHostName)
             getObject()
 
             clearInterval(qafServiceLoaded);
@@ -191,8 +188,7 @@ setTimeout(() => {
 
 
 function addCustomjs() {
-    // let jsList = ["https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_aeca73b2-1458-4180-a20b-835e450886be.js"]
-    let jsList = ["https://funfirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_44ef7032-a417-43ef-b473-87c4067fc427.js"]
+    let jsList = ["https://qaffirst.quickappflow.com/Attachment/downloadfile?fileUrl=JS_Library%2Fmoment.min_aeca73b2-1458-4180-a20b-835e450886be.js"]
 
     jsList.forEach(val => {
         loadScript(val)
