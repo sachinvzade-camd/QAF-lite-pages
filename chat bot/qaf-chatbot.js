@@ -161,6 +161,7 @@ window.qafChatbot = (function () {
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
                         this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled = false
+                        this.shadowRoot.getElementById("qaf-ai-chat-ctrl").focus(); 
 
                         if (d && d.Mcs) {
                             // system entry

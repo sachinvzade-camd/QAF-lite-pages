@@ -8,20 +8,19 @@
 </head>
 
 <body>
-  <div class="page-container">
-    <div class="header-title">
-      <div class="left-container">
-        <div class="common-page-title">User</div>
-      </div>
-      <div class="right-container">
-        <div class="header-button"> <button id="ExportButton" type="button" class="btn btn-primary" onclick="AddForm()">
-            <i class="fa fa-plus" aria-hidden="true"></i> User </div>
-      </div>
+<div class="page-container-user">
+  <div class="header-title">
+    <div class="left-container">
+      <div class="common-page-title">User</div>
     </div>
-    <div id="pageDisabled">
-      <div class="tablecontainer" id="reportContainer"></div>
-      <div id="menuId"></div>
+    <div class="right-container">
+      <div class="header-button"> <button id="ExportButton" type="button" class="btn btn-primary" onclick="AddForm()">
+          <i class="fa fa-plus" aria-hidden="true"></i> User </div>
     </div>
+  </div>
+  <div id="pageDisabled">
+    <div class="tablecontainer" id="reportContainer"></div>
+    <div id="menuId"></div>
   </div>
   <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"> </span> </div>
   <div id="blurdiv">
@@ -86,7 +85,8 @@
       <div class="popup-content popup-content-es user-type-popup">
         <div class="input-action">
           <div> <input type="radio" id="existing" name="user" value="existing"> <label for="html">Add
-              Existing</label><br> </div>
+              Existing</label><br>
+          </div>
           <div> <input type="radio" id="new" name="user" value="new"> <label for="css">Add New</label><br> </div>
         </div>
         <div class="form-buttons es-buttos save-form-buttons"> <button type="button" class="btn btn-primary "
@@ -94,6 +94,8 @@
       </div>
     </div>
   </div>
+</div>
+
 </body>
 
 </html>

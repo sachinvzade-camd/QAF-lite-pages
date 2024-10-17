@@ -9,7 +9,176 @@
 <link rel="stylesheet" href="payroll.css" />
 
 <body>
-     <div class="payroll-details"> <div class="header-title"> <div class="left-conatiner"> <div class="header-title-count"> <div class="common-page-title">Payroll Details </div> <div id="empcount"></div> </div> </div> <div class="right-conatiner"> <div class="search-bar"> <i class="fa fa-search search-icon" aria-hidden="true"></i> <input type="text" class="search-input" id="search" placeholder="" autocomplete="off" /> <i id="cancelSearch" onclick="cancelSearch()" class="fa fa-times cancel-icon" aria-hidden="true"></i> </div> <select id="employee-search" class='select-emp-search ' onchange="onEmployeeDropdownChange()"> </select> <div class="addform"> <button type="button" class="btn-primary add-btn" onclick="openAddForm()"> <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button> </div> <div class="dropdown" id="more-button"> <button onclick="myMoreButton()" class="morebtn btn-primary add-btn">More</button> <div id="moreDropdown" class="moredropdown-content"> </div> </div> </div> </div> <div class="qaf-loader-div"> <span class="qaf-loader" id="isExpenseDataloading" style="display: none;"></span> </div> <div class="tablecontainer"> <table id="table"> </table> </div> </div> <div id="popupContainer" class="popup-container"> <div class="popup-content"> <div class="form-group"> <label class="edit-detail-label" for="customerName" class="Customer">Employee Name</label> <input type="text" class="edit-detail-input" id="employeeName" name="employeeName" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="entity">Entity</label> <input type="text" class="edit-detail-input" id="entity" name="entity" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="state">State</label> <input type="text" class="edit-detail-input" id="state" name="state" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="accountNumber">Account Number</label> <input type="text" class="edit-detail-input" id="accountNumber" name="accountNumber" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="pfNumber">PF Number</label> <input type="text" class="edit-detail-input" id="pfNumber" name="pfNumber" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="accountTitle">Account Title</label> <input type="text" class="edit-detail-input" id="accountTitle" name="accountTitle" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="esiNumber">ESI Number</label> <input type="text" class="edit-detail-input" id="esiNumber" name="esiNumber" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="bankName">Bank Name</label> <input type="text" class="edit-detail-input" id="bankName" name="bankName" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="bankAccountNumber">Bank A/c No.</label> <input type="text" class="edit-detail-input" id="bankAccountNumber" name="bankAccountNumber" autocomplete="off"> </div> <div class="form-group"> <label class="edit-detail-label" for="ifsc">IFSC</label> <input type="text" class="edit-detail-input" id="ifsc" name="ifsc" autocomplete="off"> </div> <div class="form-buttons"> <button type="button" class="btn-primary submit" onclick="submitFrom()">Submit</button> <button type="button" class="cancel" onclick="closeForm('popupContainer')">Close</button> </div> </div> </div> <div id="ctcstructure" class="popup-container"> <div class="popup-content popup-content-es"> <div class="responsive-form"> <div id="employee-main"> <label class="employee-type checkbox-label" for="employeeType">Employee Name</label> <select id="employee" class='select-emp'> </select> </div> <div id="empname-main"> <label class="employee-type checkbox-label">Employee Name</label> <h2 id="empname"></h2> </div> <h2 class='header-name'>Employee Statutory</h2> <div class="checkbox-group"> <div class="es-form-group"> <input class="es-input" type="checkbox" id="PF" name="PF" value=""> <label for="PF" class="es-label"> Is Provident Fund (PF) applicable?</label> <br> </div> <div class="es-form-group"> <input class="es-input" type="checkbox" id="EPS" name="EPS" value="EPS"> <label class="es-label" for="EPS" class="es-label">Is Employee Pension Scheme (EPS) applicable?</label> <br> </div> <div class="es-form-group"> <input class="es-input" type="checkbox" id="ESI" name="ESI" value="ESI"> <label for="ESI" class="es-label"> Is Employee State Insurance (ESI) applicable?</label> <br> </div> <div class="es-form-group"> <input class="es-input" type="checkbox" id="LWF" name="LWF" value="LWF"> <label for="LWF" class="es-label">Is Labour Welfare Fund(LWF) applicable?</label> <br> </div> <div class="es-form-group"> <input class="es-input" type="checkbox" id="PT" name="PT" value="PT"> <label for="PT" class="es-label">Is Professional Tax (PT) applicable?</label> <br> </div> </div> <div class="form-buttons es-buttos"> <button type="button" class="cancel" onclick="closeForm('ctcstructure')">Close</button> <button type="submit" class="btn-primary submit nextButton" id="NextButton" onclick="nextForm()">Next</button> </div> </div> </div> </div> <div id="ctcCalculation" class="popup-container"> <div class="popup-content salary-component-content" id="salary-component-content-id"> <div class="salary-component-container"> <div class="componentempname" id="empnamecomponet"></div> <div class="form-header-div"> <div class="two-column-form form-heading top-bar"> <div class="form-column heading top-heading1" id="componentname">Salary Component </div> <div class="form-column heading cost top-heading2 cost-display">Amount Monthly </div> </div> <div class="two-column-form form-heading top-bar"> <div class="form-column heading top-heading1" id="componentname">Deduction Component </div> <div class="form-column heading cost top-heading2 cost-display">Amount Monthly </div> </div> </div> </div> <div class="form-main"> <div class="form-display-div"> <div id="salaryHeadeForm" class="two-column-form"> </div> </div> <div class="form-display-div"> <div id="salaryHeadeDeductionForm" class="two-column-form"> </div> </div> </div> <div class="form-header-div"> <div class="two-column-form form-heading bottom-heading"> <div class="form-column heading cost-heading" id="costocompany">Cost to company </div> <div class="form-column heading cost cost-heading cost-display" id="totalctcCalculation">₹0 </div> </div> <div class="two-column-form form-heading bottom-heading"> <div class="form-column heading cost-heading" id="costocompany">Total deductions </div> <div class="form-column heading cost cost-heading cost-display" id="totaldeducation">₹0 </div> </div> </div> <div class="form-buttons sc-buttons"> <button type="button" class="cancel" onclick="closeForm('ctcCalculation')">Close</button> <button type="button " class="btn-primary submit" onclick="SaveCTCForm()">Save</button> </div> </div> </div> <div class="qaf-hrz-n-r-pane" id="qafrightpanel"> <div id="pageDisabled"></div> <div class="qaf-hrz-n-r-form"> <div class="import-page-header"> <div class="import-page-title">Import bulk Data</div> <a class="import-page-close" title="close" onclick="closePage()"></a> </div> <div class="import-page-content"> <p>Download template for uploading bulk data</p> <a onclick="downloadTemplate()" title="Download template">Download Template</a> <div class="m-t-10 p-t-10 m-b-10"> <button class="btn btn-primary upload-temp" onclick="onFileChangeFile()"> Upload bulk data </button> </div> <form enctype="multipart/form-data" class="import-file"> <input id="upload" type=file name="files[]" > </form> <div class="m-t-10 p-t-10 m-b-10" id="importresponse"> <p class=""> Import status</p> <div id="successimport"> </div> <div id="failimport"> </div> <div><a onclick="downloadImportReport()">Import Status Report</a></div> </div> </div> <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"></span> </div> </div> </div> <div class="qaf-hrz-n-back-drop" id="backdrop" style="display: none;"></div> <qaf-alert></qaf-alert>
+<div class="payroll-details">
+        <div class="common-header-container">
+                <div class="common-first-section payroll-header">
+                        <div class="common-header-title">Payroll Details </div>
+                        <div id="empcount"></div>
+                </div>
+                <div class="common-middle-section">
+                        <div></div>
+                </div>
+                <div class="common-right-section">
+                        <div class="form-group common-search-functionality">
+                                <div class="input-container"> <i class="fa fa-search search-icon-payroll"
+                                                aria-hidden="true"></i> <input type="text"
+                                                class="form-control search-box-input" id="search" placeholder=""
+                                                autocomplete="off" /> <button type="button" id="cancelSearch"
+                                                class="close search-close common-search-close" aria-label="Close"
+                                                *ngIf="jobPostingSearch.Title" onclick="cancelSearch()"><span
+                                                        aria-hidden="true">&times;</span></button> </div>
+                        </div>
+                        <div class="addform"> <button type="button" class="btn-primary add-btn" onclick="openAddForm()">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button> </div>
+                        <div class="dropdown" id="more-button"> <button onclick="myMoreButton()"
+                                        class="morebtn btn-primary add-btn">More</button>
+                                <div id="moreDropdown" class="moredropdown-content"> </div>
+                        </div>
+                </div>
+        </div>
+        <div class="qaf-loader-div"> <span class="qaf-loader" id="isExpenseDataloading" style="display: none;"></span>
+        </div>
+        <div class="tablecontainer">
+                <table id="table"> </table>
+        </div>
+</div>
+<div id="popupContainer" class="popup-container">
+        <div class="popup-content">
+                <div class="form-group"> <label class="edit-detail-label" for="customerName" class="Customer">Employee
+                                Name</label> <input type="text" class="edit-detail-input" id="employeeName"
+                                name="employeeName" autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="entity">Entity</label> <input type="text"
+                                class="edit-detail-input" id="entity" name="entity" autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="state">State</label> <input type="text"
+                                class="edit-detail-input" id="state" name="state" autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="accountNumber">Account Number</label>
+                        <input type="text" class="edit-detail-input" id="accountNumber" name="accountNumber"
+                                autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="pfNumber">PF Number</label> <input
+                                type="text" class="edit-detail-input" id="pfNumber" name="pfNumber" autocomplete="off">
+                </div>
+                <div class="form-group"> <label class="edit-detail-label" for="accountTitle">Account Title</label>
+                        <input type="text" class="edit-detail-input" id="accountTitle" name="accountTitle"
+                                autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="esiNumber">ESI Number</label> <input
+                                type="text" class="edit-detail-input" id="esiNumber" name="esiNumber"
+                                autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="bankName">Bank Name</label> <input
+                                type="text" class="edit-detail-input" id="bankName" name="bankName" autocomplete="off">
+                </div>
+                <div class="form-group"> <label class="edit-detail-label" for="bankAccountNumber">Bank A/c No.</label>
+                        <input type="text" class="edit-detail-input" id="bankAccountNumber" name="bankAccountNumber"
+                                autocomplete="off"> </div>
+                <div class="form-group"> <label class="edit-detail-label" for="ifsc">IFSC</label> <input type="text"
+                                class="edit-detail-input" id="ifsc" name="ifsc" autocomplete="off"> </div>
+                <div class="form-buttons"> <button type="button" class="btn-primary submit"
+                                onclick="submitFrom()">Submit</button> <button type="button" class="cancel"
+                                onclick="closeForm('popupContainer')">Close</button> </div>
+        </div>
+</div>
+<div id="ctcstructure" class="popup-container">
+        <div class="popup-content popup-content-es">
+                <div class="responsive-form">
+                        <div id="employee-main"> <label class="employee-type checkbox-label" for="employeeType">Employee
+                                        Name</label> <select id="employee" class='select-emp'> </select> </div>
+                        <div id="empname-main"> <label class="employee-type checkbox-label">Employee Name</label>
+                                <h2 id="empname"></h2>
+                        </div>
+                        <h2 class='header-name'>Employee Statutory</h2>
+                        <div class="checkbox-group">
+                                <div class="es-form-group"> <input class="es-input" type="checkbox" id="PF" name="PF"
+                                                value=""> <label for="PF" class="es-label"> Is Provident Fund (PF)
+                                                applicable?</label> <br> </div>
+                                <div class="es-form-group"> <input class="es-input" type="checkbox" id="EPS" name="EPS"
+                                                value="EPS"> <label class="es-label" for="EPS" class="es-label">Is
+                                                Employee Pension Scheme (EPS) applicable?</label> <br> </div>
+                                <div class="es-form-group"> <input class="es-input" type="checkbox" id="ESI" name="ESI"
+                                                value="ESI"> <label for="ESI" class="es-label"> Is Employee State
+                                                Insurance (ESI) applicable?</label> <br> </div>
+                                <div class="es-form-group"> <input class="es-input" type="checkbox" id="LWF" name="LWF"
+                                                value="LWF"> <label for="LWF" class="es-label">Is Labour Welfare
+                                                Fund(LWF) applicable?</label> <br> </div>
+                                <div class="es-form-group"> <input class="es-input" type="checkbox" id="PT" name="PT"
+                                                value="PT"> <label for="PT" class="es-label">Is Professional Tax (PT)
+                                                applicable?</label> <br> </div>
+                        </div>
+                        <div class="form-buttons es-buttos"> <button type="button" class="cancel"
+                                        onclick="closeForm('ctcstructure')">Close</button> <button type="submit"
+                                        class="btn-primary submit nextButton" id="NextButton"
+                                        onclick="nextForm()">Next</button> </div>
+                </div>
+        </div>
+</div>
+<div id="ctcCalculation" class="popup-container">
+        <div class="popup-content salary-component-content" id="salary-component-content-id">
+                <div class="salary-component-container">
+                        <div class="componentempname" id="empnamecomponet"></div>
+                        <div class="form-header-div">
+                                <div class="two-column-form form-heading top-bar">
+                                        <div class="form-column heading top-heading1" id="componentname">Salary
+                                                Component </div>
+                                        <div class="form-column heading cost top-heading2 cost-display">Amount Monthly
+                                        </div>
+                                </div>
+                                <div class="two-column-form form-heading top-bar">
+                                        <div class="form-column heading top-heading1" id="componentname">Deduction
+                                                Component </div>
+                                        <div class="form-column heading cost top-heading2 cost-display">Amount Monthly
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+                <div class="form-main">
+                        <div class="form-display-div">
+                                <div id="salaryHeadeForm" class="two-column-form"> </div>
+                        </div>
+                        <div class="form-display-div">
+                                <div id="salaryHeadeDeductionForm" class="two-column-form"> </div>
+                        </div>
+                </div>
+                <div class="form-header-div">
+                        <div class="two-column-form form-heading bottom-heading">
+                                <div class="form-column heading cost-heading" id="costocompany">Cost to company </div>
+                                <div class="form-column heading cost cost-heading cost-display"
+                                        id="totalctcCalculation">₹0 </div>
+                        </div>
+                        <div class="two-column-form form-heading bottom-heading">
+                                <div class="form-column heading cost-heading" id="costocompany">Total deductions </div>
+                                <div class="form-column heading cost cost-heading cost-display" id="totaldeducation">₹0
+                                </div>
+                        </div>
+                </div>
+                <div class="form-buttons sc-buttons"> <button type="button" class="cancel"
+                                onclick="closeForm('ctcCalculation')">Close</button> <button type="button "
+                                class="btn-primary submit" onclick="SaveCTCForm()">Save</button> </div>
+        </div>
+</div>
+<div class="qaf-hrz-n-r-pane" id="qafrightpanel">
+        <div id="pageDisabled"></div>
+        <div class="qaf-hrz-n-r-form">
+                <div class="import-page-header">
+                        <div class="import-page-title">Import bulk Data</div> <a class="import-page-close" title="close"
+                                onclick="closePage()"></a>
+                </div>
+                <div class="import-page-content">
+                        <p>Download template for uploading bulk data</p> <a onclick="downloadTemplate()"
+                                title="Download template">Download Template</a>
+                        <div class="m-t-10 p-t-10 m-b-10"> <button class="btn btn-primary upload-temp"
+                                        onclick="onFileChangeFile()"> Upload bulk data </button> </div>
+                        <form enctype="multipart/form-data" class="import-file"> <input id="upload" type=file
+                                        name="files[]"> </form>
+                        <div class="m-t-10 p-t-10 m-b-10" id="importresponse">
+                                <p class=""> Import status</p>
+                                <div id="successimport"> </div>
+                                <div id="failimport"> </div>
+                                <div><a onclick="downloadImportReport()">Import Status Report</a></div>
+                        </div>
+                </div>
+                <div class="qaf-loader-div"> <span class="qaf-loader" id="isloading" style="display: none;"></span>
+                </div>
+        </div>
+</div>
+<div class="qaf-hrz-n-back-drop" id="backdrop" style="display: none;"></div> <qaf-alert></qaf-alert>
         <script src="https://kit.fontawesome.com/14097a442a.js" crossorigin="anonymous"></script>
         <script src="Pop Up Payroll/popUp-Payroll.js"></script>
 </body>

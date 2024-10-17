@@ -6,7 +6,13 @@ var selectedDate
 var hiddenFieldsFormWindow = ["RequestFor"];
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
-var maHostName=sitHostURL
+var maHostName=sitHostURL;
+var recordID=""
+
+function getFormBuilderDetails(event){
+    recordID=event.detail.RecordID
+}
+window.document.addEventListener('formBuilder', getFormBuilderDetails)
 function externalFormValidationRule() {
     if(!isApicall){
         isApicall=true
@@ -16,7 +22,12 @@ function externalFormValidationRule() {
             selectedDate = convertDate(selectedDate.value)
             let od_Request_Records = await getODRequest();
             if (od_Request_Records&&od_Request_Records.length>0) {
+                let currentRequestPresent=od_Request_Records.filter(a=>a.RecordID===recordID);
+                if(currentRequestPresent&&currentRequestPresent.length>0){
+                    resolve(true)
+                }else{
                 openAlert("Request has already been raised for the selected date")
+                }
             }
             else {
                 resolve(true)

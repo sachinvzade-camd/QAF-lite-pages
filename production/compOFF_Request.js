@@ -8,7 +8,12 @@ var hiddenFieldsFormWindow = ["RequestFor"];
 var sitHostURL='qaffirst.quickappflow.com'
 var funFirstHostURL='funfirst.quickappflow.com'
 var maHostName=funFirstHostURL
+var recordID=""
 
+function getFormBuilderDetails(event){
+    recordID=event.detail.RecordID
+}
+window.document.addEventListener('formBuilder', getFormBuilderDetails)
 
 function externalFormValidationRule() {
     if (!isApicall) {
@@ -27,8 +32,13 @@ function externalFormValidationRule() {
                 else {
                     let CompOFF_Requests = await getCompOFF_Request();
                     if (CompOFF_Requests && CompOFF_Requests.length > 0) {
+                        let currentRequestPresent=CompOFF_Requests.filter(a=>a.RecordID===recordID);
+                        if(currentRequestPresent&&currentRequestPresent.length>0){
+                            resolve(true)
+                        }else{
+
                         openAlert("Request has already been raised for the selected date")
-                        resolve(false)
+                        resolve(false)}
                     }
                     else {
                         resolve(true)

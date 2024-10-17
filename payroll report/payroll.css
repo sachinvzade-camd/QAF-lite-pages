@@ -84,6 +84,10 @@ vertical-align: middle;
   font-size: 14px;
   font-weight: 500;
 }
+.qaf-tr{
+  z-index: -1;
+  position: relative;
+}
 .qaf-th {
 height: 60px;
 padding: 12px 10px;
@@ -576,6 +580,15 @@ height: 30px;
 outline: none;
 }
 
+.search-icon-payroll{
+  padding: 13px 10px 10px 0px;
+    color: gray;
+    min-width: 50px;
+    text-align: center;
+    -webkit-transform: translate(51px, -3px);
+    transform: translate(51px, -3px);
+}
+
 
 /* .search-icon,
 .cancel-icon {
@@ -827,4 +840,7 @@ right: 10px;
       text-align: center;
       display: flex;
       justify-content: center;
+    }
+    .pg-content{
+      margin-top: 0;
     }

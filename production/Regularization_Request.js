@@ -8,8 +8,13 @@ var webURL_Value;
 var sitHostURL = 'demtis.quickappflow.com'
 var hostName = sitHostURL
 var hiddenFieldsFormWindow = ["RequestFor"];
-
+var recordID=""
 var inputDate;
+
+function getFormBuilderDetails(event){
+    recordID=event.detail.RecordID
+}
+window.document.addEventListener('formBuilder', getFormBuilderDetails)
 function externalFormValidationRule() {
     if (!isApicall) {
         isApicall = true
@@ -35,8 +40,13 @@ function externalFormValidationRule() {
                             if (attendence[0].DayStatus != "Present" || attendence[0].IsHalfDay) {
                                 let rg_Requests = await getRegularizeRequest();
                                 if (rg_Requests && rg_Requests.length > 0) {
-                                    openAlert("Request has already been raised for the selected date")
-                                    resolve(false)
+                                    let currentRequestPresent=rg_Requests.filter(a=>a.RecordID===recordID);
+                                    if(currentRequestPresent&&currentRequestPresent.length>0){
+                                        resolve(true)
+                                    }else{
+                                        openAlert("Request has already been raised for the selected date")
+                                        resolve(false)
+                                    }
                                 }
                                 else {
                                     resolve(true)

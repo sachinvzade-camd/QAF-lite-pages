@@ -1,0 +1,24 @@
+<div class="qaf-customer-portal">
+    <div class="first-section">
+        <div class="filter-row my-dashboard-searchbox">
+            <div class="col-sm-11 col-xs-11 col-md-5 m-t-10">
+                <div class="form-group has-search helpdesk-search-box">
+                    <div class="input-container"> <i class="fa fa-search search-icon"></i> <input type="text"
+                            class="form-control search-box-input" id="search" /> </div>
+                    <!-- <span class="search-error" *ngIf="jobListSearch.JobTitle?.length > 250"> only 255 charater allowed. </span> -->
+                </div> <button id="cancelSearch-report" type="button" class="close search-close search-close-helpdesk"
+                    aria-label="Close" onclick="cancelSearch()"> <span aria-hidden="true">&times;</span> </button>
+            </div>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="container1 card-box">
+            <div class="input-select"> <select id="helpdeskstatus" class="filter" onchange="statusChangeevent()">
+                </select> </div>
+            <div class="ticket-section" id="ticketlist"> </div>
+        </div>
+        <div class="container2 card-box">
+            <div class="service-section" id="serviceticket"> </div>
+        </div>
+    </div>
+</div>

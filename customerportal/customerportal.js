@@ -147,7 +147,7 @@ function getServices() {
                 services.forEach(val => {
                     
                     servicesText += ` 
-                    <div class="ticket-card" >
+                    <div class="ticket-card card-box" >
                         <div class="ticket-detail">
                             <p>${val.RequestTitle}</p>
                             <p>${topheader(val)} | ${getRequestStatus(val)}</p>
@@ -506,7 +506,7 @@ function getServiceAppList(getList) {
 
                     service += ` 
                             <div class="col-md-4 job-card">
-                            <div class="card"  >
+                            <div class="card card-box"  >
                                 <div class="service-photo">
                                     <a class="avtar">
                                         <img src="https://qaffirst.quickappflow.com/SmartHR/assets/img/default_service.png">

@@ -64,9 +64,8 @@
   margin-bottom: 15px;
   padding: 10px;
   border-radius: 5px;
-  box-shadow: 1px 2px 5px;
   margin: 0px 8px;
-  height: 530px;
+  height: 550px;
 }
 .container2 {
   padding: 20px 10px;
@@ -95,7 +94,6 @@
   padding: 10px;
   background: #f7f7f7ab;
   border-left: 4px solid #c4a795;
-  box-shadow: 1px 2px 5px;
   border-radius: 5px;
   margin: 0px 10px 20px 10px;
 }
@@ -111,7 +109,7 @@
   margin-top: 0px;
 }
 .ticket-section {
-  height: 340px;
+  height: 486px;
   overflow: scroll;
   padding: 5px 0px;
 }
@@ -141,12 +139,8 @@
   object-fit: cover;
 }
 .service-section{
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
   padding: 5px 0px;
-  height: 340px;
+  height: 517px;
   overflow: scroll;
 }
 .job-card {
@@ -155,12 +149,12 @@
   padding: 0px 15px;
   /* margin-bottom: 15px; */
   height: 120px;
+  margin-top: 15px;
 }
 .card {
   display: flex;
   /* margin-bottom: 20px; */
   height: 115px;
-  box-shadow: 1px 2px 5px;
   padding: 20px 15px;
   border-radius: 5px;
   cursor: pointer;
