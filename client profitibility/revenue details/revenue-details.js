@@ -25,7 +25,7 @@ function addRevenue() {
     if (window.QafPageService) {
         window.QafPageService.AddItem(expenseGrid.repository, function () {
             loadCustomerRevenue();
-        });
+        },);
     }
 }
 
@@ -365,7 +365,9 @@ function expgrid_onItemRender(cname, cvalue, row) {
                        }
     .qaf-grid__row-item_action .action-content{
     width:130px
-    }                      
+    }             .action-items button[data-action="EDIT"] {
+  display: none !important;
+}         
                             .qaf-grid__row:hover {
                             background-color: #fff !important;
                             }
@@ -557,7 +559,7 @@ if(revenue&&revenue.RecordID){
         }
       })
       let fieldsDoNotdiaply = ['Customer'];//check
-      let readOnlyFormField = ['NumberofHours','BillingAmount','StartDate','EndDate'];//check
+      let readOnlyFormField = ['NumberofHours','BillingAmount','StartDate','EndDate','ProductOffering'];//check
       let excludeFieldFromForm = [];//check
      let displayFieldlist = fields.filter((objOne) => {
         return !fieldsDoNotdiaply.some((objTwo) => {

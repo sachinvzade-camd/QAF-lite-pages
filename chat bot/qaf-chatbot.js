@@ -5,20 +5,21 @@ window.qafChatbot = (function () {
         conversationList = [];
         chatBotIconUrl = '';
         isFirstMessage = true;
-
+         timer;
         constructor() {
             super();
             // element created
         }
 
         chatWindowOpen() {
-
+            clearInterval(this.timer);
             let qafChatbotElement = document.getElementById('qaf-ai-chat-bot');
             if (qafChatbotElement) {
                 qafChatbotElement.title = ''
             }
             this.shadowRoot.querySelector(".qaf-ai-widget--launcher").classList.add('chat-open');
             this.shadowRoot.querySelector(".qaf-ai-widget-chat").classList.add('open');
+            
             this.conversationList.push({ Type: 'SYSTEM', Message: this.welcomeMessage })
             this.conversationList.splice(1);
         }
@@ -42,7 +43,6 @@ window.qafChatbot = (function () {
 
             let mainElement = this.shadowRoot.querySelector(".qaf-ai-chat-main");
             mainElement.replaceChildren(mainElement.firstElementChild);
-            localStorage.removeItem('Sid')
             var systemRequest = `<div class="qaf-ai-chat-system-response">
             <div class="qaf-ai-chat-system-icon">
                 <img src="${this.chatBotIconUrl}"/>
@@ -63,14 +63,12 @@ window.qafChatbot = (function () {
             let chatAPIUrl = `https://demtis.quickappflow.com/api/ptcssad1`;
             let json;
             try {
+                
                 let payLoad = { Mcp: input, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
                 if (this.isFirstMessage) {
                     payLoad = { Mcp: input, tmf: 1, Pid: this.pid, Txt: this.txt, Tdp: this.tdp };
                 }
-                let sid = localStorage.getItem('Sid')
-                if (sid) {
-                    payLoad['Sid'] = sid
-                }
+                    payLoad['Sid'] =  this.SID
                 const response = await fetch(chatAPIUrl, {
                     method: 'POST',
                     headers: {
@@ -125,6 +123,7 @@ window.qafChatbot = (function () {
                 }
                 this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled = true
                 if ($event.preventDefault) $event.preventDefault();
+                
                 this.conversationList.push({ Type: 'SYSTEM', Message: text })
                 // user entry
                 var userRequest = `<div class="qaf-ai-chat-user-response">
@@ -154,10 +153,9 @@ window.qafChatbot = (function () {
                     }
 
                     this.qafAIChatRequest(text).then((d) => {
-                        let sidValue = localStorage.getItem('Sid')
-                        if (!sidValue) {
-                            localStorage.setItem('Sid', d && d.Sid ? d.Sid : '')
-                        }
+                   
+        this.SID=d && d.Sid ? d.Sid : ''
+
                         //this.shadowRoot.querySelector(".qaf-ai-chat-processing").classList.remove('show');
                         this.shadowRoot.querySelector(".qaf-ai-chat-main").removeChild(this.shadowRoot.querySelector(".qaf-ai-chat-main .qaf-ai-chat-processing"))
                         this.shadowRoot.getElementById("qaf-ai-chat-ctrl").disabled = false
@@ -710,6 +708,7 @@ position: absolute;
             </div>`;
             //Register events
             setTimeout(() => {
+                
                 this.shadowRoot.querySelector("button.qaf-ai-chat-launcher").addEventListener("click", this.chatWindowOpen.bind(this));
                 this.shadowRoot.querySelector("button#close-chat").addEventListener("click", this.chatWindowClose.bind(this));
                 this.shadowRoot.querySelector("button#end-chat").addEventListener("click", this.endConversion.bind(this));
@@ -717,8 +716,10 @@ position: absolute;
                 this.shadowRoot.querySelector("button.qaf-ai-chat-btn-warn").addEventListener("click", this.endChat.bind(this));
                 this.shadowRoot.querySelector("textarea#qaf-ai-chat-ctrl").addEventListener("keypress", this.submitRequest.bind(this));
                 this.shadowRoot.querySelector("#qaf-ai-enter-img").addEventListener("click", this.submitRequestImage.bind(this));
+                
                 if (this.autoOpen && !isPreview) {
-                    setTimeout(() => {
+                     this.timer =  setTimeout(() => {
+                        
                         this.chatWindowOpen()
                     }, this.autoOpen * 1000);
                 }

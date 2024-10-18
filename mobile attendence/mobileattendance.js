@@ -600,7 +600,7 @@ async function checkOutButtonClick() {
             } else {
               removeBlur()
 
-              alert('Not allowed to check in from this location!')
+              alert('Not allowed to check out from this location!')
             }
           } else {
             // Geolocation details and distance
@@ -641,7 +641,7 @@ async function checkOutButtonClick() {
                 } else {
                   removeBlur()
 
-                  alert('Not allowed to check in from this location!')
+                  alert('Not allowed to check out from this location!')
                 }
               } else {
                 if (isLocationPermission) {

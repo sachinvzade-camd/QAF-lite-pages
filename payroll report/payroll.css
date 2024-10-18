@@ -742,6 +742,12 @@ right: 10px;
 .qaf-hrz-n-r-form {
   background-color: #fff;
 }
+.payroll-search-close{
+  transform: translate(-7px, -6px)!important;
+}
+.common-search-payroll{
+  transform: translate(0,5px);
+}
 @media only screen and (max-width: 1199px) {
   .hrz-n-r-pane {
     &.open {
@@ -827,7 +833,7 @@ right: 10px;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
     }
-
+  
     @keyframes rotation {
     0% {
         transform: rotate(0deg);

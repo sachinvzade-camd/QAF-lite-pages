@@ -16,6 +16,7 @@ var teamProductID;
 var employeeValue;
 qafServiceLoadedAM = setInterval(() => {
     if (window.QafService) {
+        debugger
         let mainGridElement = document.getElementById('main-grid-am');
         let noGridElement = document.getElementById('no-grid-am');
         if (mainGridElement) {
@@ -47,6 +48,7 @@ function getEmployeeUser() {
 
 }
 function getproductTeamLead() {
+    debugger
     let objectName = "Product";
     let list = 'ProductName'
     let fieldList = list.split(",")
@@ -59,6 +61,7 @@ function getproductTeamLead() {
             teamProductID = products[0].RecordID
             getEmployeeUser();
         }else{
+            getEmployeeUser()
             let mainGridElement = document.getElementById('main-grid-am');
             let noGridElement = document.getElementById('no-grid-am');
             if (mainGridElement) {
@@ -78,11 +81,11 @@ function getAccountManager() {
     let fieldList = list.split(",")
     let pageSize = "20000";
     let pageNumber = "1";
-    let whereClause = `EmployeeLevel='Account Manager'`;
+    let whereClause = ("EmployeeLevel<contains>'Account'");
     let orderBy = "true"
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((roles) => {
         if (Array.isArray(roles) && roles.length > 0) {
-            let accountmanagerID = roles[0].RecordID
+            let accountmanagerID=  roles.map(a=>a.RecordID).join("'<OR>EmployeeLevel='");
             let objectName = "Employees";
             let list = 'EmployeeLevel,FirstName,LastName'
             let fieldList = list.split(",")
@@ -111,8 +114,28 @@ function getAccountManager() {
                         employeeDropdownElement.value = employees[0].RecordID
                     }
                     getClientAllocationMatrix();
+                }else{
+                    let mainGridElement = document.getElementById('main-grid-am');
+                    let noGridElement = document.getElementById('no-grid-am');
+                    if (mainGridElement) {
+                        mainGridElement.style.display = 'none'
+                    }
+                    if (noGridElement) {
+                        noGridElement.style.display = "block"
+                    }
                 }
+        
             })
+        }
+        else{
+            let mainGridElement = document.getElementById('main-grid-am');
+            let noGridElement = document.getElementById('no-grid-am');
+            if (mainGridElement) {
+                mainGridElement.style.display = 'none'
+            }
+            if (noGridElement) {
+                noGridElement.style.display = "block"
+            }
         }
 
 
@@ -179,7 +202,7 @@ function getClientAllocationMatrix() {
 
 }
 
-function getReportingTeamLead() {4
+function getReportingTeamLead() {
     
     let commonCustomer = clientAllocationAMatrixList.filter((v, i, a) => a.findIndex(t => t.Customer === v.Customer) === i);
     let customerIds=commonCustomer.map(a=>a.Customer.split(";#")[0]).join("'<OR>Customer='")

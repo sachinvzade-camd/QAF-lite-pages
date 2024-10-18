@@ -6,6 +6,7 @@
   margin: 15px 20px 20px 20px;
   padding-top: 0;
   transform: translate(0px, -20px);
+  height: 77vh;
 }
 .page-container-user {
 	/* Form Styling */
@@ -556,7 +557,7 @@
 	 z-index: 0 !important;
 }
  .page-container-user .user-type-popup {
-	 height: 118px;
+	 height: 147px;
 	 min-width: 19%;
 	 max-width: 19%;
 }
@@ -580,6 +581,7 @@
 	 display: flex;
 	 justify-content: space-evenly;
 	 margin-bottom: 10px;
+	 flex-direction: column;
 }
  .page-container-user .team-list {
 	 width: 100%;

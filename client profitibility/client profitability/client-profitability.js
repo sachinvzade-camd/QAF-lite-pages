@@ -84,6 +84,8 @@ var gridExpenseColumns =  [
 
 
 function getRevenueDetails() {
+    let expenseGridElement = document.querySelector('#expgrid');
+
     let mainGridElement = document.getElementById('main-grid');
             let noGridElement = document.getElementById('no-grid');
             if (mainGridElement) {
@@ -102,9 +104,11 @@ function getRevenueDetails() {
     let orderBy = "true";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((revenues) => {
         if (Array.isArray(revenues) && revenues.length >0) {
-            revenueDetailsList = revenues;
+            revenueDetailsList = revenues.reverse();
             getClientAllocationMatrix()
         }else{
+        expenseGridElement.show = false;
+
             let mainGridElement = document.getElementById('main-grid');
             let noGridElement = document.getElementById('no-grid');
             if (mainGridElement) {
@@ -118,6 +122,8 @@ function getRevenueDetails() {
     });
 }
 function getClientAllocationMatrix() {
+    let expenseGridElement = document.querySelector('#expgrid');
+
     clientAllocationMatrixList = []
     let objectName = "Client_Allocation_Matrix";
     let list = 'RecordID,Customer,ProductOffering,Employee,NumberofHours,HourlyRate';
@@ -128,9 +134,11 @@ function getClientAllocationMatrix() {
     let orderBy = "true";
     window.QafService.GetItems(objectName, fieldList, pageSize, pageNumber, whereClause, '', orderBy).then((matrixs) => {
         if (Array.isArray(matrixs) && matrixs.length > 0) {
-            clientAllocationMatrixList = matrixs;
+            clientAllocationMatrixList = matrixs.reverse();
             getCommonCustomer()
         }else{
+        expenseGridElement.show = false;
+
             let mainGridElement = document.getElementById('main-grid');
             let noGridElement = document.getElementById('no-grid');
             if (mainGridElement) {
@@ -780,4 +788,45 @@ function getFullNameByRecordID(targetRecordID) {
     } else {
         return '';
     }
+}
+
+function downloadImportReport(){
+    let data = [];
+    data=clientProfibilityList
+   
+    // let newHeader = Object.keys(data[0]); // header row
+    let newHeader = []; // header row
+    data.forEach(val=>{
+        if(newHeader.length<Object.keys(val).length){
+            newHeader=Object.keys(val);
+        }
+    })
+    let csvData=[]
+    data.forEach(val=>{
+            let newvalue=[];
+            newHeader.forEach(header=>{
+                let value=val[header]
+                newvalue.push(value)
+            })
+            csvData.push(newvalue.join(","))
+    })
+    
+    let displayHeader=[]
+    newHeader.forEach(val=>{
+        gridExpenseColumns.forEach(col=>{
+            if(val===col.field){
+                displayHeader.push(col.displayName
+)            }
+        })
+    })
+
+    // exportData(data,'PayrollReport')
+    let csvBody=csvData.join('\n');
+    let csvHeader = displayHeader;
+    csvHeader = csvHeader.join(',') + '\n';
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvHeader + csvBody);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'Client Project Profitability' + '.csv';
+    hiddenElement.click();
 }
